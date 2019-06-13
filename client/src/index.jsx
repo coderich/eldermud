@@ -12,7 +12,7 @@ const { $history } = Services.get();
 
 const socket = SocketIO('http://localhost:3000');
 
-socket.on('socket.broadcast', (data) => {
+socket.on('server.broadcast', (data) => {
   console.log(data);
 });
 

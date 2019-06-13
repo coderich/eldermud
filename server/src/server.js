@@ -1,51 +1,67 @@
-import Chokidar from 'chokidar';
 import SocketServer from 'socket.io';
-import ImportFresh from 'import-fresh';
-import { createStore, Action } from '@coderich/hotrod';
+import RequireDir from 'require-dir';
+import { createStore, Action, Selector, Reducer } from '@coderich/hotrod';
+import { objectGroup } from '@coderich/hotrod/util';
+
+// Server
+const server = new SocketServer(3000, { serveClient: false, pingTimeout: 30000 });
+
+// Selectors
+const selectors = objectGroup({
+  get sockets() {
+    return new Selector('server.sockets').default({});
+  },
+  get socket() {
+    return new Selector(this.sockets).map((sockets, id) => sockets[id]).default({});
+  },
+});
 
 // Actions
 const actions = {
-  connect: new Action('server.connect'),
-  disconnecting: new Action('server.disconnecting'),
-  disconnected: new Action('server.disconnected'),
-  error: new Action('server.error'),
+  socketConnect: new Action('socket.connect'),
+  socketDisconnecting: new Action('socket.disconnecting'),
+  socketDisconnected: new Action('socket.disconnected'),
+  socketError: new Action('socket.error'),
+  socketBroadcast: new Action('socket.broadcast', ({ id, payload }) => { selectors.socket.get(id).broadcast.emit('socket.broadcast', payload); }),
+  socketMessage: new Action('socket.message', ({ id, payload }) => { selectors.socket.get(id).emit('socket.message', payload); }),
+  serverBroadcast: new Action('server.broadcast', (payload) => { server.emit('server.broadcast', payload); }),
 };
 
-// Server
-const server = new SocketServer(3000, { serveClient: false });
+// Reducers
+const reducers = [
+  new Reducer(actions.socketConnect, selectors.sockets, {
+    success: (sockets, { payload: { socket } }) => {
+      const { id } = socket;
+      sockets[id] = socket;
+    },
+  }),
+
+  new Reducer(actions.socketDisconnected, selectors.sockets, {
+    success: (sockets, { payload: { socket } }) => {
+      const { id } = socket;
+      delete sockets[id];
+    },
+  }),
+];
 
 server.on('connection', (socket) => {
-  actions.connect.dispatch({ socket });
+  actions.socketConnect.dispatch({ socket });
 
   socket.on('disconnecting', (reason) => {
-    actions.disconnecting.dispatch({ socket, reason });
+    actions.socketDisconnecting.dispatch({ socket, reason });
   });
 
   socket.on('disconnect', (reason) => {
-    actions.disconnected.dispatch({ socket, reason });
+    actions.socketDisconnected.dispatch({ socket, reason });
   });
 
   socket.on('error', (error) => {
-    actions.error.dispatch({ socket, error });
+    actions.socketError.dispatch({ socket, error });
   });
 });
 
 // Store
-const store = createStore().loadModule('server', { actions });
+const store = createStore().loadModule('server', { actions, selectors, reducers });
 
-try {
-  // Modules
-  const modules = {};
-
-  const loadModule = (path) => {
-    if (modules[path]) modules[path].unmount();
-    modules[path] = new (ImportFresh(path))(server, store);
-  };
-
-  const watcher = Chokidar.watch('./module', { ignored: /(^|[/\\])\../, persistent: true, cwd: __dirname, awaitWriteFinish: true });
-  watcher.on('add', path => loadModule(`./${path}`));
-  watcher.on('change', path => loadModule(`./${path}`));
-  watcher.on('unlink', path => unloadModule(`./${path}`));
-} catch (e) {
-  console.log(e);
-}
+// Modules
+Object.values(RequireDir('./module')).forEach(fn => fn(server, store));

@@ -5,9 +5,8 @@
   "description": "Eldermud Server",
   "dependencies": {
     "@coderich/hotrod": "^1.0.4",
-    "chokidar": "^3.0.1",
     "esm": "^3.2.25",
-    "import-fresh": "^3.0.0",
+    "require-dir": "^1.2.0",
     "rxjs": "^6.5.2",
     "socket.io": "^2.2.0"
   },
