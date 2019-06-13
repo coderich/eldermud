@@ -1,0 +1,11 @@
+https://socket.io/docs/server-api/
+https://socket.io/docs/client-api/
+
+https://gameprogrammingpatterns.com/game-loop.html
+https://manu.ninja/game-loop-with-rxjs-5-immutable-js
+http://www.htmlfivewow.com/demos/terminal/terminal.html
+
+https://github.com/colyseus/colyseus
+https://github.com/lance-gg/lance
+https://github.com/actionhero/actionhero-tutorial
+

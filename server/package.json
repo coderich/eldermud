@@ -1,0 +1,23 @@
+{
+  "name": "eldermud-server",
+  "version": "1.0.0",
+  "author": "CodeRich",
+  "description": "Eldermud Server",
+  "dependencies": {
+    "@coderich/hotrod": "^1.0.4",
+    "chokidar": "^3.0.1",
+    "esm": "^3.2.25",
+    "import-fresh": "^3.0.0",
+    "rxjs": "^6.5.2",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "@coderich/ratchet": "^1.1.4"
+  },
+  "scripts": {
+    "start": "node -r esm src/server.js",
+    "ratchet": "ratchet"
+  },
+  "bin": {},
+  "main": "index.js"
+}

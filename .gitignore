@@ -1,0 +1,6 @@
+.DS_Store
+eldermud.sublime-project
+eldermud.sublime-workspace
+node_modules
+coverage
+build
