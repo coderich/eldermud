@@ -8,56 +8,74 @@ const server = new SocketServer(3000, { serveClient: false, pingTimeout: 30000 }
 
 // Selectors
 const selectors = objectGroup({
-  get sockets() {
-    return new Selector('server.sockets').default({});
-  },
-  get socket() {
-    return new Selector(this.sockets).map((sockets, id) => sockets[id]).default({});
+  get socket() { return new Selector(this.sockets).map((sockets, i) => sockets[i]); },
+  get sockets() { return new Selector('sockets').map(a => server.sockets.connected).default({}); },
+
+  get client() { return new Selector(this.clients).map((clients, i) => clients[i]); },
+  get clients() { return new Selector('clients').default({}); },
+
+  get user() { return new Selector(this.users).map((users, i) => users[i]); },
+  get users() {
+    return new Selector(this.clients).map((clients) => {
+      return Object.values(clients).map(client => client.user).reduce((prev, user) => {
+        return Object.assign(prev, { [user.id]: user });
+      }, {});
+    }).default({});
   },
 });
 
 // Actions
 const actions = {
-  socketConnect: new Action('socket.connect'),
-  socketDisconnecting: new Action('socket.disconnecting'),
-  socketDisconnected: new Action('socket.disconnected'),
-  socketError: new Action('socket.error'),
-  socketBroadcast: new Action('socket.broadcast', ({ id, payload }) => { selectors.socket.get(id).broadcast.emit('socket.broadcast', payload); }),
-  socketMessage: new Action('socket.message', ({ id, payload }) => { selectors.socket.get(id).emit('socket.message', payload); }),
-  serverBroadcast: new Action('server.broadcast', (payload) => { server.emit('server.broadcast', payload); }),
+  connect: new Action('connect'),
+  disconnect: new Action('disconnect'),
+  login: new Action('login'),
+  logout: new Action('logout'),
 };
 
 // Reducers
 const reducers = [
-  new Reducer(actions.socketConnect, selectors.sockets, {
-    success: (sockets, { payload: { socket } }) => {
-      const { id } = socket;
-      sockets[id] = socket;
+  new Reducer(actions.connect, selectors.clients, {
+    success: (clients, { payload }) => {
+      const { id } = payload;
+      clients[id] = payload;
     },
   }),
 
-  new Reducer(actions.socketDisconnected, selectors.sockets, {
-    success: (sockets, { payload: { socket } }) => {
-      const { id } = socket;
-      delete sockets[id];
+  new Reducer(actions.disconnect, selectors.clients, {
+    success: (clients, { payload }) => {
+      const { id } = payload;
+      delete clients[id];
+    },
+  }),
+
+  new Reducer(actions.login, selectors.clients, {
+    success: (clients, { payload }) => {
+      const { id, user } = payload;
+      clients[id].user = user;
+    },
+  }),
+
+  new Reducer(actions.logout, selectors.clients, {
+    success: (clients, { payload }) => {
+      const { id } = payload;
+      delete clients[id].user;
     },
   }),
 ];
 
 server.on('connection', (socket) => {
-  actions.socketConnect.dispatch({ socket });
+  actions.connect.dispatch({ id: socket.id });
+  actions.login.dispatch({ id: socket.id, user: { id: 1, room:1, isLoggedIn: true } });
 
   socket.on('disconnecting', (reason) => {
-    actions.socketDisconnecting.dispatch({ socket, reason });
+    actions.logout.dispatch({ id: socket.id });
+    actions.disconnect.dispatch({ id: socket.id, reason });
   });
 
   socket.on('disconnect', (reason) => {
-    actions.socketDisconnected.dispatch({ socket, reason });
   });
 
-  socket.on('error', (error) => {
-    actions.socketError.dispatch({ socket, error });
-  });
+  socket.on('error', (error) => {});
 });
 
 // Store

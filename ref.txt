@@ -9,3 +9,59 @@ https://github.com/colyseus/colyseus
 https://github.com/lance-gg/lance
 https://github.com/actionhero/actionhero-tutorial
 
+
+
+
+// Selectors
+// const selectors = objectGroup({
+//   get sockets() {
+//     return new Selector('server.sockets').default({});
+//   },
+//   get socket() {
+//     return new Selector(this.sockets).map((sockets, id) => sockets[id]).default({});
+//   },
+// });
+
+// // Actions
+// const actions = {
+//   socketConnect: new Action('socket.connect'),
+//   socketDisconnecting: new Action('socket.disconnecting'),
+//   socketDisconnected: new Action('socket.disconnected'),
+//   socketError: new Action('socket.error'),
+//   socketBroadcast: new Action('socket.broadcast', ({ id, message }) => { selectors.socket.get(id).broadcast.emit('message', message); }),
+//   socketMessage: new Action('socket.message', ({ id, message }) => { selectors.socket.get(id).emit('message', message); }),
+//   serverBroadcast: new Action('server.broadcast', (message) => { server.emit('message', message); }),
+// };
+
+// // Reducers
+// const reducers = [
+//   new Reducer(actions.socketConnect, selectors.sockets, {
+//     success: (sockets, { payload: { socket } }) => {
+//       const { id } = socket;
+//       sockets[id] = socket;
+//     },
+//   }),
+
+//   new Reducer(actions.socketDisconnected, selectors.sockets, {
+//     success: (sockets, { payload: { socket } }) => {
+//       const { id } = socket;
+//       delete sockets[id];
+//     },
+//   }),
+// ];
+
+// server.on('connection', (socket) => {
+//   actions.socketConnect.dispatch({ socket });
+
+//   socket.on('disconnecting', (reason) => {
+//     actions.socketDisconnecting.dispatch({ socket, reason });
+//   });
+
+//   socket.on('disconnect', (reason) => {
+//     actions.socketDisconnected.dispatch({ socket, reason });
+//   });
+
+//   socket.on('error', (error) => {
+//     actions.socketError.dispatch({ socket, error });
+//   });
+// });

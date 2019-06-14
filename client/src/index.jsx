@@ -10,10 +10,12 @@ import store from './store';
 
 const { $history } = Services.get();
 
-const socket = SocketIO('http://localhost:3000');
+const server = SocketIO('http://localhost:3000');
 
-socket.on('server.broadcast', (data) => {
-  console.log(data);
+server.send('hello');
+
+server.on('message', (data) => {
+  console.log('server', data);
 });
 
 ReactDOM.render(
