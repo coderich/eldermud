@@ -15,7 +15,7 @@ const server = SocketIO('http://localhost:3000');
 server.send('hello');
 
 server.on('message', (data) => {
-  console.log('server', data);
+  console.log(data);
 });
 
 ReactDOM.render(

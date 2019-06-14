@@ -5,6 +5,7 @@ module.exports = (server, store) => {
     console.log('commander here to interpret', data);
   };
 
+  // Begin listening to player commands
   storeActions.login.listen({
     success: ({ payload }) => {
       const { id } = payload;
@@ -16,6 +17,7 @@ module.exports = (server, store) => {
     },
   });
 
+  // Stop listening to player commands
   storeActions.logout.listen({
     success: ({ payload }) => {
       const { id } = payload;

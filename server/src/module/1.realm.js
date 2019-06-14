@@ -28,6 +28,7 @@ module.exports = (server, store) => {
     },
   });
 
+  // Send initial info to player
   storeActions.login.listen({
     success: ({ payload }) => {
       const { id, user } = payload;
@@ -40,6 +41,7 @@ module.exports = (server, store) => {
     },
   });
 
+  // Check if the player hung up without logging out first (potential penalty if in combat)
   storeActions.disconnect.listen({
     request: ({ payload }) => {
       const { id } = payload;
@@ -48,7 +50,7 @@ module.exports = (server, store) => {
       if (client.user) {
         const player = selectors.player.get(client.user.id);
 
-        if (player) {
+        if (player && player.isInCombat) {
           console.log('You are in big trouble');
         }
       }
