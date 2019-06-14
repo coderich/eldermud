@@ -1,8 +1,23 @@
+import { Action } from '@coderich/hotrod';
+import { objectGroup } from '@coderich/hotrod/util';
+import InterpreterService from '../service/interpreter.service';
+
 module.exports = (server, store) => {
   const { selectors: storeSelectors, actions: storeActions } = store.info();
 
-  const interpreter = (data) => {
-    console.log('commander here to interpret', data);
+  const actions = objectGroup({
+    get command() { return new Action('command'); },
+  });
+
+  store.loadModule('commander', { actions });
+
+  const translate = function translate(input) {
+    const user = storeSelectors.users.get(this.id);
+
+    if (user) {
+      const command = InterpreterService.translate(input);
+      actions.command.dispatch({ user, command });
+    }
   };
 
   // Begin listening to player commands
@@ -12,7 +27,7 @@ module.exports = (server, store) => {
       const socket = storeSelectors.socket.get(id);
 
       if (socket) {
-        socket.on('message', interpreter);
+        socket.on('message', translate);
       }
     },
   });
@@ -24,7 +39,7 @@ module.exports = (server, store) => {
       const socket = storeSelectors.socket.get(id);
 
       if (socket) {
-        socket.removeListener('message', interpreter);
+        socket.removeListener('message', translate);
       }
     },
   });

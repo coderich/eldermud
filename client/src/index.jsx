@@ -12,7 +12,7 @@ const { $history } = Services.get();
 
 const server = SocketIO('http://localhost:3000');
 
-server.send('hello');
+server.send('a ba');
 
 server.on('message', (data) => {
   console.log(data);

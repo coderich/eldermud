@@ -15,7 +15,8 @@
   },
   "scripts": {
     "start": "node -r esm src/server.js",
-    "ratchet": "ratchet"
+    "ratchet": "ratchet",
+    "test": "ratchet test"
   },
   "bin": {},
   "main": "index.js"
