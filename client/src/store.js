@@ -21,7 +21,4 @@ const store = createStore(
   },
 }));
 
-// Load modules
-// store.loadModule('app', appModule);
-
 export default store;

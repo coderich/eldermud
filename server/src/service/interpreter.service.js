@@ -13,6 +13,10 @@ const commands = [
     { x: { args: [0], alias: 'exit' } },
   ],
   [
+    { ne: { args: [0], alias: 'northeast' } },
+    { nw: { args: [0], alias: 'northwest' } },
+    { se: { args: [0], alias: 'southeast' } },
+    { sw: { args: [0], alias: 'southwest' } },
     { repeat: { args: [0] } },
     { exit: { args: [0] } },
   ],
