@@ -2,7 +2,6 @@ module.exports = (server, dao) => {
   const { actions } = dao.store.info();
   dao.addStoreModel('room');
 
-  // Send initial info to player
   actions.addUser.listen({
     success: async ({ payload: user }) => {
       const room = await dao.get('room', user.room);
@@ -10,6 +9,14 @@ module.exports = (server, dao) => {
 
       if (socket) {
         socket.emit('message', room);
+      }
+    },
+  });
+
+  actions.removeUser.listen({
+    success: async ({ payload: user, meta: { reason } }) => {
+      if (user.isLoggedIn) {
+        // console.log('Hell to pay!', reason);
       }
     },
   });

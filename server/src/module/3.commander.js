@@ -1,7 +1,7 @@
 import InterpreterService from '../service/interpreter.service';
 
 module.exports = (server, dao) => {
-  const { selectors, actions } = dao.store.info();
+  const { actions } = dao.store.info();
   const commander = dao.addStoreModel('command');
 
   // Begin listening to player commands
@@ -19,16 +19,16 @@ module.exports = (server, dao) => {
   });
 
   commander.actions.addCommand.listen({
-    success: ({ payload }) => {
-      const { user } = payload;
+    success: ({ payload: command }) => {
+      const { user } = command;
       const socket = server.sockets.connected[user.socketId];
 
       if (socket) {
         socket.emit('message', 'ok');
       }
     },
-    error: ({ payload }) => {
-      const { user, reason } = payload;
+    error: ({ payload: command, meta: { reason } }) => {
+      const { user } = command;
       const socket = server.sockets.connected[user.socketId];
 
       if (socket) {

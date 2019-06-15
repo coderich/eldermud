@@ -17,13 +17,13 @@ module.exports = (server, dao) => {
   const { actions } = dao.store.info();
   const navigation = dao.addStoreModel('navigation');
 
-  actions.addCommand.actions.push(new Action('navigation.check', async (payload) => {
+  const navCheckAction = new Action('navigation.check', async (payload, { meta }) => {
     const { user, command } = payload;
-    const cmd = command.cmd.toLowerCase();
     const room = await dao.get('room', user.room);
-    const direction = directions[cmd];
+    const direction = directions[command.cmd];
     const doError = (reason) => {
-      const err = { ...payload, reason };
+      meta.reason = reason;
+      const err = { ...payload };
       throw err;
     };
 
@@ -31,5 +31,7 @@ module.exports = (server, dao) => {
       if (!room.exits[direction]) doError('No exit in that direction!');
       navigation.actions.addNavigation.dispatch({ user, direction });
     }
-  }));
+  });
+
+  actions.addCommand.actions.push(navCheckAction);
 };
