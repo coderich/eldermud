@@ -1,5 +1,6 @@
 https://socket.io/docs/server-api/
 https://socket.io/docs/client-api/
+https://socket.io/docs/emit-cheatsheet/
 
 https://gameprogrammingpatterns.com/game-loop.html
 https://manu.ninja/game-loop-with-rxjs-5-immutable-js
@@ -10,6 +11,7 @@ https://github.com/lance-gg/lance
 https://github.com/actionhero/actionhero-tutorial
 
 
+* use "meta" in your actions to describe what caused the update. This can be passed down to client for render.
 
 
 // Selectors
