@@ -1,11 +1,12 @@
 module.exports = (server, dao) => {
-  const model = dao.addStoreModel('user');
+  const { actions: { removeUser } } = dao.addStoreModel('user');
 
   server.on('connection', async (socket) => {
-    const user = await dao.get('user', 1, { socketId: socket.id, isLoggedIn: true });
+    const user = await dao.get('user', 1, { socketId: socket.id, isLoggedIn: true, subscriptions: [] });
 
     socket.on('disconnecting', async (reason) => {
-      model.actions.removeUser.dispatch(user, { reason });
+      user.subscriptions.forEach(subscription => subscription.unsubscribe());
+      removeUser.dispatch(user, { reason });
     });
 
     socket.on('disconnect', (reason) => {
