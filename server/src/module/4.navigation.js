@@ -14,12 +14,13 @@ const directions = {
 };
 
 module.exports = (server, dao) => {
-  const { actions } = dao.store.info();
-  const navigation = dao.addStoreModel('navigation');
+  const { actions: { addCommand, updateUser } } = dao.store.info();
+  const { actions: { addNavigation } } = dao.addStoreModel('navigation');
 
+  // Listen for navigation commands from user
   const navCheckAction = new Action('navigation.check', async (payload, { meta }) => {
     const { user, command } = payload;
-    const room = await dao.get('room', user.room);
+    const room = await user.get('room');
     const direction = directions[command.cmd];
     const doError = (reason) => {
       meta.reason = reason;
@@ -28,10 +29,22 @@ module.exports = (server, dao) => {
     };
 
     if (direction) {
-      if (!room.exits[direction]) doError('No exit in that direction!');
-      navigation.actions.addNavigation.dispatch({ user, direction });
+      const toRoomId = room.exits[direction];
+      if (!toRoomId) doError('No exit in that direction!');
+
+      const toRoom = await dao.get('room', toRoomId);
+      addNavigation.dispatch({ user, from: room, to: toRoom });
     }
   });
 
-  actions.addCommand.actions.push(navCheckAction);
+  addCommand.actions.push(navCheckAction);
+
+  // Perform navigation
+  addNavigation.listen({
+    success: ({ payload: navigation }) => {
+      const { user, to } = navigation;
+      user.room = to.id;
+      updateUser.dispatch(user);
+    },
+  });
 };

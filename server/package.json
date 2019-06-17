@@ -4,14 +4,14 @@
   "author": "CodeRich",
   "description": "Eldermud Server",
   "dependencies": {
-    "@coderich/hotrod": "^1.0.4",
+    "@coderich/hotrod": "^1.0.9",
     "esm": "^3.2.25",
     "require-dir": "^1.2.0",
     "rxjs": "^6.5.2",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "@coderich/ratchet": "^1.1.4"
+    "@coderich/ratchet": "^1.1.7"
   },
   "scripts": {
     "start": "node -r esm src/server.js",

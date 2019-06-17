@@ -1,15 +1,19 @@
+// import { Selector } from '@coderich/hotrod';
+
 module.exports = (server, dao) => {
-  const { actions } = dao.store.info();
+  const { actions, selectors } = dao.store.info();
   dao.addStoreModel('room');
 
   actions.addUser.listen({
     success: async ({ payload: user }) => {
-      const room = await dao.get('room', user.room);
       const socket = server.sockets.connected[user.socketId];
 
-      if (socket) {
-        socket.emit('message', room);
-      }
+      const thunk = selectors.user.thunk(user.id).map((u = {}) => u.room);
+
+      thunk.subscribe(async () => {
+        const newRoom = await user.get('room');
+        socket.emit('message', newRoom);
+      });
     },
   });
 

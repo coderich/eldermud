@@ -1,16 +1,22 @@
 import { createStore, Action, Selector, Reducer } from '@coderich/hotrod';
 import db from './data';
 
-const store = createStore();
+const store = createStore(undefined, {
+  users: {},
+  rooms: {},
+});
 
 const get = async (model, id, initialData = {}) => {
   const lcm = model.toLowerCase();
   const tcm = model.charAt(0).toUpperCase() + model.slice(1);
+  const makeProxy = data => Object.assign(data, {
+    get: m => get(m, data[m]),
+  });
 
   // Attempt to get data from store
   const { actions, selectors } = store.info();
   const storeData = selectors[lcm].get(id);
-  if (storeData) return storeData;
+  if (storeData) return makeProxy(storeData);
 
   // Attempt to get data from database
   const dbData = db[`${lcm}.${id}`];
@@ -18,7 +24,7 @@ const get = async (model, id, initialData = {}) => {
   if (dbData) {
     const data = Object.assign({}, initialData, dbData);
     actions[`add${tcm}`].dispatch(data);
-    return data;
+    return makeProxy(data);
   }
 
   return undefined;
@@ -66,7 +72,7 @@ const addStoreModel = (model) => {
   reducers.push(new Reducer(actions[`update${tcm}`], selectors[`${lcm}s`], {
     success: (models, { payload }) => {
       const { id } = payload;
-      models[id] = payload;
+      models[id] = { ...payload };
     },
   }));
 
