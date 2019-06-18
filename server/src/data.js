@@ -32,6 +32,35 @@ module.exports = {
     id: 5,
     name: 'Magic Shop',
     description: 'Buy spells here',
-    exits: { e: 1 },
+    exits: { e: 1, w: { 6: [1] } },
   },
+  'room.6': {
+    id: 6,
+    name: 'Secret Shop',
+    description: 'Super secret stuff here',
+    exits: { e: 5 },
+  },
+  'obstacle.1': {
+    id: 1,
+    type: 'door',
+    state: { open: false },
+  },
+  'obstacle.2': {
+    id: 2,
+    type: 'compound',
+    refs: [1],
+  },
+  // 'lock.1': {
+  //   id: 1,
+  // },
+  // 'door.1': {
+  //   id: 1,
+  //   locks: [1],
+  // },
+  // 'item.1': {
+  //   id: 1,
+  //   name: 'Key',
+  //   description: 'A beautiful key',
+  //   locks: [1],
+  // },
 };

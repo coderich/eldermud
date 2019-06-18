@@ -1,4 +1,5 @@
 import { createStore, Action, Selector, Reducer } from '@coderich/hotrod';
+import * as Models from './core/Models';
 import db from './data';
 
 const store = createStore(undefined, {
@@ -9,7 +10,7 @@ const store = createStore(undefined, {
 const get = async (model, id, initialData = {}) => {
   const lcm = model.toLowerCase();
   const tcm = model.charAt(0).toUpperCase() + model.slice(1);
-  const makeProxy = data => Object.assign(data, {
+  const makeProxy = data => Object.assign(new Models[tcm](data), {
     get: m => get(m, data[m]),
   });
 

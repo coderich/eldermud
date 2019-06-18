@@ -17,6 +17,7 @@ const commands = [
     { nw: { args: [0], alias: 'northwest' } },
     { se: { args: [0], alias: 'southeast' } },
     { sw: { args: [0], alias: 'southwest' } },
+    { open: { args: [1] } },
     { repeat: { args: [0] } },
     { exit: { args: [0] } },
   ],
@@ -29,7 +30,7 @@ const translateArray = (arr, cmd, args) => {
     if (tier) {
       for (let j = 0; j < tier.length; j++) {
         const [[key, data]] = Object.entries(tier[j]);
-        if (key.indexOf(cmd) === 0 && data.args.indexOf(args.length) > -1) return { cmd: data.alias || key, args };
+        if (key.indexOf(cmd) === 0 && data.args.indexOf(args.length) > -1) return { name: data.alias || key, args };
       }
     }
   }

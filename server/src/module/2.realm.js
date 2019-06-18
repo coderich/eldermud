@@ -1,6 +1,8 @@
 module.exports = (server, dao) => {
   const { actions: { addUser, removeUser }, selectors } = dao.store.info();
+
   dao.addStoreModel('room');
+  dao.addStoreModel('obstacle');
 
   addUser.listen({
     success: async ({ payload: user }) => {
