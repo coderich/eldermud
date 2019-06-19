@@ -4,6 +4,7 @@ import AbortActionError from '../core/AbortActionError';
 let i = 1;
 
 const commands = {
+  default: ['none'],
   navigation: ['north', 'south', 'east', 'west', 'northeast', 'northwest', 'southeast', 'southwest', 'up', 'down'],
   interaction: ['get', 'look', 'open'],
 };

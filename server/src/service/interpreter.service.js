@@ -40,10 +40,10 @@ const translateArray = (arr, cmd, args) => {
 
 exports.translate = (input) => {
   const [cmd, ...args] = input.match(/\S+/g) || [];
-  if (!cmd) return { cmd: 'none', args };
+  if (!cmd) return { name: 'none', args };
 
   return (
     translateArray(commands, cmd, args)
-    || { cmd: 'unknown', args }
+    || { name: 'unknown', args }
   );
 };

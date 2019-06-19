@@ -12,7 +12,7 @@ module.exports = (server, dao) => {
 
       user.subscriptions.push(
         roomChange.subscribe(async () => {
-          const newRoom = await user.get('room');
+          const newRoom = await user.hydrate('room');
           socket.emit('message', newRoom);
         }),
       );

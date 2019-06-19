@@ -29,8 +29,9 @@ module.exports = (server, dao) => {
   const { actions: { addCommand, updateUser } } = dao.store.info();
   const { actions: { addNavigation } } = dao.addStoreModel('navigation');
 
+  // Listen for navigation commands
   interceptCommand(addCommand, 'navigation', async ({ user, command }) => {
-    const room = await user.get('room');
+    const room = await user.hydrate('room');
     const direction = directions[command.name];
     const exit = room.exits[direction] || balk('No exit in that direction!');
     const [exitId = exit] = Object.keys(exit); // Can be id or object

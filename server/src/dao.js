@@ -10,22 +10,19 @@ const store = createStore(undefined, {
 const get = async (model, id, initialData = {}) => {
   const lcm = model.toLowerCase();
   const tcm = model.charAt(0).toUpperCase() + model.slice(1);
-  const makeProxy = data => Object.assign(new Models[tcm](data), {
-    get: m => get(m, data[m]),
-  });
 
   // Attempt to get data from store
   const { actions, selectors } = store.info();
   const storeData = selectors[lcm].get(id);
-  if (storeData) return makeProxy(storeData);
+  if (storeData) return storeData;
 
   // Attempt to get data from database
   const dbData = db[`${lcm}.${id}`];
 
   if (dbData) {
-    const data = Object.assign({}, initialData, dbData);
+    const data = new Models[tcm](get, Object.assign({}, dbData, initialData));
     actions[`add${tcm}`].dispatch(data);
-    return makeProxy(data);
+    return data;
   }
 
   return undefined;
@@ -73,7 +70,7 @@ const addStoreModel = (model) => {
   reducers.push(new Reducer(actions[`update${tcm}`], selectors[`${lcm}s`], {
     success: (models, { payload }) => {
       const { id } = payload;
-      models[id] = { ...payload };
+      models[id] = { ...payload }; // Must create whole new object at models[id]
     },
   }));
 

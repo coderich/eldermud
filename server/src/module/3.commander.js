@@ -19,16 +19,17 @@ module.exports = (server, dao) => {
   });
 
   addCommand.listen({
-    success: ({ payload: command }) => {
-      const { user } = command;
+    success: async ({ payload }) => {
+      const { user, command } = payload;
       const socket = server.sockets.connected[user.socketId];
 
-      if (socket) {
-        socket.emit('message', 'ok');
+      if (command.name === 'none') {
+        const room = await user.hydrate('room');
+        socket.emit('message', room);
       }
     },
-    error: ({ payload: command, meta: { reason } }) => {
-      const { user } = command;
+    error: ({ payload, meta: { reason } }) => {
+      const { user } = payload;
       const socket = server.sockets.connected[user.socketId];
 
       if (socket) {
