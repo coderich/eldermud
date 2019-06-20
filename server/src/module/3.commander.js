@@ -1,4 +1,4 @@
-import InterpreterService from '../service/interpreter.service';
+import { translate } from '../service/command.service';
 
 module.exports = (server, dao) => {
   const { actions: { addUser } } = dao.store.info();
@@ -11,7 +11,7 @@ module.exports = (server, dao) => {
 
       if (socket) {
         socket.on('message', (input) => {
-          const command = InterpreterService.translate(input);
+          const command = translate(input);
           addCommand.dispatch({ user, command });
         });
       }

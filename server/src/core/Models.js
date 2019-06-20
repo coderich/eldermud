@@ -1,4 +1,5 @@
 import { isObjectLike, flatten } from 'lodash';
+import AbortActionError from './AbortActionError';
 import BaseModel from './BaseModel';
 
 export class User extends BaseModel {
@@ -38,6 +39,12 @@ export class Room extends BaseModel {
     return Promise.all(obstacles.map(obstacle => this.get('obstacle', obstacle)));
   }
 
+  async Door(dir) {
+    const obstacles = await this.Obstacle(dir);
+    if (!obstacles) return undefined;
+    return obstacles.filter(obstacle => obstacle.type === 'door')[0];
+  }
+
   async Doors() {
     const obstacles = await this.Obstacles();
     return obstacles.filter(obstacle => obstacle.type === 'door');
@@ -46,6 +53,19 @@ export class Room extends BaseModel {
 
 
 export class Obstacle extends BaseModel {
+  async Open() {
+    if (this.state.open) throw new AbortActionError('Door already open!');
+    this.state.open = true;
+    const { actions: { updateObstacle } } = this.store.info();
+    updateObstacle.dispatch(this);
+  }
+
+  async Close() {
+    if (!this.state.open) throw new AbortActionError('Door already closed!');
+    this.state.open = false;
+    const { actions: { updateObstacle } } = this.store.info();
+    updateObstacle.dispatch(this);
+  }
 }
 
 

@@ -29,8 +29,8 @@ const get = async (model, id, initialData = {}) => {
   // Attempt to get data from database
   const dbData = db[`${lcm}.${id}`];
 
-  if (dbData) {
-    const data = new Models[tcm](lcm, Object.assign({}, dbData, initialData), { get, set, del });
+  if (dbData || initialData) {
+    const data = new Models[tcm](lcm, Object.assign({}, dbData, initialData), { get, set, del, store });
     actions[`add${tcm}`].dispatch(data);
     return data;
   }

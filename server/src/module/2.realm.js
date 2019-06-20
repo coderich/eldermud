@@ -2,6 +2,7 @@ module.exports = (server, dao) => {
   const { actions: { addUser, removeUser }, selectors } = dao.store.info();
 
   dao.addStoreModel('room');
+  // dao.addStoreModel('door');
   dao.addStoreModel('obstacle');
 
   addUser.listen({

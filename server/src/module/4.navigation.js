@@ -1,18 +1,5 @@
 import AbortActionError from '../core/AbortActionError';
-import { interceptCommand } from '../service/intercepter.service';
-
-const directions = {
-  north: 'n',
-  south: 's',
-  east: 'e',
-  west: 'w',
-  northeast: 'ne',
-  northwest: 'nw',
-  southeast: 'se',
-  southwest: 'sw',
-  up: 'u',
-  down: 'd',
-};
+import { intercept } from '../service/command.service';
 
 const resolveObstacle = (obstacle) => {
   switch (obstacle.type) {
@@ -30,11 +17,10 @@ module.exports = (server, dao) => {
   const { actions: { addNavigation } } = dao.addStoreModel('navigation');
 
   // Listen for navigation commands
-  interceptCommand(addCommand, 'navigation', async ({ user, command }) => {
-    const direction = directions[command.name];
+  intercept(addCommand, 'navigation', async ({ user, command }) => {
     const room = await user.Room();
-    const exit = await room.Exit(direction) || balk('No exit in that direction!');
-    const obstacles = await exit.Obstacle(direction);
+    const exit = await room.Exit(command.code) || balk('No exit in that direction!');
+    const obstacles = await room.Obstacle(command.code);
     if (obstacles && !obstacles.some(resolveObstacle)) balk('There is an obstacle!');
     addNavigation.dispatch({ user, from: room, to: exit });
   });

@@ -38,7 +38,7 @@ module.exports = {
     id: 6,
     name: 'Secret Shop',
     description: 'Super secret stuff here',
-    exits: { e: 5 },
+    exits: { e: { 5: [1] } },
   },
   'obstacle.1': {
     id: 1,

@@ -1,24 +1,28 @@
 import AbortActionError from '../core/AbortActionError';
-import { interceptCommand } from '../service/intercepter.service';
+import { intercept, translate } from '../service/command.service';
 
 module.exports = (server, dao) => {
   const { actions: { addCommand } } = dao.store.info();
 
-  interceptCommand(addCommand, 'interaction', async ({ user, command }) => {
+  intercept(addCommand, 'interaction', async ({ user, command }) => {
+    const obj = translate(command.args[0]);
     const room = await user.Room();
-    const doors = await room.Doors();
-    const exits = await room.Exits();
 
-    console.log('doors', doors);
-    console.log('exits', exits);
-    // const items = await room.items();
-
-    switch (command.name) {
-      case 'open':
-        console.log('open', command.args);
+    switch (`${command.name}:${obj.scope}`) {
+      case 'open:navigation': {
+        const door = await room.Door(obj.code);
+        if (!door) throw new AbortActionError('There is no door in that direction!');
+        await door.Open();
         break;
+      }
+      case 'close:navigation': {
+        const door = await room.Door(obj.code);
+        if (!door) throw new AbortActionError('There is no door in that direction!');
+        await door.Close();
+        break;
+      }
       default:
-        break;
+        throw new AbortActionError('Unable to process command');
     }
   });
 };
