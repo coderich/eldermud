@@ -1,13 +1,12 @@
 import { isObjectLike, flatten } from 'lodash';
 import BaseModel from './BaseModel';
 
-// if (Array.isArray(target[m])) return Promise.all(target[m].map(id => get(m.slice(0, 1), id)));
-
 export class User extends BaseModel {
   async Room() {
     return this.get('room', this.room);
   }
 }
+
 
 export class Room extends BaseModel {
   async Exit(dir) {
@@ -25,6 +24,15 @@ export class Room extends BaseModel {
     }));
   }
 
+  async Obstacle(dir) {
+    const exit = this.exits[dir];
+    if (!exit) return undefined;
+    if (!isObjectLike(exit)) return undefined;
+
+    const [obstacles] = Object.values(exit);
+    return Promise.all(obstacles.map(obstacle => this.get('obstacle', obstacle)));
+  }
+
   async Obstacles() {
     const obstacles = flatten(Object.values(this.exits).filter(exit => isObjectLike(exit)).map(obstacle => Object.values(obstacle)[0]));
     return Promise.all(obstacles.map(obstacle => this.get('obstacle', obstacle)));
@@ -36,9 +44,10 @@ export class Room extends BaseModel {
   }
 }
 
+
 export class Obstacle extends BaseModel {
 }
 
-export class Exit extends BaseModel {
 
+export class Exit extends BaseModel {
 }

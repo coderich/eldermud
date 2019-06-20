@@ -31,20 +31,12 @@ module.exports = (server, dao) => {
 
   // Listen for navigation commands
   interceptCommand(addCommand, 'navigation', async ({ user, command }) => {
-    const room = await user.Room();
     const direction = directions[command.name];
-    const exit = room.exits[direction] || balk('No exit in that direction!');
-    const [exitId = exit] = Object.keys(exit); // Can be id or object
-
-    // If the exit is an object then there are obstacles
-    if (typeof exit === 'object') {
-      const obstacles = await Promise.all(exit[exitId].map(id => dao.get('obstacle', id)));
-      if (!obstacles.some(resolveObstacle)) balk('There is an obstacle!');
-    }
-
-    // Signal move to room
-    const toRoom = await dao.get('room', exitId);
-    addNavigation.dispatch({ user, from: room, to: toRoom });
+    const room = await user.Room();
+    const exit = await room.Exit(direction) || balk('No exit in that direction!');
+    const obstacles = await exit.Obstacle(direction);
+    if (obstacles && !obstacles.some(resolveObstacle)) balk('There is an obstacle!');
+    addNavigation.dispatch({ user, from: room, to: exit });
   });
 
   // Perform navigation
