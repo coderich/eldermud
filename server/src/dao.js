@@ -7,6 +7,16 @@ const store = createStore(undefined, {
   rooms: {},
 });
 
+const set = async (model, id, data) => {
+  const lcm = model.toLowerCase();
+  db[`${lcm}.${id}`] = data;
+};
+
+const del = async (model, id) => {
+  const lcm = model.toLowerCase();
+  delete db[`${lcm}.${id}`];
+};
+
 const get = async (model, id, initialData = {}) => {
   const lcm = model.toLowerCase();
   const tcm = model.charAt(0).toUpperCase() + model.slice(1);
@@ -20,22 +30,12 @@ const get = async (model, id, initialData = {}) => {
   const dbData = db[`${lcm}.${id}`];
 
   if (dbData) {
-    const data = new Models[tcm](get, Object.assign({}, dbData, initialData));
+    const data = new Models[tcm](lcm, Object.assign({}, dbData, initialData), { get, set, del });
     actions[`add${tcm}`].dispatch(data);
     return data;
   }
 
   return undefined;
-};
-
-const set = async (model, id, data) => {
-  const lcm = model.toLowerCase();
-  db[`${lcm}.${id}`] = data;
-};
-
-const del = async (model, id) => {
-  const lcm = model.toLowerCase();
-  delete db[`${lcm}.${id}`];
 };
 
 const addStoreModel = (model) => {

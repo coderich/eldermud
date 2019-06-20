@@ -31,7 +31,7 @@ module.exports = (server, dao) => {
 
   // Listen for navigation commands
   interceptCommand(addCommand, 'navigation', async ({ user, command }) => {
-    const room = await user.hydrate('room');
+    const room = await user.Room();
     const direction = directions[command.name];
     const exit = room.exits[direction] || balk('No exit in that direction!');
     const [exitId = exit] = Object.keys(exit); // Can be id or object

@@ -24,7 +24,7 @@ module.exports = (server, dao) => {
       const socket = server.sockets.connected[user.socketId];
 
       if (command.name === 'none') {
-        const room = await user.hydrate('room');
+        const room = await user.Room();
         socket.emit('message', room);
       }
     },
