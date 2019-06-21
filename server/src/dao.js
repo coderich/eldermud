@@ -70,7 +70,7 @@ const addStoreModel = (model) => {
   reducers.push(new Reducer(actions[`update${tcm}`], selectors[`${lcm}s`], {
     success: (models, { payload }) => {
       const { id } = payload;
-      models[id] = { ...payload }; // Must create whole new object at models[id]
+      models[id] = Object.assign({}, models[id], payload);
     },
   }));
 

@@ -29,8 +29,9 @@ module.exports = (server, dao) => {
   addNavigation.listen({
     success: ({ payload: navigation }) => {
       const { user, to } = navigation;
-      user.room = to.id;
-      updateUser.dispatch(user);
+      // user.room = to.id;
+      // updateUser.dispatch(user);
+      updateUser.dispatch({ id: user.id, room: to.id });
     },
   });
 };

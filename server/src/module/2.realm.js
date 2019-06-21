@@ -11,8 +11,8 @@ module.exports = (server, dao) => {
       const roomChange = selectors.user.thunk(user.id).map((u = {}) => u.room);
 
       user.subscriptions.push(
-        roomChange.subscribe(async () => {
-          const newRoom = await user.Room();
+        roomChange.subscribe(async (room) => {
+          const newRoom = await dao.get('room', room);
           socket.emit('message', newRoom);
         }),
       );

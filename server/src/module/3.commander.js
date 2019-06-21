@@ -6,13 +6,14 @@ module.exports = (server, dao) => {
 
   // Begin listening to player commands
   addUser.listen({
-    success: ({ payload: user }) => {
-      const socket = server.sockets.connected[user.socketId];
+    success: ({ payload }) => {
+      const socket = server.sockets.connected[payload.socketId];
 
       if (socket) {
         socket.on('message', async (input) => {
           const command = translate(input);
-          addCommand.dispatch({ user, command }); // TODO: Should you get user from the dao again here?
+          const user = await dao.get('user', payload.id);
+          addCommand.dispatch({ user, command });
         });
       }
     },

@@ -56,8 +56,8 @@ export class Obstacle extends BaseModel {
   async Open() {
     if (this.state.open) throw new AbortActionError('Door already open!');
     const { actions: { updateObstacle } } = this.store.info();
-    this.state.open = true;
-    updateObstacle.dispatch(this);
+    // this.state.open = true;
+    updateObstacle.dispatch({ id: this.id, state: { open: true } });
   }
 
   async Close() {
