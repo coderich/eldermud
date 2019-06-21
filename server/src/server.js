@@ -6,6 +6,14 @@ import dao from './dao';
 const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 });
 
 // Modules
-Object.values(RequireDir('./module')).forEach(fn => fn(server, dao));
+const modules = RequireDir('./module', {
+  recurse: true,
+  mapValue: (value, baseName) => {
+    const [fn = value] = Object.values(value);
+    return fn;
+  },
+});
+
+Object.values(modules).forEach(fn => fn(server, dao));
 
 export default server;

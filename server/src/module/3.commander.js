@@ -6,10 +6,10 @@ module.exports = (server, dao) => {
 
   // Begin listening to player commands
   addUser.listen({
-    success: ({ payload }) => {
-      payload.socket.on('message', async (input) => {
+    success: ({ payload: { id, socket } }) => {
+      socket.on('message', async (input) => {
         const command = translate(input);
-        const user = await dao.get('user', payload.id);
+        const user = await dao.get('user', id);
         addCommand.dispatch({ user, command });
       });
     },
