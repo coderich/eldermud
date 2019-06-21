@@ -10,9 +10,9 @@ module.exports = (server, dao) => {
       const socket = server.sockets.connected[user.socketId];
 
       if (socket) {
-        socket.on('message', (input) => {
+        socket.on('message', async (input) => {
           const command = translate(input);
-          addCommand.dispatch({ user, command });
+          addCommand.dispatch({ user, command }); // TODO: Should you get user from the dao again here?
         });
       }
     },
