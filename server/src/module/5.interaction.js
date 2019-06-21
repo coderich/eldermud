@@ -11,18 +11,18 @@ module.exports = (server, dao) => {
     switch (`${command.name}:${obj.scope}`) {
       case 'open:navigation': {
         const door = await room.Door(obj.code);
-        if (!door) throw new AbortActionError('There is no door in that direction!');
+        if (!door) throw new AbortActionError('There is nothing in that direction!');
         await door.Open();
         break;
       }
       case 'close:navigation': {
         const door = await room.Door(obj.code);
-        if (!door) throw new AbortActionError('There is no door in that direction!');
+        if (!door) throw new AbortActionError('There is nothing in that direction!');
         await door.Close();
         break;
       }
       default:
-        throw new AbortActionError('Unable to process command');
+        throw new AbortActionError('Unable to process command.');
     }
   });
 };

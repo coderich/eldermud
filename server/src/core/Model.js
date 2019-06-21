@@ -1,4 +1,4 @@
-export default class BaseModel {
+export default class Model {
   constructor(name, props, helpers) {
     // We want our methods to be enumerable
     Object.getOwnPropertyNames(Object.getPrototypeOf(this)).forEach((prop) => {

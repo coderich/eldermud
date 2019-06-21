@@ -1,15 +1,7 @@
 import { isObjectLike, flatten } from 'lodash';
-import AbortActionError from './AbortActionError';
-import BaseModel from './BaseModel';
+import Model from '../core/Model';
 
-export class User extends BaseModel {
-  async Room() {
-    return this.get('room', this.room);
-  }
-}
-
-
-export class Room extends BaseModel {
+export default class Room extends Model {
   async Exit(dir) {
     const exit = this.exits[dir];
     if (!exit) return undefined;
@@ -49,25 +41,4 @@ export class Room extends BaseModel {
     const obstacles = await this.Obstacles();
     return obstacles.filter(obstacle => obstacle.type === 'door');
   }
-}
-
-
-export class Obstacle extends BaseModel {
-  async Open() {
-    if (this.state.open) throw new AbortActionError('Door already open!');
-    const { actions: { updateObstacle } } = this.store.info();
-    // this.state.open = true;
-    updateObstacle.dispatch({ id: this.id, state: { open: true } });
-  }
-
-  async Close() {
-    if (!this.state.open) throw new AbortActionError('Door already closed!');
-    this.state.open = false;
-    const { actions: { updateObstacle } } = this.store.info();
-    updateObstacle.dispatch(this);
-  }
-}
-
-
-export class Exit extends BaseModel {
 }

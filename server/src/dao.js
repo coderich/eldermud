@@ -1,6 +1,11 @@
 import { createStore, Action, Selector, Reducer } from '@coderich/hotrod';
-import * as Models from './core/Models';
+import RequireDir from 'require-dir';
 import db from './data';
+
+const Models = Object.entries(RequireDir('./model')).reduce((prev, [name, obj]) => {
+  const [fn] = Object.values(obj);
+  return Object.assign(prev, { [name]: fn });
+}, {});
 
 const store = createStore(undefined, {
   users: {},

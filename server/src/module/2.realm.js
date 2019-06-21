@@ -1,19 +1,16 @@
 module.exports = (server, dao) => {
-  const { actions: { addUser, removeUser }, selectors } = dao.store.info();
-
   dao.addStoreModel('room');
   dao.addStoreModel('obstacle');
+  const { actions: { addUser, removeUser }, selectors } = dao.store.info();
 
   addUser.listen({
     success: async ({ payload: user }) => {
-      const socket = server.sockets.connected[user.socketId];
-
       const roomChange = selectors.user.thunk(user.id).map((u = {}) => u.room);
 
       user.subscriptions.push(
         roomChange.subscribe(async (room) => {
           const newRoom = await dao.get('room', room);
-          socket.emit('message', newRoom);
+          user.socket.emit('message', newRoom);
         }),
       );
     },

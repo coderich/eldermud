@@ -7,35 +7,26 @@ module.exports = (server, dao) => {
   // Begin listening to player commands
   addUser.listen({
     success: ({ payload }) => {
-      const socket = server.sockets.connected[payload.socketId];
-
-      if (socket) {
-        socket.on('message', async (input) => {
-          const command = translate(input);
-          const user = await dao.get('user', payload.id);
-          addCommand.dispatch({ user, command });
-        });
-      }
+      payload.socket.on('message', async (input) => {
+        const command = translate(input);
+        const user = await dao.get('user', payload.id);
+        addCommand.dispatch({ user, command });
+      });
     },
   });
 
   addCommand.listen({
     success: async ({ payload }) => {
       const { user, command } = payload;
-      const socket = server.sockets.connected[user.socketId];
 
       if (command.name === 'none') {
         const room = await user.Room();
-        socket.emit('message', room);
+        user.socket.emit('message', room);
       }
     },
     error: ({ payload, meta: { reason } }) => {
       const { user } = payload;
-      const socket = server.sockets.connected[user.socketId];
-
-      if (socket) {
-        socket.emit('message', reason);
-      }
+      user.socket.emit('message', reason);
     },
   });
 };

@@ -36,7 +36,15 @@ const translateArray = (arr, cmd, args) => {
     if (tier) {
       for (let j = 0; j < tier.length; j++) {
         const [[key, data]] = Object.entries(tier[j]);
-        if (key.indexOf(cmd) === 0 && data.args.indexOf(args.length) > -1) return { name: data.alias || key, args, scope: data.scope, code: data.code };
+
+        if (key.indexOf(cmd) === 0 && data.args.indexOf(args.length) > -1) {
+          return {
+            name: data.alias || key,
+            args,
+            scope: data.scope,
+            code: data.code,
+          };
+        }
       }
     }
   }
