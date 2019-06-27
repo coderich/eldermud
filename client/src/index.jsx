@@ -1,6 +1,6 @@
 import 'file-loader?name=[name].[ext]!./index.html'; // eslint-disable-line
 import React, { Provider } from '@coderich/hotrod/react';
-import { Services, Action } from '@coderich/hotrod';
+import { Services, Action, Selector } from '@coderich/hotrod';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
