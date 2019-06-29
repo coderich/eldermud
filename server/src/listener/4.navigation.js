@@ -19,9 +19,9 @@ module.exports = (server, dao) => {
   // Listen for navigation commands
   intercept(addCommand, 'navigation', async ({ user, command }) => {
     const room = await user.Room();
-    const exit = await room.Exit(command.code) || balk('No exit in that direction!');
+    const exit = await room.Exit(command.code) || balk('There is no exit in that direction!');
     const obstacles = await room.Obstacle(command.code);
-    if (obstacles && !obstacles.some(resolveObstacle)) balk('There is an obstacle!');
+    if (obstacles && !obstacles.some(resolveObstacle)) balk('There is an obstacle in your way!');
     addNavigation.dispatch({ user, from: room, to: exit });
   });
 

@@ -1,47 +1,54 @@
-import React, { PropTypes, memo, useState, useRef, connect } from '@coderich/hotrod/react';
-import { Grid } from '@material-ui/core';
+import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
+import { Grid, Box } from '@material-ui/core';
+import Action from './Action';
 import Input from './Input';
 
+const prompt = '>';
+
 const container = {
-  flexWrap: 'nowrap',
+  fontSize: '14px',
   width: '100%',
   height: '100%',
   backgroundColor: 'black',
 };
 
+const viewport = {
+  flexWrap: 'nowrap',
+  width: '100%',
+  height: '100%',
+};
+
 const screen = {
   flexGrow: 1,
   flexWrap: 'nowrap',
-  padding: '10px',
   width: '100%',
   height: '100%',
-  color: 'white',
-  overflowY: 'scroll',
-  backgroundColor: '#36454f',
+  color: 'lightgray',
+  overflowY: 'hidden',
 };
 
 const Terminal = memo((props) => {
-  const output = useRef();
-  const { command } = props;
-  const [lines, setLines] = useState([]);
+  const { command, responses } = props;
 
   const onSubmit = (value) => {
     command(value);
-    setLines([...lines.concat(value)]);
-    setTimeout(() => output.current.scrollTo(0, output.current.scrollHeight));
   };
 
   return (
-    <Grid container direction="column" style={container}>
-      <Grid id="idk" item container direction="column" style={screen} ref={output}>
-        {lines.map((line, i) => (
-          i === 0 ? <Grid item key={i} style={{ marginTop: 'auto' }}>{line}</Grid> : <Grid item key={i}>{line}</Grid>
-        ))}
+    <Box p={1} style={container}>
+      <Grid container direction="column" style={viewport}>
+        <Grid item container direction="column" justify="flex-end" style={screen}>
+          {responses.map((action, i) => (
+            <Grid item key={i}>
+              <Action prompt={prompt} action={action} />
+            </Grid>
+          ))}
+        </Grid>
+        <Grid item>
+          <Input prompt={prompt} onSubmit={onSubmit} />
+        </Grid>
       </Grid>
-      <Grid item>
-        <Input prompt=">" onSubmit={onSubmit} />
-      </Grid>
-    </Grid>
+    </Box>
   );
 });
 
@@ -49,8 +56,12 @@ export default connect({
   actions: {
     command: 'command',
   },
+  selectors: {
+    responses: 'responses',
+  },
 })(Terminal);
 
 Terminal.propTypes = {
   command: PropTypes.func.isRequired,
+  responses: PropTypes.instanceOf(Array).isRequired,
 };

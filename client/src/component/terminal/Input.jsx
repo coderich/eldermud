@@ -2,12 +2,12 @@ import React, { PropTypes, memo, useState } from '@coderich/hotrod/react';
 import { Grid, Box } from '@material-ui/core';
 
 const style = {
-  fontSize: '18px',
   width: '100%',
+  border: 0,
   color: 'transparent',
   textShadow: '0 0 0 #ffffff',
-  border: 0,
   outline: 'none',
+  fontSize: 'inherit',
   backgroundColor: 'inherit',
   pointerEvents: 'none',
 };
@@ -33,19 +33,17 @@ const Input = memo((props) => {
   };
 
   return (
-    <Box p={1}>
-      <form style={style} onSubmit={handleSubmit}>
-        <Grid container>
-          <Grid item>
-            <span>{prompt}</span>
-            <span>&nbsp;</span>
-          </Grid>
-          <Grid item style={{ flexGrow: 1 }}>
-            <input autoFocus onBlur={onBlur} value={value} onChange={handleChange} style={style} />
-          </Grid>
+    <form style={style} onSubmit={handleSubmit}>
+      <Grid container>
+        <Grid item>
+          <span>{prompt}</span>
+          <span>&nbsp;</span>
         </Grid>
-      </form>
-    </Box>
+        <Grid item style={{ flexGrow: 1 }}>
+          <input autoFocus onBlur={onBlur} value={value} onChange={handleChange} style={style} />
+        </Grid>
+      </Grid>
+    </form>
   );
 });
 

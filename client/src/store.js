@@ -13,7 +13,7 @@ const app = localStorage.get('app') || {};
 // Create our store with initial state (default reducer)
 const store = createStore(
   undefined,
-  { app },
+  { app, data: { responses: [] } },
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), // eslint-disable-line
 ).withTheme(createMuiTheme({
   typography: {

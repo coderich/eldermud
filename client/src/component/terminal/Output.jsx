@@ -6,10 +6,7 @@ const style = {
   height: '100%',
   color: 'white',
   overflowY: 'auto',
-  // 'scrollbar-width': 'none',
-  // '-ms-overflow-style': 'none',
-  // '-webkit-scrollbar': 'none',
-  backgroundColor: '#36454f',
+  // backgroundColor: '#36454f',
 };
 
 const Output = (props, ref) => {

@@ -1,11 +1,12 @@
 import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
+import { Container } from '@material-ui/core';
 import Terminal from '../component/terminal/Terminal';
 
 const IndexPage = memo((props) => {
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <Container maxWidth="md" style={{ height: '100vh' }}>
       <Terminal />
-    </div>
+    </Container>
   );
 });
 

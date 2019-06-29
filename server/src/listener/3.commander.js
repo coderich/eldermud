@@ -21,12 +21,17 @@ module.exports = (server, dao) => {
 
       if (command.name === 'none') {
         const room = await user.Room();
-        user.socket.emit('message', room);
+        const value = await user.describe('room', room);
+        user.socket.emit('message', { type: 'room', value });
+      }
+
+      if (command.name === 'unknown') {
+        user.socket.emit('message', { type: 'info', value: 'Your command had no effect.' });
       }
     },
     error: ({ payload, meta: { reason } }) => {
       const { user } = payload;
-      user.socket.emit('message', reason);
+      user.socket.emit('message', { type: 'error', value: reason });
     },
   });
 };

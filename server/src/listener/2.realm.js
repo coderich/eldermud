@@ -10,7 +10,8 @@ module.exports = (server, dao) => {
       user.subscriptions.push(
         roomChange.subscribe(async (room) => {
           const newRoom = await dao.get('room', room);
-          user.socket.emit('message', newRoom);
+          const value = await user.describe('room', newRoom);
+          user.socket.emit('message', { type: 'room', value });
         }),
       );
     },
