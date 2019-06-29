@@ -20,13 +20,12 @@ module.exports = (server, dao) => {
       const { user, command } = payload;
 
       if (command.name === 'none') {
-        const room = await user.Room();
-        const value = await user.describe('room', room);
-        user.socket.emit('message', { type: 'room', value });
-      }
-
-      if (command.name === 'unknown') {
-        user.socket.emit('message', { type: 'info', value: 'Your command had no effect.' });
+        user.describe('room', await user.Room());
+      } else if (command.name === 'inventory') {
+        const items = await user.Items();
+        user.describe('info', `You are carrying ${items.map(item => item.name)}`);
+      } else if (command.name === 'unknown') {
+        user.describe('info', 'Your command had no effect.');
       }
     },
     error: ({ payload, meta: { reason } }) => {

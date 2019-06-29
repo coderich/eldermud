@@ -21,12 +21,14 @@ module.exports = {
     name: 'Bank of Atlanta',
     description: 'Deposit money, make little interest',
     exits: { n: 1 },
+    items: [1],
   },
   'room.4': {
     id: 4,
     name: 'Weapon Shop',
     description: 'Buy stuff for your expeditions',
     exits: { w: 1 },
+    items: [2],
   },
   'room.5': {
     id: 5,
@@ -43,7 +45,7 @@ module.exports = {
   'obstacle.1': {
     id: 1,
     type: 'door',
-    state: { open: false },
+    state: { open: false, locked: true },
   },
   'obstacle.2': {
     id: 2,
@@ -57,10 +59,17 @@ module.exports = {
   //   id: 1,
   //   locks: [1],
   // },
-  // 'item.1': {
-  //   id: 1,
-  //   name: 'Key',
-  //   description: 'A beautiful key',
-  //   locks: [1],
-  // },
+  'item.1': {
+    id: 1,
+    type: 'key',
+    name: 'key',
+    description: 'A beautiful key',
+    obstacles: [1],
+  },
+  'item.2': {
+    id: 2,
+    type: 'weapon',
+    name: 'axe',
+    description: 'A beautiful axe',
+  },
 };

@@ -2,6 +2,11 @@ import { isObjectLike, flatten } from 'lodash';
 import Model from '../core/Model';
 
 export default class Room extends Model {
+  constructor(...args) {
+    super(...args);
+    this.items = this.items || [];
+  }
+
   async Exit(dir) {
     const exit = this.exits[dir];
     if (!exit) return undefined;
@@ -40,5 +45,9 @@ export default class Room extends Model {
   async Doors() {
     const obstacles = await this.Obstacles();
     return obstacles.filter(obstacle => obstacle.type === 'door');
+  }
+
+  async Items() {
+    return Promise.all(this.items.map(item => this.get('item', item)));
   }
 }
