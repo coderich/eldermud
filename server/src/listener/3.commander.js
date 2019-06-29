@@ -23,7 +23,8 @@ module.exports = (server, dao) => {
         user.describe('room', await user.Room());
       } else if (command.name === 'inventory') {
         const items = await user.Items();
-        user.describe('info', `You are carrying ${items.map(item => item.name)}`);
+        const description = items.length === 0 ? 'nothing!' : items.map(item => item.name).join(', ');
+        user.describe('info', `You are carrying: ${description}`);
       } else if (command.name === 'unknown') {
         user.describe('info', 'Your command had no effect.');
       }

@@ -8,7 +8,7 @@ module.exports = {
     id: 1,
     name: 'Town Square',
     description: 'People all come to gather, socialize, and have fun',
-    exits: { n: 2, s: 3, e: 4, w: 5 },
+    exits: { n: 2, s: 3, e: 4, w: 5, ne: 7 },
   },
   'room.2': {
     id: 2,
@@ -28,7 +28,6 @@ module.exports = {
     name: 'Weapon Shop',
     description: 'Buy stuff for your expeditions',
     exits: { w: 1 },
-    items: [2],
   },
   'room.5': {
     id: 5,
@@ -41,6 +40,25 @@ module.exports = {
     name: 'Secret Shop',
     description: 'Super secret stuff here',
     exits: { e: { 5: [1] } },
+    items: [3, 2],
+  },
+  'room.7': {
+    id: 7,
+    name: 'Path of sorts',
+    description: 'A path leading out of town',
+    exits: { sw: 1, ne: 8 },
+  },
+  'room.8': {
+    id: 8,
+    name: 'Gates',
+    description: 'Gate leading out of town',
+    exits: { sw: 7, ne: { 9: [2] } },
+  },
+  'room.9': {
+    id: 9,
+    name: 'Forest',
+    description: 'A scary place',
+    exits: { sw: 8 },
   },
   'obstacle.1': {
     id: 1,
@@ -49,6 +67,11 @@ module.exports = {
   },
   'obstacle.2': {
     id: 2,
+    type: 'door',
+    state: { open: false, locked: true },
+  },
+  'obstacle.3': {
+    id: 3,
     type: 'compound',
     refs: [1],
   },
@@ -62,7 +85,7 @@ module.exports = {
   'item.1': {
     id: 1,
     type: 'key',
-    name: 'key',
+    name: 'shiny key',
     description: 'A beautiful key',
     obstacles: [1],
   },
@@ -71,5 +94,12 @@ module.exports = {
     type: 'weapon',
     name: 'axe',
     description: 'A beautiful axe',
+  },
+  'item.3': {
+    id: 3,
+    type: 'key',
+    name: 'rusty key',
+    description: 'A beautiful key',
+    obstacles: [2],
   },
 };

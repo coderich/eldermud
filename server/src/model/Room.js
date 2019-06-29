@@ -1,4 +1,5 @@
 import { isObjectLike, flatten } from 'lodash';
+import AbortActionError from '../core/AbortActionError';
 import Model from '../core/Model';
 
 export default class Room extends Model {
@@ -49,5 +50,20 @@ export default class Room extends Model {
 
   async Items() {
     return Promise.all(this.items.map(item => this.get('item', item)));
+  }
+
+  async findItem(target, take = false) {
+    const items = await this.Items();
+    const index = items.findIndex(it => it.name.indexOf(target.toLowerCase()) === 0);
+    if (index < 0) throw new AbortActionError("You don't see that here.");
+
+    if (take) {
+      const { actions: { updateRoom } } = this.store.info();
+      const [item] = items.splice(index, 1);
+      updateRoom.dispatch({ id: this.id, items: items.map(it => it.id) });
+      return item;
+    }
+
+    return items[index];
   }
 }

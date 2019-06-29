@@ -5,38 +5,43 @@ module.exports = (server, dao) => {
   const { actions: { addCommand, updateRoom, updateUser } } = dao.store.info();
 
   intercept(addCommand, 'interaction', async ({ user, command }) => {
-    const obj = translate(command.args[0]);
     const room = await user.Room();
-    const phrase = command.args.join(' ');
 
-    switch (`${command.name}:${obj.scope}`) {
-      case 'open:navigation': {
-        const door = await room.Door(obj.code);
+    switch (command.name) {
+      case 'open': case 'close': {
+        const dir = translate(command.args[0]);
+        const door = await room.Door(dir.code);
+        const tcc = command.name.charAt(0).toUpperCase() + command.name.slice(1);
         if (!door) throw new AbortActionError('There is nothing in that direction!');
-        return user.describe('info', await door.Open());
+        return user.describe('info', await door[tcc]());
       }
-      case 'close:navigation': {
-        const door = await room.Door(obj.code);
-        if (!door) throw new AbortActionError('There is nothing in that direction!');
-        return user.describe('info', await door.Close());
-      }
-      case 'get:unknown': {
-        const items = await room.Items();
-        const index = items.findIndex(it => it.name.indexOf(phrase.toLowerCase()) === 0);
-        if (index < 0) throw new AbortActionError(`You don't see ${phrase} here.`);
-        const [item] = items.splice(index, 1);
-        updateRoom.dispatch({ id: room.id, items });
+      case 'get': {
+        const target = command.args.join(' ');
+        const item = await room.findItem(target, true);
         updateUser.dispatch({ id: user.id, items: user.items.concat(item.id) });
         return user.describe('info', `You took ${item.name}.`);
       }
-      case 'drop:unknown': {
-        const items = await user.Items();
-        const index = items.findIndex(it => it.name.indexOf(phrase.toLowerCase()) === 0);
-        if (index < 0) throw new AbortActionError(`You don't have ${phrase} to drop!`);
-        const [item] = items.splice(index, 1);
+      case 'drop': {
+        const target = command.args.join(' ');
+        const item = await user.findItem(target, true);
         updateRoom.dispatch({ id: room.id, items: room.items.concat(item.id) });
-        updateUser.dispatch({ id: user.id, items });
         return user.describe('info', `You dropped ${item.name}.`);
+      }
+      case 'use': {
+        const dir = translate(command.args[command.args.length - 1]);
+
+        if (dir.scope === 'navigation') {
+          const door = await room.Door(dir.code);
+          if (!door) throw new AbortActionError('There is nothing in that direction!');
+
+          const target = command.args.slice(0, -1).join(' ');
+          const item = await user.findItem(target);
+          return user.describe('info', await item.use(door));
+        }
+
+        const target = command.args.join(' ');
+        const item = await user.findItem(target);
+        return user.describe('info', await item.use());
       }
       default:
         throw new AbortActionError('Unable to process command.');
