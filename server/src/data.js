@@ -58,20 +58,33 @@ module.exports = {
     id: 9,
     name: 'Forest',
     description: 'A scary place',
+    obstacles: [3],
     exits: { sw: 8 },
   },
   'obstacle.1': {
     id: 1,
     type: 'door',
+    name: 'door',
     state: { open: false, locked: true },
   },
   'obstacle.2': {
     id: 2,
     type: 'door',
+    name: 'gate',
     state: { open: false, locked: true },
   },
   'obstacle.3': {
     id: 3,
+    type: 'button',
+    name: 'elevator button',
+    state: { pushed: false },
+    effect: {
+      navigate: { to: 1 },
+      feedback: 'You are teleported elsewhere',
+    },
+  },
+  'obstacle.10': {
+    id: 10,
     type: 'compound',
     refs: [1],
   },

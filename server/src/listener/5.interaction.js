@@ -43,6 +43,12 @@ module.exports = (server, dao) => {
         const item = await user.findItem(target);
         return user.describe('info', await item.use());
       }
+      case 'push': {
+        const target = command.args.join(' ');
+        const item = await user.findItem(target, true);
+        updateRoom.dispatch({ id: room.id, items: room.items.concat(item.id) });
+        return user.describe('info', `You dropped ${item.name}.`);
+      }
       default:
         throw new AbortActionError('Unable to process command.');
     }

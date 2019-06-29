@@ -53,8 +53,20 @@ export default class Room extends Model {
   }
 
   async findItem(target, take = false) {
+    let index;
     const items = await this.Items();
-    const index = items.findIndex(it => it.name.indexOf(target.toLowerCase()) === 0);
+
+    // Try plain search
+    index = items.findIndex(it => it.name.indexOf(target.toLowerCase()) === 0);
+
+    // Try Tokenize
+    if (index < 0) {
+      index = items.findIndex((it) => {
+        const tokens = it.name.toLowerCase().split(' ');
+        return tokens.find(tok => tok.indexOf(target.toLowerCase()) === 0);
+      });
+    }
+
     if (index < 0) throw new AbortActionError("You don't see that here.");
 
     if (take) {

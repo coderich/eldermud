@@ -31,6 +31,9 @@ const commands = [
   [
     { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'interaction' } },
   ],
+  [
+    { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'interaction' } },
+  ],
 ];
 
 const translateArray = (arr, cmd, args) => {
