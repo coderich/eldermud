@@ -1,4 +1,4 @@
-import { Action, Selector, Reducer } from '@coderich/hotrod';
+import { Action, Reducer } from '@coderich/hotrod';
 // import { objectGroup } from '@coderich/hotrod/util';
 
 module.exports = (mod) => {

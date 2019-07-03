@@ -23,10 +23,10 @@ export default class User extends Model {
     this.socket.emit('message', { type, value });
   }
 
-  async get(target) {
-    const value = await this.describer.describe(type, obj);
-    this.socket.emit('message', { type, value });
-  }
+  // async get(target) {
+  //   const value = await this.describer.describe(type, obj);
+  //   this.socket.emit('message', { type, value });
+  // }
 
   async findItem(target, take = false) {
     let index;
