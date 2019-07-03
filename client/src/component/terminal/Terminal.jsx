@@ -6,10 +6,9 @@ import Input from './Input';
 const prompt = '>';
 
 const container = {
-  fontSize: '14px',
+  fontSize: '16px',
   width: '100%',
   height: '100%',
-  backgroundColor: 'black',
 };
 
 const viewport = {
@@ -39,7 +38,7 @@ const Terminal = memo((props) => {
       <Grid container direction="column" style={viewport}>
         <Grid item container direction="column" justify="flex-end" style={screen}>
           {responses.map((action, i) => (
-            <Grid item key={i}>
+            <Grid item key={i} style={{ marginBottom: '10px' }}>
               <Action prompt={prompt} action={action} />
             </Grid>
           ))}

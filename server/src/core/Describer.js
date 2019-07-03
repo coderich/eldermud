@@ -9,6 +9,8 @@ const directions = {
   nw: 'northwest',
   se: 'southeast',
   sw: 'southwest',
+  u: 'up',
+  d: 'down',
 };
 
 export default class Describer {
@@ -24,6 +26,7 @@ export default class Describer {
       case 'room': {
         target.exits = await this.describe('exits', target.exits);
         target.items = await this.describe('items', target.items);
+        delete target.description;
         break;
       }
       case 'exits': {
@@ -39,7 +42,7 @@ export default class Describer {
         const [ids] = Object.values(obj);
         const obstacles = await Promise.all(ids.map(id => this.get('obstacle', id)));
         const [door] = obstacles.filter(obstacle => obstacle.type === 'door');
-        if (!door) return;
+        if (!door) return undefined;
         const description = await this.describe('door', door);
         return `${description} ${direction}`;
       }

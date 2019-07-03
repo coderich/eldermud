@@ -1,6 +1,8 @@
 // TODO: Is a class really necessary? What benefit does this approach have over just using a regular object
 export default class Model {
   constructor(name, props, helpers) {
+    props.state = props.state || {};
+
     // We want our class methods to be enumerable
     Object.getOwnPropertyNames(Object.getPrototypeOf(this)).forEach((prop) => {
       if (prop !== 'constructor') {

@@ -5,6 +5,7 @@ import AbortActionError from '../core/AbortActionError';
 export default class User extends Model {
   constructor(...args) {
     super(...args);
+    this.memory = {};
     this.items = this.items || [];
     this.describer = new Describer(this);
   }
@@ -18,6 +19,11 @@ export default class User extends Model {
   }
 
   async describe(type, obj) {
+    const value = await this.describer.describe(type, obj);
+    this.socket.emit('message', { type, value });
+  }
+
+  async get(target) {
     const value = await this.describer.describe(type, obj);
     this.socket.emit('message', { type, value });
   }

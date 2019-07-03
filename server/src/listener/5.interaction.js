@@ -15,6 +15,9 @@ module.exports = (server, dao) => {
         if (!door) throw new AbortActionError('There is nothing in that direction!');
         return user.describe('info', await door[tcc]());
       }
+      case 'look': {
+        return user.describe('info', room.description);
+      }
       case 'get': {
         const target = command.args.join(' ');
         const item = await room.findItem(target, true);
@@ -43,11 +46,15 @@ module.exports = (server, dao) => {
         const item = await user.findItem(target);
         return user.describe('info', await item.use());
       }
-      case 'push': {
-        const target = command.args.join(' ');
-        const item = await user.findItem(target, true);
-        updateRoom.dispatch({ id: room.id, items: room.items.concat(item.id) });
-        return user.describe('info', `You dropped ${item.name}.`);
+      // case 'push': {
+      //   const target = command.args.join(' ');
+      //   const item = await user.findItem(target, true);
+      //   updateRoom.dispatch({ id: room.id, items: room.items.concat(item.id) });
+      //   return user.describe('info', `You dropped ${item.name}.`);
+      // }
+      case 'search': {
+        const items = await room.Items();
+        const hidden = items.filter(item => item.state.hidden);
       }
       default:
         throw new AbortActionError('Unable to process command.');

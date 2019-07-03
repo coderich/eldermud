@@ -8,7 +8,7 @@ const Action = memo((props) => {
     case 'room': return (
       <Fragment>
         <div style={{ color: 'cyan' }}>{value.name}</div>
-        <div>{value.description}</div>
+        {value.description && <div style={{ textIndent: '0px' }}>{value.description}</div>}
         {value.items.length > 0 && (
           <div style={{ color: 'cadetblue' }}>
             <span>You notice </span>
