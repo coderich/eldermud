@@ -1,5 +1,4 @@
 import { Action } from '@coderich/hotrod';
-import AbortActionError from '../core/AbortActionError';
 
 let counter = 1;
 
@@ -71,30 +70,20 @@ export const translate = (input) => {
 };
 
 export const intercept = (command, type, cb) => {
-  const { actions } = command;
-
-  const action = new Action(`intercept.${counter++}`, async (payload, ...rest) => {
+  const action = new Action(`intercept.${counter++}`, async (payload) => {
     const { command: { scope } } = payload;
-    const { meta } = rest[0];
 
-    if (scope.indexOf(type) > -1) {
-      try {
-        await cb(payload, ...rest);
-      } catch (e) {
-        if (e instanceof AbortActionError) {
-          meta.reason = e.message;
-          const err = { ...payload };
-          throw err;
-        } else {
-          console.error(e);
-        }
-      }
+    if (scope === type) {
+      await cb(payload);
     }
   });
 
-  actions.push(action);
+  return command.pipe(action);
 
-  return () => {
-    actions.splice(actions.indexOf(action), 1);
-  };
+  // return command.pipe(mergeMap(async (payload) => {
+  //   if (payload.command.scope === type) {
+  //     return cb(payload);
+  //   }
+  //   return payload;
+  // }));
 };

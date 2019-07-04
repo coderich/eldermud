@@ -52,10 +52,11 @@ module.exports = (server, dao) => {
       //   updateRoom.dispatch({ id: room.id, items: room.items.concat(item.id) });
       //   return user.describe('info', `You dropped ${item.name}.`);
       // }
-      case 'search': {
-        const items = await room.Items();
-        const hidden = items.filter(item => item.state.hidden);
-      }
+      // case 'search': {
+      //   const items = await room.Items();
+      //   const hidden = items.filter(item => item.state.hidden);
+      //   return undefined;
+      // }
       default:
         throw new AbortActionError('Unable to process command.');
     }

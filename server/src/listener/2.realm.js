@@ -17,7 +17,7 @@ module.exports = (server, dao) => {
   });
 
   removeUser.listen({
-    success: async ({ payload: user, meta: { reason } }) => {
+    success: async ({ payload: user }) => {
       if (user.isLoggedIn) {
         // console.log('Hell to pay!', reason);
       }

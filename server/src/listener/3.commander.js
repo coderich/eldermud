@@ -1,8 +1,12 @@
+import { delay, delayWhen } from 'rxjs/operators';
+import AbortActionError from '../core/AbortActionError';
 import { translate } from '../service/command.service';
 
 module.exports = (server, dao) => {
   const { actions: { addUser } } = dao.store.info();
   const { actions: { addCommand } } = dao.addStoreModel('command');
+
+  addCommand.pipe(delay(1000));
 
   // Begin listening to player commands
   addUser.listen({
@@ -10,7 +14,10 @@ module.exports = (server, dao) => {
       socket.on('message', async (input) => {
         const command = translate(input);
         const user = await dao.get('user', id);
-        addCommand.dispatch({ user, command });
+        const promise = addCommand.dispatch({ user, command }).awaitResponse();
+        addCommand.pipe(delayWhen(() => promise));
+        const unsub = addCommand.pipe(delay(1000));
+        promise.then(() => unsub());
       });
     },
   });
@@ -29,9 +36,13 @@ module.exports = (server, dao) => {
         user.describe('info', 'Your command had no effect.');
       }
     },
-    error: ({ payload, meta: { reason } }) => {
-      const { user } = payload;
-      user.socket.emit('message', { type: 'error', value: reason });
+    error: ({ payload, error }) => {
+      if (error instanceof AbortActionError) {
+        const { user } = payload;
+        user.socket.emit('message', { type: 'error', value: error.message });
+      } else {
+        console.error(error);
+      }
     },
   });
 };

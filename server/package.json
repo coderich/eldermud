@@ -4,7 +4,7 @@
   "author": "CodeRich",
   "description": "Eldermud Server",
   "dependencies": {
-    "@coderich/hotrod": "^2.0.0",
+    "@coderich/hotrod": "^2.0.1",
     "esm": "^3.2.25",
     "lodash": "^4.17.11",
     "require-dir": "^1.2.0",
