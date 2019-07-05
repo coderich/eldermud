@@ -1,4 +1,3 @@
-import { delay, delayWhen } from 'rxjs/operators';
 import AbortActionError from '../core/AbortActionError';
 import { translate } from '../service/command.service';
 
@@ -6,25 +5,20 @@ module.exports = (server, dao) => {
   const { actions: { addUser } } = dao.store.info();
   const { actions: { addCommand } } = dao.addStoreModel('command');
 
-  addCommand.pipe(delay(1000));
-
   // Begin listening to player commands
   addUser.listen({
     success: ({ payload: { id, socket } }) => {
       socket.on('message', async (input) => {
         const command = translate(input);
         const user = await dao.get('user', id);
-        const promise = addCommand.dispatch({ user, command }).awaitResponse();
-        addCommand.pipe(delayWhen(() => promise));
-        const unsub = addCommand.pipe(delay(1000));
-        promise.then(() => unsub());
+        addCommand.dispatch({ user, command });
       });
     },
   });
 
   addCommand.listen({
     success: async ({ payload }) => {
-      const { user, command } = payload;
+      const { user, command = {} } = payload;
 
       if (command.name === 'none') {
         user.describe('room', await user.Room());
