@@ -87,6 +87,7 @@ module.exports = {
     name: 'Parking Garage, Christie\'s Parking Spot',
     description: 'A scary place',
     exits: { s: 10 },
+    items: [1],
   },
   'obstacle.1': {
     id: 1,

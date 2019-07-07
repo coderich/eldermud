@@ -1,22 +1,30 @@
 import SocketServer from 'socket.io';
-import RequireDir from 'require-dir';
-import dao from './dao';
-
-const mapValue = (value, baseName) => {
-  const [fn = value] = Object.values(value);
-  return fn;
-};
+import { translate } from './service/command.service';
+import { command$ } from './streams';
+import * as store from './store';
 
 // Setup Server
 const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 });
 
-// Modules
-Object.entries(RequireDir('./module', { recurse: true, mapValue })).forEach(([name, fn]) => {
-  const mod = fn(dao.addStoreModel(name));
-  dao.store.loadModule(name, mod);
-});
+server.on('connection', async (socket) => {
+  const user = await store.get('user', 1, { socket, isLoggedIn: true, subscriptions: [] });
+  user.describe('room', await user.Room());
 
-// Listeners
-Object.values(RequireDir('./listener')).forEach(fn => fn(server, dao));
+  socket.on('disconnecting', async (reason) => {
+    store.del('user', user.id);
+  });
+
+  socket.on('disconnect', (reason) => {
+    socket.removeAllListeners();
+  });
+
+  socket.on('error', (error) => {
+  });
+
+  socket.on('message', async (input) => {
+    const command = translate(input);
+    command$.next({ user, command });
+  });
+});
 
 export default server;

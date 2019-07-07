@@ -70,10 +70,7 @@ export default class Room extends Model {
     if (index < 0) throw new AbortActionError("You don't see that here.");
 
     if (take) {
-      const { actions: { updateRoom } } = this.store.info();
-      const [item] = items.splice(index, 1);
-      updateRoom.dispatch({ id: this.id, items: items.map(it => it.id) });
-      return item;
+      this.items.splice(index, 1);
     }
 
     return items[index];

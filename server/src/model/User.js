@@ -23,10 +23,19 @@ export default class User extends Model {
     this.socket.emit('message', { type, value });
   }
 
-  // async get(target) {
-  //   const value = await this.describer.describe(type, obj);
-  //   this.socket.emit('message', { type, value });
-  // }
+  async grab(target) {
+    const room = await this.Room();
+    const item = await room.findItem(target, true);
+    this.items.push(item.id);
+    return item;
+  }
+
+  async drop(target) {
+    const room = await this.Room();
+    const item = await this.findItem(target, true);
+    room.items.push(item.id);
+    return item;
+  }
 
   async findItem(target, take = false) {
     let index;
@@ -46,10 +55,7 @@ export default class User extends Model {
     if (index < 0) throw new AbortActionError("You don't have that on you!");
 
     if (take) {
-      const { actions: { updateUser } } = this.store.info();
-      const [item] = items.splice(index, 1);
-      updateUser.dispatch({ id: this.id, items: items.map(it => it.id) });
-      return item;
+      this.items.splice(index, 1);
     }
 
     return items[index];
