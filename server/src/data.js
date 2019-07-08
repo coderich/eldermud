@@ -3,6 +3,7 @@ module.exports = {
     id: 1,
     room: 11,
     name: 'chardy',
+    items: [],
   },
   'room.1': {
     id: 1,

@@ -1,7 +1,3 @@
-import { Action } from '@coderich/hotrod';
-
-let counter = 1;
-
 const commands = [
   [
     { attack: { args: [0, 1], code: 'a', scope: 'interaction' } },
@@ -67,23 +63,4 @@ export const translate = (input) => {
     translateArray(commands, cmd, args)
     || { name: 'unknown', args, code: 'unk', scope: 'unknown' }
   );
-};
-
-export const intercept = (command, type, cb) => {
-  const action = new Action(`intercept.${counter++}`, async (payload) => {
-    const { command: { scope } } = payload;
-
-    if (scope === type) {
-      await cb(payload);
-    }
-  });
-
-  return command.pipe(action);
-
-  // return command.pipe(mergeMap(async (payload) => {
-  //   if (payload.command.scope === type) {
-  //     return cb(payload);
-  //   }
-  //   return payload;
-  // }));
 };

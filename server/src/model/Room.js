@@ -1,11 +1,34 @@
 import { isObjectLike, flatten } from 'lodash';
-import AbortActionError from '../core/AbortActionError';
 import Model from '../core/Model';
 
 export default class Room extends Model {
   constructor(...args) {
     super(...args);
     this.items = this.items || [];
+  }
+
+  async findItem(target, take = false) {
+    let index;
+    const items = await this.Items();
+
+    // Try plain search
+    index = items.findIndex(it => it.name.indexOf(target.toLowerCase()) === 0);
+
+    // Try Tokenize
+    if (index < 0) {
+      index = items.findIndex((it) => {
+        const tokens = it.name.toLowerCase().split(' ');
+        return tokens.find(tok => tok.indexOf(target.toLowerCase()) === 0);
+      });
+    }
+
+    if (index < 0) this.balk("You don't see that here.");
+
+    if (take) {
+      this.items.splice(index, 1);
+    }
+
+    return items[index];
   }
 
   async Exit(dir) {
@@ -46,33 +69,5 @@ export default class Room extends Model {
   async Doors() {
     const obstacles = await this.Obstacles();
     return obstacles.filter(obstacle => obstacle.type === 'door');
-  }
-
-  async Items() {
-    return Promise.all(this.items.map(item => this.get('item', item)));
-  }
-
-  async findItem(target, take = false) {
-    let index;
-    const items = await this.Items();
-
-    // Try plain search
-    index = items.findIndex(it => it.name.indexOf(target.toLowerCase()) === 0);
-
-    // Try Tokenize
-    if (index < 0) {
-      index = items.findIndex((it) => {
-        const tokens = it.name.toLowerCase().split(' ');
-        return tokens.find(tok => tok.indexOf(target.toLowerCase()) === 0);
-      });
-    }
-
-    if (index < 0) throw new AbortActionError("You don't see that here.");
-
-    if (take) {
-      this.items.splice(index, 1);
-    }
-
-    return items[index];
   }
 }

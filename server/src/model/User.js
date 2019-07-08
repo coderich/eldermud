@@ -1,40 +1,85 @@
-import Model from '../core/Model';
-import Describer from '../core/Describer';
+import { Subject } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
+import Being from '../core/Being';
+import { translate } from '../service/command.service';
 import AbortActionError from '../core/AbortActionError';
 
-export default class User extends Model {
+export default class User extends Being {
   constructor(...args) {
     super(...args);
-    this.memory = {};
-    this.items = this.items || [];
-    this.describer = new Describer(this);
-  }
+    this.stream$ = new Subject().pipe(
+      concatMap(async (command) => {
+        try {
+          switch (command.scope) {
+            case 'navigation': {
+              return await this.move(command.code);
+            }
+            default: {
+              switch (command.name) {
+                case 'open': case 'close': {
+                  const dir = translate(command.args[0]);
+                  return await this[command.name](dir.code);
+                }
+                case 'look': {
+                  return await this.look();
+                }
+                case 'get': {
+                  const target = command.args.join(' ');
+                  return await this.grab(target);
+                }
+                case 'drop': {
+                  const target = command.args.join(' ');
+                  return await this.drop(target);
+                }
+                case 'use': {
+                  const dir = translate(command.args[command.args.length - 1]);
 
-  async Room() {
-    return this.get('room', this.room);
-  }
+                  if (dir.scope === 'navigation') {
+                    const room = await this.Room();
+                    const door = await room.Door(dir.code) || this.balk('There is nothing in that direction!');
 
-  async Items() {
-    return Promise.all(this.items.map(item => this.get('item', item)));
-  }
+                    const target = command.args.slice(0, -1).join(' ');
+                    const item = await this.findItem(target);
+                    return await item.use(door);
+                  }
 
-  async describe(type, obj) {
-    const value = await this.describer.describe(type, obj);
-    this.socket.emit('message', { type, value });
+                  const target = command.args.join(' ');
+                  const item = await this.findItem(target);
+                  return await item.use();
+                }
+                case 'inventory': {
+                  return await this.inventory();
+                }
+                case 'none': {
+                  return await this.describe('room', await this.Room());
+                }
+                default: {
+                  return await this.describe('info', 'Your command had no effect.');
+                }
+              }
+            }
+          }
+        } catch (e) {
+          if (e instanceof AbortActionError) return this.describe('error', e.message);
+          console.error(e);
+          return e;
+        }
+      }),
+    );
   }
 
   async grab(target) {
     const room = await this.Room();
     const item = await room.findItem(target, true);
     this.items.push(item.id);
-    return item;
+    return this.describe('info', `You took ${item.name}.`);
   }
 
   async drop(target) {
     const room = await this.Room();
     const item = await this.findItem(target, true);
     room.items.push(item.id);
-    return item;
+    return this.describe('info', `You dropped ${item.name}.`);
   }
 
   async findItem(target, take = false) {
@@ -52,7 +97,7 @@ export default class User extends Model {
       });
     }
 
-    if (index < 0) throw new AbortActionError("You don't have that on you!");
+    if (index < 0) this.balk("You don't have that on you!");
 
     if (take) {
       this.items.splice(index, 1);

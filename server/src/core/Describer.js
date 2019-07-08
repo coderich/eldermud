@@ -14,9 +14,8 @@ const directions = {
 };
 
 export default class Describer {
-  constructor(user) {
-    this.user = user;
-    this.get = user.get;
+  constructor(get) {
+    this.get = get;
   }
 
   async describe(type, o) {
