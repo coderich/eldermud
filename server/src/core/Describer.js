@@ -24,7 +24,7 @@ export default class Describer {
     switch (type.toLowerCase()) {
       case 'room': {
         target.exits = await this.describe('exits', target.exits);
-        target.items = await this.describe('items', target.items);
+        target.items = await this.describe('items', await target.Items());
         delete target.description;
         break;
       }
@@ -52,8 +52,7 @@ export default class Describer {
         return Promise.all(target.map(item => this.describe('item', item)));
       }
       case 'item': {
-        const item = await this.get('item', target);
-        return item.name;
+        return target.name;
       }
       default: {
         break;

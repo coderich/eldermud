@@ -14,12 +14,4 @@ export default class extends Model {
   async describe(type, obj) {
     return { type, value: await this.describer.describe(type, obj) };
   }
-
-  async Room() {
-    return this.get('room', this.room);
-  }
-
-  async Items() {
-    return Promise.all(this.items.map(item => this.get('item', item)));
-  }
 }

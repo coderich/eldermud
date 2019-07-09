@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { map, concatMap } from 'rxjs/operators';
 import Being from '../core/Being';
 import { translate } from '../service/command.service';
 import AbortActionError from '../core/AbortActionError';
@@ -7,7 +7,11 @@ import AbortActionError from '../core/AbortActionError';
 export default class User extends Being {
   constructor(...args) {
     super(...args);
+
+    this.memory = [];
+
     this.stream$ = new Subject().pipe(
+      map(input => translate(input)),
       concatMap(async (command) => {
         try {
           switch (command.scope) {
@@ -30,6 +34,9 @@ export default class User extends Being {
                 case 'drop': {
                   const target = command.args.join(' ');
                   return await this.drop(target);
+                }
+                case 'search': {
+                  return await this.search();
                 }
                 case 'use': {
                   const dir = translate(command.args[command.args.length - 1]);
@@ -66,20 +73,6 @@ export default class User extends Being {
         }
       }),
     );
-  }
-
-  async grab(target) {
-    const room = await this.Room();
-    const item = await room.findItem(target, true);
-    this.items.push(item.id);
-    return this.describe('info', `You took ${item.name}.`);
-  }
-
-  async drop(target) {
-    const room = await this.Room();
-    const item = await this.findItem(target, true);
-    room.items.push(item.id);
-    return this.describe('info', `You dropped ${item.name}.`);
   }
 
   async findItem(target, take = false) {

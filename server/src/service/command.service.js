@@ -29,6 +29,7 @@ const commands = [
   ],
   [
     { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'interaction' } },
+    { lock: { args: [1], code: 'lock', scope: 'interaction' } },
   ],
 ];
 

@@ -5,6 +5,7 @@ export default class Room extends Model {
   constructor(...args) {
     super(...args);
     this.items = this.items || [];
+    this.occupants = this.occupants || [];
   }
 
   async findItem(target, take = false) {
@@ -29,6 +30,27 @@ export default class Room extends Model {
     }
 
     return items[index];
+  }
+
+  addPlayer(id) {
+    this.occupants.push(id);
+  }
+
+  removePlayer(id) {
+    this.occupants.splice(this.occupants.indexOf(id), 1);
+  }
+
+  async search() {
+    const items = await Promise.all(this.items.map(item => this.get('item', item)));
+    return items.filter(item => item.state.hidden).map((item) => {
+      item.state.hidden = false;
+      return item;
+    });
+  }
+
+  async Items() {
+    const items = await Promise.all(this.items.map(item => this.get('item', item)));
+    return items.filter(item => !item.state.hidden);
   }
 
   async Exit(dir) {

@@ -9,13 +9,13 @@ module.exports = {
     id: 1,
     name: 'Building Floor 5 Hallway, Apartment 528',
     description: 'People all come to gather, socialize, and have fun',
-    exits: { n: 2, e: { 12: [1] } },
+    exits: { n: 2, e: { 100: [1] } },
   },
   'room.2': {
     id: 2,
     name: 'Building Floor 5 Hallway, Apartment 526',
     description: 'The best damn goodies you ever saw',
-    exits: { s: 1, w: 3, e: { 12: [2] } },
+    exits: { s: 1, w: 3, e: { 200: [2] } },
   },
   'room.3': {
     id: 3,
@@ -89,6 +89,36 @@ module.exports = {
     description: 'A scary place',
     exits: { s: 10 },
     items: [1],
+  },
+  'room.100': {
+    id: 100,
+    name: 'Home, Hallway Entrance',
+    description: 'A scary place',
+    exits: { e: 101, w: { 1: [1] } },
+  },
+  'room.101': {
+    id: 101,
+    name: 'Home, Main Intersection',
+    description: 'A scary place',
+    exits: { w: 100, n: 102, e: 103, s: 104 },
+  },
+  'room.102': {
+    id: 102,
+    name: 'Home, Kitchen',
+    description: 'A scary place',
+    exits: { s: 101 },
+  },
+  'room.103': {
+    id: 103,
+    name: 'Home, Living Room',
+    description: 'A scary place',
+    exits: { w: 101 },
+  },
+  'room.104': {
+    id: 104,
+    name: 'Home, Entrance to bedroom & bathroom',
+    description: 'A scary place',
+    exits: { n: 101 },
   },
   'obstacle.1': {
     id: 1,

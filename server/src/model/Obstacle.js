@@ -1,6 +1,12 @@
 import Model from '../core/Model';
 
 export default class Obstacle extends Model {
+  async lock() {
+    if (this.state.locked) this.balk(`The ${this.name} is already locked!`);
+    this.state.locked = true;
+    return this.describe('info', `The ${this.name} is now locked.`);
+  }
+
   async unlock() {
     if (!this.state.locked) this.balk(`The ${this.name} is already unlocked!`);
     this.state.locked = false;

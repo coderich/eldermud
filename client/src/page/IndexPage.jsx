@@ -23,18 +23,18 @@ const IndexPage = memo((props) => {
           <div>NAVIGATION:</div>
           <Grid container>
             <Grid item style={{ flexGrow: 1 }}>
-              <div>(u) up</div>
-              <div>(n) north</div>
-              <div>(s) south</div>
-              <div>(e) east</div>
-              <div>(w) west</div>
+              <div>(u) Up</div>
+              <div>(n) North</div>
+              <div>(s) South</div>
+              <div>(e) East</div>
+              <div>(w) West</div>
             </Grid>
             <Grid item style={{ flexGrow: 1 }}>
-              <div>(d) down</div>
-              <div>(ne) northeast</div>
-              <div>(nw) northwest</div>
-              <div>(se) southeast</div>
-              <div>(sw) southwest</div>
+              <div>(d) Down</div>
+              <div>(ne) Northeast</div>
+              <div>(nw) Northwest</div>
+              <div>(se) Southeast</div>
+              <div>(sw) Southwest</div>
             </Grid>
           </Grid>
         </Grid>
@@ -42,15 +42,16 @@ const IndexPage = memo((props) => {
           <div>ACTIONS:</div>
           <Grid container>
             <Grid item style={{ flexGrow: 1 }}>
-              <div>(g) get {'<item>'}</div>
-              <div>(dr) drop {'<item>'}</div>
-              <div>(i) inventory</div>
-              <div>(l) look</div>
+              <div>(sea) Search</div>
+              <div>(i) Inventory</div>
+              <div>(l) Look</div>
             </Grid>
             <Grid item style={{ flexGrow: 1 }}>
-              <div>(op) open {'<direction>'}</div>
-              <div>(cl) close {'<direction>'}</div>
-              <div>(use) use {'<item>'}</div>
+              <div>(g) Get {'<item>'}</div>
+              <div>(dr) Drop {'<item>'}</div>
+              <div>(op) Open {'<item or direction>'}</div>
+              <div>(cl) Close {'<item or direction>'}</div>
+              <div>(use) Use {'<item> <direction>'}</div>
             </Grid>
           </Grid>
         </Grid>

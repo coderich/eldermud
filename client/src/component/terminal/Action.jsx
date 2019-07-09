@@ -16,6 +16,12 @@ const Action = memo((props) => {
             <span> here.</span>
           </div>
         )}
+        {value.occupants.length > 0 && (
+          <div>
+            <span style={{ color: 'indianred' }}>Also here: </span>
+            <span>{value.occupants.join(', ')}</span>
+          </div>
+        )}
         <div style={{ color: 'limegreen' }}>
           <span>Obvious exits: </span>
           <span>{value.exits.join(', ')}</span>
