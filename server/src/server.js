@@ -9,7 +9,6 @@ server.on('connection', async (socket) => {
   const data = { id, socket, isLoggedIn: true, items: [], room: 11, subscriptions: [] };
   const user = await store.get('user', id, data);
   const room = await user.Room();
-  room.addPlayer(id);
   socket.emit('message', await user.describe('room', room));
 
   user.stream$.subscribe({
