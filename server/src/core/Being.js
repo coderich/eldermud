@@ -5,7 +5,7 @@ import Model from './Model';
 export default class Being extends Model {
   move(dir) {
     return of('move').pipe(
-      mergeMap(async (value) => {
+      mergeMap(async () => {
         const room = await this.Room();
 
         // Check if exit exists
@@ -16,11 +16,13 @@ export default class Being extends Model {
         if (obstacles && !obstacles.some(obstacle => obstacle.resolve())) this.balk('There is an obstacle in your way!');
 
         // Proceed
-        this.room = exit.id;
-        return exit;
+        return { from: room, to: exit };
       }),
       delay(1000),
-      mergeMap(exit => this.describe('room', exit)),
+      mergeMap(({ from, to }) => {
+        this.room = to.id;
+        return this.describe('room', to);
+      }),
     );
   }
 
@@ -28,7 +30,8 @@ export default class Being extends Model {
     return of('grab').pipe(
       mergeMap(async () => {
         const room = await this.Room();
-        const item = await room.findItem(target, true);
+        const locatedItem = await room.findItem(target);
+        const item = room.takeItem(locatedItem);
         this.items.push(item.id);
         return this.describe('info', `You took ${item.name}.`);
       }),
@@ -103,6 +106,24 @@ export default class Being extends Model {
         const items = await this.Items();
         const description = items.length === 0 ? 'nothing!' : items.map(item => item.name).join(', ');
         return this.describe('info', `You are carrying: ${description}`);
+      }),
+    );
+  }
+
+  use(command, dir) {
+    return of('use').pipe(
+      mergeMap(async () => {
+        if (dir.scope === 'navigation') {
+          const target = command.args.slice(0, -1).join(' ');
+          const item = await this.findItem(target);
+          const room = await this.Room();
+          const door = await room.Door(dir.code) || this.balk('There is nothing in that direction!');
+          return item.use(door);
+        }
+
+        const target = command.args.join(' ');
+        const item = await this.findItem(target);
+        return item.use();
       }),
     );
   }

@@ -1,5 +1,5 @@
 import { Subject, of } from 'rxjs';
-import { tap, map, concatMap, catchError } from 'rxjs/operators';
+import { tap, map, concatMap, catchError, retry } from 'rxjs/operators';
 import { translate } from '../service/command.service';
 import AbortActionError from './AbortActionError';
 
@@ -34,29 +34,13 @@ export default class Stream {
           }
           case 'use': {
             const dir = translate(command.args[command.args.length - 1]);
-
-            if (dir.scope === 'navigation') {
-              return of('more').pipe(
-                concatMap(async () => {
-                  const room = await subject.Room();
-                  const door = room.Door(dir.code) || subject.balk('There is nothing in that direction!');
-
-                  const target = command.args.slice(0, -1).join(' ');
-                  const item = subject.findItem(target);
-                  return item.use(door);
-                }),
-              );
-            }
-
-            const target = command.args.join(' ');
-            const item = subject.findItem(target);
-            return item.use();
+            return subject.use(command, dir);
           }
           case 'inventory': {
             return subject.inventory();
           }
           case 'none': {
-            return of('more').pipe(
+            return of('none').pipe(
               concatMap(async () => {
                 return subject.describe('room', await subject.Room());
               }),
@@ -74,6 +58,7 @@ export default class Stream {
           return of(e);
         }),
       )),
+      retry(),
     );
   }
 }

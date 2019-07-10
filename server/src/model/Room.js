@@ -8,7 +8,7 @@ export default class Room extends Model {
     this.occupants = this.occupants || [];
   }
 
-  async findItem(target, take = false) {
+  async findItem(target) {
     let index;
     const items = await this.Items();
 
@@ -25,11 +25,14 @@ export default class Room extends Model {
 
     if (index < 0) this.balk("You don't see that here.");
 
-    if (take) {
-      this.items.splice(index, 1);
-    }
-
     return items[index];
+  }
+
+  takeItem(item) {
+    const index = this.items.indexOf(item.id);
+    if (index < 0) this.balk("You don't see that here.");
+    this.items.splice(index, 1);
+    return item;
   }
 
   addPlayer(id) {
