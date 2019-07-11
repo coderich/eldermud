@@ -1,4 +1,5 @@
 import 'file-loader?name=[name].[ext]!./index.html'; // eslint-disable-line
+import 'jsplumb/css/jsplumbtoolkit-defaults.css';
 import React, { Provider } from '@coderich/hotrod/react';
 import { Services, Action, Selector, Reducer } from '@coderich/hotrod';
 import ReactDOM from 'react-dom';
