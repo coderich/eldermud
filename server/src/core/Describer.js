@@ -26,7 +26,7 @@ export default class Describer {
       case 'room': {
         target.exits = await this.describe('exits', target.exits);
         target.items = await this.describe('items', await target.Items());
-        target.occupants = target.occupants.filter(occ => occ.id !== this.id).map(occ => occ.id);
+        target.beings = (await target.Beings()).filter(being => being.id !== this.id).map(being => being.id);
         delete target.description;
         break;
       }
@@ -41,7 +41,7 @@ export default class Describer {
 
         // Obstacle(s)
         const [ids] = Object.values(obj);
-        const obstacles = await Promise.all(ids.map(id => this.dao.get('obstacle', id)));
+        const obstacles = await Promise.all(ids.map(id => this.dao.get(id)));
         const [door] = obstacles.filter(obstacle => obstacle.type === 'door');
         if (!door) return undefined;
         const description = await this.describe('door', door);

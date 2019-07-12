@@ -3,52 +3,52 @@ import { tap, map, concatMap, catchError, retry } from 'rxjs/operators';
 import { translate } from '../service/command.service';
 import AbortActionError from './AbortActionError';
 
-export default class Stream {
-  constructor(subject) {
+export default class CreatureStream {
+  constructor(creature) {
     return new Subject().pipe(
-      tap(input => input === 'x' && subject.balk('intercepted')),
+      tap(input => input === 'x' && creature.balk('intercepted')),
       map(input => translate(input)),
       map((command) => {
         if (command.scope === 'navigation') {
-          return subject.move(command.code);
+          return creature.move(command.code);
         }
 
         switch (command.name) {
           case 'open': case 'close': {
             const target = command.args.join(' ');
-            return subject[command.name](target);
+            return creature[command.name](target);
           }
           case 'look': {
             const target = command.args.join(' ');
-            return subject.look(target);
+            return creature.look(target);
           }
           case 'get': {
             const target = command.args.join(' ');
-            return subject.get(target);
+            return creature.get(target);
           }
           case 'drop': {
             const target = command.args.join(' ');
-            return subject.drop(target);
+            return creature.drop(target);
           }
           case 'search': {
-            return subject.search();
+            return creature.search();
           }
           case 'use': {
             const dir = translate(command.args[command.args.length - 1]);
-            return subject.use(command, dir);
+            return creature.use(command, dir);
           }
           case 'inventory': {
-            return subject.inventory();
+            return creature.inventory();
           }
           case 'none': {
             return of('none').pipe(
               concatMap(async () => {
-                return subject.describe('room', await subject.Room());
+                return creature.describe('room', await creature.Room());
               }),
             );
           }
           default: {
-            return subject.say(command.input);
+            return creature.say(command.input);
           }
         }
       }),

@@ -6,12 +6,12 @@ const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 }
 
 server.on('connection', async (socket) => {
   const { id } = socket;
-  const data = { id, isLoggedIn: true, items: [], room: 11, socket, subscriptions: [] };
-  const user = await store.get('user', id, data);
+  const data = { id: `user.${id}`, isLoggedIn: true, room: 'room.1', items: [], socket, subscriptions: [] }; // Faking a user
+  const user = await store.get(`user.${id}`, data);
 
   (async () => {
     const room = await user.Room();
-    room.join(user);
+    room.join(user.id);
     socket.join(`room-${room.id}`);
     socket.emit('message', await user.describe('room', room));
 
@@ -22,7 +22,7 @@ server.on('connection', async (socket) => {
 
   socket.on('disconnecting', async (reason) => {
     const room = await user.Room();
-    room.leave(user);
+    room.leave(user.id);
     socket.leave(`room-${room.id}`);
     store.del('user', user.id);
   });
@@ -35,7 +35,7 @@ server.on('connection', async (socket) => {
   });
 
   socket.on('message', async (input) => {
-    user.stream$.next(input);
+    user.process(input);
   });
 });
 

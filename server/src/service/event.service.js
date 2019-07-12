@@ -5,7 +5,7 @@ export const emit = (type, payload) => {
     case 'move': {
       const { being, to, from } = payload;
 
-      from.leave(being); to.join(being);
+      from.leave(being.id); to.join(being.id);
 
       if (being.isUser) {
         const toRoom = `room-${to.id}`;

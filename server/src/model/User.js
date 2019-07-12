@@ -1,20 +1,16 @@
-import Being from '../core/Being';
-import Stream from '../core/Stream';
+import UserStream from '../core/UserStream';
+import Being from './Being';
 
 export default class User extends Being {
   constructor(...args) {
     super(...args);
     this.isUser = true;
     this.memory = [];
-    this.stream$ = new Stream(this);
+    this.stream$ = new UserStream(this);
   }
 
-  async Room() {
-    return this.dao.get('room', this.room);
-  }
-
-  async Items() {
-    return Promise.all(this.items.map(item => this.dao.get('item', item)));
+  process(data) {
+    this.stream$.next(data);
   }
 
   async findItem(target, take = false) {

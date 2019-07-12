@@ -1,5 +1,6 @@
+// https://community.jsplumbtoolkit.com/doc/endpoints.html
 import React, { memo } from '@coderich/hotrod/react';
-import { Grid, Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { jsPlumb } from 'jsplumb';
 import Room from './Room';
 

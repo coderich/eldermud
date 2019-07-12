@@ -2,7 +2,7 @@ import { of } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
 import { emit } from '../service/event.service';
 import { translate } from '../service/command.service';
-import Model from './Model';
+import Model from '../core/Model';
 
 export default class Being extends Model {
   say(phrase) {
@@ -155,5 +155,13 @@ export default class Being extends Model {
         return item.use();
       }),
     );
+  }
+
+  async Room() {
+    return this.dao.get(this.room);
+  }
+
+  async Items() {
+    return Promise.all(this.items.map(item => this.dao.get(item)));
   }
 }
