@@ -35,7 +35,7 @@ server.on('connection', async (socket) => {
   });
 
   socket.on('message', async (input) => {
-    user.stream$.next(input.trim());
+    user.stream$.next(input);
   });
 });
 

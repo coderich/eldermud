@@ -1,3 +1,5 @@
+// https://socket.io/docs/emit-cheatsheet/
+
 export const emit = (type, payload) => {
   switch (type) {
     case 'move': {

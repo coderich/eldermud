@@ -15,11 +15,12 @@ export default class Stream {
 
         switch (command.name) {
           case 'open': case 'close': {
-            const dir = translate(command.args[0]);
-            return subject[command.name](dir.code);
+            const target = command.args.join(' ');
+            return subject[command.name](target);
           }
           case 'look': {
-            return subject.look();
+            const target = command.args.join(' ');
+            return subject.look(target);
           }
           case 'get': {
             const target = command.args.join(' ');

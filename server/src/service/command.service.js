@@ -33,7 +33,7 @@ const commands = [
   ],
 ];
 
-const translateArray = (arr, cmd, args) => {
+const translateArray = (arr, input, cmd, args) => {
   for (let i = 0; i < cmd.length; i++) {
     const tier = arr[i];
 
@@ -44,6 +44,7 @@ const translateArray = (arr, cmd, args) => {
         if (key.indexOf(cmd) === 0 && data.args.indexOf(args.length) > -1) {
           return {
             name: data.alias || key,
+            input,
             args,
             scope: data.scope,
             code: data.code,
@@ -57,11 +58,12 @@ const translateArray = (arr, cmd, args) => {
 };
 
 export const translate = (input) => {
+  input = input.trim();
   const [cmd, ...args] = input.match(/\S+/g) || [];
   if (!cmd) return { name: 'none', input, args, code: null, scope: 'default' };
 
   return (
-    translateArray(commands, cmd, args)
+    translateArray(commands, input, cmd, args)
     || { name: 'unknown', input, args, code: 'unk', scope: 'unknown' }
   );
 };

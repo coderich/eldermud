@@ -1,6 +1,7 @@
 import { of } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
 import { emit } from '../service/event.service';
+import { translate } from '../service/command.service';
 import Model from './Model';
 
 export default class Being extends Model {
@@ -68,10 +69,17 @@ export default class Being extends Model {
     );
   }
 
-  look() {
+  look(target) {
     return of('look').pipe(
       mergeMap(async () => {
         const room = await this.Room();
+
+        if (target) {
+          const { code: dir } = translate(target);
+          const exit = await room.Exit(dir) || this.balk('There is nothing in that direction!');
+          return this.describe('room', exit);
+        }
+
         return this.describe('info', room.description);
       }),
     );
@@ -89,9 +97,10 @@ export default class Being extends Model {
     );
   }
 
-  open(dir) {
+  open(target) {
     return of('open').pipe(
       mergeMap(async () => {
+        const { code: dir } = translate(target);
         const room = await this.Room();
         const door = await room.Door(dir) || this.balk('There is nothing in that direction!');
         return door.open();
@@ -99,9 +108,10 @@ export default class Being extends Model {
     );
   }
 
-  close(dir) {
+  close(target) {
     return of('close').pipe(
       mergeMap(async () => {
+        const { code: dir } = translate(target);
         const room = await this.Room();
         const door = await room.Door(dir) || this.balk('There is nothing in that direction!');
         return door.close();
