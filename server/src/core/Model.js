@@ -5,10 +5,10 @@ import AbortActionError from './AbortActionError';
 export default class extends Model {
   constructor(props) {
     super({ enumerable: true });
-    this.describer = new Describer(props.get);
     this.balk = (msg) => { throw new AbortActionError(msg); };
     this.timeout = ms => new Promise(res => setTimeout(res, ms));
     this.defineProperties({ ...props }, { writable: true, enumerable: true });
+    this.describer = new Describer(this.dao, this.id);
   }
 
   async describe(type, obj) {

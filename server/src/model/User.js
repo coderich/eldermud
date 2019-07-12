@@ -4,16 +4,17 @@ import Stream from '../core/Stream';
 export default class User extends Being {
   constructor(...args) {
     super(...args);
+    this.isUser = true;
     this.memory = [];
     this.stream$ = new Stream(this);
   }
 
   async Room() {
-    return this.get('room', this.room);
+    return this.dao.get('room', this.room);
   }
 
   async Items() {
-    return Promise.all(this.items.map(item => this.get('item', item)));
+    return Promise.all(this.items.map(item => this.dao.get('item', item)));
   }
 
   async findItem(target, take = false) {

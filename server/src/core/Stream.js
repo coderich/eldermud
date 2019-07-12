@@ -23,7 +23,7 @@ export default class Stream {
           }
           case 'get': {
             const target = command.args.join(' ');
-            return subject.grab(target);
+            return subject.get(target);
           }
           case 'drop': {
             const target = command.args.join(' ');
@@ -47,7 +47,7 @@ export default class Stream {
             );
           }
           default: {
-            return of({ type: 'info', value: 'Your command had no effect.' });
+            return subject.say(command.input);
           }
         }
       }),

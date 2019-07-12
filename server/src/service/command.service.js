@@ -58,10 +58,12 @@ const translateArray = (arr, cmd, args) => {
 
 export const translate = (input) => {
   const [cmd, ...args] = input.match(/\S+/g) || [];
-  if (!cmd) return { name: 'none', args, code: null, scope: 'default' };
+  if (!cmd) return { name: 'none', input, args, code: null, scope: 'default' };
 
   return (
     translateArray(commands, cmd, args)
-    || { name: 'unknown', args, code: 'unk', scope: 'unknown' }
+    || { name: 'unknown', input, args, code: 'unk', scope: 'unknown' }
   );
 };
+
+export const stfu = {};

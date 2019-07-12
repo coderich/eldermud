@@ -14,6 +14,6 @@ export default class Item extends Model {
   }
 
   async Obstacles() {
-    return Promise.all(this.obstacles.map(obstacle => this.get('obstacle', obstacle)));
+    return Promise.all(this.obstacles.map(obstacle => this.dao.get('obstacle', obstacle)));
   }
 }

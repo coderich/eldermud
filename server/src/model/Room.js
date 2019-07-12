@@ -28,6 +28,14 @@ export default class Room extends Model {
     return items[index];
   }
 
+  join(being) {
+    this.occupants.push(being);
+  }
+
+  leave(being) {
+    this.occupants.splice(this.occupants.indexOf(being), 1);
+  }
+
   takeItem(item) {
     const index = this.items.indexOf(item.id);
     if (index < 0) this.balk("You don't see that here.");
@@ -35,16 +43,8 @@ export default class Room extends Model {
     return item;
   }
 
-  addPlayer(id) {
-    this.occupants.push(id);
-  }
-
-  removePlayer(id) {
-    this.occupants.splice(this.occupants.indexOf(id), 1);
-  }
-
   async search() {
-    const items = await Promise.all(this.items.map(item => this.get('item', item)));
+    const items = await Promise.all(this.items.map(item => this.dao.get('item', item)));
     return items.filter(item => item.state.hidden).map((item) => {
       item.state.hidden = false;
       return item;
@@ -52,7 +52,7 @@ export default class Room extends Model {
   }
 
   async Items() {
-    const items = await Promise.all(this.items.map(item => this.get('item', item)));
+    const items = await Promise.all(this.items.map(item => this.dao.get('item', item)));
     return items.filter(item => !item.state.hidden);
   }
 
@@ -61,13 +61,13 @@ export default class Room extends Model {
     if (!exit) return undefined;
 
     const [roomId = exit] = Object.keys(exit);
-    return this.get('room', roomId);
+    return this.dao.get('room', roomId);
   }
 
   async Exits() {
     return Promise.all(Object.values(this.exits).map((exit) => {
       const [roomId = exit] = Object.keys(exit);
-      return this.get('room', roomId);
+      return this.dao.get('room', roomId);
     }));
   }
 
@@ -77,12 +77,12 @@ export default class Room extends Model {
     if (!isObjectLike(exit)) return undefined;
 
     const [obstacles] = Object.values(exit);
-    return Promise.all(obstacles.map(obstacle => this.get('obstacle', obstacle)));
+    return Promise.all(obstacles.map(obstacle => this.dao.get('obstacle', obstacle)));
   }
 
   async Obstacles() {
     const obstacles = flatten(Object.values(this.exits).filter(exit => isObjectLike(exit)).map(obstacle => Object.values(obstacle)[0]));
-    return Promise.all(obstacles.map(obstacle => this.get('obstacle', obstacle)));
+    return Promise.all(obstacles.map(obstacle => this.dao.get('obstacle', obstacle)));
   }
 
   async Door(dir) {

@@ -1,8 +1,19 @@
 import { of } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
+import { emit } from '../service/event.service';
 import Model from './Model';
 
 export default class Being extends Model {
+  say(phrase) {
+    return of('say').pipe(
+      mergeMap(async () => {
+        const room = await this.Room();
+        emit('say', { being: this, room, phrase });
+        return this.describe('info', `You say "${phrase}"`);
+      }),
+    );
+  }
+
   move(dir) {
     return of('move').pipe(
       mergeMap(async () => {
@@ -21,18 +32,23 @@ export default class Being extends Model {
       delay(1000),
       mergeMap(({ from, to }) => {
         this.room = to.id;
+        emit('move', { being: this, from, to });
         return this.describe('room', to);
       }),
     );
   }
 
-  grab(target) {
-    return of('grab').pipe(
+  get(target) {
+    return of('get').pipe(
       mergeMap(async () => {
         const room = await this.Room();
         const locatedItem = await room.findItem(target);
         const item = room.takeItem(locatedItem);
+        return item;
+      }),
+      mergeMap((item) => {
         this.items.push(item.id);
+        emit('get', { being: this, item });
         return this.describe('info', `You took ${item.name}.`);
       }),
     );
@@ -43,6 +59,9 @@ export default class Being extends Model {
       mergeMap(async () => {
         const room = await this.Room();
         const item = await this.findItem(target, true);
+        return { room, item };
+      }),
+      mergeMap(({ room, item }) => {
         room.items.push(item.id);
         return this.describe('info', `You dropped ${item.name}.`);
       }),

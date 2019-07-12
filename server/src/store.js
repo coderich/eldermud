@@ -28,7 +28,7 @@ export const get = async (modelName, id, initialData = {}) => {
 
   // Attempt to get data from dao
   const data = await dao.get(modelName, id);
-  const model = new Models[tcm](Object.assign({}, data, initialData, { set, del, get }));
+  const model = new Models[tcm](Object.assign({}, data, initialData, { dao: { set, del, get } }));
   set(modelName, id, model);
   return model;
 };

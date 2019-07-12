@@ -12,7 +12,7 @@ const viewport = {
 const map = [
   [0, { 1: ['e', 's'] }, { 1: ['w', 's'] }, 0],
   [0, { 1: ['n', 'e', 'sw'] }, { 2: ['n', 'w', 'se'] }, 0],
-  [{ 3: ['ne', 'se'] }, { 4: ['e', 's'] }, { 5: ['w', 's'] }, { 6: ['nw', 'sw'] }],
+  [{ 3: ['ne', 'se'] }, { 4: ['e', 's'] }, { 5: ['w', 's'] }, { 6: ['nw', 'sw', 'u'] }],
   [0, { 7: ['n', 'nw'] }, { 8: ['n', 'ne'] }, 0],
 ];
 
@@ -31,15 +31,6 @@ const getInfo = (row, col, dir) => {
 };
 
 const Component = memo((props) => {
-  const common = {
-    endpoint: 'Blank',
-    connector: 'Straight',
-    overlays: [
-      ['Arrow', { width: 5, length: 5, location: 1 }],
-      // ['Label', { id: '1', label: 'foo' }],
-    ],
-  };
-
   setTimeout(() => {
     jsPlumb.ready(() => {
       jsPlumb.setContainer('container');
@@ -51,8 +42,13 @@ const Component = memo((props) => {
             const source = `room-${row}-${col}`;
 
             dirs.forEach((dir) => {
-              const { target, anchors } = getInfo(row, col, dir);
-              jsPlumb.connect({ source, target, anchors }, common);
+              const {
+                target,
+                anchors,
+                endpoint = 'Blank',
+                connector = 'Straight',
+              } = getInfo(row, col, dir);
+              jsPlumb.connect({ source, target, anchors, endpoint, connector });
             });
           }
         });
