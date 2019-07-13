@@ -1,7 +1,8 @@
 import { Subject, of } from 'rxjs';
 import { tap, map, concatMap, catchError, retry } from 'rxjs/operators';
 import { translate } from '../service/command.service';
-import AbortActionError from './AbortActionError';
+import AbortActionError from '../error/AbortActionError';
+import InterruptActionError from '../error/InterruptActionError';
 
 export default class UserStream {
   constructor(user) {
@@ -59,6 +60,7 @@ export default class UserStream {
       concatMap(action => action.pipe(
         catchError((e) => {
           if (e instanceof AbortActionError) return of({ type: 'error', value: e.message });
+          if (e instanceof InterruptActionError) return of({ type: 'info', value: e.message });
           console.error(e);
           return of(e);
         }),

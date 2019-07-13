@@ -2,20 +2,11 @@ import { of } from 'rxjs';
 import { tap, delay, mergeMap, mergeAll } from 'rxjs/operators';
 import CreatureStream from '../core/CreatureStream';
 import Being from './Being';
-import templates from '../template';
 
 export default class Creature extends Being {
   constructor(...args) {
     super(...args);
-
-    const { name, dc, ac, exp, attacks } = templates[this.template];
-
     this.isCreature = true;
-    this.name = name;
-    this.dc = dc;
-    this.ac = ac;
-    this.exp = exp;
-    this.attacks = attacks;
     this.stream$ = new CreatureStream(this);
     this.process({ type: 'scan' });
   }

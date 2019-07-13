@@ -1,6 +1,7 @@
 import { of } from 'rxjs';
-import { tap, delay, mergeMap } from 'rxjs/operators';
+import { tap, delay, mergeMap, catchError } from 'rxjs/operators';
 import UserStream from '../core/UserStream';
+import AbortActionError from '../error/AbortActionError';
 import Being from './Being';
 
 export default class User extends Being {
@@ -8,11 +9,24 @@ export default class User extends Being {
     super(...args);
     this.isUser = true;
     this.stream$ = new UserStream(this);
-    this.combatEngaged = false;
+
+    setInterval(() => {
+      if (this.hp < this.mhp) {
+        this.hp++;
+        this.emit('status', { being: this });
+      }
+    }, 1500);
   }
 
   process(data) {
     this.stream$.next(data);
+  }
+
+  break(msg) {
+    if (this.combatEngaged) {
+      this.combatEngaged = null;
+      this.interrupt(msg);
+    }
   }
 
   attack(target) {
@@ -28,6 +42,7 @@ export default class User extends Being {
       }),
       delay(attack.lead),
       tap((being) => {
+        if (being.hp <= 0) this.break('*Combat Off*');
         const roll = this.roll(attack.acc);
         const hit = roll >= being.ac;
 
@@ -40,9 +55,15 @@ export default class User extends Being {
       }),
       delay(attack.lag),
       tap((being) => {
-        if (this.combatEngaged === being) {
-          this.process(`attack ${being.name}`);
+        if (being.hp <= 0) this.break('*Combat Off*');
+
+        if (this.combatEngaged) {
+          this.process(`attack ${this.combatEngaged.name}`);
         }
+      }),
+      catchError((e) => {
+        if (e instanceof AbortActionError && this.combatEngaged) this.break('*Combat Off*');
+        throw e;
       }),
     );
   }

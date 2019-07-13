@@ -35,10 +35,10 @@ export const emit = async (type, payload) => {
     case 'attack': {
       const { source, target, hit, damage } = payload;
 
-      if (source.room === target.room) {
-        const room = `room-${source.room}`;
-
-        if (hit) target.hp -= damage;
+      if (source.room === target.room && !source.dead) {
+        const room = await source.Room();
+        const playersInRoom = await room.Players();
+        const roomId = `room-${source.room}`;
 
         if (source.isUser) {
           if (hit) {
@@ -50,17 +50,33 @@ export const emit = async (type, payload) => {
 
         if (target.isUser) {
           if (hit) {
-            target.socket.emit('message', { type: 'error', value: `${source.name} hit you for ${damage} damage!` });
+            target.socket.emit('message', { type: 'error', value: `The ${source.name} hits you for ${damage} damage!` });
             target.socket.emit('message', { type: 'status', value: { hp: target.hp } });
           } else {
-            target.socket.emit('message', { type: 'info', value: `${source.name} swings at you, but misses!` });
+            target.socket.emit('message', { type: 'info', value: `The ${source.name} swings at you, but misses!` });
           }
         } else {
           // eslint-disable-next-line
           if (hit) {
-            source.socket.to(room).emit('message', { type: 'error', value: `${source.name} hit ${target.name} for ${damage} damage!` });
+            source.socket.to(roomId).emit('message', { type: 'error', value: `${source.name} hits ${target.name} for ${damage} damage!` });
           } else {
-            source.socket.to(room).emit('message', { type: 'info', value: `${source.name} swings at ${target.name}, but misses!` });
+            source.socket.to(roomId).emit('message', { type: 'info', value: `${source.name} swings at ${target.name}, but misses!` });
+          }
+        }
+
+        if (hit) {
+          target.hp -= damage;
+          if (target.hp < 1 && target.isCreature) {
+            target.dead = true;
+            room.leave(target.id);
+            source.socket.emit('message', { type: 'info', value: `The ${target.name} falls to the ground.` });
+            source.socket.to(roomId).emit('message', { type: 'info', value: `The ${target.name} falls to the ground.` });
+            const playersInCombat = playersInRoom.filter(player => player.combatEngaged === target);
+            const expEach = Math.ceil(target.exp / playersInCombat.length);
+            playersInCombat.forEach((player) => {
+              player.exp += expEach;
+              source.socket.emit('message', { type: 'info', value: `You gain ${expEach} experience.` });
+            });
           }
         }
       }

@@ -1,18 +1,20 @@
 import { Model } from '@coderich/hotrod';
-import Chance from 'chance';
 import { emit } from '../service/event.service';
+import { roll } from '../service/game.service';
+import AbortActionError from '../error/AbortActionError';
+import InterruptActionError from '../error/InterruptActionError';
 import Describer from './Describer';
-import AbortActionError from './AbortActionError';
 
 export default class extends Model {
   constructor(props) {
     super({ enumerable: true });
     this.balk = (msg) => { throw new AbortActionError(msg); };
+    this.interrupt = (msg) => { throw new InterruptActionError(msg); };
     this.timeout = ms => new Promise(res => setTimeout(res, ms));
     this.defineProperties({ ...props }, { writable: true, enumerable: true });
     this.describer = new Describer(this.dao, this.id);
-    this.chance = new Chance();
     this.emit = emit;
+    this.roll = roll;
   }
 
   async describe(type, obj) {
@@ -38,16 +40,5 @@ export default class extends Model {
     if (index < 0) return false;
     if (take) this.items.splice(index, 1);
     return items[index];
-  }
-
-  roll(dice) {
-    const input = dice.match(/\S+/g).join('');
-    const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+|-|\\*|\\/]?)(\d*)/);
-
-    const roll = Array.from(Array(Number.parseInt(rolls, 10))).reduce((prev, curr) => {
-      return prev + this.chance.integer({ min: 1, max: sides });
-    }, 0);
-
-    return eval(`${roll} ${op} ${mod}`); // eslint-disable-line
   }
 }

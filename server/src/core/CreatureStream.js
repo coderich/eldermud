@@ -1,6 +1,6 @@
 import { Subject, of } from 'rxjs';
 import { tap, mergeMap, concatMap, catchError, retry, publish } from 'rxjs/operators';
-import AbortActionError from './AbortActionError';
+import AbortActionError from '../error/AbortActionError';
 
 export default class CreatureStream {
   constructor(creature) {

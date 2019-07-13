@@ -1,12 +1,62 @@
 import { isObjectLike, flatten } from 'lodash';
 import Model from '../core/Model';
+import { makeCreature, chance } from '../service/game.service';
 
 export default class Room extends Model {
   constructor(...args) {
     super(...args);
-    this.description = this.chance.paragraph();
+    this.description = chance.paragraph();
     this.items = this.items || [];
     this.beings = this.beings || [];
+    if (this.spawn) this.spawnCheck();
+  }
+
+  async spawnCheck() {
+    const now = new Date().getTime();
+    const creatures = await this.Creatures();
+
+    if (creatures.length < this.spawnlings.max && this.spawn <= now) {
+      const ids = Object.keys(this.spawnlings.creatures);
+      const templates = await Promise.all(ids.map(id => this.dao.template(id)));
+
+      // First try for bosses
+      const [boss] = templates.filter((t) => {
+        const inRoom = creatures.filter(c => c.template === t.id);
+        if (!t.spawn) return false;
+        if (t.spawn > now) return false;
+        if (inRoom.length >= this.spawnlings.creatures[t.id].max) return false;
+        return true;
+      }).sort((a, b) => a.spawn - b.spawn);
+
+      if (boss) {
+        const spawn = await makeCreature(boss, { room: this.id });
+        boss.spawn = now + boss.respawn;
+        this.join(spawn.id);
+        this.spawnCheck();
+        return;
+      }
+
+      // Next try for ordinary creatures
+      const regulars = templates.filter((t) => {
+        const inRoom = creatures.filter(c => c.template === t.id);
+        if (t.spawn) return false;
+        if (inRoom.length >= this.spawnlings.creatures[t.id].max) return false;
+        return true;
+      });
+
+      const regular = regulars[Math.floor(Math.random() * regulars.length)];
+
+      if (regular) {
+        const spawn = await makeCreature(regular, { room: this.id });
+        this.join(spawn.id);
+        this.spawnCheck();
+        return;
+      }
+    }
+
+    // Nothing to do
+    this.spawn = new Date().getTime() + this.respawn;
+    setTimeout(() => this.spawnCheck(), this.respawn + 10);
   }
 
   async findItem(target) {

@@ -3,19 +3,31 @@ export default {
     id: 'user.1',
     name: 'chardy',
     room: 'room.1',
-    hp: 27,
+    hp: 25,
+    mhp: 30,
     items: [],
   },
   'creature.1': {
-    id: 'creature.1',
     template: 'creature.rat',
+    id: 'creature.1',
     room: 'room.1',
-    hp: '10',
+    name: 'rat',
+    dc: 1,
+    ac: 8,
+    hp: 10,
+    exp: 10,
+    attacks: {
+      'attack.bite': {
+        lead: 1000,
+        lag: 2500,
+        dmg: '1d3',
+        acc: '1d20',
+      },
+    },
   },
   'room.1': {
     id: 'room.1',
     name: 'Hallway, Start',
-    beings: ['creature.1'],
     exits: { s: 'room.2' },
     items: ['item.1'],
   },
@@ -28,6 +40,19 @@ export default {
     id: 'room.3',
     name: 'Hallway, End',
     exits: { n: 'room.2' },
+    spawn: new Date().getTime(),
+    respawn: 10000,
+    spawnlings: {
+      max: 2,
+      creatures: {
+        'creature.rat': {
+          max: 2,
+        },
+        'creature.cavebear': {
+          max: 1,
+        },
+      },
+    },
   },
   'obstacle.1': {
     id: 'obstacle.1',

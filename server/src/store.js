@@ -16,6 +16,10 @@ export const del = async (id) => {
   delete store[id];
 };
 
+export const template = async (id) => {
+  return dao.template(id);
+};
+
 export const get = async (id, initialData = {}) => {
   const [name] = id.split('.');
   const tcm = name.charAt(0).toUpperCase() + name.slice(1);
@@ -26,7 +30,7 @@ export const get = async (id, initialData = {}) => {
 
   // Attempt to get data from dao
   const data = await dao.get(id);
-  const model = new Models[tcm](Object.assign({}, data, initialData, { dao: { set, del, get } }));
+  const model = new Models[tcm](Object.assign({}, data, initialData, { dao: { set, del, get, template } }));
   set(id, model);
   return model;
 };

@@ -19,6 +19,32 @@ export default {
         acc: '1d20',
       },
     },
+    roams: false,
+    follows: true,
+  },
+  'creature.cavebear': {
+    id: 'creature.cavebear',
+    name: 'cave bear',
+    dc: 3,
+    ac: 12,
+    hp: 50,
+    exp: 6, // per hp?
+    spawn: new Date().getTime(),
+    respawn: 60000, // 1 minute
+    attacks: {
+      'attack.bite': {
+        lead: 1000,
+        lag: 2500,
+        dmg: '4d3',
+        acc: '1d20',
+      },
+      'attack.claw': {
+        lead: 1000,
+        lag: 2000,
+        dmg: '3d3',
+        acc: '2d10',
+      },
+    },
     drops: {
       'item.idk': {
         pct: 10,
@@ -32,6 +58,10 @@ export default {
   'attack.bite': {
     id: 'attack.bite',
     type: 'piercing',
+  },
+  'attack.claw': {
+    id: 'attack.claw',
+    type: 'slashing',
   },
   'attack.sword': {
     id: 'attack.bite',

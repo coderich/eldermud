@@ -12,14 +12,15 @@ server.on('connection', async (socket) => {
   const data = {
     id: `user.${id}`,
     name: chance.name(),
-    hp: 27,
+    hp: 25,
+    mhp: 30,
     ac: 10,
     attacks: {
       'attack.punch': {
         lead: 1000,
         lag: 2000,
-        dmg: '1d4',
-        acc: '1d20',
+        dmg: '4d10',
+        acc: '5d10',
       },
     },
     isLoggedIn: true,
