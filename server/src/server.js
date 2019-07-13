@@ -9,7 +9,24 @@ const chance = new Chance();
 
 server.on('connection', async (socket) => {
   const { id } = socket;
-  const data = { id: `user.${id}`, name: chance.name(), hp: 27, isLoggedIn: true, room: 'room.1', socket, subscriptions: [] }; // Faking a user
+  const data = {
+    id: `user.${id}`,
+    name: chance.name(),
+    hp: 27,
+    ac: 10,
+    attacks: {
+      'attack.punch': {
+        lead: 1000,
+        lag: 2000,
+        dmg: '1d4',
+        acc: '1d20',
+      },
+    },
+    isLoggedIn: true,
+    room: 'room.1',
+    socket,
+    subscriptions: [],
+  }; // Faking a user
   const user = await store.get(`user.${id}`, data);
 
   (async () => {

@@ -8,10 +8,13 @@ export default class Creature extends Being {
   constructor(...args) {
     super(...args);
 
-    const { name, attacks } = templates[this.template];
+    const { name, dc, ac, exp, attacks } = templates[this.template];
 
     this.isCreature = true;
     this.name = name;
+    this.dc = dc;
+    this.ac = ac;
+    this.exp = exp;
     this.attacks = attacks;
     this.stream$ = new CreatureStream(this);
     this.process({ type: 'scan' });
@@ -51,8 +54,15 @@ export default class Creature extends Being {
     return of('attack').pipe(
       delay(attack.lead),
       tap(() => {
-        const damage = this.roll(attack.dmg);
-        this.emit('attack', { source: this, target: being, attack, damage });
+        const roll = this.roll(attack.acc);
+        const hit = roll >= being.ac;
+
+        if (hit) {
+          const damage = this.roll(attack.dmg);
+          this.emit('attack', { source: this, target: being, attack, hit, damage });
+        } else {
+          this.emit('attack', { source: this, target: being, attack, hit });
+        }
       }),
       delay(attack.lag),
     );

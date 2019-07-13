@@ -25,8 +25,16 @@ export default {
       },
     },
   },
+  'attack.punch': {
+    id: 'attack.punch',
+    type: 'bludgeoning',
+  },
   'attack.bite': {
     id: 'attack.bite',
     type: 'piercing',
+  },
+  'attack.sword': {
+    id: 'attack.bite',
+    type: 'slashing',
   },
 };

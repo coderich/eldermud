@@ -33,18 +33,35 @@ export const emit = async (type, payload) => {
       break;
     }
     case 'attack': {
-      const { source, target, damage } = payload;
+      const { source, target, hit, damage } = payload;
 
       if (source.room === target.room) {
-        target.hp -= damage;
+        const room = `room-${source.room}`;
+
+        if (hit) target.hp -= damage;
 
         if (source.isUser) {
-          source.socket.emit('message', { type: 'error', value: `You hit ${target.name} for ${damage} damage!` });
+          if (hit) {
+            source.socket.emit('message', { type: 'error', value: `You hit ${target.name} for ${damage} damage!` });
+          } else {
+            source.socket.emit('message', { type: 'info', value: `You swing at ${target.name}, but miss!` });
+          }
         }
 
         if (target.isUser) {
-          target.socket.emit('message', { type: 'error', value: `${source.name} hit you for ${damage} damage!` });
-          target.socket.emit('message', { type: 'status', value: { hp: target.hp } });
+          if (hit) {
+            target.socket.emit('message', { type: 'error', value: `${source.name} hit you for ${damage} damage!` });
+            target.socket.emit('message', { type: 'status', value: { hp: target.hp } });
+          } else {
+            target.socket.emit('message', { type: 'info', value: `${source.name} swings at you, but misses!` });
+          }
+        } else {
+          // eslint-disable-next-line
+          if (hit) {
+            source.socket.to(room).emit('message', { type: 'error', value: `${source.name} hit ${target.name} for ${damage} damage!` });
+          } else {
+            source.socket.to(room).emit('message', { type: 'info', value: `${source.name} swings at ${target.name}, but misses!` });
+          }
         }
       }
       break;

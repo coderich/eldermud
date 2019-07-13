@@ -8,6 +8,7 @@ export default class User extends Being {
     super(...args);
     this.isUser = true;
     this.stream$ = new UserStream(this);
+    this.combatEngaged = false;
   }
 
   process(data) {
@@ -15,18 +16,34 @@ export default class User extends Being {
   }
 
   attack(target) {
+    const [attack] = Object.values(this.attacks);
+
     return of('attack').pipe(
       mergeMap(async () => {
         const room = await this.Room();
         const being = (await room.resolveTarget('beings', target)) || this.balk("You don't see that here.");
+        if (!this.combatEngaged) this.socket.emit('message', { type: 'info', value: '*Combat Engaged*' });
+        this.combatEngaged = being;
         return being;
       }),
-      delay(1000),
+      delay(attack.lead),
       tap((being) => {
-        const damage = this.roll('2d4');
-        this.emit('attack', { source: this, target: being, damage });
+        const roll = this.roll(attack.acc);
+        const hit = roll >= being.ac;
+
+        if (hit) {
+          const damage = this.roll(attack.dmg);
+          this.emit('attack', { source: this, target: being, attack, hit, damage });
+        } else {
+          this.emit('attack', { source: this, target: being, attack, hit });
+        }
       }),
-      delay(1000),
+      delay(attack.lag),
+      tap((being) => {
+        if (this.combatEngaged === being) {
+          this.process(`attack ${being.name}`);
+        }
+      }),
     );
   }
 
