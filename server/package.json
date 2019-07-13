@@ -5,6 +5,7 @@
   "description": "Eldermud Server",
   "dependencies": {
     "@coderich/hotrod": "^2.0.1",
+    "chance": "^1.0.18",
     "esm": "^3.2.25",
     "lodash": "^4.17.11",
     "require-dir": "^1.2.0",

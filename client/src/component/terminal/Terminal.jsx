@@ -3,8 +3,6 @@ import { Grid, Box } from '@material-ui/core';
 import Action from './Action';
 import Input from './Input';
 
-const prompt = '>';
-
 const container = {
   fontSize: '16px',
   width: '100%',
@@ -27,7 +25,7 @@ const screen = {
 };
 
 const Terminal = memo((props) => {
-  const { command, responses } = props;
+  const { prompt, command, responses } = props;
 
   const onSubmit = (value) => {
     command(value);
@@ -56,11 +54,13 @@ export default connect({
     command: 'command',
   },
   selectors: {
+    prompt: 'prompt',
     responses: 'responses',
   },
 })(Terminal);
 
 Terminal.propTypes = {
+  prompt: PropTypes.string.isRequired,
   command: PropTypes.func.isRequired,
   responses: PropTypes.instanceOf(Array).isRequired,
 };

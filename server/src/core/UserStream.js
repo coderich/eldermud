@@ -14,6 +14,10 @@ export default class UserStream {
         }
 
         switch (command.name) {
+          case 'attack': {
+            const target = command.args.join(' ');
+            return user.attack(target);
+          }
           case 'open': case 'close': {
             const target = command.args.join(' ');
             return user[command.name](target);

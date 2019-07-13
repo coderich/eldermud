@@ -29,7 +29,8 @@ const Action = memo((props) => {
       </Fragment>
     );
     case 'error': return <div style={{ color: 'red' }}>{value}</div>;
-    default: return <div>{value}</div>;
+    case 'info': return <div>{value}</div>;
+    default: return <div />;
   }
 });
 

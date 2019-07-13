@@ -4,28 +4,13 @@ import Model from '../core/Model';
 export default class Room extends Model {
   constructor(...args) {
     super(...args);
+    this.description = this.chance.paragraph();
     this.items = this.items || [];
     this.beings = this.beings || [];
   }
 
   async findItem(target) {
-    let index;
-    const items = await this.Items();
-
-    // Try plain search
-    index = items.findIndex(it => it.name.indexOf(target.toLowerCase()) === 0);
-
-    // Try Tokenize
-    if (index < 0) {
-      index = items.findIndex((it) => {
-        const tokens = it.name.toLowerCase().split(' ');
-        return tokens.find(tok => tok.indexOf(target.toLowerCase()) === 0);
-      });
-    }
-
-    if (index < 0) this.balk("You don't see that here.");
-
-    return items[index];
+    return (await this.resolveTarget('items', target)) || this.balk("You don't see that here.");
   }
 
   join(id) {
@@ -98,5 +83,13 @@ export default class Room extends Model {
 
   async Beings() {
     return Promise.all(this.beings.map(being => this.dao.get(being)));
+  }
+
+  async Players() {
+    return (await this.Beings()).filter(being => being.isUser);
+  }
+
+  async Creatures() {
+    return (await this.Beings()).filter(being => being.isCreature);
   }
 }

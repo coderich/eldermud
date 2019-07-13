@@ -1,54 +1,29 @@
 import { Subject, of } from 'rxjs';
-import { tap, map, concatMap, catchError, retry } from 'rxjs/operators';
-import { translate } from '../service/command.service';
+import { tap, mergeMap, concatMap, catchError, retry, publish } from 'rxjs/operators';
 import AbortActionError from './AbortActionError';
 
 export default class CreatureStream {
   constructor(creature) {
-    return new Subject().pipe(
-      tap(input => input === 'x' && creature.balk('intercepted')),
-      map(input => translate(input)),
-      map((command) => {
-        if (command.scope === 'navigation') {
-          return creature.move(command.code);
-        }
+    const stream = new Subject().pipe(
+      mergeMap(async ({ type, payload }) => {
+        const room = await creature.Room();
 
-        switch (command.name) {
-          case 'open': case 'close': {
-            const target = command.args.join(' ');
-            return creature[command.name](target);
+        switch (type) {
+          case 'move': {
+            const { being, to } = payload;
+
+            if (room.id === to.id) {
+              await creature.timeout(1000); // Reflexes/Awareness
+              return creature.scan();
+            }
+
+            return creature.follow(being);
           }
-          case 'look': {
-            const target = command.args.join(' ');
-            return creature.look(target);
-          }
-          case 'get': {
-            const target = command.args.join(' ');
-            return creature.get(target);
-          }
-          case 'drop': {
-            const target = command.args.join(' ');
-            return creature.drop(target);
-          }
-          case 'search': {
-            return creature.search();
-          }
-          case 'use': {
-            const dir = translate(command.args[command.args.length - 1]);
-            return creature.use(command, dir);
-          }
-          case 'inventory': {
-            return creature.inventory();
-          }
-          case 'none': {
-            return of('none').pipe(
-              concatMap(async () => {
-                return creature.describe('room', await creature.Room());
-              }),
-            );
+          case 'scan': {
+            return creature.scan();
           }
           default: {
-            return creature.say(command.input);
+            return 'idk';
           }
         }
       }),
@@ -59,7 +34,19 @@ export default class CreatureStream {
           return of(e);
         }),
       )),
+      tap((v) => {
+        if (v !== 'chill') creature.process({ type: 'scan' });
+      }),
+      catchError((e) => {
+        console.error(e);
+        return of(e);
+      }),
       retry(),
+      publish(),
     );
+
+    stream.connect();
+
+    return stream;
   }
 }

@@ -1,4 +1,5 @@
 import React, { memo, PropTypes } from '@coderich/hotrod/react';
+import '../asset/styles.css';
 
 const Layout = memo((props) => {
   const { children } = props;

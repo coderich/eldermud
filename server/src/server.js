@@ -1,22 +1,28 @@
 import SocketServer from 'socket.io';
+import Chance from 'chance';
 import * as store from './store';
 
 // Setup Server
 const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 });
 
+const chance = new Chance();
+
 server.on('connection', async (socket) => {
   const { id } = socket;
-  const data = { id: `user.${id}`, isLoggedIn: true, room: 'room.1', items: [], socket, subscriptions: [] }; // Faking a user
+  const data = { id: `user.${id}`, name: chance.name(), hp: 27, isLoggedIn: true, room: 'room.1', socket, subscriptions: [] }; // Faking a user
   const user = await store.get(`user.${id}`, data);
 
   (async () => {
     const room = await user.Room();
     room.join(user.id);
     socket.join(`room-${room.id}`);
+    socket.emit('message', { type: 'status', value: { hp: user.hp } });
     socket.emit('message', await user.describe('room', room));
 
     user.stream$.subscribe({
-      next: msg => socket.emit('message', msg),
+      next: (msg) => {
+        if (msg.type) socket.emit('message', msg);
+      },
     });
   })();
 

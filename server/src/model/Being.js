@@ -1,15 +1,20 @@
 import { of } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
-import { emit } from '../service/event.service';
 import { translate } from '../service/command.service';
 import Model from '../core/Model';
 
 export default class Being extends Model {
+  constructor(...args) {
+    super(...args);
+    this.memory = [];
+    this.items = this.items || [];
+  }
+
   say(phrase) {
     return of('say').pipe(
       mergeMap(async () => {
         const room = await this.Room();
-        emit('say', { being: this, room, phrase });
+        this.emit('say', { being: this, room, phrase });
         return this.describe('info', `You say "${phrase}"`);
       }),
     );
@@ -33,7 +38,7 @@ export default class Being extends Model {
       delay(1000),
       mergeMap(({ from, to }) => {
         this.room = to.id;
-        emit('move', { being: this, from, to });
+        this.emit('move', { being: this, from, to });
         return this.describe('room', to);
       }),
     );
@@ -49,7 +54,7 @@ export default class Being extends Model {
       }),
       mergeMap((item) => {
         this.items.push(item.id);
-        emit('get', { being: this, item });
+        this.emit('get', { being: this, item });
         return this.describe('info', `You took ${item.name}.`);
       }),
     );

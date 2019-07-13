@@ -1,5 +1,5 @@
 import React, { PropTypes, memo, useState } from '@coderich/hotrod/react';
-import { Grid, Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 
 const style = {
   width: '100%',

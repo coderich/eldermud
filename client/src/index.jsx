@@ -18,13 +18,20 @@ const actions = {
     server.send(payload);
   }),
   response: new Action('response'),
+  prompt: new Action('prompt'),
 };
 
 const selectors = {
+  prompt: new Selector('data.prompt').default('>'),
   responses: new Selector('data.responses').default([]),
 };
 
 const reducers = [
+  new Reducer(actions.prompt, selectors.prompt, ({
+    success: (prompt, { payload }) => {
+      return payload;
+    },
+  })),
   new Reducer(actions.command, selectors.responses, ({
     success: (responses, { payload }) => {
       responses.push({ type: 'command', value: payload });
@@ -38,8 +45,12 @@ const reducers = [
 ];
 
 server.on('message', (data) => {
-  console.log(data);
-  actions.response.dispatch(data);
+  // console.log(data);
+  if (data.type === 'status') {
+    actions.prompt.dispatch(`[HP=${data.value.hp}]:`);
+  } else {
+    actions.response.dispatch(data);
+  }
 });
 
 // Load modules
