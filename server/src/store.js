@@ -1,10 +1,5 @@
-import RequireDir from 'require-dir';
 import * as dao from './dao';
-
-const Models = Object.entries(RequireDir('./model')).reduce((prev, [name, obj]) => {
-  const [fn] = Object.values(obj);
-  return Object.assign(prev, { [name]: fn });
-}, {});
+import * as Models from './model';
 
 const store = {};
 

@@ -1,6 +1,6 @@
 import SocketServer from 'socket.io';
 import Chance from 'chance';
-import * as store from './store';
+import { set } from './service/DataService';
 
 // Setup Server
 const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 });
@@ -25,10 +25,11 @@ server.on('connection', async (socket) => {
     },
     isLoggedIn: true,
     room: 'room.1',
-    socket,
-    subscriptions: [],
   }; // Faking a user
-  const user = await store.get(`user.${id}`, data);
+
+  const user = await set(`user.${id}`, data);
+  user.socket = socket;
+  user.subscriptions = [];
 
   (async () => {
     const room = await user.Room();
@@ -48,7 +49,6 @@ server.on('connection', async (socket) => {
     const room = await user.Room();
     room.leave(user.id);
     socket.leave(`room-${room.id}`);
-    store.del('user', user.id);
   });
 
   socket.on('disconnect', (reason) => {

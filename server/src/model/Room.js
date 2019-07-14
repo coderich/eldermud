@@ -1,4 +1,5 @@
 import { isObjectLike, flatten } from 'lodash';
+import { Get, get as dataGet } from '../service/DataService';
 import Model from '../core/Model';
 import { makeCreature, chance } from '../service/game.service';
 
@@ -8,7 +9,7 @@ export default class Room extends Model {
     this.description = chance.paragraph();
     this.items = this.items || [];
     this.beings = this.beings || [];
-    if (this.spawn) this.spawnCheck();
+    // if (this.spawn) this.spawnCheck();
   }
 
   async spawnCheck() {
@@ -17,7 +18,7 @@ export default class Room extends Model {
 
     if (creatures.length < this.spawnlings.max && this.spawn <= now) {
       const ids = Object.keys(this.spawnlings.creatures);
-      const templates = await Promise.all(ids.map(id => this.dao.template(id)));
+      const templates = await Promise.all(ids.map(id => Get(id)));
 
       // First try for bosses
       const [boss] = templates.filter((t) => {
@@ -79,7 +80,7 @@ export default class Room extends Model {
   }
 
   async search() {
-    const items = await Promise.all(this.items.map(item => this.dao.get(item)));
+    const items = await Promise.all(this.items.map(item => dataGet(item)));
     return items.filter(item => item.state.hidden).map((item) => {
       item.state.hidden = false;
       return item;
@@ -87,7 +88,7 @@ export default class Room extends Model {
   }
 
   async Items() {
-    const items = await Promise.all(this.items.map(item => this.dao.get(item)));
+    const items = await Promise.all(this.items.map(item => dataGet(item)));
     return items.filter(item => !item.state.hidden);
   }
 
@@ -96,13 +97,13 @@ export default class Room extends Model {
     if (!exit) return undefined;
 
     const roomId = exit instanceof Object ? Object.keys(exit)[0] : exit;
-    return this.dao.get(roomId);
+    return dataGet(roomId);
   }
 
   async Exits() {
     return Promise.all(Object.values(this.exits).map((exit) => {
       const [roomId = exit] = Object.keys(exit);
-      return this.dao.get(roomId);
+      return dataGet(roomId);
     }));
   }
 
@@ -112,12 +113,12 @@ export default class Room extends Model {
     if (!isObjectLike(exit)) return undefined;
 
     const [obstacles] = Object.values(exit);
-    return Promise.all(obstacles.map(obstacle => this.dao.get(obstacle)));
+    return Promise.all(obstacles.map(obstacle => dataGet(obstacle)));
   }
 
   async Obstacles() {
     const obstacles = flatten(Object.values(this.exits).filter(exit => isObjectLike(exit)).map(obstacle => Object.values(obstacle)[0]));
-    return Promise.all(obstacles.map(obstacle => this.dao.get(obstacle)));
+    return Promise.all(obstacles.map(obstacle => dataGet(obstacle)));
   }
 
   async Door(dir) {
@@ -132,7 +133,7 @@ export default class Room extends Model {
   }
 
   async Beings() {
-    return Promise.all(this.beings.map(being => this.dao.get(being)));
+    return Promise.all(this.beings.map(being => dataGet(being)));
   }
 
   async Players() {

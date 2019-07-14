@@ -1,5 +1,5 @@
 import Chance from 'chance';
-import * as dao from '../store';
+import { set } from './DataService';
 
 export const chance = new Chance();
 
@@ -23,5 +23,5 @@ export const makeCreature = async (templateData, initialData) => {
   const exp = templateData.exp * hp;
   const template = templateData.id;
   const creature = Object.assign({}, templateData, { id, hp, exp, template }, initialData);
-  return dao.get(id, creature);
+  return set(id, creature);
 };

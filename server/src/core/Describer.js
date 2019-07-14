@@ -1,4 +1,5 @@
 import { clone, isObjectLike } from 'lodash';
+import { get } from '../service/DataService';
 
 const directions = {
   n: 'north',
@@ -14,8 +15,7 @@ const directions = {
 };
 
 export default class Describer {
-  constructor(dao, id) {
-    this.dao = dao;
+  constructor(id) {
     this.id = id;
   }
 
@@ -41,7 +41,7 @@ export default class Describer {
 
         // Obstacle(s)
         const [ids] = Object.values(obj);
-        const obstacles = await Promise.all(ids.map(id => this.dao.get(id)));
+        const obstacles = await Promise.all(ids.map(id => get(id)));
         const [door] = obstacles.filter(obstacle => obstacle.type === 'door');
         if (!door) return undefined;
         const description = await this.describe('door', door);

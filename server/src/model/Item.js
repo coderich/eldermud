@@ -1,3 +1,4 @@
+import { get as dataGet } from '../service/DataService';
 import Model from '../core/Model';
 
 export default class Item extends Model {
@@ -14,6 +15,6 @@ export default class Item extends Model {
   }
 
   async Obstacles() {
-    return Promise.all(this.obstacles.map(obstacle => this.dao.get(obstacle)));
+    return Promise.all(this.obstacles.map(obstacle => dataGet(obstacle)));
   }
 }

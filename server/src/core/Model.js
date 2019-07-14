@@ -12,7 +12,7 @@ export default class extends Model {
     this.interrupt = (msg) => { throw new InterruptActionError(msg); };
     this.timeout = ms => new Promise(res => setTimeout(res, ms));
     this.defineProperties({ ...props }, { writable: true, enumerable: true });
-    this.describer = new Describer(this.dao, this.id);
+    this.describer = new Describer(this.id);
     this.emit = emit;
     this.roll = roll;
   }
