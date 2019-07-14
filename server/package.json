@@ -8,12 +8,13 @@
     "chance": "^1.0.18",
     "esm": "^3.2.25",
     "lodash": "^4.17.11",
+    "redis": "^2.8.0",
     "require-dir": "^1.2.0",
     "rxjs": "^6.5.2",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "@coderich/ratchet": "^1.1.7"
+    "@coderich/ratchet": "^1.2.0"
   },
   "scripts": {
     "start": "node -r esm src/server.js",
