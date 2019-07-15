@@ -11,8 +11,8 @@ export default (id, target) => createAction(
     const unit = await getData(id);
     const room = await unit.Room();
     const item = await room.resolveTarget('items', target) || balk('You don\'t see that here!');
-    await pullData(room.id, 'items', item.id);
-    await pushData(unit.id, 'items', item.id);
+    const itemId = await pullData(room.id, 'items', item.id) || balk('You no longer see that here!');
+    await pushData(unit.id, 'items', itemId);
     return { unit, item };
   }),
 ).listen({

@@ -62,7 +62,8 @@ export const pushData = async (id, field, data) => {
 
 export const pullData = async (id, field, data) => {
   const index = await toPromise(client.json_arrindex, id, `.${field}`, JSON.stringify(data));
-  return delData(id, `${field}[${index}]`);
+  const item = await toPromise(client.json_arrpop, id, `.${field}`, index);
+  return JSON.parse(item);
 };
 
 
