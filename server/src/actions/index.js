@@ -1,6 +1,11 @@
+export { default as close } from './close';
 export { default as drop } from './drop';
 export { default as get } from './get';
 export { default as inventory } from './inventory';
 export { default as look } from './look';
 export { default as move } from './move';
+export { default as open } from './open';
+export { default as say } from './say';
 export { default as scan } from './scan';
+export { default as search } from './search';
+export { default as use } from './use';

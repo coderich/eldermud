@@ -1,21 +1,19 @@
 import { mergeMap } from 'rxjs/operators';
 import { getSocket } from '../service/SocketService';
-import { getData, pushData, pullData } from '../service/DataService';
+import { getData } from '../service/DataService';
 import { createAction, abortAction } from '../service/StreamService';
 import AbortActionError from '../error/AbortActionError';
 
-export default (id, target) => createAction(
+export default id => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
     const room = await unit.Room();
-    const item = await room.resolveTarget('items', target) || abortAction('You don\'t see that here!');
-    const itemId = await pullData(room.id, 'items', item.id) || abortAction('You no longer see that here!');
-    await pushData(unit.id, 'items', itemId);
-    return { unit, item };
+    const items = await room.search();
+    if (!items.length) abortAction('You don\'t notice anything.');
+    return unit.describe('info', `You notice: ${await unit.describer.describe('items', items)}`);
   }),
 ).listen({
-  next: async ({ unit, item }) => {
-    const message = await unit.describe('info', `You took ${item.name}.`);
+  next: (message) => {
     getSocket(id).emit('message', message);
   },
   error: (e) => {

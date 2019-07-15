@@ -1,21 +1,27 @@
 import { mergeMap } from 'rxjs/operators';
 import { getSocket } from '../service/SocketService';
-import { getData, pushData, pullData } from '../service/DataService';
+import { getData } from '../service/DataService';
 import { createAction, abortAction } from '../service/StreamService';
 import AbortActionError from '../error/AbortActionError';
 
-export default (id, target) => createAction(
+export default (id, command, dir) => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
-    const room = await unit.Room();
+
+    if (dir.scope === 'navigation') {
+      const target = command.args.slice(0, -1).join(' ');
+      const item = await unit.resolveTarget('items', target) || abortAction('You don\'t have that on you!');
+      const room = await unit.Room();
+      const door = await room.Door(dir.code) || abortAction('There is nothing in that direction!');
+      return item.use(door);
+    }
+
+    const target = command.args.join(' ');
     const item = await unit.resolveTarget('items', target) || abortAction('You don\'t have that on you!');
-    const itemId = await pullData(unit.id, 'items', item.id) || abortAction('You no longer have that on you!');
-    await pushData(room.id, 'items', itemId);
-    return { unit, item };
+    return item.use();
   }),
 ).listen({
-  next: async ({ unit, item }) => {
-    const message = await unit.describe('info', `You dropped ${item.name}.`);
+  next: (message) => {
     getSocket(id).emit('message', message);
   },
   error: (e) => {

@@ -1,6 +1,6 @@
 import SocketServer from 'socket.io';
 import Chance from 'chance';
-import { setData, pushData } from './service/DataService';
+import { getData, setData, pushData, pullData } from './service/DataService';
 import { translate } from './service/CommandService';
 import { setSocket, unsetSocket } from './service/SocketService';
 import { writeStream, closeStream } from './service/StreamService';
@@ -32,14 +32,17 @@ const newUser = id => ({
 
 server.on('connection', async (socket) => {
   const { id } = socket;
-  const user = await setData(`user.${id}`, newUser(id));
-  await pushData('room.1', 'units', user.id);
-  setSocket(user.id, socket);
-  writeStream(user.id, actions.scan(user.id));
+  const data = await setData(`user.${id}`, newUser(id));
+  const userId = data.id;
+  await pushData('room.1', 'units', userId);
+  setSocket(userId, socket);
+  writeStream(userId, actions.scan(userId));
 
   socket.on('disconnecting', async (reason) => {
-    unsetSocket(user.id);
-    closeStream(user.id);
+    unsetSocket(userId);
+    closeStream(userId);
+    const user = await getData(userId);
+    pullData(user.room, 'units', userId);
   });
 
   socket.on('disconnect', (reason) => {
@@ -53,27 +56,38 @@ server.on('connection', async (socket) => {
     const command = translate(input);
 
     if (command.scope === 'navigation') {
-      return writeStream(`${user.id}`, actions.move(user.id, command.code));
+      return writeStream(userId, actions.move(userId, command.code));
     }
 
     switch (command.name) {
       case 'look': {
         const target = command.args.join(' ');
-        return writeStream(`${user.id}`, actions.look(user.id, target));
+        return writeStream(userId, actions.look(userId, target));
       }
       case 'get': {
         const target = command.args.join(' ');
-        return writeStream(`${user.id}`, actions.get(user.id, target));
+        return writeStream(userId, actions.get(userId, target));
       }
       case 'drop': {
         const target = command.args.join(' ');
-        return writeStream(`${user.id}`, actions.drop(user.id, target));
+        return writeStream(userId, actions.drop(userId, target));
+      }
+      case 'open': case 'close': {
+        const target = command.args.join(' ');
+        return writeStream(userId, actions[command.name](userId, target));
       }
       case 'inventory': {
-        return writeStream(`${user.id}`, actions.inventory(user.id));
+        return writeStream(userId, actions.inventory(userId));
+      }
+      case 'search': {
+        return writeStream(userId, actions.search(userId));
+      }
+      case 'use': {
+        const dir = translate(command.args[command.args.length - 1]);
+        return writeStream(userId, actions.use(userId, command, dir));
       }
       default: {
-        return writeStream(`${user.id}`, actions.scan(user.id));
+        return writeStream(userId, actions.scan(userId));
       }
     }
   });

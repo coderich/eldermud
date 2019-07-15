@@ -35,7 +35,7 @@ export default {
   'room.2': {
     id: 'room.2',
     name: 'Hallway, Center',
-    exits: { n: 'room.1', s: 'room.3' },
+    exits: { n: 'room.1', s: { 'room.3': ['obstacle.1'] } },
     items: ['item.2', 'item.3'],
     units: [],
   },

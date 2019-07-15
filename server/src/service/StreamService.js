@@ -1,17 +1,24 @@
-import { Subject, of } from 'rxjs';
+import { Subject, of, empty } from 'rxjs';
 import { concatMap, publish, take, share, catchError } from 'rxjs/operators';
+import AbortActionError from '../error/AbortActionError';
 
 const streams = {};
 
-// export const createAction = (stream) => {
-//   const stream$ = stream.pipe(take(1), share());
-//   const thunk = () => stream$;
-//   thunk.listen = (subscriber) => { stream$.subscribe(subscriber); return thunk; };
-//   return thunk;
-// };
+export const abortAction = (msg) => {
+  throw new AbortActionError(msg);
+};
 
 export const createAction = (...operators) => {
-  const stream$ = new Subject().pipe(...operators, take(1), share());
+  const stream$ = new Subject().pipe(
+    ...operators,
+    catchError((e) => {
+      if (e instanceof AbortActionError) throw e;
+      console.error(e);
+      return empty();
+    }),
+    take(1),
+    share(),
+  );
   const thunk = () => { stream$.next('go'); return stream$; };
   thunk.listen = (subscriber) => { stream$.subscribe(subscriber); return thunk; };
   return thunk;
