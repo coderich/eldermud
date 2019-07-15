@@ -1,5 +1,5 @@
 import { clone, isObjectLike } from 'lodash';
-import { get } from '../service/DataService';
+import { getData } from '../service/DataService';
 
 const directions = {
   n: 'north',
@@ -26,7 +26,7 @@ export default class Describer {
       case 'room': {
         target.exits = await this.describe('exits', target.exits);
         target.items = await this.describe('items', await target.Items());
-        target.beings = (await target.Beings()).filter(being => being.id !== this.id).map(being => being.name);
+        target.beings = (await target.Units()).filter(unit => unit.id !== this.id).map(unit => unit.name);
         delete target.description;
         break;
       }
@@ -41,7 +41,7 @@ export default class Describer {
 
         // Obstacle(s)
         const [ids] = Object.values(obj);
-        const obstacles = await Promise.all(ids.map(id => get(id)));
+        const obstacles = await Promise.all(ids.map(id => getData(id)));
         const [door] = obstacles.filter(obstacle => obstacle.type === 'door');
         if (!door) return undefined;
         const description = await this.describe('door', door);

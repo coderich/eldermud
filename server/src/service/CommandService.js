@@ -69,4 +69,4 @@ export const translate = (input) => {
   );
 };
 
-export const stfu = {};
+export const resolve = {};

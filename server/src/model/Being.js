@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { delay, mergeMap } from 'rxjs/operators';
-import { translate } from '../service/command.service';
-import { get as dataGet } from '../service/DataService';
+import { translate } from '../service/CommandService';
+import { getData } from '../service/DataService';
 import Model from '../core/Model';
 
 export default class Being extends Model {
@@ -164,10 +164,10 @@ export default class Being extends Model {
   }
 
   async Room() {
-    return dataGet(this.room);
+    return getData(this.room);
   }
 
   async Items() {
-    return Promise.all(this.items.map(item => dataGet(item)));
+    return Promise.all(this.items.map(item => getData(item)));
   }
 }

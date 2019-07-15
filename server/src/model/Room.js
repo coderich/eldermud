@@ -1,5 +1,5 @@
 import { isObjectLike, flatten } from 'lodash';
-import { Get, get as dataGet } from '../service/DataService';
+import { Get, set, get as dataGet } from '../service/DataService';
 import Model from '../core/Model';
 import { makeCreature, chance } from '../service/game.service';
 
@@ -8,7 +8,7 @@ export default class Room extends Model {
     super(...args);
     this.description = chance.paragraph();
     this.items = this.items || [];
-    this.beings = this.beings || [];
+    this.units = this.units || [];
     // if (this.spawn) this.spawnCheck();
   }
 
@@ -61,15 +61,7 @@ export default class Room extends Model {
   }
 
   async findItem(target) {
-    return (await this.resolveTarget('items', target)) || this.balk("You don't see that here.");
-  }
-
-  join(id) {
-    this.beings.push(id);
-  }
-
-  leave(id) {
-    this.beings.splice(this.beings.indexOf(id), 1);
+    return this.resolveTarget('items', target);
   }
 
   takeItem(item) {
@@ -81,10 +73,8 @@ export default class Room extends Model {
 
   async search() {
     const items = await Promise.all(this.items.map(item => dataGet(item)));
-    return items.filter(item => item.state.hidden).map((item) => {
-      item.state.hidden = false;
-      return item;
-    });
+    const hiddenItems = items.filter(item => item.state.hidden);
+    return Promise.all(hiddenItems.map(item => set(item.id, 'state.hidden', false)));
   }
 
   async Items() {
@@ -132,15 +122,15 @@ export default class Room extends Model {
     return obstacles.filter(obstacle => obstacle.type === 'door');
   }
 
-  async Beings() {
-    return Promise.all(this.beings.map(being => dataGet(being)));
+  async Units() {
+    return Promise.all(this.units.map(unit => dataGet(unit)));
   }
 
   async Players() {
-    return (await this.Beings()).filter(being => being.isUser);
+    return (await this.Units()).filter(unit => unit.isUser);
   }
 
   async Creatures() {
-    return (await this.Beings()).filter(being => being.isCreature);
+    return (await this.Units()).filter(unit => unit.isCreature);
   }
 }

@@ -45,7 +45,7 @@ const reducers = [
 ];
 
 server.on('message', (data) => {
-  // console.log(data);
+  console.log(data);
   if (data.type === 'status') {
     actions.prompt.dispatch(`[HP=${data.value.hp}]:`);
   } else {

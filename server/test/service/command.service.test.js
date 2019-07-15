@@ -17,7 +17,7 @@ describe('CommandService:translate', () => {
     expect(translate('attack bird').name).toEqual('attack');
 
     expect(translate('attacks').name).toEqual('unknown');
-    expect(translate('a bird is singing').name).toEqual('unknown');
+    expect(translate('a bird is singing songs').name).toEqual('unknown');
   });
 
   test('North command', () => {

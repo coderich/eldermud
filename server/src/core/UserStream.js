@@ -1,6 +1,6 @@
 import { Subject, of } from 'rxjs';
 import { tap, map, concatMap, catchError, retry } from 'rxjs/operators';
-import { translate } from '../service/command.service';
+import { translate } from '../service/CommandService';
 import AbortActionError from '../error/AbortActionError';
 import InterruptActionError from '../error/InterruptActionError';
 

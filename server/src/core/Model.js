@@ -21,7 +21,7 @@ export default class extends Model {
     return { type, value: await this.describer.describe(type, obj) };
   }
 
-  async resolveTarget(domain, target, take = false) {
+  async resolveTarget(domain, target) {
     let index;
     const tcm = domain.charAt(0).toUpperCase() + domain.slice(1);
     const items = await this[tcm]();
@@ -38,7 +38,6 @@ export default class extends Model {
     }
 
     if (index < 0) return false;
-    if (take) this.items.splice(index, 1);
     return items[index];
   }
 }

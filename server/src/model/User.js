@@ -10,12 +10,12 @@ export default class User extends Being {
     this.isUser = true;
     this.stream$ = new UserStream(this);
 
-    setInterval(() => {
-      if (this.hp < this.mhp) {
-        this.hp++;
-        this.emit('status', { being: this });
-      }
-    }, 1500);
+    // setInterval(() => {
+    //   if (this.hp < this.mhp) {
+    //     this.hp++;
+    //     this.emit('status', { being: this });
+    //   }
+    // }, 1500);
   }
 
   process(data) {
