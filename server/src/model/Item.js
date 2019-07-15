@@ -7,10 +7,10 @@ export default class Item extends Model {
       case 'key': {
         const obstacles = await this.Obstacles();
         const doors = obstacles.filter(o => o.type === 'door');
-        const door = doors.find(d => d.id === obj.id) || this.balk('The key will not turn.');
+        const door = doors.find(d => d.id === obj.id) || this.abortAction('The key will not turn.');
         return door.unlock();
       }
-      default: return this.balk("You can't use that!");
+      default: return this.abortAction('You can\'t use that!');
     }
   }
 

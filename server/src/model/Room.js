@@ -66,7 +66,7 @@ export default class Room extends Model {
 
   takeItem(item) {
     const index = this.items.indexOf(item.id);
-    if (index < 0) this.balk("You don't see that here.");
+    if (index < 0) this.abortAction("You don't see that here.");
     this.items.splice(index, 1);
     return item;
   }

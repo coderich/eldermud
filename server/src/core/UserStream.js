@@ -7,7 +7,7 @@ import InterruptActionError from '../error/InterruptActionError';
 export default class UserStream {
   constructor(user) {
     return new Subject().pipe(
-      tap(input => input === 'x' && user.balk('intercepted')),
+      tap(input => input === 'x' && user.abortAction('intercepted')),
       map(input => translate(input)),
       map((command) => {
         if (command.scope === 'navigation') {

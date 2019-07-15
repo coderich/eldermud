@@ -2,8 +2,7 @@ import { mergeMap } from 'rxjs/operators';
 import { getSocket } from '../service/SocketService';
 import { getData } from '../service/DataService';
 import { translate } from '../service/CommandService';
-import { createAction, abortAction } from '../service/StreamService';
-import AbortActionError from '../error/AbortActionError';
+import { createAction } from '../service/StreamService';
 
 export default (id, target) => {
   return createAction(
@@ -13,7 +12,7 @@ export default (id, target) => {
 
       if (target) {
         const { code: dir } = translate(target);
-        const exit = await room.Exit(dir) || abortAction('There is nothing in that direction!');
+        const exit = await room.Exit(dir) || unit.abortAction('There is nothing in that direction!');
         return unit.describe('room', exit);
       }
 
@@ -22,11 +21,6 @@ export default (id, target) => {
   ).listen({
     next: (message) => {
       getSocket(id).emit('message', message);
-    },
-    error: (e) => {
-      if (e instanceof AbortActionError) {
-        getSocket(id).emit('message', { type: 'error', value: e.message });
-      }
     },
   });
 };

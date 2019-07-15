@@ -35,7 +35,7 @@ export default class User extends Being {
     return of('attack').pipe(
       mergeMap(async () => {
         const room = await this.Room();
-        const being = (await room.resolveTarget('beings', target)) || this.balk("You don't see that here.");
+        const being = (await room.resolveTarget('beings', target)) || this.abortAction("You don't see that here.");
         if (!this.combatEngaged) this.socket.emit('message', { type: 'info', value: '*Combat Engaged*' });
         this.combatEngaged = being;
         return being;
@@ -69,6 +69,6 @@ export default class User extends Being {
   }
 
   async findItem(target, take = false) {
-    return (await this.resolveTarget('items', target, take)) || this.balk("You don't have that on you!");
+    return (await this.resolveTarget('items', target, take)) || this.abortAction("You don't have that on you!");
   }
 }
