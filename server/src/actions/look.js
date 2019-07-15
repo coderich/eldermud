@@ -1,14 +1,14 @@
-import { Subject } from 'rxjs';
-import { mergeMap, take, share } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { getSocket } from '../service/SocketService';
 import { getData } from '../service/DataService';
 import { translate } from '../service/CommandService';
+import { createAction } from '../service/StreamService';
 
 const AbortActionError = class extends Error {};
 const balk = (msg) => { throw new AbortActionError(msg); };
 
 export default (id, target) => {
-  const stream = new Subject().pipe(
+  return createAction(
     mergeMap(async () => {
       const unit = await getData(id);
       const room = await unit.Room();
@@ -21,27 +21,16 @@ export default (id, target) => {
 
       return unit.describe('info', room.description);
     }),
-    take(1),
-    share(),
-  );
-
-  const socket = getSocket(id);
-
-  stream.subscribe({
+  ).listen({
     next: (message) => {
-      socket.emit('message', message);
+      getSocket(id).emit('message', message);
     },
     error: (e) => {
       if (e instanceof AbortActionError) {
-        socket.emit('message', { type: 'error', value: e.message });
+        getSocket(id).emit('message', { type: 'error', value: e.message });
       } else {
         console.log(e);
       }
     },
   });
-
-  return () => {
-    stream.next({ id, target });
-    return stream;
-  };
 };

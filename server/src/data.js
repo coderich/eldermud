@@ -43,6 +43,7 @@ export default {
     id: 'room.3',
     name: 'Hallway, End',
     exits: { n: 'room.2' },
+    items: [],
     units: [],
     spawn: new Date().getTime(),
     respawn: 10000,
