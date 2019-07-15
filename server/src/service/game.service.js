@@ -1,5 +1,5 @@
 import Chance from 'chance';
-import { set } from './DataService';
+import { setData } from './DataService';
 
 export const chance = new Chance();
 
@@ -23,5 +23,5 @@ export const makeCreature = async (templateData, initialData) => {
   const exp = templateData.exp * hp;
   const template = templateData.id;
   const creature = Object.assign({}, templateData, { id, hp, exp, template }, initialData);
-  return set(id, creature);
+  return setData(id, creature);
 };

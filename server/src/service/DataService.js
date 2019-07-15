@@ -66,60 +66,7 @@ export const pullData = async (id, field, data) => {
   return JSON.parse(item);
 };
 
-// export const resolveTarget = async (domain, target) => {
-//   let index;
-//   const tcm = domain.charAt(0).toUpperCase() + domain.slice(1);
-//   const items = await this[tcm]();
-
-//   // Try plain search
-//   index = items.findIndex(it => it.name.indexOf(target.toLowerCase()) === 0);
-
-//   // Try Tokenize
-//   if (index < 0) {
-//     index = items.findIndex((it) => {
-//       const tokens = it.name.toLowerCase().split(' ');
-//       return tokens.find(tok => tok.indexOf(target.toLowerCase()) === 0);
-//     });
-//   }
-
-//   if (index < 0) return false;
-//   return items[index];
-// };
-
-
-
-
-
-
-
-
-export const Get = async (id, field = '') => {
-  return JSON.parse(await toPromise(client.json_get, id, `.${field}`));
-};
-
-export const get = async (id) => {
-  const data = await Get(id);
-  return hydrate(data);
-};
-
-export const Set = async (id, ...args) => {
-  let field; let data;
-  if (args[1] !== undefined) ([field, data] = args);
-  else ([field, data] = ['', args[0]]);
-  await toPromise(client.json_set, id, `.${field}`, JSON.stringify(data));
-  return Get(id);
-};
-
-export const set = async (id, ...args) => {
-  const result = await Set(id, ...args);
-  return hydrate(result);
-};
-
-export const Del = async (id, field = '') => {
-  return toPromise(client.json_del, id, `.${field}`);
-};
-
 // Fixtures
 Object.entries({ ...db, ...tmpl }).forEach(([key, value]) => {
-  Set(key, value);
+  setData(key, value);
 });

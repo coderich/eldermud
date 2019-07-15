@@ -1,5 +1,5 @@
 import { isObjectLike, flatten } from 'lodash';
-import { Get, set, get as dataGet } from '../service/DataService';
+import { getData, setData } from '../service/DataService';
 import Model from '../core/Model';
 import { makeCreature, chance } from '../service/game.service';
 
@@ -18,7 +18,7 @@ export default class Room extends Model {
 
     if (creatures.length < this.spawnlings.max && this.spawn <= now) {
       const ids = Object.keys(this.spawnlings.creatures);
-      const templates = await Promise.all(ids.map(id => Get(id)));
+      const templates = await Promise.all(ids.map(id => getData(id)));
 
       // First try for bosses
       const [boss] = templates.filter((t) => {
@@ -72,13 +72,13 @@ export default class Room extends Model {
   }
 
   async search() {
-    const items = await Promise.all(this.items.map(item => dataGet(item)));
+    const items = await Promise.all(this.items.map(item => getData(item)));
     const hiddenItems = items.filter(item => item.state.hidden);
-    return Promise.all(hiddenItems.map(item => set(item.id, 'state.hidden', false)));
+    return Promise.all(hiddenItems.map(item => setData(item.id, 'state.hidden', false)));
   }
 
   async Items() {
-    const items = await Promise.all(this.items.map(item => dataGet(item)));
+    const items = await Promise.all(this.items.map(item => getData(item)));
     return items.filter(item => !item.state.hidden);
   }
 
@@ -87,13 +87,13 @@ export default class Room extends Model {
     if (!exit) return undefined;
 
     const roomId = exit instanceof Object ? Object.keys(exit)[0] : exit;
-    return dataGet(roomId);
+    return getData(roomId);
   }
 
   async Exits() {
     return Promise.all(Object.values(this.exits).map((exit) => {
       const [roomId = exit] = Object.keys(exit);
-      return dataGet(roomId);
+      return getData(roomId);
     }));
   }
 
@@ -103,12 +103,12 @@ export default class Room extends Model {
     if (!isObjectLike(exit)) return undefined;
 
     const [obstacles] = Object.values(exit);
-    return Promise.all(obstacles.map(obstacle => dataGet(obstacle)));
+    return Promise.all(obstacles.map(obstacle => getData(obstacle)));
   }
 
   async Obstacles() {
     const obstacles = flatten(Object.values(this.exits).filter(exit => isObjectLike(exit)).map(obstacle => Object.values(obstacle)[0]));
-    return Promise.all(obstacles.map(obstacle => dataGet(obstacle)));
+    return Promise.all(obstacles.map(obstacle => getData(obstacle)));
   }
 
   async Door(dir) {
@@ -123,7 +123,7 @@ export default class Room extends Model {
   }
 
   async Units() {
-    return Promise.all(this.units.map(unit => dataGet(unit)));
+    return Promise.all(this.units.map(unit => getData(unit)));
   }
 
   async Players() {
