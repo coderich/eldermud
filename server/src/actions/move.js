@@ -1,6 +1,5 @@
 import { mergeMap, delay } from 'rxjs/operators';
-import { getSocket } from '../service/SocketService';
-import { getData, setData, pushData, pullData } from '../service/DataService';
+import { getData, setData, pushData, pullData } from '../service/data.service';
 import { createAction } from '../service/StreamService';
 
 export default async (id, dir) => createAction(
@@ -21,7 +20,9 @@ export default async (id, dir) => createAction(
   next: async ({ unit, from, to }) => {
     if (unit.isUser) {
       const message = await unit.describe('room', to);
-      getSocket(id).emit('message', message);
+      unit.emit('message', message);
+      unit.broadcast(to, 'message', { type: 'info', value: `${unit.name} has just entered the room.` });
+      unit.broadcast(from, 'message', { type: 'info', value: `${unit.name} has just left the room.` });
     }
   },
 });

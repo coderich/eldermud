@@ -1,72 +1,13 @@
 import { isObjectLike, flatten } from 'lodash';
 import Model from '../core/Model';
-import { chance, roll } from '../service/game.service';
+import { chance } from '../service/game.service';
+import { addRoom } from '../service/room.service';
 
 export default class Room extends Model {
   constructor(...args) {
     super(...args);
     this.description = chance.paragraph();
-    this.items = this.items || [];
-    this.units = this.units || [];
-    // if (this.spawn) this.spawnCheck();
-  }
-
-  async spawnCheck() {
-    const now = new Date().getTime();
-    const creatures = await this.Creatures();
-
-    if (creatures.length < this.spawnlings.max && this.spawn <= now) {
-      const ids = Object.keys(this.spawnlings.creatures);
-      const templates = await Promise.all(ids.map(id => this.getData(id)));
-
-      // First try for bosses
-      const [boss] = templates.filter((t) => {
-        const inRoom = creatures.filter(c => c.template === t.id);
-        if (!t.spawn) return false;
-        if (t.spawn > now) return false;
-        if (inRoom.length >= this.spawnlings.creatures[t.id].max) return false;
-        return true;
-      }).sort((a, b) => a.spawn - b.spawn);
-
-      if (boss) {
-        const spawn = await this.makeCreature(boss, { room: this.id });
-        boss.spawn = now + boss.respawn;
-        this.join(spawn.id);
-        this.spawnCheck();
-        return;
-      }
-
-      // Next try for ordinary creatures
-      const regulars = templates.filter((t) => {
-        const inRoom = creatures.filter(c => c.template === t.id);
-        if (t.spawn) return false;
-        if (inRoom.length >= this.spawnlings.creatures[t.id].max) return false;
-        return true;
-      });
-
-      const regular = regulars[Math.floor(Math.random() * regulars.length)];
-
-      if (regular) {
-        const spawn = await this.makeCreature(regular, { room: this.id });
-        this.join(spawn.id);
-        this.spawnCheck();
-        return;
-      }
-    }
-
-    // Nothing to do
-    this.spawn = new Date().getTime() + this.respawn;
-    setTimeout(() => this.spawnCheck(), this.respawn + 10);
-  }
-
-  async makeCreature(templateData, initialData) {
-    const now = new Date().getTime();
-    const id = `creature.${now}`;
-    const hp = roll(templateData.hp);
-    const exp = templateData.exp * hp;
-    const template = templateData.id;
-    const creature = Object.assign({}, templateData, { id, hp, exp, template }, initialData);
-    return this.setData(id, creature);
+    addRoom(this);
   }
 
   async search() {

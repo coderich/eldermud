@@ -1,7 +1,7 @@
 // https://oss.redislabs.com/redisjson/commands
 /*
  [
- "json.mget", "json.type", "json.numincrby", "json.nummultby", "json.strappend",
+ "json.mget", "json.type", "json.nummultby", "json.strappend",
  "json.strlen", "json.arrlen",
  "json.arrtrim", "json.objkeys", "json.objlen", "json.debug", "json.forget", "json.resp"
  ]
@@ -20,6 +20,7 @@ redis.addCommand('json.arrpop');
 redis.addCommand('json.arrindex');
 redis.addCommand('json.arrinsert');
 redis.addCommand('json.arrappend');
+redis.addCommand('json.numincrby');
 
 const client = redis.createClient();
 
@@ -43,6 +44,11 @@ export const hydrate = (data) => {
 
 export const getData = async (id, field = '') => {
   return hydrate(JSON.parse(await toPromise(client.json_get, id, `.${field}`)));
+};
+
+export const getList = async (id, field) => {
+  const list = await getData(id, field);
+  return Promise.all(list.map(li => getData(li)));
 };
 
 export const setData = async (id, ...args) => {
@@ -69,7 +75,11 @@ export const pullData = async (id, field, data) => {
   return JSON.parse(item);
 };
 
-Object.assign(api, { getData, setData, delData, pushData, pullData });
+export const incData = async (id, field, number) => {
+  return JSON.parse(await toPromise(client.json_numincrby, id, `.${field}`, number));
+};
+
+Object.assign(api, { getData, getList, setData, delData, pushData, pullData });
 
 // Fixtures
 Object.entries({ ...db, ...tmpl }).forEach(([key, value]) => {

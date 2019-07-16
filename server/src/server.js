@@ -1,6 +1,6 @@
 import SocketServer from 'socket.io';
 import Chance from 'chance';
-import { getData, setData, pushData, pullData } from './service/DataService';
+import { getData, setData, pushData, pullData } from './service/data.service';
 import { translate } from './service/CommandService';
 import { setSocket, unsetSocket } from './service/SocketService';
 import { writeStream, closeStream } from './service/StreamService';

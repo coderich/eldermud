@@ -1,6 +1,6 @@
 import { mergeMap } from 'rxjs/operators';
 import { getSocket } from '../service/SocketService';
-import { getData, pushData, pullData } from '../service/DataService';
+import { getData, pushData, pullData } from '../service/data.service';
 import { createAction } from '../service/StreamService';
 
 export default async (id, target) => createAction(
