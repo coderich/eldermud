@@ -7,7 +7,7 @@ export default class Room extends Model {
   constructor(...args) {
     super(...args);
     this.description = chance.paragraph();
-    addRoom(this);
+    addRoom(this.id);
   }
 
   async search() {

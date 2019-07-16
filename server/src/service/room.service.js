@@ -1,13 +1,15 @@
 import { roll } from './game.service';
-import { getData, setData, pushData } from './data.service';
+import { getData, setData, pushData, incData } from './data.service';
 
-const makeCreature = async (templateData, initialData) => {
+const spawnCreature = async (templateData, initialData) => {
   const now = new Date().getTime();
   const id = `creature.${now}`;
   const hp = roll(templateData.hp);
   const exp = templateData.exp * hp;
   const template = templateData.id;
   const creature = Object.assign({}, templateData, { id, hp, exp, template }, initialData);
+  await pushData(creature.room, 'units', creature.id);
+  if (creature.respawn) creature.spawn = now + creature.respawn;
   return setData(id, creature);
 };
 
@@ -30,11 +32,8 @@ const spawnCheck = async (roomId) => {
     }).sort((a, b) => a.spawn - b.spawn);
 
     if (boss) {
-      const spawn = await makeCreature(boss, { room: room.id });
-      await setData(spawn.id, 'spawn', now + boss.respawn);
-      await pushData(room.id, 'units', spawn.id);
-      spawnCheck(roomId);
-      return;
+      await spawnCreature(boss, { room: room.id });
+      return spawnCheck(roomId);
     }
 
     // Next try for ordinary creatures
@@ -48,28 +47,26 @@ const spawnCheck = async (roomId) => {
     const regular = regulars[Math.floor(Math.random() * regulars.length)];
 
     if (regular) {
-      const spawn = await makeCreature(regular, { room: room.id });
-      await pushData(room.id, 'units', spawn.id);
-      spawnCheck(roomId);
-      return;
+      await spawnCreature(regular, { room: room.id });
+      return spawnCheck(roomId);
     }
   }
 
   // Nothing to do
-  room.spawn = new Date().getTime() + room.respawn;
-  setTimeout(() => spawnCheck(roomId), room.respawn + 10);
+  await incData(roomId, 'spawn', new Date().getTime() + room.respawn);
+  return setTimeout(() => spawnCheck(roomId), room.respawn + 10);
 };
 
-const rooms = {};
+const rooms = new Set();
 
-export const addRoom = (room) => {
-  if (!rooms[room.id]) {
-    rooms[room.id] = room;
-
-    if (room.spawn) spawnCheck(room.id);
+export const addRoom = async (id) => {
+  if (!rooms.has(id)) {
+    rooms.add(id);
+    const room = await getData(id);
+    if (room.spawn) spawnCheck(id);
   }
 };
 
-export const removeRoom = (room) => {
-
+export const removeRoom = (id) => {
+  rooms.remove(id);
 };

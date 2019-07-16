@@ -21,8 +21,8 @@ export default async (id, dir) => createAction(
     if (unit.isUser) {
       const message = await unit.describe('room', to);
       unit.emit('message', message);
-      unit.broadcast(to, 'message', { type: 'info', value: `${unit.name} has just entered the room.` });
-      unit.broadcast(from, 'message', { type: 'info', value: `${unit.name} has just left the room.` });
+      unit.broadcastToRoom(to.id, 'message', { type: 'info', value: `${unit.name} has just entered the room.` });
+      unit.broadcastToRoom(from.id, 'message', { type: 'info', value: `${unit.name} has just left the room.` });
     }
   },
 });

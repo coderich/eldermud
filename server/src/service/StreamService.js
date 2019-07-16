@@ -1,6 +1,7 @@
 import { Subject, of, empty } from 'rxjs';
-import { concatMap, publish, delay, take, share, catchError } from 'rxjs/operators';
+import { concatMap, publish, delay, take, share, retry, catchError } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
+import AbortStreamError from '../error/AbortStreamError';
 
 const streams = {};
 
@@ -10,14 +11,23 @@ export const createAction = (...operators) => {
     ...operators,
     catchError((e) => {
       if (e instanceof AbortActionError) return empty();
-      console.error(e);
       throw e;
     }),
     take(1),
     share(),
   );
-  const thunk = () => { stream$.next('go'); return stream$; };
-  thunk.listen = (subscriber) => { stream$.subscribe(subscriber); return thunk; };
+
+  const thunk = () => {
+    stream$.next('go');
+    return stream$;
+  };
+
+  thunk.listen = (subscriber) => {
+    if (!subscriber.error) subscriber.error = () => {};
+    stream$.subscribe(subscriber);
+    return thunk;
+  };
+
   return thunk;
 };
 
@@ -27,8 +37,12 @@ export const writeStream = (id, action) => {
   } else {
     streams[id] = new Subject().pipe(
       concatMap(thunk => thunk().pipe(
-        catchError(e => of(e)),
+        catchError((e) => {
+          if (e instanceof AbortStreamError) throw e;
+          return of(e);
+        }),
       )),
+      retry(),
       publish(),
     );
     streams[id].connect();

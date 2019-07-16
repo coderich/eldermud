@@ -1,5 +1,5 @@
-import { tap, delay } from 'rxjs/operators';
-import { getData, setData, incData } from './data.service';
+import { tap, delay, mergeMap } from 'rxjs/operators';
+import { getData, incData } from './data.service';
 import { writeStream, closeStream, createAction } from './StreamService';
 
 const scan = async (creatureId) => {
@@ -9,14 +9,14 @@ const scan = async (creatureId) => {
   return player;
 };
 
-const battle = async (creatureId, player) => {
-  const creature = await getData(creatureId);
-  const room = await creature.Room();
-  const [attack] = Object.values(creature.attacks);
-
+const battle = async (attack, creatureId, playerId) => {
   return createAction(
     delay(attack.lead),
-    tap(() => {
+    mergeMap(async () => {
+      const [creature, player] = await Promise.all([getData(creatureId), getData(playerId)]);
+      if (creature.room !== player.room) creature.abortStream('Target not found');
+
+      // Roll
       const total = creature.roll(attack.acc);
       const hit = total >= player.ac;
 
@@ -24,33 +24,36 @@ const battle = async (creatureId, player) => {
         const damage = creature.roll(attack.dmg);
         incData(player.id, 'hp', -damage);
         player.emit('message', { type: 'error', value: `The ${creature.name} hits you for ${damage} damage!` });
-        player.broadcast(room, 'message', { type: 'error', value: `The ${creature.name} hits ${player.name} for ${damage} damage!` });
+        player.broadcastToRoom(player.room, 'message', { type: 'error', value: `The ${creature.name} hits ${player.name} for ${damage} damage!` });
       } else {
         player.emit('message', { type: 'info', value: `The ${creature.name} swings at you, but misses!` });
-        player.broadcast(room, 'message', { type: 'info', value: `The ${creature.name} swings at ${player.name}, but misses!` });
+        player.broadcastToRoom(player.room, 'message', { type: 'info', value: `The ${creature.name} swings at ${player.name}, but misses!` });
       }
+
+      return hit;
     }),
     delay(attack.lag),
     tap(() => scan(creatureId)),
   ).listen({});
 };
 
-const creatures = {};
+const creatures = new Set();
 
-export const addCreature = (creature) => {
-  if (!creatures[creature.id]) {
-    creatures[creature.id] = creature;
+export const addCreature = (id) => {
+  if (!creatures.has(id)) {
+    creatures.add(id);
   }
 };
 
-export const removeCreature = (creature) => {
-  delete creatures[creature.id];
-  closeStream(creature.id);
+export const removeCreature = (id) => {
+  creatures.remove(id);
+  closeStream(id);
 };
 
 setInterval(() => {
-  Object.keys(creatures).forEach(async (id) => {
+  creatures.forEach(async (id) => {
+    const creature = await getData(id);
     const player = await scan(id);
-    if (player) writeStream(id, await battle(id, player));
+    if (player) writeStream(id, await battle(Object.values(creature.attacks)[0], id, player.id));
   });
 }, 3000);
