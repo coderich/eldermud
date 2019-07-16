@@ -1,10 +1,10 @@
 import { mergeMap } from 'rxjs/operators';
-import { getSocket } from '../service/SocketService';
 import { getData } from '../service/data.service';
 import { createAction } from '../service/StreamService';
 
 export default async (id, command, dir) => createAction(
   mergeMap(async () => {
+    let message;
     const unit = await getData(id);
 
     if (dir.scope === 'navigation') {
@@ -12,15 +12,17 @@ export default async (id, command, dir) => createAction(
       const item = await unit.resolveTarget('items', target) || unit.abortAction('You don\'t have that on you!');
       const room = await unit.Room();
       const door = await room.Door(dir.code) || unit.abortAction('There is nothing in that direction!');
-      return item.use(unit, door);
+      message = await item.use(unit, door);
+    } else {
+      const target = command.args.join(' ');
+      const item = await unit.resolveTarget('items', target) || unit.abortAction('You don\'t have that on you!');
+      message = await item.use(unit);
     }
 
-    const target = command.args.join(' ');
-    const item = await unit.resolveTarget('items', target) || unit.abortAction('You don\'t have that on you!');
-    return item.use(unit);
+    return { unit, message };
   }),
 ).listen({
-  next: (message) => {
-    getSocket(id).emit('message', message);
+  next: ({ unit, message }) => {
+    unit.emit('message', message);
   },
 });

@@ -1,5 +1,4 @@
 import { mergeMap } from 'rxjs/operators';
-import { getSocket } from '../service/SocketService';
 import { getData, pushData, pullData } from '../service/data.service';
 import { createAction } from '../service/StreamService';
 
@@ -15,6 +14,6 @@ export default async (id, target) => createAction(
 ).listen({
   next: async ({ unit, item }) => {
     const message = await unit.describe('info', `You took ${item.name}.`);
-    getSocket(id).emit('message', message);
+    unit.emit('message', message);
   },
 });

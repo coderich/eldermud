@@ -1,5 +1,5 @@
 import AbortActionError from '../error/AbortActionError';
-import { getSocket } from '../service/SocketService';
+import { getSocket } from '../service/socket.service';
 import Describer from '../core/Describer';
 import Unit from './Unit';
 
@@ -21,7 +21,7 @@ export default class User extends Unit {
   }
 
   abortAction(value) {
-    this.socket.emit('message', { type: 'error', value });
+    this.emit('message', { type: 'error', value });
     throw new AbortActionError(value);
   }
 

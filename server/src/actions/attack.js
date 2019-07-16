@@ -1,5 +1,4 @@
 import { mergeMap, delay } from 'rxjs/operators';
-import { getSocket } from '../service/SocketService';
 import { getData } from '../service/data.service';
 import { createAction } from '../service/StreamService';
 
@@ -12,13 +11,13 @@ export default async (id, target) => {
       const unit = await getData(id);
       const room = await unit.Room();
       const enemy = (await room.resolveTarget('units', target)) || unit.abortAction('You don\'t see that here.');
-      return { unit, enemy, attack };
+      return { unit, enemy };
     }),
     delay(attack.lead),
     delay(attack.lag),
   ).listen({
-    next: (message) => {
-      getSocket(id).emit('message', message);
+    next: ({ unit, enemy }) => {
+      // unit.emit('message', message);
     },
   });
 };

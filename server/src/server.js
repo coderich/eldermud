@@ -1,8 +1,8 @@
 import SocketServer from 'socket.io';
 import Chance from 'chance';
 import { getData, setData, pushData, pullData } from './service/data.service';
-import { translate } from './service/CommandService';
-import { setSocket, unsetSocket } from './service/SocketService';
+import { translate } from './service/command.service';
+import { setSocket, unsetSocket } from './service/socket.service';
 import { writeStream, closeStream } from './service/StreamService';
 import * as actions from './actions';
 

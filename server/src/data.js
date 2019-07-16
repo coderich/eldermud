@@ -7,24 +7,24 @@ export default {
     mhp: 30,
     items: [],
   },
-  'creature.1': {
-    template: 'blueprint.rat',
-    id: 'creature.1',
-    room: 'room.1',
-    name: 'rat',
-    dc: 1,
-    ac: 8,
-    hp: 10,
-    exp: 10,
-    attacks: {
-      'attack.bite': {
-        lead: 1000,
-        lag: 2500,
-        dmg: '1d3',
-        acc: '1d20',
-      },
-    },
-  },
+  // 'creature.1': {
+  //   template: 'blueprint.rat',
+  //   id: 'creature.1',
+  //   room: 'room.1',
+  //   name: 'rat',
+  //   dc: 1,
+  //   ac: 8,
+  //   hp: 10,
+  //   exp: 10,
+  //   attacks: {
+  //     'attack.bite': {
+  //       lead: 1000,
+  //       lag: 2500,
+  //       dmg: '1d3',
+  //       acc: '1d20',
+  //     },
+  //   },
+  // },
   'room.1': {
     id: 'room.1',
     name: 'Hallway, Start',
