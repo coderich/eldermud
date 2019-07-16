@@ -4,7 +4,7 @@ import { getData } from '../service/DataService';
 import { translate } from '../service/CommandService';
 import { createAction } from '../service/StreamService';
 
-export default (id, target) => {
+export default async (id, target) => {
   return createAction(
     mergeMap(async () => {
       const unit = await getData(id);

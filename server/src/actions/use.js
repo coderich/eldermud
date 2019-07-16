@@ -3,7 +3,7 @@ import { getSocket } from '../service/SocketService';
 import { getData } from '../service/DataService';
 import { createAction } from '../service/StreamService';
 
-export default (id, command, dir) => createAction(
+export default async (id, command, dir) => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
 

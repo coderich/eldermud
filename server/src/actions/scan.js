@@ -3,7 +3,7 @@ import { getSocket } from '../service/SocketService';
 import { getData } from '../service/DataService';
 import { createAction } from '../service/StreamService';
 
-export default id => createAction(
+export default async id => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
     const room = await unit.Room();

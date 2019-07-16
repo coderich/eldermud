@@ -1,6 +1,6 @@
 export default {
-  'creature.rat': {
-    id: 'creature.rat',
+  'blueprint.rat': {
+    id: 'blueprint.rat',
     name: 'rat',
     dc: 1,
     ac: 8,
@@ -22,8 +22,8 @@ export default {
     roams: false,
     follows: true,
   },
-  'creature.cavebear': {
-    id: 'creature.cavebear',
+  'blueprint.cavebear': {
+    id: 'blueprint.cavebear',
     name: 'cave bear',
     dc: 3,
     ac: 12,

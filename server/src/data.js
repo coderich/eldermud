@@ -8,7 +8,7 @@ export default {
     items: [],
   },
   'creature.1': {
-    template: 'creature.rat',
+    template: 'blueprint.rat',
     id: 'creature.1',
     room: 'room.1',
     name: 'rat',
@@ -50,10 +50,10 @@ export default {
     spawnlings: {
       max: 2,
       creatures: {
-        'creature.rat': {
+        'blueprint.rat': {
           max: 2,
         },
-        'creature.cavebear': {
+        'blueprint.cavebear': {
           max: 1,
         },
       },

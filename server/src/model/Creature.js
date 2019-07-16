@@ -9,7 +9,7 @@ export default class Creature extends Unit {
     super(...args);
     this.isCreature = true;
     this.stream$ = new CreatureStream(this);
-    this.process({ type: 'scan' });
+    // this.process({ type: 'scan' });
   }
 
   process(data) {

@@ -1,3 +1,4 @@
+export { default as attack } from './attack';
 export { default as close } from './close';
 export { default as drop } from './drop';
 export { default as get } from './get';
