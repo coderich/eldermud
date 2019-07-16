@@ -12,12 +12,12 @@ export default (id, command, dir) => createAction(
       const item = await unit.resolveTarget('items', target) || unit.abortAction('You don\'t have that on you!');
       const room = await unit.Room();
       const door = await room.Door(dir.code) || unit.abortAction('There is nothing in that direction!');
-      return item.use(door);
+      return item.use(unit, door);
     }
 
     const target = command.args.join(' ');
     const item = await unit.resolveTarget('items', target) || unit.abortAction('You don\'t have that on you!');
-    return item.use();
+    return item.use(unit);
   }),
 ).listen({
   next: (message) => {

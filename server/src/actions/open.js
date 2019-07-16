@@ -10,7 +10,7 @@ export default (id, target) => createAction(
     const room = await unit.Room();
     const { code: dir } = translate(target);
     const door = await room.Door(dir) || unit.abortAction('There is nothing in that direction!');
-    return door.open();
+    return door.open(unit);
   }),
 ).listen({
   next: (message) => {

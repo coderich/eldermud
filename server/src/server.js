@@ -32,8 +32,7 @@ const newUser = id => ({
 
 server.on('connection', async (socket) => {
   const { id } = socket;
-  const data = await setData(`user.${id}`, newUser(id));
-  const userId = data.id;
+  const { id: userId } = await setData(`user.${id}`, newUser(id));
   await pushData('room.1', 'units', userId);
   setSocket(userId, socket);
   writeStream(userId, actions.scan(userId));
@@ -41,8 +40,8 @@ server.on('connection', async (socket) => {
   socket.on('disconnecting', async (reason) => {
     unsetSocket(userId);
     closeStream(userId);
-    const user = await getData(userId);
-    pullData(user.room, 'units', userId);
+    const room = await getData(userId, 'room');
+    pullData(room, 'units', userId);
   });
 
   socket.on('disconnect', (reason) => {

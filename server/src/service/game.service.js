@@ -1,5 +1,4 @@
 import Chance from 'chance';
-import { setData } from './DataService';
 
 export const chance = new Chance();
 
@@ -14,14 +13,4 @@ export const roll = (dice) => {
   }, 0);
 
   return eval(`${value} ${op} ${mod}`); // eslint-disable-line
-};
-
-export const makeCreature = async (templateData, initialData) => {
-  const now = new Date().getTime();
-  const id = `creature.${now}`;
-  const hp = roll(templateData.hp);
-  const exp = templateData.exp * hp;
-  const template = templateData.id;
-  const creature = Object.assign({}, templateData, { id, hp, exp, template }, initialData);
-  return setData(id, creature);
 };

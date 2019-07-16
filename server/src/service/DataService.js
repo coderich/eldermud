@@ -32,10 +32,13 @@ const toPromise = (fn, ...args) => {
   });
 };
 
+const api = {}; // Hack
+
 export const hydrate = (data) => {
-  const [name] = data.id.split('.');
+  const { id = '' } = data;
+  const [name] = id.split('.');
   const modelName = name.charAt(0).toUpperCase() + name.slice(1);
-  return Models[modelName] ? new Models[modelName](data) : data;
+  return Models[modelName] ? new Models[modelName](Object.assign(data, { ...api })) : data;
 };
 
 export const getData = async (id, field = '') => {
@@ -65,6 +68,8 @@ export const pullData = async (id, field, data) => {
   const item = await toPromise(client.json_arrpop, id, `.${field}`, index);
   return JSON.parse(item);
 };
+
+Object.assign(api, { getData, setData, delData, pushData, pullData });
 
 // Fixtures
 Object.entries({ ...db, ...tmpl }).forEach(([key, value]) => {

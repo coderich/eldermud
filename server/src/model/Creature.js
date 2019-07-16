@@ -1,9 +1,10 @@
 import { of } from 'rxjs';
 import { tap, delay, mergeMap, mergeAll } from 'rxjs/operators';
+import { roll } from '../service/game.service';
 import CreatureStream from '../core/CreatureStream';
-import Being from './Being';
+import Unit from './Unit';
 
-export default class Creature extends Being {
+export default class Creature extends Unit {
   constructor(...args) {
     super(...args);
     this.isCreature = true;
@@ -45,11 +46,11 @@ export default class Creature extends Being {
     return of('attack').pipe(
       delay(attack.lead),
       tap(() => {
-        const roll = this.roll(attack.acc);
-        const hit = roll >= being.ac;
+        const total = roll(attack.acc);
+        const hit = total >= being.ac;
 
         if (hit) {
-          const damage = this.roll(attack.dmg);
+          const damage = roll(attack.dmg);
           this.emit('attack', { source: this, target: being, attack, hit, damage });
         } else {
           this.emit('attack', { source: this, target: being, attack, hit });

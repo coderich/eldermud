@@ -16,10 +16,10 @@ const Action = memo((props) => {
             <span> here.</span>
           </div>
         )}
-        {value.beings.length > 0 && (
+        {value.units.length > 0 && (
           <div>
             <span style={{ color: 'indianred' }}>Also here: </span>
-            <span>{value.beings.join(', ')}</span>
+            <span>{value.units.join(', ')}</span>
           </div>
         )}
         <div style={{ color: 'limegreen' }}>
