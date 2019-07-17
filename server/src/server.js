@@ -3,7 +3,7 @@ import Chance from 'chance';
 import { getData, setData, pushData, pullData } from './service/data.service';
 import { translate } from './service/command.service';
 import { setSocket, unsetSocket } from './service/socket.service';
-import { writeStream, closeStream } from './service/StreamService';
+import { writeStream, closeStream } from './service/stream.service';
 import * as actions from './actions';
 
 // Setup Server
@@ -14,7 +14,7 @@ const chance = new Chance();
 const newUser = id => ({
   id: `user.${id}`,
   name: chance.name(),
-  hp: 25,
+  hp: 1,
   mhp: 30,
   ac: 10,
   attacks: {

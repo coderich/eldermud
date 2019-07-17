@@ -16,12 +16,12 @@ const border = {
 const IndexPage = memo((props) => {
   return (
     <Grid container>
-      <Grid item xs={3}>
+      {/*<Grid item xs={3}>
         <Container maxWidth="md" style={{ paddingTop: '15px' }}>
           <MapView />
         </Container>
-      </Grid>
-      <Grid item xs={9}>
+      </Grid>*/}
+      <Grid item xs={12}>
         <Container maxWidth="md" style={{ paddingTop: '15px' }}>
           <div style={{ ...style, height: '80vh' }}>
             <Terminal />

@@ -18,18 +18,32 @@ export default class User extends Unit {
 
   async broadcastToRoom(roomId, type, payload) {
     const room = await this.getData(roomId);
-    const units = (await room.Units()).filter(unit => unit.isUser && unit.id !== this.id);
+    const units = (await room.Players()).filter(unit => unit.id !== this.id);
     units.forEach(unit => unit.emit(type, payload));
   }
 
+  breakAction(value) {
+    if (value) this.emit('message', { type: 'info', value });
+    throw new AbortActionError(value);
+  }
+
   abortAction(value) {
-    this.emit('message', { type: 'error', value });
+    if (value) this.emit('message', { type: 'error', value });
     throw new AbortActionError(value);
   }
 
   abortStream(value) {
-    this.emit('message', { type: 'error', value });
+    if (value) this.emit('message', { type: 'error', value });
     throw new AbortStreamError(value);
+  }
+
+  death() {
+    this.setData(this.id, 'hp', 10);
+    this.setData(this.id, 'room', 'room.1');
+    this.pullData(this.room, 'units', this.id);
+    this.pushData('room.1', 'units', this.id);
+    this.emit('message', { type: 'info', value: 'You have died.' });
+    this.broadcastToRoom(this.room, 'message', { type: 'info', value: `${this.name} has died.` });
   }
 
   async describe(type, obj) {

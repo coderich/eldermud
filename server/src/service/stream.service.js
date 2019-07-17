@@ -31,6 +31,10 @@ export const createAction = (...operators) => {
   return thunk;
 };
 
+export const createActionLoop = (...operators) => {
+
+};
+
 export const writeStream = (id, action) => {
   if (streams[id]) {
     streams[id].next(action);

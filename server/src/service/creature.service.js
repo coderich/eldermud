@@ -1,59 +1,80 @@
-import { tap, delay, mergeMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { delay, map, concatMap, mergeMap, publish, retry, take, catchError } from 'rxjs/operators';
 import { getData, incData } from './data.service';
-import { writeStream, closeStream, createAction } from './StreamService';
 
-const scan = async (creatureId) => {
-  const creature = await getData(creatureId);
-  const room = await creature.Room();
-  const [player] = await room.Players();
-  return player;
-};
-
-const battle = async (attack, creatureId, playerId) => {
-  return createAction(
-    delay(attack.lead),
+const loop = (id) => {
+  const action = of(id).pipe(
     mergeMap(async () => {
-      const [creature, player] = await Promise.all([getData(creatureId), getData(playerId)]);
-      if (creature.room !== player.room) creature.abortStream('Target not found');
+      // Death check
+      const creature = await getData(id);
+      if (!creature || creature.hp <= 0) return creature.abortAction('dead');
 
-      // Roll
+      // Find a target
+      const room = await creature.Room();
+      const [player] = await room.Players();
+      if (!player) return creature.abortAction('no-targets');
+
+      // Begin attack
+      const [attack] = Object.values(creature.attacks);
+      return { playerId: player.id, attack };
+    }),
+
+    concatMap(args => of(args).pipe(delay(args.attack.lead))),
+
+    mergeMap(async ({ playerId, attack }) => {
+      const [creature, player] = await Promise.all([getData(id), getData(playerId)]);
+      if (creature.room !== player.room) return creature.abortAction('target-fleed');
+
+      // Roll the dice
       const total = creature.roll(attack.acc);
       const hit = total >= player.ac;
 
+      // Outcome
       if (hit) {
         const damage = creature.roll(attack.dmg);
-        incData(player.id, 'hp', -damage);
         player.emit('message', { type: 'error', value: `The ${creature.name} hits you for ${damage} damage!` });
         player.broadcastToRoom(player.room, 'message', { type: 'error', value: `The ${creature.name} hits ${player.name} for ${damage} damage!` });
+        const hp = await incData(player.id, 'hp', -damage);
+        if (hp <= 0) player.death();
       } else {
         player.emit('message', { type: 'info', value: `The ${creature.name} swings at you, but misses!` });
         player.broadcastToRoom(player.room, 'message', { type: 'info', value: `The ${creature.name} swings at ${player.name}, but misses!` });
       }
 
-      return hit;
+      return { creature, attack };
     }),
-    delay(attack.lag),
-    tap(() => scan(creatureId)),
-  ).listen({});
+
+    concatMap(args => of(args).pipe(delay(args.attack.lag))),
+
+    map(({ creature }) => creature.abortAction('repeat')),
+
+    catchError((e) => {
+      return of(e).pipe(
+        delay(1000),
+        map(() => {
+          if (e.message === 'dead') return 'dead';
+          throw e;
+        }),
+      );
+    }),
+
+    take(1), // If we get here, we're dead!
+    retry(),
+    publish(),
+  );
+
+  action.connect();
 };
 
 const creatures = new Set();
 
-export const addCreature = (id) => {
+export const addCreature = async (id) => {
   if (!creatures.has(id)) {
     creatures.add(id);
+    loop(id);
   }
 };
 
 export const removeCreature = (id) => {
   creatures.remove(id);
-  closeStream(id);
 };
-
-setInterval(() => {
-  creatures.forEach(async (id) => {
-    const creature = await getData(id);
-    const player = await scan(id);
-    if (player) writeStream(id, await battle(Object.values(creature.attacks)[0], id, player.id));
-  });
-}, 3000);
