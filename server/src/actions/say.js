@@ -5,12 +5,7 @@ import { createAction } from '../service/stream.service';
 export default async (id, phrase) => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
-    const room = await unit.Room();
-    return { unit, room };
+    unit.emit('message', { type: 'info', value: `You say "${phrase}"` });
+    unit.broadcastToRoom(unit.room, 'message', { type: 'info', value: `${unit.name} says "${phrase}"` });
   }),
-).listen({
-  next: ({ unit, room }) => {
-    const message = unit.describe('info', `You say "${phrase}"`);
-    unit.emit('message', message);
-  },
-});
+);

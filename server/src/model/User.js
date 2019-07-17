@@ -1,6 +1,7 @@
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { getSocket } from '../service/socket.service';
+import { writeStream } from '../service/stream.service';
 import Describer from '../core/Describer';
 import Unit from './Unit';
 
@@ -38,6 +39,7 @@ export default class User extends Unit {
   }
 
   death() {
+    writeStream(this.id, 'abort');
     this.setData(this.id, 'hp', 10);
     this.setData(this.id, 'room', 'room.1');
     this.pullData(this.room, 'units', this.id);

@@ -8,10 +8,6 @@ export default async id => createAction(
     const items = await unit.Items();
     const description = items.length === 0 ? 'nothing!' : items.map(item => item.name).join(', ');
     const message = await unit.describe('info', `You are carrying: ${description}`);
-    return { unit, message };
-  }),
-).listen({
-  next: ({ unit, message }) => {
     unit.emit('message', message);
-  },
-});
+  }),
+);

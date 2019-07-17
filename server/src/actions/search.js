@@ -9,10 +9,7 @@ export default async id => createAction(
     const items = await room.search();
     if (!items.length) unit.abortAction('You don\'t notice anything.');
     const message = await unit.describe('info', `You notice: ${await unit.describer.describe('items', items)}`);
-    return { unit, message };
-  }),
-).listen({
-  next: ({ unit, message }) => {
     unit.emit('message', message);
-  },
-});
+    unit.broadcastToRoom(unit.room, 'message', { type: 'info', value: `${unit.name} is searching the room intently.` });
+  }),
+);

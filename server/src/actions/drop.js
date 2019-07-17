@@ -9,11 +9,7 @@ export default async (id, target) => createAction(
     const item = await unit.resolveTarget('items', target) || unit.abortAction('You don\'t have that on you!');
     const itemId = await pullData(unit.id, 'items', item.id) || unit.abortAction('You no longer have that on you!');
     await pushData(room.id, 'items', itemId);
-    return { unit, item };
-  }),
-).listen({
-  next: async ({ unit, item }) => {
     const message = await unit.describe('info', `You dropped ${item.name}.`);
     unit.emit('message', message);
-  },
-});
+  }),
+);

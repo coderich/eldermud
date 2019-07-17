@@ -49,7 +49,7 @@ export default async (id, input) => {
     //   if (e instanceof AbortActionError && this.combatEngaged) this.break('*Combat Off*');
     //   throw e;
     // }),
-  ).listen({});
+  );
 };
 
 

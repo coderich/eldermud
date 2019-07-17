@@ -14,15 +14,11 @@ export default async (id, dir) => createAction(
   delay(1000),
   mergeMap(async ({ unit, from, to }) => {
     await Promise.all([setData(id, 'room', to.id), pushData(to.id, 'units', unit.id), pullData(from.id, 'units', unit.id)]);
-    return { unit, from, to };
-  }),
-).listen({
-  next: async ({ unit, from, to }) => {
     if (unit.isUser) {
       const message = await unit.describe('room', to);
       unit.emit('message', message);
       unit.broadcastToRoom(to.id, 'message', { type: 'info', value: `${unit.name} has just entered the room.` });
       unit.broadcastToRoom(from.id, 'message', { type: 'info', value: `${unit.name} has just left the room.` });
     }
-  },
-});
+  }),
+);

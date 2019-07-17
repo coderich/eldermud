@@ -18,11 +18,7 @@ export default async (id, target) => {
         message = await unit.describe('info', room.description);
       }
 
-      return { unit, message };
-    }),
-  ).listen({
-    next: ({ unit, message }) => {
       unit.emit('message', message);
-    },
-  });
+    }),
+  );
 };

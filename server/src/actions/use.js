@@ -19,10 +19,6 @@ export default async (id, command, dir) => createAction(
       message = await item.use(unit);
     }
 
-    return { unit, message };
-  }),
-).listen({
-  next: ({ unit, message }) => {
     unit.emit('message', message);
-  },
-});
+  }),
+);

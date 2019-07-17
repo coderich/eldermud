@@ -10,10 +10,6 @@ export default async (id, target) => createAction(
     const { code: dir } = translate(target);
     const door = await room.Door(dir) || unit.abortAction('There is nothing in that direction!');
     const message = await door.open(unit);
-    return { unit, message };
-  }),
-).listen({
-  next: ({ unit, message }) => {
     unit.emit('message', message);
-  },
-});
+  }),
+);

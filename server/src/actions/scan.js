@@ -7,10 +7,6 @@ export default async id => createAction(
     const unit = await getData(id);
     const room = await unit.Room();
     const message = await unit.describe('room', room);
-    return { unit, message };
-  }),
-).listen({
-  next: ({ unit, message }) => {
     unit.emit('message', message);
-  },
-});
+  }),
+);
