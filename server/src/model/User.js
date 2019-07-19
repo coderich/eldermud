@@ -39,6 +39,7 @@ export default class User extends Unit {
   }
 
   death() {
+    writeStream(`${this.id}.attack`, 'abort');
     writeStream(this.id, 'abort');
     this.setData(this.id, 'hp', 10);
     this.setData(this.id, 'room', 'room.1');

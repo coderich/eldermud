@@ -1,7 +1,9 @@
+import Chance from 'chance';
 import { isObjectLike, flatten } from 'lodash';
 import Model from '../core/Model';
-import { chance } from '../service/game.service';
 import { addRoom } from '../service/room.service';
+
+const chance = new Chance();
 
 export default class Room extends Model {
   constructor(...args) {

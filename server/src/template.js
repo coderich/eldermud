@@ -13,8 +13,6 @@ export default {
     ],
     attacks: {
       'attack.bite': {
-        lead: 1000,
-        lag: 2500,
         dmg: '1d3',
         acc: '1d20',
       },
@@ -33,14 +31,10 @@ export default {
     respawn: 60000, // 1 minute
     attacks: {
       'attack.bite': {
-        lead: 1000,
-        lag: 2500,
         dmg: '4d3',
         acc: '1d20',
       },
       'attack.claw': {
-        lead: 1000,
-        lag: 2000,
         dmg: '3d3',
         acc: '2d10',
       },

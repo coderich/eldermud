@@ -1,9 +1,10 @@
 import { of } from 'rxjs';
-import { delay, map, concatMap, mergeMap, retry, catchError } from 'rxjs/operators';
+import { delay, delayWhen, mergeMap, catchError } from 'rxjs/operators';
 import { getData, incData } from './data.service';
-import { createAction, writeStream } from './stream.service';
+import { attackLoop } from './game.service';
+import { createLoop, writeStream } from './stream.service';
 
-const loop = id => createAction(
+const loop = id => createLoop(
   mergeMap(async () => {
     const creature = await getData(id);
 
@@ -17,11 +18,12 @@ const loop = id => createAction(
     return { playerId: player.id, attack };
   }),
 
-  concatMap(args => of(args).pipe(delay(args.attack.lead))),
+  delayWhen(() => attackLoop),
 
   mergeMap(async ({ playerId, attack }) => {
     const [creature, player] = await Promise.all([getData(id), getData(playerId)]);
     if (creature.room !== player.room) return creature.abortAction('target-fleed');
+    if (creature.hp <= 0) return creature.abortAction('dead');
 
     // Roll the dice
     const total = creature.roll(attack.acc);
@@ -42,21 +44,10 @@ const loop = id => createAction(
     return { creature, attack };
   }),
 
-  concatMap(args => of(args).pipe(delay(args.attack.lag))),
-
-  map(({ creature }) => creature.abortAction('repeat')),
-
   catchError((e) => {
-    return of(e).pipe(
-      delay(1000),
-      map(() => {
-        if (e.message === 'dead') return 'dead';
-        throw e;
-      }),
-    );
+    if (e.message === 'dead') throw e;
+    return of(e).pipe(delay(2000));
   }),
-
-  retry(),
 );
 
 const creatures = new Set();

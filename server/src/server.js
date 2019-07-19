@@ -14,15 +14,15 @@ const chance = new Chance();
 const newUser = id => ({
   id: `user.${id}`,
   name: chance.name(),
-  hp: 1,
+  hp: 10,
   mhp: 30,
   ac: 10,
   attacks: {
     'attack.punch': {
       lead: 1000,
       lag: 2000,
-      dmg: '4d10',
-      acc: '5d10',
+      dmg: '1d10',
+      acc: '2d10',
     },
   },
   isLoggedIn: true,

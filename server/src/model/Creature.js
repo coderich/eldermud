@@ -14,9 +14,13 @@ export default class Creature extends Unit {
     addCreature(this.id);
   }
 
-  death() {
+  async death() {
     writeStream(this.id, 'abort');
-    this.pullData(this.room, 'units', this.id);
+    writeStream(`${this.id}.attack`, 'abort');
     toRoom(this.room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
+    return Promise.all([
+      this.pullData(this.room, 'units', this.id),
+      this.delData(this.id),
+    ]);
   }
 }

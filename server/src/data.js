@@ -18,8 +18,6 @@ export default {
     exp: 10,
     attacks: {
       'attack.bite': {
-        lead: 1000,
-        lag: 2500,
         dmg: '1d3',
         acc: '1d20',
       },

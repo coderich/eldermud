@@ -1,12 +1,12 @@
 import { Subject, of, empty } from 'rxjs';
-import { tap, concatMap, publish, delay, take, share, retry, catchError } from 'rxjs/operators';
+import { tap, map, concatMap, publish, take, share, retry, catchError } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 
 const streams = {};
 
 export const createAction = (...operators) => () => of('action').pipe(
-  delay(50),
+  // delay(50),
   ...operators,
   catchError((e) => {
     if (e instanceof AbortActionError) return empty();
@@ -14,6 +14,18 @@ export const createAction = (...operators) => () => of('action').pipe(
   }),
   take(1),
   share(),
+);
+
+export const createLoop = (...operators) => () => of('loop').pipe(
+  ...operators,
+  map(() => { throw new Error('repeat'); }),
+  catchError((e) => {
+    if (e instanceof AbortActionError) return empty();
+    throw e;
+  }),
+  take(1),
+  share(),
+  retry(),
 );
 
 export const writeStream = (id, action) => {

@@ -36,7 +36,7 @@ const toPromise = (fn, ...args) => {
 const api = {}; // Hack
 
 export const hydrate = (data) => {
-  const { id = '' } = data;
+  const { id = '' } = data || {};
   const [name] = id.split('.');
   const modelName = name.charAt(0).toUpperCase() + name.slice(1);
   return Models[modelName] ? new Models[modelName](Object.assign(data, { ...api })) : data;
@@ -60,8 +60,7 @@ export const setData = async (id, ...args) => {
 };
 
 export const delData = async (id, field = '') => {
-  await toPromise(client.json_del, id, `.${field}`);
-  return getData(id);
+  return toPromise(client.json_del, id, `.${field}`);
 };
 
 export const pushData = async (id, field, data) => {
