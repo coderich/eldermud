@@ -1,9 +1,13 @@
+import { tap, mergeMap, delayWhen, finalize } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
-import { addCreature } from '../service/creature.service';
+import { addAttack, breakAttack, getAttack, alertLoop } from '../service/game.service';
 import { toRoom } from '../service/socket.service';
-import { writeStream } from '../service/stream.service';
+import { writeStream, createAction, createLoop } from '../service/stream.service';
 import Unit from './Unit';
+
+const models = new Set();
+const deaths = new Set();
 
 export default class Creature extends Unit {
   constructor(...args) {
@@ -13,11 +17,51 @@ export default class Creature extends Unit {
     this.breakAction = (msg) => { throw new AbortActionError(msg); };
     this.abortAction = (msg) => { throw new AbortActionError(msg); };
     this.abortStream = (msg) => { throw new AbortStreamError(msg); };
-    addCreature(this.id);
+
+    if (!models.has(this.id)) {
+      models.add(this.id);
+
+      writeStream(this.id, createAction(
+        mergeMap(async () => {
+          const room = await this.getData(this.room);
+          const players = await room.Players();
+          const currentAttack = getAttack(this.id);
+
+          if (!players.length) this.break(); // Nothing to fight
+          if (currentAttack && players.find(player => player.id === currentAttack.targetId)) this.abortAction(); // In a fight!
+
+          // Need a target
+          const [player] = players;
+          const [attack] = Object.values(this.attacks);
+          writeStream(`${this.id}.attack`, createLoop(
+            delayWhen(() => alertLoop),
+            tap(() => {
+              if (deaths.has(this.id)) {
+                deaths.delete(this.id);
+                this.break();
+              } else {
+                addAttack(this.id, player.id, attack);
+              }
+            }),
+          ));
+        }),
+        finalize(() => {
+          setTimeout(() => { models.delete(this.id); }, 100);
+        }),
+      ));
+    }
+  }
+
+  break() {
+    breakAttack(this.id);
+    writeStream(this.id, 'abort');
+    writeStream(`${this.id}.attack`, 'abort');
+    this.abortAction();
   }
 
   async death() {
-    const now = new Date().getTime();
+    deaths.add(this.id);
+    breakAttack(this.id);
     writeStream(this.id, 'abort');
     writeStream(`${this.id}.attack`, 'abort');
 
@@ -28,10 +72,10 @@ export default class Creature extends Unit {
       toRoom(this.room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` }),
     ]);
 
+    const now = new Date().getTime();
+
     // If this creature respawns, update it's template
-    if (this.respawn) {
-      this.setData(this.template, 'spawn', now + this.roll(this.respawn));
-    }
+    if (this.respawn) this.setData(this.template, 'spawn', now + this.roll(this.respawn));
 
     // Check the spawn room
     const spawnRoom = await this.getData(this.spawnRoom);
