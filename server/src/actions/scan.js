@@ -7,6 +7,6 @@ export default async id => createAction(
     const unit = await getData(id);
     const room = await unit.Room();
     const message = await unit.describe('room', room);
-    unit.emit('message', message);
+    return unit.emit('message', message);
   }),
 );

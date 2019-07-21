@@ -9,6 +9,7 @@ export default class Creature extends Unit {
   constructor(...args) {
     super(...args);
     this.isCreature = true;
+    this.breakAction = (msg) => { throw new AbortActionError(msg); };
     this.abortAction = (msg) => { throw new AbortActionError(msg); };
     this.abortStream = (msg) => { throw new AbortStreamError(msg); };
     addCreature(this.id);
@@ -17,7 +18,7 @@ export default class Creature extends Unit {
   async death() {
     writeStream(this.id, 'abort');
     writeStream(`${this.id}.attack`, 'abort');
-    toRoom(this.room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
+    await toRoom(this.room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
     return Promise.all([
       this.pullData(this.room, 'units', this.id),
       this.delData(this.id),

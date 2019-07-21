@@ -44,20 +44,40 @@ const resolveCombat = async (units, queue) => {
   if (queue.length) {
     const { sourceId, targetId, attack } = queue.shift(); // Next in line
     const [source, target] = [units.find(u => u.id === sourceId), units.find(u => u.id === targetId)];
+
+    if (source.room !== target.room) return;
+
     const total = roll(attack.acc);
     const hit = total >= target.ac;
 
     if (hit) {
       const damage = roll(attack.dmg);
-      source.emit('message', { type: 'error', value: `You hit the ${target.name} for ${damage} damage!` });
-      source.broadcastToRoom(source.room, 'message', { type: 'error', value: `${source.name} hits the ${target.name} for ${damage} damage!` });
+
+      if (source.isUser) {
+        source.emit('message', { type: 'error', value: `You hit the ${target.name} for ${damage} damage!` });
+        source.broadcastToRoom(source.room, 'message', { type: 'error', value: `${source.name} hits the ${target.name} for ${damage} damage!` });
+      }
+
+      if (target.isUser) {
+        target.emit('message', { type: 'error', value: `The ${source.name} hits you for ${damage} damage!` });
+        target.broadcastToRoom(target.room, 'message', { type: 'error', value: `The ${source.name} hits ${target.name} for ${damage} damage!` });
+      }
+
       target.hp -= damage;
+
       if (target.hp <= 0) {
         remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
       }
     } else {
-      source.emit('message', { type: 'info', value: `You swing at the ${target.name}, but miss!` });
-      source.broadcastToRoom(source.room, 'message', { type: 'info', value: `${source.name} swings at the ${target.name}, but misses!` });
+      if (source.isUser) {
+        source.emit('message', { type: 'info', value: `You swing at the ${target.name}, but miss!` });
+        source.broadcastToRoom(source.room, 'message', { type: 'info', value: `${source.name} swings at the ${target.name}, but misses!` });
+      }
+
+      if (target.isUser) {
+        target.emit('message', { type: 'info', value: `The ${source.name} swings at you, but misses!` });
+        target.broadcastToRoom(target.room, 'message', { type: 'info', value: `The ${source.name} swings at ${target.name}, but misses!` });
+      }
     }
 
     resolveCombat(units, queue);
