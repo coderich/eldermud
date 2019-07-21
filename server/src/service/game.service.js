@@ -7,13 +7,15 @@ import { getData, setData } from './data.service';
 let attackQueue = {};
 const chance = new Chance();
 
+export const numToArray = num => Array.from(Array(num));
+
 export const roll = (dice) => {
   if (typeof dice !== 'string') return dice;
 
   const input = dice.match(/\S+/g).join('');
   const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+|-|\\*|\\/]?)(\d*)/);
 
-  const value = Array.from(Array(Number.parseInt(rolls, 10))).reduce((prev, curr) => {
+  const value = numToArray(Number.parseInt(rolls, 10)).reduce((prev, curr) => {
     return prev + chance.integer({ min: 1, max: sides });
   }, 0);
 

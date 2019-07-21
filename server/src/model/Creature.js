@@ -16,12 +16,28 @@ export default class Creature extends Unit {
   }
 
   async death() {
+    const now = new Date().getTime();
     writeStream(this.id, 'abort');
     writeStream(`${this.id}.attack`, 'abort');
-    await toRoom(this.room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
-    return Promise.all([
+
+    // Remove the creature
+    await Promise.all([
       this.pullData(this.room, 'units', this.id),
       this.delData(this.id),
     ]);
+
+    // If this creature respawns, update it's template
+    if (this.respawn) {
+      this.setData(this.template, 'spawn', now + this.respawn);
+    }
+
+    // Check the room
+    const room = await this.getData(this.room);
+
+    if (room.respawn) {
+      this.setData(room.id, 'spawn', now + room.respawn);
+    }
+
+    toRoom(room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
   }
 }

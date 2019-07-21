@@ -12,17 +12,17 @@ const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 }
 const chance = new Chance();
 
 const newUser = id => ({
-  id: `user.${id}`,
+  id,
   name: chance.name(),
-  hp: 10,
-  mhp: 30,
-  ac: 10,
+  hp: 100,
+  mhp: 100,
+  ac: 14,
   attacks: {
     'attack.punch': {
       lead: 1000,
       lag: 2000,
-      dmg: '1d10',
-      acc: '2d10',
+      dmg: '5d10',
+      acc: '5d10',
     },
   },
   isLoggedIn: true,
@@ -35,7 +35,8 @@ const newUser = id => ({
 
 server.on('connection', async (socket) => {
   const { id } = socket;
-  const { id: userId } = await setData(`user.${id}`, newUser(id));
+  const userId = `user.${id}`;
+  await setData(userId, newUser(userId));
   await pushData('room.1', 'units', userId);
   setSocket(userId, socket);
   writeStream(userId, await actions.scan(userId));

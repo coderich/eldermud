@@ -1,3 +1,7 @@
+import Chance from 'chance';
+
+const chance = new Chance();
+
 export default {
   'user.1': {
     id: 'user.1',
@@ -26,6 +30,7 @@ export default {
   'room.1': {
     id: 'room.1',
     name: 'Hallway, Start',
+    description: chance.paragraph(),
     exits: { s: 'room.2' },
     items: ['item.1'],
     units: ['creature.1'],
@@ -33,6 +38,7 @@ export default {
   'room.2': {
     id: 'room.2',
     name: 'Hallway, Center',
+    description: chance.paragraph(),
     exits: { n: 'room.1', s: { 'room.3': ['obstacle.1'] } },
     items: ['item.2', 'item.3'],
     units: [],
@@ -40,21 +46,15 @@ export default {
   'room.3': {
     id: 'room.3',
     name: 'Hallway, End',
+    description: chance.paragraph(),
     exits: { n: 'room.2' },
     items: [],
     units: [],
     spawn: new Date().getTime(),
     respawn: 10000,
     spawnlings: {
-      max: 2,
-      creatures: {
-        'blueprint.rat': {
-          max: 2,
-        },
-        'blueprint.cavebear': {
-          max: 1,
-        },
-      },
+      num: '1d2+1',
+      blueprints: ['blueprint.rat', 'blueprint.cavebear'],
     },
   },
   'obstacle.1': {
@@ -63,12 +63,6 @@ export default {
     name: 'door',
     state: { open: true, locked: false },
   },
-  // 'room.1': {
-  //   id: 'room.1',
-  //   name: 'Hallway, Start',
-  //   description: 'People all come to gather, socialize, and have fun',
-  //   exits: { s: 2, e: { 100: [1] } },
-  // },
   // 'obstacle.10': {
   //   id: 10,
   //   type: 'compound',

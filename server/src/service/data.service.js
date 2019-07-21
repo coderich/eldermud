@@ -55,8 +55,7 @@ export const setData = async (id, ...args) => {
   let field; let data;
   if (args[1] !== undefined) ([field, data] = args);
   else ([field, data] = ['', args[0]]);
-  await toPromise(client.json_set, id, `.${field}`, JSON.stringify(data));
-  return getData(id);
+  return toPromise(client.json_set, id, `.${field}`, JSON.stringify(data));
 };
 
 export const delData = async (id, field = '') => {
@@ -64,14 +63,12 @@ export const delData = async (id, field = '') => {
 };
 
 export const pushData = async (id, field, data) => {
-  await toPromise(client.json_arrappend, id, `.${field}`, JSON.stringify(data));
-  return getData(id);
+  return toPromise(client.json_arrappend, id, `.${field}`, JSON.stringify(data));
 };
 
 export const pullData = async (id, field, data) => {
   const index = await toPromise(client.json_arrindex, id, `.${field}`, JSON.stringify(data));
-  const item = await toPromise(client.json_arrpop, id, `.${field}`, index);
-  return JSON.parse(item);
+  return JSON.parse(await toPromise(client.json_arrpop, id, `.${field}`, index));
 };
 
 export const incData = async (id, field, number) => {

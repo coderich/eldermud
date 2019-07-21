@@ -1,8 +1,10 @@
 import { Model } from '@coderich/hotrod';
+import { roll } from '../service/game.service';
 
 export default class extends Model {
   constructor(props) {
     super();
+    this.roll = roll;
     this.defineProperties({ ...props }, { writable: true, enumerable: true });
   }
 

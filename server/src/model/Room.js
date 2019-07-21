@@ -1,15 +1,79 @@
-import Chance from 'chance';
 import { isObjectLike, flatten } from 'lodash';
 import Model from '../core/Model';
-import { addRoom } from '../service/room.service';
+import { toRoom } from '../service/socket.service';
+import { numToArray } from '../service/game.service';
 
-const chance = new Chance();
+const rooms = new Set();
 
 export default class Room extends Model {
   constructor(...args) {
     super(...args);
-    this.description = chance.paragraph();
-    addRoom(this.id);
+
+    if (!rooms.has(this.id)) {
+      rooms.add(this.id);
+      this.init();
+    }
+  }
+
+  async init() {
+    console.log(this.spawn);
+    if (!this.spawn) return;
+
+    const now = new Date().getTime();
+    const creatures = await this.Creatures();
+    const templateIds = creatures.map(c => c.template);
+
+    if (!templateIds.length && this.spawn <= now) {
+      const { num, blueprints } = this.spawnlings;
+      const templates = await Promise.all(blueprints.map(id => this.getData(id)));
+      const numToSpawn = this.roll(num);
+
+      await Promise.all(numToArray(numToSpawn).map(() => {
+        // First try for bosses
+        const [boss] = templates.filter((t) => {
+          const inRoom = templateIds.indexOf(t.id) > -1;
+          if (inRoom) return false;
+          if (!t.spawn) return false;
+          if (t.spawn > now) return false;
+          return true;
+        }).sort((a, b) => a.spawn - b.spawn);
+
+        if (boss) {
+          templateIds.push(boss.id);
+          return this.createSpawn(boss, templateIds.length);
+        }
+
+        // Next try for ordinary creatures
+        const regulars = templates.filter(t => !t.spawn);
+        const regular = regulars[Math.floor(Math.random() * regulars.length)];
+
+        if (regular) {
+          templateIds.push(regular.id);
+          return this.createSpawn(regular, templateIds.length);
+        }
+
+        return Promise.resolve();
+      }));
+
+      await this.setData(this.id, 'spawn', false);
+      console.log('we are done settng');
+    }
+
+    // Release room
+    console.log('release', this.id);
+    rooms.delete(this.id);
+  }
+
+  async createSpawn(templateData, uid) {
+    const now = new Date().getTime();
+    const id = `creature.${uid}.${now}`;
+    const hp = this.roll(templateData.hp);
+    const exp = templateData.exp * hp;
+    const template = templateData.id;
+    const creature = Object.assign({}, templateData, { id, hp, exp, template, room: this.id });
+    await this.pushData(creature.room, 'units', creature.id);
+    await this.setData(id, creature);
+    return toRoom(this, 'message', { type: 'info', value: `A ${creature.name} appears out of nowhere!` });
   }
 
   async search() {
@@ -64,7 +128,7 @@ export default class Room extends Model {
   }
 
   async Units() {
-    return Promise.all(this.units.map(unit => this.getData(unit)));
+    return (await Promise.all(this.units.map(unit => this.getData(unit)))).filter(u => u);
   }
 
   async Players() {
