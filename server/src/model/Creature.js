@@ -1,12 +1,12 @@
 import { tap, mergeMap, delayWhen, finalize } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
-import { addAttack, breakAttack, getAttack, alertLoop } from '../service/game.service';
+import { addAttack, breakAttack, resolveLoop } from '../service/game.service';
 import { toRoom } from '../service/socket.service';
 import { writeStream, createAction, createLoop } from '../service/stream.service';
 import Unit from './Unit';
 
-const models = new Set();
+const preys = new Set();
 const deaths = new Set();
 
 export default class Creature extends Unit {
@@ -17,36 +17,51 @@ export default class Creature extends Unit {
     this.breakAction = (msg) => { throw new AbortActionError(msg); };
     this.abortAction = (msg) => { throw new AbortActionError(msg); };
     this.abortStream = (msg) => { throw new AbortStreamError(msg); };
+    this.prey();
+  }
 
-    if (!models.has(this.id)) {
-      models.add(this.id);
+  prey() {
+    if (!preys.has(this.id) && !deaths.has(this.id)) {
+      preys.add(this.id);
 
       writeStream(this.id, createAction(
         mergeMap(async () => {
           const room = await this.getData(this.room);
           const players = await room.Players();
-          const currentAttack = getAttack(this.id);
 
-          if (!players.length) this.break(); // Nothing to fight
-          if (currentAttack && players.find(player => player.id === currentAttack.targetId)) this.abortAction(); // In a fight!
+          if (!players.length) {
+            await this.setData(this.id, 'target', null);
+            this.break(); // Nothing to fight
+          }
 
-          // Need a target
-          const [player] = players;
-          const [attack] = Object.values(this.attacks);
+          if (players.find(player => player.id === this.target)) this.abortAction(); // In a fight!
+        }),
+        tap(() => {
           writeStream(`${this.id}.attack`, createLoop(
-            delayWhen(() => alertLoop),
-            tap(() => {
-              if (deaths.has(this.id)) {
-                deaths.delete(this.id);
-                this.break();
+            mergeMap(async () => {
+              const unit = await this.getData(this.id);
+              const room = await unit.Room();
+              const players = await room.Players();
+              const [attack] = Object.values(unit.attacks);
+
+              if (!players.length) {
+                await this.setData(this.id, 'target', null);
+                this.break(); // Nothing to fight
+              }
+
+              if (players.find(player => player.id === unit.target)) {
+                addAttack(this.id, unit.target, attack);
               } else {
+                const [player] = players;
+                await this.setData(this.id, 'target', player.id);
                 addAttack(this.id, player.id, attack);
               }
             }),
+            delayWhen(() => resolveLoop),
           ));
         }),
         finalize(() => {
-          setTimeout(() => { models.delete(this.id); }, 100);
+          setTimeout(() => { preys.delete(this.id); }, 100);
         }),
       ));
     }

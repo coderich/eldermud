@@ -41,7 +41,6 @@ export const breakAttack = async (id) => {
 };
 
 export const getAttack = id => attackQueue[id];
-export const alertLoop = new Subject().pipe(share());
 export const resolveLoop = new Subject().pipe(share());
 
 const getAllUnitsInCombat = (queue) => {
@@ -107,7 +106,6 @@ const resolveCombat = async (units, queue) => {
 
 export const attackLoop = interval(4000).pipe(
   tap(async () => {
-    alertLoop.next('alert');
     const queue = Object.entries(attackQueue).reduce((prev, [sourceId, props]) => {
       return prev.concat({ sourceId, ...props });
     }, []).sort((a, b) => b.initiative - a.initiative);
