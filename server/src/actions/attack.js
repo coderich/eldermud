@@ -25,7 +25,7 @@ export default async (id, input) => {
         delayWhen(() => resolveLoop),
         mergeMap(async () => {
           const [unit, target] = await Promise.all([getData(id), getData(targetId)]);
-          if (!target) unit.breakAction('*Combat Off*');
+          if (!target || unit.room !== target.room) unit.breakAction('*Combat Off*');
         }),
       ));
     }),

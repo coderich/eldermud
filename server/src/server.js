@@ -20,8 +20,6 @@ const newUser = id => ({
   ac: 14,
   attacks: {
     'attack.punch': {
-      lead: 1000,
-      lag: 2000,
       dmg: '5d10',
       acc: '5d10',
     },

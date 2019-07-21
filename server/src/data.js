@@ -11,29 +11,13 @@ export default {
     mhp: 30,
     items: [],
   },
-  'creature.1': {
-    template: 'blueprint.rat',
-    id: 'creature.1',
-    room: 'room.1',
-    name: 'rat',
-    dc: 1,
-    ac: 8,
-    hp: 10,
-    exp: 10,
-    attacks: {
-      'attack.bite': {
-        dmg: '1d3',
-        acc: '1d20',
-      },
-    },
-  },
   'room.1': {
     id: 'room.1',
     name: 'Hallway, Start',
     description: chance.paragraph(),
     exits: { s: 'room.2' },
     items: ['item.1'],
-    units: ['creature.1'],
+    units: [],
   },
   'room.2': {
     id: 'room.2',
@@ -51,7 +35,7 @@ export default {
     items: [],
     units: [],
     spawn: new Date().getTime(),
-    respawn: 10000,
+    respawn: '1d5000+1000',
     spawnlings: {
       num: '1d2+1',
       blueprints: ['blueprint.rat', 'blueprint.cavebear'],

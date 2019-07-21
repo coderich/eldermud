@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import Chance from 'chance';
 import { remove } from 'lodash';
 import { Subject, interval } from 'rxjs';
-import { tap, share, publish } from 'rxjs/operators';
+import { tap, share, delay, publish } from 'rxjs/operators';
 import { getData, setData } from './data.service';
 
 let attackQueue = {};
@@ -40,6 +40,7 @@ export const breakAttack = async (id) => {
   }
 };
 
+export const alertLoop = new Subject().pipe(share());
 export const resolveLoop = new Subject().pipe(share());
 
 const getAllUnitsInCombat = (queue) => {
@@ -103,11 +104,13 @@ const resolveCombat = async (units, queue) => {
   }
 };
 
-export const attackLoop = interval(4000).pipe(
+export const attackLoop = interval(3500).pipe(
+  tap(() => { alertLoop.next('alert'); }),
+  delay(500),
   tap(async () => {
     const queue = Object.entries(attackQueue).reduce((prev, [sourceId, props]) => {
       return prev.concat({ sourceId, ...props });
-    }, []).sort((a, b) => a.initiative - b.initiative);
+    }, []).sort((a, b) => b.initiative - a.initiative);
     attackQueue = {};
     const units = await getAllUnitsInCombat(queue);
     resolveCombat(units, queue);

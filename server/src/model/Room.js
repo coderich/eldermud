@@ -34,7 +34,7 @@ export default class Room extends Model {
 
         if (boss) {
           templateIds.push(boss.id);
-          return this.createSpawn(boss, templateIds.length);
+          return this.createSpawn(boss);
         }
 
         // Next try for ordinary creatures
@@ -43,7 +43,7 @@ export default class Room extends Model {
 
         if (regular) {
           templateIds.push(regular.id);
-          return this.createSpawn(regular, templateIds.length);
+          return this.createSpawn(regular);
         }
 
         return Promise.resolve();
@@ -58,16 +58,15 @@ export default class Room extends Model {
     return this;
   }
 
-  async createSpawn(templateData, uid) {
+  async createSpawn(templateData) {
     const now = new Date().getTime();
-    const id = `creature.${uid}.${now}`;
+    const id = `creature.${this.id}.${this.units.length}.${now}`;
+    this.units.push(id);
     const hp = this.roll(templateData.hp);
     const exp = templateData.exp * hp;
     const template = templateData.id;
-    const creature = Object.assign({}, templateData, { id, hp, exp, template, room: this.id });
-    this.units.push(creature.id);
-    await this.pushData(creature.room, 'units', creature.id);
-    await this.setData(id, creature);
+    const creature = await this.setData(id, Object.assign({}, templateData, { id, hp, exp, template, room: this.id, spawnRoom: this.id }));
+    await this.pushData(this.id, 'units', creature.id);
     return toRoom(this, 'message', { type: 'info', value: `A ${creature.name} appears out of nowhere!` });
   }
 

@@ -1,12 +1,12 @@
 import { of } from 'rxjs';
-import { tap, delay, delayWhen, mergeMap } from 'rxjs/operators';
+import { tap, delayWhen, mergeMap } from 'rxjs/operators';
 import { getData } from './data.service';
-import { resolveLoop, addAttack } from './game.service';
+import { resolveLoop, alertLoop, addAttack } from './game.service';
 import { createLoop, createAction, writeStream } from './stream.service';
 
 const battle = (id, targetId, attack) => {
   const attackStream = `${id}.attack`;
-  // writeStream(attackStream, 'abort');
+  writeStream(attackStream, 'abort');
   writeStream(attackStream, createAction(
     tap(() => addAttack(id, targetId, attack)),
     delayWhen(() => resolveLoop),
@@ -15,7 +15,7 @@ const battle = (id, targetId, attack) => {
   return of('wait').pipe(delayWhen(() => resolveLoop));
 };
 
-const loop = async id => createLoop(
+const loop = id => createLoop(
   mergeMap(async () => {
     const unit = await getData(id);
     const room = await unit.Room();
@@ -26,7 +26,7 @@ const loop = async id => createLoop(
   mergeMap(({ players, attack }) => {
     const [player] = players;
     if (player) return battle(id, player.id, attack);
-    return of('wait').pipe(delay(1000));
+    return of('wait').pipe(delayWhen(() => alertLoop));
   }),
 );
 
@@ -35,7 +35,7 @@ const creatures = new Set();
 export const addCreature = async (id) => {
   if (!creatures.has(id)) {
     creatures.add(id);
-    writeStream(id, await loop(id));
+    writeStream(id, loop(id));
   }
 };
 

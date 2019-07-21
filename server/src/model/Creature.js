@@ -25,28 +25,28 @@ export default class Creature extends Unit {
     await Promise.all([
       this.pullData(this.room, 'units', this.id),
       this.delData(this.id),
+      toRoom(this.room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` }),
     ]);
 
     // If this creature respawns, update it's template
     if (this.respawn) {
-      this.setData(this.template, 'spawn', now + this.respawn);
+      this.setData(this.template, 'spawn', now + this.roll(this.respawn));
     }
 
-    // Check the room
-    const room = await this.getData(this.room);
-    const creatures = await room.Creatures();
+    // Check the spawn room
+    const spawnRoom = await this.getData(this.spawnRoom);
+    const creatures = await spawnRoom.Creatures();
+    const respawnTime = this.roll(spawnRoom.respawn);
 
-    if (!creatures.length && room.respawn) {
+    if (!creatures.length) {
       setTimeout(async () => {
-        const r = await this.getData(this.room);
-        const p = await r.Players();
-        const respawn = now + room.respawn;
+        const room = await this.getData(this.spawnRoom);
+        const players = await room.Players();
+        const respawn = now + respawnTime;
         await this.setData(room.id, 'spawn', respawn);
-        r.spawn = respawn;
-        if (p.length) r.initialize();
-      }, room.respawn);
+        room.spawn = respawn;
+        if (players.length) room.initialize();
+      }, respawnTime);
     }
-
-    toRoom(room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
   }
 }

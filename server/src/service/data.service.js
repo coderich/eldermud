@@ -45,7 +45,6 @@ export const hydrate = async (data) => {
   }
 
   return data;
-  // return Models[modelName] ? new Models[modelName](Object.assign(data, { ...api })) : data;
 };
 
 export const getData = async (id, field = '') => {
@@ -61,7 +60,9 @@ export const setData = async (id, ...args) => {
   let field; let data;
   if (args[1] !== undefined) ([field, data] = args);
   else ([field, data] = ['', args[0]]);
-  return toPromise(client.json_set, id, `.${field}`, JSON.stringify(data));
+  const result = await toPromise(client.json_set, id, `.${field}`, JSON.stringify(data));
+  if (field === '') return hydrate(data);
+  return result;
 };
 
 export const delData = async (id, field = '') => {
