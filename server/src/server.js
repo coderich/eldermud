@@ -40,6 +40,7 @@ server.on('connection', async (socket) => {
   await pushData('room.1', 'units', userId);
   setSocket(userId, socket);
   writeStream(userId, await actions.scan(userId));
+  socket.emit('message', { type: 'status', value: { hp: 100 } });
 
   socket.on('disconnecting', async (reason) => {
     unsetSocket(userId);

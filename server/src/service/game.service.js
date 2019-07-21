@@ -86,6 +86,7 @@ const resolveCombat = async (units, queue) => {
   } else {
     await Promise.all(units.map((unit) => {
       if (unit.hp <= 0) return unit.death();
+      unit.emit('message', { type: 'status', value: { hp: unit.hp } });
       return setData(unit.id, 'hp', unit.hp);
     }));
     resolveLoop.next('resolveLoop');

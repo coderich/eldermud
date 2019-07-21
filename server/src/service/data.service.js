@@ -35,11 +35,17 @@ const toPromise = (fn, ...args) => {
 
 const api = {}; // Hack
 
-export const hydrate = (data) => {
+export const hydrate = async (data) => {
   const { id = '' } = data || {};
   const [name] = id.split('.');
   const modelName = name.charAt(0).toUpperCase() + name.slice(1);
-  return Models[modelName] ? new Models[modelName](Object.assign(data, { ...api })) : data;
+
+  if (Models[modelName]) {
+    return new Models[modelName](Object.assign(data, { ...api })).initialize();
+  }
+
+  return data;
+  // return Models[modelName] ? new Models[modelName](Object.assign(data, { ...api })) : data;
 };
 
 export const getData = async (id, field = '') => {

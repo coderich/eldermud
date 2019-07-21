@@ -9,6 +9,7 @@ export default class Creature extends Unit {
   constructor(...args) {
     super(...args);
     this.isCreature = true;
+    this.emit = () => {};
     this.breakAction = (msg) => { throw new AbortActionError(msg); };
     this.abortAction = (msg) => { throw new AbortActionError(msg); };
     this.abortStream = (msg) => { throw new AbortStreamError(msg); };
@@ -35,7 +36,7 @@ export default class Creature extends Unit {
     const room = await this.getData(this.room);
 
     if (room.respawn) {
-      this.setData(room.id, 'spawn', now + room.respawn);
+      await this.setData(room.id, 'spawn', now + room.respawn);
     }
 
     toRoom(room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });

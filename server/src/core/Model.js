@@ -8,6 +8,10 @@ export default class extends Model {
     this.defineProperties({ ...props }, { writable: true, enumerable: true });
   }
 
+  async initialize() {
+    return this;
+  }
+
   async resolveTarget(domain, target) {
     let index;
     const tcm = domain.charAt(0).toUpperCase() + domain.slice(1);

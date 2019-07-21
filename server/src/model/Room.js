@@ -6,24 +6,18 @@ import { numToArray } from '../service/game.service';
 const rooms = new Set();
 
 export default class Room extends Model {
-  constructor(...args) {
-    super(...args);
+  async initialize() {
+    if (rooms.has(this.id)) return this;
 
-    if (!rooms.has(this.id)) {
-      rooms.add(this.id);
-      this.init();
-    }
-  }
+    rooms.add(this.id);
 
-  async init() {
-    console.log(this.spawn);
-    if (!this.spawn) return;
+    if (!this.respawn) return this;
 
     const now = new Date().getTime();
     const creatures = await this.Creatures();
     const templateIds = creatures.map(c => c.template);
 
-    if (!templateIds.length && this.spawn <= now) {
+    if (!templateIds.length && this.spawn && this.spawn <= now) {
       const { num, blueprints } = this.spawnlings;
       const templates = await Promise.all(blueprints.map(id => this.getData(id)));
       const numToSpawn = this.roll(num);
@@ -56,12 +50,12 @@ export default class Room extends Model {
       }));
 
       await this.setData(this.id, 'spawn', false);
-      console.log('we are done settng');
     }
 
     // Release room
-    console.log('release', this.id);
     rooms.delete(this.id);
+
+    return this;
   }
 
   async createSpawn(templateData, uid) {
@@ -71,6 +65,7 @@ export default class Room extends Model {
     const exp = templateData.exp * hp;
     const template = templateData.id;
     const creature = Object.assign({}, templateData, { id, hp, exp, template, room: this.id });
+    this.units.push(creature.id);
     await this.pushData(creature.room, 'units', creature.id);
     await this.setData(id, creature);
     return toRoom(this, 'message', { type: 'info', value: `A ${creature.name} appears out of nowhere!` });
@@ -79,7 +74,8 @@ export default class Room extends Model {
   async search() {
     const items = await Promise.all(this.items.map(item => this.getData(item)));
     const hiddenItems = items.filter(item => item.state.hidden);
-    return Promise.all(hiddenItems.map(item => this.setData(item.id, 'state.hidden', false)));
+    await Promise.all(hiddenItems.map(item => this.setData(item.id, 'state.hidden', false)));
+    return hiddenItems;
   }
 
   async Items() {
