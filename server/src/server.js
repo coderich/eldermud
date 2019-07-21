@@ -4,6 +4,7 @@ import { getData, setData, pushData, pullData } from './service/data.service';
 import { translate } from './service/command.service';
 import { setSocket, unsetSocket } from './service/socket.service';
 import { writeStream, closeStream } from './service/stream.service';
+import { breakAttack } from './service/game.service';
 import * as actions from './actions';
 
 // Setup Server
@@ -94,8 +95,15 @@ server.on('connection', async (socket) => {
         const dir = translate(command.args[command.args.length - 1]);
         return writeStream(userId, await actions.use(userId, command, dir));
       }
-      default: {
+      case 'break': {
+        writeStream(`${userId}.attack`, 'abort');
+        return breakAttack(userId);
+      }
+      case 'none': {
         return writeStream(userId, await actions.scan(userId));
+      }
+      default: {
+        return socket.emit('message', { type: 'info', value: 'Your command had no effect.' });
       }
     }
   });

@@ -1,6 +1,6 @@
 const commands = [
   [
-    { attack: { args: [0, 1, 2, 3], code: 'a', scope: 'interaction', stream: 'motor' } },
+    { attack: { args: [1, 2, 3], code: 'a', scope: 'interaction', stream: 'motor' } },
     { down: { args: [0], code: 'd', scope: 'navigation', stream: 'motor' } },
     { east: { args: [0], code: 'e', scope: 'navigation', stream: 'motor' } },
     { get: { args: [1, 2, 3, 4, 5], code: 'get', scope: 'interaction', stream: 'motor' } },
@@ -25,6 +25,7 @@ const commands = [
   ],
   [
     { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'interaction', stream: 'motor' } },
+    { break: { args: [0], code: 'break', scope: 'interaction', stream: 'motor' } },
     { search: { args: [0], code: 'search', scope: 'interaction', stream: 'motor' } },
   ],
   [

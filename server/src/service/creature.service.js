@@ -6,7 +6,7 @@ import { createLoop, createAction, writeStream } from './stream.service';
 
 const battle = (id, targetId, attack) => {
   const attackStream = `${id}.attack`;
-  writeStream(attackStream, 'abort');
+  // writeStream(attackStream, 'abort');
   writeStream(attackStream, createAction(
     tap(() => addAttack(id, targetId, attack)),
     delayWhen(() => resolveLoop),

@@ -1,3 +1,4 @@
+import { EventEmitter } from 'events';
 import Chance from 'chance';
 import { remove } from 'lodash';
 import { Subject, interval } from 'rxjs';
@@ -7,6 +8,7 @@ import { getData, setData } from './data.service';
 let attackQueue = {};
 const chance = new Chance();
 
+export const eventEmitter = new EventEmitter();
 export const numToArray = num => Array.from(Array(num));
 
 export const roll = (dice) => {
@@ -28,6 +30,14 @@ export const addAttack = (sourceId, targetId, attack) => {
     attack,
     initiative: roll('10d100'),
   };
+};
+
+export const breakAttack = async (id) => {
+  if (attackQueue[id]) {
+    delete attackQueue[id];
+    const unit = await getData(id);
+    unit.emit('message', { type: 'info', value: '*Combat Off*' });
+  }
 };
 
 export const resolveLoop = new Subject().pipe(share());

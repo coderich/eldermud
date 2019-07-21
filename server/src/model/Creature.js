@@ -34,9 +34,17 @@ export default class Creature extends Unit {
 
     // Check the room
     const room = await this.getData(this.room);
+    const creatures = await room.Creatures();
 
-    if (room.respawn) {
-      await this.setData(room.id, 'spawn', now + room.respawn);
+    if (!creatures.length && room.respawn) {
+      setTimeout(async () => {
+        const r = await this.getData(this.room);
+        const p = await r.Players();
+        const respawn = now + room.respawn;
+        await this.setData(room.id, 'spawn', respawn);
+        r.spawn = respawn;
+        if (p.length) r.initialize();
+      }, room.respawn);
     }
 
     toRoom(room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });

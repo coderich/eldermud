@@ -19,7 +19,7 @@ export default class Describer {
     this.getData = getData;
   }
 
-  async describe(type, o) {
+  async describe(type, o, opts = {}) {
     const target = clone(o);
 
     switch (type.toLowerCase()) {
@@ -27,7 +27,7 @@ export default class Describer {
         target.exits = await this.describe('exits', target.exits);
         target.items = await this.describe('items', await target.Items());
         target.units = (await target.Units()).filter(unit => unit.id !== this.id).map(unit => unit.name);
-        delete target.description;
+        if (!opts.full) delete target.description;
         break;
       }
       case 'exits': {

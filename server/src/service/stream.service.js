@@ -1,7 +1,6 @@
 import { Subject, of, empty } from 'rxjs';
 import { tap, map, concatMap, publish, take, share, retry, catchError } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
-import AbortStreamError from '../error/AbortStreamError';
 
 const streams = {};
 
@@ -34,11 +33,11 @@ export const writeStream = (id, action) => {
   } else {
     streams[id] = new Subject().pipe(
       tap((hook) => {
-        if (hook === 'abort') throw new Error('Abort Stream');
+        if (hook === 'abort') throw new AbortActionError('Abort Stream');
       }),
       concatMap(thunk => thunk().pipe(
         catchError((e) => {
-          if (e instanceof AbortStreamError) throw e;
+          if (e instanceof AbortActionError) throw e;
           return of(e);
         }),
       )),

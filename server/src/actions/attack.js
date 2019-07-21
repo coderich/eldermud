@@ -19,7 +19,7 @@ export default async (id, input) => {
       const attackStream = `${id}.attack`;
       writeStream(attackStream, 'abort');
       writeStream(attackStream, createLoop(
-        tap(() => {
+        tap(async () => {
           addAttack(id, targetId, attack);
         }),
         delayWhen(() => resolveLoop),

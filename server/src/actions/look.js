@@ -13,9 +13,9 @@ export default async (id, target) => {
       if (target) {
         const { code: dir } = translate(target);
         const exit = await room.Exit(dir) || unit.abortAction('There is nothing in that direction!');
-        message = await unit.describe('room', exit);
+        message = await unit.describe('room', exit, { full: true });
       } else {
-        message = await unit.describe('info', room.description);
+        message = await unit.describe('room', room, { full: true });
       }
 
       unit.emit('message', message);

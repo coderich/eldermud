@@ -49,7 +49,7 @@ export default class User extends Unit {
     this.broadcastToRoom(this.room, 'message', { type: 'info', value: `${this.name} has died.` });
   }
 
-  async describe(type, obj) {
-    return { type, value: await this.describer.describe(type, obj) };
+  async describe(type, ...rest) {
+    return { type, value: await this.describer.describe(type, ...rest) };
   }
 }
