@@ -18,8 +18,8 @@ const Action = memo((props) => {
         )}
         {value.units.length > 0 && (
           <div>
-            <span style={{ color: 'indianred' }}>Also here: </span>
-            <span>{value.units.join(', ')}</span>
+            <span style={{ color: '#98389E' }}>Also here: </span>
+            <span style={{ color: '#EF8CF9' }}>{value.units.join(', ')}</span>
           </div>
         )}
         <div style={{ color: 'limegreen' }}>

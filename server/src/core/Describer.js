@@ -26,7 +26,16 @@ export default class Describer {
       case 'room': {
         target.exits = await this.describe('exits', target.exits);
         target.items = await this.describe('items', await target.Items());
-        target.units = (await target.Units()).filter(unit => unit.id !== this.id).map(unit => unit.name);
+        target.units = (await target.Units())
+          .filter(unit => unit.id !== this.id)
+          .sort((a, b) => {
+            if (a.isUser && b.isUser) return 0;
+            if (a.isCreature && b.isCreature) return 0;
+            if (a.isUser) return 1;
+            if (b.isUser) return 1;
+            return -1;
+          })
+          .map(unit => unit.name);
         if (!opts.full) delete target.description;
         break;
       }
