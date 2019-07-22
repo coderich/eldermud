@@ -2,8 +2,9 @@ import { EventEmitter } from 'events';
 import Chance from 'chance';
 import { remove } from 'lodash';
 import { Subject, interval } from 'rxjs';
-import { tap, share, delay, publish } from 'rxjs/operators';
+import { tap, share, publish } from 'rxjs/operators';
 import { getData, setData } from './data.service';
+import { toRoom, emit, broadcast } from './socket.service';
 
 let attackQueue = {};
 const chance = new Chance();
@@ -33,10 +34,13 @@ export const addAttack = (sourceId, targetId, attack) => {
 };
 
 export const breakAttack = async (id) => {
-  if (attackQueue[id]) {
+  const attack = attackQueue[id];
+
+  if (attack) {
     delete attackQueue[id];
-    const unit = await getData(id);
+    const [unit, target] = await Promise.all([getData(id), getData(attack.targetId)]);
     unit.emit('message', { type: 'info', value: '*Combat Off*' });
+    if (unit.isUser && target.isUser) target.emit('message', { type: 'info', value: `${unit.name} breaks combat.` });
   }
 };
 
@@ -65,16 +69,9 @@ const resolveCombat = async (units, queue) => {
 
     if (hit) {
       const damage = roll(attack.dmg);
-
-      if (source.isUser) {
-        source.emit('message', { type: 'error', value: `You hit the ${target.name} for ${damage} damage!` });
-        source.broadcastToRoom(source.room, 'message', { type: 'error', value: `${source.name} hits the ${target.name} for ${damage} damage!` });
-      }
-
-      if (target.isUser) {
-        target.emit('message', { type: 'error', value: `The ${source.name} hits you for ${damage} damage!` });
-        target.broadcastToRoom(target.room, 'message', { type: 'error', value: `The ${source.name} hits ${target.name} for ${damage} damage!` });
-      }
+      emit(source.id, 'message', { type: 'error', value: `You hit ${target.hitName} for ${damage} damage!` });
+      emit(target.id, 'message', { type: 'error', value: `${source.hitName} hits you for for ${damage} damage!` });
+      toRoom(source.room, 'message', { type: 'error', value: `${source.hitName} hits ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
 
       target.hp -= damage;
 
@@ -82,15 +79,9 @@ const resolveCombat = async (units, queue) => {
         remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
       }
     } else {
-      if (source.isUser) {
-        source.emit('message', { type: 'info', value: `You swing at the ${target.name}, but miss!` });
-        source.broadcastToRoom(source.room, 'message', { type: 'info', value: `${source.name} swings at the ${target.name}, but misses!` });
-      }
-
-      if (target.isUser) {
-        target.emit('message', { type: 'info', value: `The ${source.name} swings at you, but misses!` });
-        target.broadcastToRoom(target.room, 'message', { type: 'info', value: `The ${source.name} swings at ${target.name}, but misses!` });
-      }
+      emit(source.id, 'message', { type: 'info', value: `You swing at ${target.hitName}, but miss!!` });
+      emit(target.id, 'message', { type: 'info', value: `${source.hitName} swings at you, but misses!` });
+      toRoom(source.room, 'message', { type: 'info', value: `${source.hitName} swings at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
     }
 
     resolveCombat(units, queue);

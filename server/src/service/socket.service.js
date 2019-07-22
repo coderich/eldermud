@@ -14,8 +14,18 @@ export const unsetSocket = (id) => {
   delete sockets[id];
 };
 
-export const toRoom = async (room, type, payload) => {
+export const emit = (id, type, payload) => {
+  const socket = getSocket(id);
+  if (socket) socket.emit(type, payload);
+};
+
+export const broadcast = async (ids, type, payload) => {
+  ids.forEach(id => emit(id, type, payload));
+};
+
+export const toRoom = async (room, type, payload, options = {}) => {
   room = (typeof room === 'string' ? await getData(room) : room);
-  const players = await room.Players();
+  let players = await room.Players();
+  if (options.omit) players = players.filter(it => options.omit.indexOf(it.id) === -1);
   players.forEach(player => player.emit(type, payload));
 };

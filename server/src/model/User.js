@@ -10,6 +10,7 @@ export default class User extends Unit {
   constructor(...args) {
     super(...args);
     this.isUser = true;
+    this.hitName = this.name;
     this.describer = new Describer(this.id, this.getData);
     this.socket = getSocket(this.id);
   }
@@ -22,6 +23,13 @@ export default class User extends Unit {
     const room = await this.getData(roomId);
     const units = (await room.Players()).filter(unit => unit.id !== this.id);
     units.forEach(unit => unit.emit(type, payload));
+  }
+
+  break(value) {
+    breakAttack(this.id);
+    writeStream(`${this.id}.attack`, 'abort');
+    writeStream(this.id, 'abort');
+    return this.breakAction();
   }
 
   breakAction(value) {

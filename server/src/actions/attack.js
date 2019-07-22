@@ -11,8 +11,9 @@ export default async (id, input) => {
     mergeMap(async () => {
       const unit = await getData(id);
       const room = await unit.Room();
-      const target = (await room.resolveTarget('units', input)) || unit.abortAction('You don\'t see that here.');
+      const target = (await room.resolveTarget('units', input, { omit: [id] })) || unit.abortAction('You don\'t see that here.');
       unit.emit('message', { type: 'info', value: '*Combat Engaged*' });
+      if (target.isUser) target.emit('message', { type: 'info', value: `${unit.name} moves to attack you!` });
       return target.id;
     }),
     tap((targetId) => {

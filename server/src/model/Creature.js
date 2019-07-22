@@ -2,7 +2,7 @@ import { tap, mergeMap, delayWhen, finalize } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { addAttack, breakAttack, resolveLoop } from '../service/game.service';
-import { toRoom } from '../service/socket.service';
+import { toRoom, broadcast } from '../service/socket.service';
 import { writeStream, createAction, createLoop } from '../service/stream.service';
 import Unit from './Unit';
 
@@ -13,6 +13,7 @@ export default class Creature extends Unit {
   constructor(...args) {
     super(...args);
     this.isCreature = true;
+    this.hitName = `the ${this.name}`;
     this.emit = () => {};
     this.breakAction = (msg) => { throw new AbortActionError(msg); };
     this.abortAction = (msg) => { throw new AbortActionError(msg); };
@@ -72,6 +73,11 @@ export default class Creature extends Unit {
     writeStream(this.id, 'abort');
     writeStream(`${this.id}.attack`, 'abort');
     this.abortAction();
+  }
+
+  async broadcastToRoom(roomId, type, payload) {
+    const room = await this.getData(roomId);
+    broadcast(room.units, type, payload);
   }
 
   async death() {

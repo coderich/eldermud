@@ -12,10 +12,12 @@ export default class extends Model {
     return this;
   }
 
-  async resolveTarget(domain, target) {
-    let index;
+  async resolveTarget(domain, target, options = {}) {
     const tcm = domain.charAt(0).toUpperCase() + domain.slice(1);
-    const items = await this[tcm]();
+    let index;
+    let items = await this[tcm]();
+
+    if (options.omit) items = items.filter(it => options.omit.indexOf(it.id) === -1);
 
     // Try plain search
     index = items.findIndex(it => it.name.indexOf(target.toLowerCase()) === 0);
