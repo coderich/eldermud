@@ -6,14 +6,12 @@ import Room from './Room';
 
 const viewport = {
   flexWrap: 'nowrap',
-  width: '100%',
-  height: '100%',
 };
 
 const map = [
   [0, { 1: ['e', 's'] }, { 1: ['w', 's'] }, 0],
   [0, { 1: ['n', 'e', 'sw'] }, { 2: ['n', 'w', 'se'] }, 0],
-  [{ 3: ['ne', 'se'] }, { 4: ['e', 's'] }, { 5: ['w', 's'] }, { 6: ['nw', 'sw', 'u'] }],
+  [{ 3: ['ne', 'se'] }, { 4: ['e', 's'] }, { 5: ['w', 's'] }, { 6: ['nw', 'sw'] }],
   [0, { 7: ['n', 'nw'] }, { 8: ['n', 'ne'] }, 0],
 ];
 
@@ -32,9 +30,11 @@ const getInfo = (row, col, dir) => {
 };
 
 const Component = memo((props) => {
+  const { id } = props;
+
   setTimeout(() => {
     jsPlumb.ready(() => {
-      jsPlumb.setContainer('container');
+      const plumb = jsPlumb.getInstance({ Container: id });
 
       map.forEach((arr, row) => {
         arr.forEach((data, col) => {
@@ -43,22 +43,17 @@ const Component = memo((props) => {
             const source = `room-${row}-${col}`;
 
             dirs.forEach((dir) => {
-              const {
-                target,
-                anchors,
-                endpoint = 'Blank',
-                connector = 'Straight',
-              } = getInfo(row, col, dir);
-              jsPlumb.connect({ source, target, anchors, endpoint, connector });
+              const { target, anchors, endpoint = 'Blank', connector = 'Straight' } = getInfo(row, col, dir);
+              plumb.connect({ source, target, anchors, endpoint, connector });
             });
           }
         });
       });
     });
-  });
+  }, 400);
 
   return (
-    <div id="container" style={viewport}>
+    <div id={id} style={viewport}>
       {map.map((arr, row) => {
         const rowId = `container-${row}`;
 

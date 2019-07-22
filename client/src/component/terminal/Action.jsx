@@ -4,7 +4,7 @@ const Action = memo((props) => {
   const { prompt, action: { type, value } } = props;
 
   switch (type) {
-    case 'command': return `${prompt} ${value}`;
+    // case 'command': return `${prompt} ${value}`;
     case 'room': return (
       <Fragment>
         <div style={{ color: 'cyan' }}>{value.name}</div>
@@ -30,7 +30,7 @@ const Action = memo((props) => {
     );
     case 'error': return <div style={{ color: 'red' }}>{value}</div>;
     case 'info': return <div>{value}</div>;
-    default: return <div />;
+    default: return <span />;
   }
 });
 

@@ -36,7 +36,7 @@ const Terminal = memo((props) => {
       <Grid container direction="column" style={viewport}>
         <Grid item container direction="column" justify="flex-end" style={screen}>
           {responses.map((action, i) => (
-            <Grid item key={i} style={{ marginBottom: '10px' }}>
+            <Grid item key={i}>
               <Action prompt={prompt} action={action} />
             </Grid>
           ))}
