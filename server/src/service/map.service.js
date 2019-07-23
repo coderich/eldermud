@@ -14,52 +14,29 @@ const getCoords = (row, col, dir) => {
 };
 
 const mapRooms = async (map, room, row, col, size) => {
-  if (row < size && col < size && row > -1 && col > -1) {
-    map[row][col] = { exits: [] };
+  if (map[row][col]) return;
 
-    Object.keys(room.exits).forEach((dir) => {
-      const coor = getCoords(row, col, dir);
+  map[row][col] = { exits: Object.keys(room.exits) };
 
-      // Push only the exits within range
-      if (coor.row < size && coor.col < size && coor.row > -1 && coor.col > -1) {
-        map[row][col].exits.push(dir);
-      }
-    });
+  await Promise.all(map[row][col].exits.map(async (dir) => {
+    const coor = getCoords(row, col, dir);
 
-    const rooms = await Promise.all(map[row][col].exits.map(dir => room.Exit(dir)));
+    if (coor.row < size && coor.col < size && coor.row > -1 && coor.col > -1) {
+      const exit = await room.Exit(dir);
+      return mapRooms(map, exit, coor.row, coor.col, size);
+    }
 
-    return Promise.all(rooms.map((nextRoom, i) => {
-      const coor = getCoords(row, col, map[row][col].exits[i]);
-      if (!map[coor.row][coor.col]) return mapRooms(map, nextRoom, coor.row, coor.col, size);
-      return null;
-    }));
-
-    // // Get all the new rooms within range (that haven't been mapped)
-    // const exits = await Promise.all(map[row][col].exits.filter((dir) => {
-    //   const coor = getCoords(row, col, dir);
-    //   return map[coor.row][coor.col] === 0;
-    // }).map(async (dir) => {
-    //   const exit = await room.Exit(dir);
-    //   return { exit, dir };
-    // }));
-
-    // return Promise.all(exits.map(({ exit, dir }) => {
-    //   const coor = getCoords(row, col, dir);
-    //   return mapRooms(map, exit, coor.row, coor.col, size);
-    // }));
-  }
-
-  return map;
+    return Promise.resolve();
+  }));
 };
 
 export const minimap = async (startRoom, r) => {
-  const size = r * 2 + 1;
+  const size = r * 2 + 3;
   const row = Math.floor(size / 2);
   const col = Math.floor(size / 2);
   const map = new Array(size).fill(0).map(() => new Array(size).fill(0));
-  await mapRooms(map, startRoom, row, col, size);
+  await mapRooms(map, startRoom, row, col, size - 2);
   map[row][col].here = true;
-  // return map.filter(line => !line.every(v => v === 0));
   return map;
 };
 
