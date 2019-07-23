@@ -3,6 +3,7 @@ import AbortStreamError from '../error/AbortStreamError';
 import { getSocket } from '../service/socket.service';
 import { writeStream } from '../service/stream.service';
 import { breakAttack } from '../service/game.service';
+import { minimap } from '../service/map.service';
 import Describer from '../core/Describer';
 import Unit from './Unit';
 
@@ -17,6 +18,12 @@ export default class User extends Unit {
 
   emit(type, payload) {
     this.socket.emit(type, payload);
+  }
+
+  async minimap(fromRoom) {
+    const room = fromRoom || await this.Room();
+    const value = await minimap(room, 2);
+    this.emit('message', { type: 'minimap', value });
   }
 
   async broadcastToRoom(roomId, type, payload) {

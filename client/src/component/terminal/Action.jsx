@@ -28,9 +28,21 @@ const Action = memo((props) => {
         </div>
       </Fragment>
     );
-    case 'error': return <div style={{ color: 'red' }}>{value}</div>;
-    case 'info': return <div>{value}</div>;
-    default: return <span />;
+    case 'cool': {
+      return <div style={{ color: 'cadetblue' }}>{value}</div>;
+    }
+    case 'error': {
+      return <div style={{ color: '#EE766D' }}>{value}</div>;
+    }
+    case 'info': {
+      switch (value.toLowerCase()) {
+        case '*combat engaged*': case '*combat off*': return <div style={{ color: '#BFBB3C' }}>{value}</div>;
+        default: return <div>{value}</div>;
+      }
+    }
+    default: {
+      return <span />;
+    }
   }
 });
 

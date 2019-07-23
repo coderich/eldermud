@@ -19,11 +19,13 @@ const actions = {
   }),
   response: new Action('response'),
   prompt: new Action('prompt'),
+  minimap: new Action('minimap'),
 };
 
 const selectors = {
   prompt: new Selector('data.prompt').default('>'),
   responses: new Selector('data.responses').default([]),
+  maps: new Selector('data.maps').default({ minimap: [] }),
 };
 
 const reducers = [
@@ -42,14 +44,19 @@ const reducers = [
       responses.push(payload);
     },
   })),
+  new Reducer(actions.minimap, selectors.maps, ({
+    success: (maps, { payload }) => {
+      maps.minimap = payload;
+    },
+  })),
 ];
 
 server.on('message', (data) => {
   // console.log(data);
-  if (data.type === 'status') {
-    actions.prompt.dispatch(`[HP=${data.value.hp}]:`);
-  } else {
-    actions.response.dispatch(data);
+  switch (data.type) {
+    case 'status': return actions.prompt.dispatch(`[HP=${data.value.hp}]:`);
+    case 'minimap': return actions.minimap.dispatch(data.value);
+    default: return actions.response.dispatch(data);
   }
 });
 

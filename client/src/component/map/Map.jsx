@@ -1,5 +1,5 @@
 // https://community.jsplumbtoolkit.com/doc/endpoints.html
-import React, { memo } from '@coderich/hotrod/react';
+import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 import { jsPlumb } from 'jsplumb';
 import Room from './Room';
@@ -8,59 +8,56 @@ const viewport = {
   flexWrap: 'nowrap',
 };
 
-const map = [
-  [0, { 1: ['e', 's'] }, { 1: ['w', 's'] }, 0],
-  [0, { 1: ['n', 'e', 'sw'] }, { 2: ['n', 'w', 'se'] }, 0],
-  [{ 3: ['ne', 'se'] }, { 4: ['e', 's'] }, { 5: ['w', 's'] }, { 6: ['nw', 'sw'] }],
-  [0, { 7: ['n', 'nw'] }, { 8: ['n', 'ne'] }, 0],
-];
-
-const getInfo = (row, col, dir) => {
-  switch (dir) {
-    case 'n': return { target: `room-${row - 1}-${col}`, anchors: ['Top', 'Bottom'] };
-    case 's': return { target: `room-${row + 1}-${col}`, anchors: ['Bottom', 'Top'] };
-    case 'e': return { target: `room-${row}-${col + 1}`, anchors: ['Right', 'Left'] };
-    case 'w': return { target: `room-${row}-${col - 1}`, anchors: ['Left', 'Right'] };
-    case 'ne': return { target: `room-${row - 1}-${col + 1}`, anchors: ['TopRight', 'BottomLeft'] };
-    case 'nw': return { target: `room-${row - 1}-${col - 1}`, anchors: ['TopLeft', 'BottomRight'] };
-    case 'se': return { target: `room-${row + 1}-${col + 1}`, anchors: ['BottomRight', 'TopLeft'] };
-    case 'sw': return { target: `room-${row + 1}-${col - 1}`, anchors: ['BottomLeft', 'TopRight'] };
-    default: return { target: `room-${row}-${col}` };
-  }
-};
-
 const Component = memo((props) => {
-  const { id } = props;
+  const { maps } = props;
+
+  const now = new Date().getTime();
+  const containerId = `container-${now}`;
+
+  const getInfo = (row, col, exit) => {
+    switch (exit) {
+      case 'n': return { target: `room-${row - 1}-${col}-${now}`, anchors: ['Top', 'Bottom'] };
+      case 's': return { target: `room-${row + 1}-${col}-${now}`, anchors: ['Bottom', 'Top'] };
+      case 'e': return { target: `room-${row}-${col + 1}-${now}`, anchors: ['Right', 'Left'] };
+      case 'w': return { target: `room-${row}-${col - 1}-${now}`, anchors: ['Left', 'Right'] };
+      case 'ne': return { target: `room-${row - 1}-${col + 1}-${now}`, anchors: ['TopRight', 'BottomLeft'] };
+      case 'nw': return { target: `room-${row - 1}-${col - 1}-${now}`, anchors: ['TopLeft', 'BottomRight'] };
+      case 'se': return { target: `room-${row + 1}-${col + 1}-${now}`, anchors: ['BottomRight', 'TopLeft'] };
+      case 'sw': return { target: `room-${row + 1}-${col - 1}-${now}`, anchors: ['BottomLeft', 'TopRight'] };
+      default: return { target: `room-${row}-${col}-${now}` };
+    }
+  };
 
   setTimeout(() => {
     jsPlumb.ready(() => {
-      const plumb = jsPlumb.getInstance({ Container: id });
+      jsPlumb.reset();
+      jsPlumb.setContainer(containerId);
 
-      map.forEach((arr, row) => {
+      maps.minimap.forEach((arr, row) => {
         arr.forEach((data, col) => {
           if (data) {
-            const [dirs] = Object.values(data);
-            const source = `room-${row}-${col}`;
+            const { exits } = data;
+            const source = `room-${row}-${col}-${now}`;
 
-            dirs.forEach((dir) => {
-              const { target, anchors, endpoint = 'Blank', connector = 'Straight' } = getInfo(row, col, dir);
-              plumb.connect({ source, target, anchors, endpoint, connector });
+            exits.forEach((exit) => {
+              const { target, anchors, endpoint = 'Blank', connector = 'Straight' } = getInfo(row, col, exit);
+              jsPlumb.connect({ source, target, anchors, endpoint, connector });
             });
           }
         });
       });
     });
-  }, 400);
+  });
 
   return (
-    <div id={id} style={viewport}>
-      {map.map((arr, row) => {
-        const rowId = `container-${row}`;
+    <div id={containerId} style={viewport}>
+      {maps.minimap.map((arr, row) => {
+        const rowId = `container-${row}-${now}`;
 
         return (
           <Grid container style={viewport} key={rowId}>
             {arr.map((data, col) => {
-              const roomId = `room-${row}-${col}`;
+              const roomId = `room-${row}-${col}-${now}`;
 
               return (
                 <Room id={roomId} data={data} key={roomId} />
@@ -73,4 +70,12 @@ const Component = memo((props) => {
   );
 });
 
-export default Component;
+export default connect({
+  selectors: {
+    maps: 'maps',
+  },
+})(Component);
+
+Component.propTypes = {
+  maps: PropTypes.instanceOf(Object).isRequired,
+};

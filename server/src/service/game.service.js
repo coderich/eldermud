@@ -4,10 +4,12 @@ import { remove } from 'lodash';
 import { Subject, interval } from 'rxjs';
 import { tap, share, publish } from 'rxjs/operators';
 import { getData, setData } from './data.service';
-import { toRoom, emit, broadcast } from './socket.service';
+import { toRoom, emit } from './socket.service';
 
 let attackQueue = {};
 const chance = new Chance();
+
+const titleCase = name => name.charAt(0).toUpperCase() + name.slice(1);
 
 export const eventEmitter = new EventEmitter();
 export const numToArray = num => Array.from(Array(num));
@@ -70,8 +72,8 @@ const resolveCombat = async (units, queue) => {
     if (hit) {
       const damage = roll(attack.dmg);
       emit(source.id, 'message', { type: 'error', value: `You hit ${target.hitName} for ${damage} damage!` });
-      emit(target.id, 'message', { type: 'error', value: `${source.hitName} hits you for for ${damage} damage!` });
-      toRoom(source.room, 'message', { type: 'error', value: `${source.hitName} hits ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
+      emit(target.id, 'message', { type: 'error', value: `${titleCase(source.hitName)} hits you for for ${damage} damage!` });
+      toRoom(source.room, 'message', { type: 'error', value: `${titleCase(source.hitName)} hits ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
 
       target.hp -= damage;
 
@@ -79,9 +81,9 @@ const resolveCombat = async (units, queue) => {
         remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
       }
     } else {
-      emit(source.id, 'message', { type: 'info', value: `You swing at ${target.hitName}, but miss!!` });
-      emit(target.id, 'message', { type: 'info', value: `${source.hitName} swings at you, but misses!` });
-      toRoom(source.room, 'message', { type: 'info', value: `${source.hitName} swings at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
+      emit(source.id, 'message', { type: 'cool', value: `You swing at ${target.hitName}, but miss!!` });
+      emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} swings at you, but misses!` });
+      toRoom(source.room, 'message', { type: 'cool', value: `${titleCase(source.hitName)} swings at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
     }
 
     resolveCombat(units, queue);

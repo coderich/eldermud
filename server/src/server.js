@@ -4,6 +4,7 @@ import { getData, setData, pushData, pullData } from './service/data.service';
 import { translate } from './service/command.service';
 import { setSocket, unsetSocket } from './service/socket.service';
 import { writeStream, closeStream } from './service/stream.service';
+import { minimap } from './service/map.service';
 import * as actions from './actions';
 
 // Setup Server
@@ -34,11 +35,12 @@ const newUser = id => ({
 server.on('connection', async (socket) => {
   const { id } = socket;
   const userId = `user.${id}`;
-  await setData(userId, newUser(userId));
-  await pushData('room.1', 'units', userId);
   setSocket(userId, socket);
+  const user = await setData(userId, newUser(userId));
+  await pushData('room.1', 'units', userId);
   writeStream(userId, await actions.scan(userId));
-  socket.emit('message', { type: 'status', value: { hp: 100 } });
+  user.minimap();
+  socket.emit('message', { type: 'status', value: { hp: user.hp } });
 
   socket.on('disconnecting', async (reason) => {
     unsetSocket(userId);
@@ -58,7 +60,7 @@ server.on('connection', async (socket) => {
     const command = translate(input);
 
     if (command.scope === 'navigation') {
-      return writeStream(userId, await actions.move(userId, command.code));
+      return writeStream(userId, await actions.move(userId, command.code, command.name));
     }
 
     switch (command.name) {

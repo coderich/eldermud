@@ -22,7 +22,7 @@ const Output = (props, ref) => {
   return (
     <Box style={style} ref={screen}>
       {lines.reverse().map((line, i) => (
-        <Grid item key={i} style={{ overflow: 'hidden', backgroundColor: 'purple' }}>{line}</Grid>
+        <Grid item key={i} style={{ overflow: 'hidden' }}>{line}</Grid>
       ))}
     </Box>
   );

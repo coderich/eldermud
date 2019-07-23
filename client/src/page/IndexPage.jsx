@@ -17,13 +17,15 @@ const border = {
 const IndexPage = memo((props) => {
   return (
     <Grid container>
-      <Grid item xs={3} style={{ ...style, ...border, height: '100vh' }}>
-        <MapView id="container1" />
+      <Grid item xs={2} container style={{ ...style, ...border, height: '100vh' }} direction="column" alignContent="center" justify="flex-end">
+        <Grid item>
+          <MapView id="container1" />
+        </Grid>
       </Grid>
       <Grid item xs={6} style={{ ...style, ...border, height: '100vh' }}>
         <Terminal />
       </Grid>
-      <Grid item xs={3} style={{ ...style, ...border, height: '100vh' }}>
+      <Grid item xs={4} style={{ ...style, ...border, height: '100vh' }}>
       </Grid>
     </Grid>
   );

@@ -37,7 +37,6 @@ const Input = memo((props) => {
       <Grid container>
         <Grid item>
           <span>{prompt}</span>
-          <span>&nbsp;</span>
         </Grid>
         <Grid item style={{ flexGrow: 1 }}>
           <input autoFocus onBlur={onBlur} value={value} onChange={handleChange} style={style} />
