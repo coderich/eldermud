@@ -11,7 +11,7 @@ const Component = memo((props) => {
 
   return (
     <div style={{ opacity: data }}>
-      <div id={id} style={{ ...style, backgroundColor: data.here ? 'red' : 'grey' }} />
+      <div id={id} style={{ ...style, backgroundColor: data.me ? 'limegreen' : 'grey' }} />
     </div>
   );
 });

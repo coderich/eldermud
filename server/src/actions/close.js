@@ -11,5 +11,6 @@ export default async (id, target) => createAction(
     const door = await room.Door(dir) || unit.abortAction('There is nothing in that direction!');
     const message = await door.close(unit);
     unit.emit('message', message);
+    unit.minimap();
   }),
 );

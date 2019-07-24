@@ -1,3 +1,5 @@
+import { getData } from './data.service';
+
 const getCoords = (row, col, dir) => {
   switch (dir) {
     case 'n': { row--; break; }
@@ -16,16 +18,33 @@ const getCoords = (row, col, dir) => {
 const mapRooms = async (map, room, row, col, size) => {
   if (map[row][col]) return;
 
-  map[row][col] = { exits: Object.keys(room.exits) };
+  const dirs = Object.keys(room.exits);
+  const exits = Object.values(room.exits);
+  map[row][col] = { exits: dirs };
 
-  await Promise.all(map[row][col].exits.map(async (dir) => {
+  await Promise.all(dirs.map(async (dir, i) => {
+    const exit = exits[i];
+
+    // Check for obstacles blocking vision
+    if (typeof exit === 'object') {
+      const [oids] = Object.values(exit);
+      const obstacles = await Promise.all(oids.map(id => getData(id)));
+
+      if (obstacles.some(obstacle => !obstacle.canSeeThru())) {
+        map[row][col].conn = 'blocked';
+        return Promise.resolve();
+      }
+    }
+
+    // Vision is clear - proceed
     const coor = getCoords(row, col, dir);
 
     if (coor.row < size - 1 && coor.col < size - 1 && coor.row > 0 && coor.col > 0) {
-      const exit = await room.Exit(dir);
-      return mapRooms(map, exit, coor.row, coor.col, size);
+      const nextRoom = await room.Exit(dir);
+      return mapRooms(map, nextRoom, coor.row, coor.col, size);
     }
 
+    // Out of bounds
     return Promise.resolve();
   }));
 };
@@ -36,7 +55,7 @@ export const minimap = async (startRoom, r) => {
   const col = Math.floor(size / 2);
   const map = new Array(size).fill(0).map(() => new Array(size).fill(0));
   await mapRooms(map, startRoom, row, col, size);
-  map[row][col].here = true;
+  map[row][col].me = true;
   return map;
 };
 

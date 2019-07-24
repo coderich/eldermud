@@ -23,8 +23,8 @@ export const createLoop = (...operators) => () => of('loop').pipe(
     throw e;
   }),
   take(1),
-  share(),
   retry(),
+  share(),
 );
 
 export const writeStream = (id, action) => {

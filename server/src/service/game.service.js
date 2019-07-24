@@ -100,6 +100,7 @@ const resolveCombat = async (units, queue) => {
     // Award the brave
     await Promise.all(units.filter(u => u.hp > 0).map(async (unit) => {
       await setData(unit.id, 'hp', unit.hp);
+      await unit.heartbeat();
       return unit.status();
     }));
 

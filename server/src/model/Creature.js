@@ -1,7 +1,7 @@
-import { tap, mergeMap, delayWhen, finalize } from 'rxjs/operators';
+import { tap, mergeMap, delay, delayWhen, finalize } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
-import { addAttack, breakAttack, resolveLoop } from '../service/game.service';
+import { addAttack, resolveLoop } from '../service/game.service';
 import { toRoom, emit, broadcast } from '../service/socket.service';
 import { writeStream, createAction, createLoop } from '../service/stream.service';
 import Unit from './Unit';
@@ -18,6 +18,10 @@ export default class Creature extends Unit {
     this.abortAction = (msg) => { throw new AbortActionError(msg); };
     this.abortStream = (msg) => { throw new AbortStreamError(msg); };
     this.prey();
+  }
+
+  connect() {
+    this.heartbeat();
   }
 
   prey() {
@@ -63,6 +67,24 @@ export default class Creature extends Unit {
         }),
       ));
     }
+  }
+
+  heartbeat() {
+    writeStream(`${this.id}.heartbeat`, createLoop(
+      delayWhen(() => resolveLoop),
+      delay(500), // Allow battle to resolve
+      mergeMap(async () => {
+        const unit = await this.getData(this.id);
+        const beat = unit.mhp * 0.02;
+        const hp = Math.min(unit.mhp, unit.hp + beat);
+
+        if (hp !== unit.hp) {
+          this.setData(this.id, 'hp', hp);
+        } else {
+          unit.abortAction('healed');
+        }
+      }),
+    ));
   }
 
   async broadcastToRoom(roomId, type, payload) {

@@ -20,6 +20,10 @@ export default class User extends Unit {
   }
 
   connect() {
+    this.heartbeat();
+  }
+
+  heartbeat() {
     if (!users.has(this.id)) {
       users.add(this.id);
 

@@ -16,7 +16,7 @@ export default {
     name: 'Hallway, Start',
     description: chance.paragraph(),
     exits: { s: 'room.2' },
-    items: ['item.1'],
+    items: ['item.2', 'item.3'],
     units: [],
   },
   'room.2': {
@@ -24,7 +24,7 @@ export default {
     name: 'Hallway, Center',
     description: chance.paragraph(),
     exits: { w: 'room.4', n: 'room.1', s: { 'room.3': ['obstacle.1'] } },
-    items: ['item.2', 'item.3'],
+    items: [],
     units: [],
   },
   'room.3': {
@@ -64,6 +64,12 @@ export default {
     exits: { s: 'room.7', e: 'room.5' },
     items: [],
     units: [],
+    spawn: new Date().getTime(),
+    respawn: '1d15000+30000',
+    spawnlings: {
+      num: 1,
+      blueprints: ['blueprint.rat'],
+    },
   },
   'room.7': {
     id: 'room.7',
@@ -72,6 +78,12 @@ export default {
     exits: { n: 'room.6', e: 'room.8' },
     items: [],
     units: [],
+    spawn: new Date().getTime(),
+    respawn: '1d15000+30000',
+    spawnlings: {
+      num: 1,
+      blueprints: ['blueprint.rat'],
+    },
   },
   'room.8': {
     id: 'room.8',
@@ -86,14 +98,20 @@ export default {
     name: 'Hallway, End',
     description: chance.paragraph(),
     exits: { w: 'room.8' },
-    items: [],
+    items: ['item.1'],
     units: [],
+    spawn: new Date().getTime(),
+    respawn: '1d15000+30000',
+    spawnlings: {
+      num: '1d3+1',
+      blueprints: ['blueprint.rat'],
+    },
   },
   'obstacle.1': {
     id: 'obstacle.1',
     type: 'door',
     name: 'door',
-    state: { open: true, locked: false },
+    state: { open: false, locked: false },
   },
   // 'obstacle.10': {
   //   id: 10,

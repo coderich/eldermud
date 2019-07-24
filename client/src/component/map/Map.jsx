@@ -40,7 +40,9 @@ const Component = memo((props) => {
             const source = `room-${row}-${col}-${now}`;
 
             exits.forEach((exit) => {
-              const { target, anchors, endpoint = 'Blank', connector = 'Straight' } = getInfo(row, col, exit);
+              const endpoint = 'Blank';
+              const connector = 'Straight';
+              const { target, anchors } = getInfo(row, col, exit);
               jsPlumb.connect({ source, target, anchors, endpoint, connector });
             });
           }

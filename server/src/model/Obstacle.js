@@ -1,6 +1,13 @@
 import Model from '../core/Model';
 
 export default class Obstacle extends Model {
+  canSeeThru() {
+    switch (this.type) {
+      case 'door': return this.state.open;
+      default: return true;
+    }
+  }
+
   async lock(unit) {
     const locked = await this.getData(this.id, 'state.locked');
     if (locked) unit.abortAction(`The ${this.name} is already locked!`);

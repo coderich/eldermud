@@ -67,6 +67,7 @@ export default class Room extends Model {
     const template = templateData.id;
     const creature = await this.setData(id, Object.assign({}, templateData, { id, hp, mhp: hp, exp, template, room: this.id, spawnRoom: this.id }));
     await this.pushData(this.id, 'units', creature.id);
+    creature.connect();
     return toRoom(this, 'message', { type: 'info', value: `A ${creature.name} appears out of nowhere!` });
   }
 
