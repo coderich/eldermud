@@ -21,7 +21,7 @@ const mapRooms = async (map, room, row, col, size) => {
   await Promise.all(map[row][col].exits.map(async (dir) => {
     const coor = getCoords(row, col, dir);
 
-    if (coor.row < size && coor.col < size && coor.row > -1 && coor.col > -1) {
+    if (coor.row < size - 1 && coor.col < size - 1 && coor.row > 0 && coor.col > 0) {
       const exit = await room.Exit(dir);
       return mapRooms(map, exit, coor.row, coor.col, size);
     }
@@ -35,7 +35,7 @@ export const minimap = async (startRoom, r) => {
   const row = Math.floor(size / 2);
   const col = Math.floor(size / 2);
   const map = new Array(size).fill(0).map(() => new Array(size).fill(0));
-  await mapRooms(map, startRoom, row, col, size - 2);
+  await mapRooms(map, startRoom, row, col, size);
   map[row][col].here = true;
   return map;
 };

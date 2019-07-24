@@ -1,5 +1,5 @@
 import { tap, mergeMap, delayWhen } from 'rxjs/operators';
-import { getData } from '../service/data.service';
+import { getData, setData } from '../service/data.service';
 import { createAction, createLoop, writeStream } from '../service/stream.service';
 import { resolveLoop, addAttack } from '../service/game.service';
 
@@ -22,11 +22,12 @@ export default async (id, input) => {
       writeStream(attackStream, createLoop(
         tap(async () => {
           addAttack(id, targetId, attack);
+          setData(id, 'target', targetId);
         }),
         delayWhen(() => resolveLoop),
         mergeMap(async () => {
           const [unit, target] = await Promise.all([getData(id), getData(targetId)]);
-          if (!target || unit.room !== target.room) unit.breakAction('*Combat Off*');
+          if (!target || unit.room !== target.room) unit.break('*Combat Off*');
         }),
       ));
     }),

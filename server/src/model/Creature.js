@@ -2,7 +2,7 @@ import { tap, mergeMap, delayWhen, finalize } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { addAttack, breakAttack, resolveLoop } from '../service/game.service';
-import { toRoom, broadcast } from '../service/socket.service';
+import { toRoom, emit, broadcast } from '../service/socket.service';
 import { writeStream, createAction, createLoop } from '../service/stream.service';
 import Unit from './Unit';
 
@@ -14,7 +14,6 @@ export default class Creature extends Unit {
     super(...args);
     this.isCreature = true;
     this.hitName = `the ${this.name}`;
-    this.emit = () => {};
     this.breakAction = (msg) => { throw new AbortActionError(msg); };
     this.abortAction = (msg) => { throw new AbortActionError(msg); };
     this.abortStream = (msg) => { throw new AbortStreamError(msg); };
@@ -31,8 +30,7 @@ export default class Creature extends Unit {
           const players = await room.Players();
 
           if (!players.length) {
-            await this.setData(this.id, 'target', null);
-            this.break(); // Nothing to fight
+            await this.break(); // Nothing to fight
           }
 
           if (players.find(player => player.id === this.target)) this.abortAction(); // In a fight!
@@ -46,8 +44,7 @@ export default class Creature extends Unit {
               const [attack] = Object.values(unit.attacks);
 
               if (!players.length) {
-                await this.setData(this.id, 'target', null);
-                this.break(); // Nothing to fight
+                await this.break(); // Nothing to fight
               }
 
               if (players.find(player => player.id === unit.target)) {
@@ -68,30 +65,27 @@ export default class Creature extends Unit {
     }
   }
 
-  break() {
-    breakAttack(this.id);
-    writeStream(this.id, 'abort');
-    writeStream(`${this.id}.attack`, 'abort');
-    this.abortAction();
-  }
-
   async broadcastToRoom(roomId, type, payload) {
     const room = await this.getData(roomId);
     broadcast(room.units, type, payload);
   }
 
-  async death() {
+  async death(involved) {
     deaths.add(this.id);
-    breakAttack(this.id);
-    writeStream(this.id, 'abort');
-    writeStream(`${this.id}.attack`, 'abort');
 
     // Remove the creature
     await Promise.all([
-      this.pullData(this.room, 'units', this.id),
+      this.disconnect(),
       this.delData(this.id),
       toRoom(this.room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` }),
     ]);
+
+    // Award involved players
+    const share = Math.ceil(this.exp / involved.length);
+    involved.forEach((unitId) => {
+      this.incData(unitId, 'exp', share);
+      emit(unitId, 'message', { type: 'info', value: `You gain ${share} experience.` });
+    });
 
     const now = new Date().getTime();
 

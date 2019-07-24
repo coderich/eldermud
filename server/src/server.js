@@ -4,7 +4,6 @@ import { getData, setData, pushData, pullData } from './service/data.service';
 import { translate } from './service/command.service';
 import { setSocket, unsetSocket } from './service/socket.service';
 import { writeStream, closeStream } from './service/stream.service';
-import { minimap } from './service/map.service';
 import * as actions from './actions';
 
 // Setup Server
@@ -15,9 +14,10 @@ const chance = new Chance();
 const newUser = id => ({
   id,
   name: chance.name(),
-  hp: 100,
-  mhp: 100,
-  ac: 14,
+  hp: 30,
+  mhp: 30,
+  ac: 12,
+  exp: 0,
   attacks: {
     'attack.punch': {
       dmg: '5d10',
@@ -27,9 +27,6 @@ const newUser = id => ({
   isLoggedIn: true,
   room: 'room.1',
   items: [],
-  combat: {
-    engaged: false,
-  },
 });
 
 server.on('connection', async (socket) => {
@@ -40,13 +37,11 @@ server.on('connection', async (socket) => {
   await pushData('room.1', 'units', userId);
   writeStream(userId, await actions.scan(userId));
   user.minimap();
-  socket.emit('message', { type: 'status', value: { hp: user.hp } });
+  user.status();
+  user.connect();
 
   socket.on('disconnecting', async (reason) => {
-    unsetSocket(userId);
-    closeStream(userId);
-    const room = await getData(userId, 'room');
-    pullData(room, 'units', userId);
+    user.disconnect();
   });
 
   socket.on('disconnect', (reason) => {
@@ -71,6 +66,9 @@ server.on('connection', async (socket) => {
       case 'look': {
         const target = command.args.join(' ');
         return writeStream(userId, await actions.look(userId, target));
+      }
+      case 'exp': {
+        return writeStream(userId, await actions.exp(userId));
       }
       case 'get': {
         const target = command.args.join(' ');

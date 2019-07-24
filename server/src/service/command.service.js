@@ -24,6 +24,7 @@ const commands = [
     { exit: { args: [0], code: 'x', scope: '', stream: 'meta' } },
   ],
   [
+    { exp: { args: [0], code: 'exp', scope: 'interaction', stream: 'motor' } },
     { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'interaction', stream: 'motor' } },
     { break: { args: [0], code: 'break', scope: 'interaction', stream: 'motor' } },
     { search: { args: [0], code: 'search', scope: 'interaction', stream: 'motor' } },

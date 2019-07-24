@@ -35,7 +35,7 @@ export default class Describer {
             if (b.isUser) return 1;
             return -1;
           })
-          .map(unit => unit.name);
+          .map(unit => `${unit.name} (${unit.hp})`);
         if (!opts.full) delete target.description;
         break;
       }

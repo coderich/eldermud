@@ -82,7 +82,7 @@ export const incData = async (id, field, number) => {
   return JSON.parse(await toPromise(client.json_numincrby, id, `.${field}`, number));
 };
 
-Object.assign(api, { getData, getList, setData, delData, pushData, pullData });
+Object.assign(api, { getData, getList, setData, delData, pushData, pullData, incData });
 
 // Fixtures
 Object.entries({ ...db, ...tmpl }).forEach(([key, value]) => {
