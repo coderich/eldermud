@@ -61,7 +61,7 @@ const translateArray = (arr, input, cmd, args) => {
 };
 
 export const translate = (input) => {
-  input = input.trim();
+  input = input.trim().toLowerCase();
   const [cmd, ...args] = input.match(/\S+/g) || [];
   if (!cmd) return { name: 'none', input, args, code: null, scope: 'default', stream: 'info' };
 

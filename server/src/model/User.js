@@ -1,14 +1,16 @@
+import { of } from 'rxjs';
 import { tap, delay, delayWhen } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { getSocket } from '../service/socket.service';
-import { writeStream, createLoop } from '../service/stream.service';
-import { breakAttack, healthLoop } from '../service/game.service';
+import { writeStream, createAction, createLoop } from '../service/stream.service';
+import { breakAttack, attackLoop, healthLoop } from '../service/game.service';
 import { minimap } from '../service/map.service';
 import Describer from '../core/Describer';
 import Unit from './Unit';
 
 const users = new Set();
+const performs = new Set();
 
 export default class User extends Unit {
   constructor(...args) {
@@ -50,6 +52,18 @@ export default class User extends Unit {
 
   emit(type, payload) {
     this.socket.emit(type, payload);
+  }
+
+  async perform(action) {
+    if (performs.has(this.id)) this.abortAction('Must wait until next round!');
+
+    writeStream(`${this.id}.perform`, createAction(
+      tap(() => performs.add(this.id)),
+      delayWhen(() => attackLoop),
+      tap(() => performs.delete(this.id)),
+    ));
+
+    return action();
   }
 
   async minimap(fromRoom) {

@@ -1,10 +1,10 @@
 import Model from '../core/Model';
 
 export default class Obstacle extends Model {
-  canSeeThru() {
+  blocksVision() {
     switch (this.type) {
-      case 'door': return this.state.open;
-      default: return true;
+      case 'door': return !this.state.open;
+      default: return false;
     }
   }
 

@@ -1,4 +1,5 @@
 import React, { PropTypes, Fragment, memo } from '@coderich/hotrod/react';
+import { Chip, Avatar } from '@material-ui/core';
 
 const Action = memo((props) => {
   const { prompt, action: { type, value } } = props;

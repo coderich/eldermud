@@ -5,7 +5,7 @@ import { jsPlumb } from 'jsplumb';
 import Room from './Room';
 
 const viewport = {
-  flexWrap: 'nowrap',
+  // flexWrap: 'nowrap',
 };
 
 const Component = memo((props) => {

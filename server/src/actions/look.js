@@ -13,6 +13,8 @@ export default async (id, target) => {
       if (target) {
         const { code: dir } = translate(target);
         const exit = await room.Exit(dir) || unit.abortAction('There is nothing in that direction!');
+        const obstacles = await room.Obstacle(dir);
+        if (obstacles && obstacles.some(obstacle => obstacle.blocksVision())) unit.abortAction('Your vision is obstructed!');
         message = await unit.describe('room', exit, { full: true });
       } else {
         message = await unit.describe('room', room, { full: true });

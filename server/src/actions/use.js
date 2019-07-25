@@ -12,11 +12,11 @@ export default async (id, command, dir) => createAction(
       const item = await unit.resolveTarget('items', target) || unit.abortAction('You don\'t have that on you!');
       const room = await unit.Room();
       const door = await room.Door(dir.code) || unit.abortAction('There is nothing in that direction!');
-      message = await item.use(unit, door);
+      message = await unit.perform(() => item.use(unit, door));
     } else {
       const target = command.args.join(' ');
       const item = await unit.resolveTarget('items', target) || unit.abortAction('You don\'t have that on you!');
-      message = await item.use(unit);
+      message = await unit.perform(() => item.use(unit));
     }
 
     unit.emit('message', message);

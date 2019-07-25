@@ -30,7 +30,7 @@ const mapRooms = async (map, room, row, col, size) => {
       const [oids] = Object.values(exit);
       const obstacles = await Promise.all(oids.map(id => getData(id)));
 
-      if (obstacles.some(obstacle => !obstacle.canSeeThru())) {
+      if (obstacles.some(obstacle => obstacle.blocksVision())) {
         map[row][col].conn = 'blocked';
         return Promise.resolve();
       }
