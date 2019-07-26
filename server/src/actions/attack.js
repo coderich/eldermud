@@ -3,10 +3,7 @@ import { getData, setData } from '../service/data.service';
 import { createAction, createLoop, writeStream } from '../service/stream.service';
 import { resolveLoop, addAttack } from '../service/game.service';
 
-export default async (id, input) => {
-  const { attacks } = await getData(id);
-  const [attack] = Object.values(attacks);
-
+export default async (id, input, attack) => {
   return createAction(
     mergeMap(async () => {
       const unit = await getData(id);

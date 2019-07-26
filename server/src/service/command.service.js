@@ -17,6 +17,7 @@ const commands = [
     { nw: { args: [0], code: 'nw', alias: 'northwest', scope: 'navigation', stream: 'motor' } },
     { se: { args: [0], code: 'se', alias: 'southeast', scope: 'navigation', stream: 'motor' } },
     { sw: { args: [0], code: 'sw', alias: 'southwest', scope: 'navigation', stream: 'motor' } },
+    { ul: { args: [1], code: 'unlock', alias: 'unlock', scope: 'interaction', stream: 'motor' } },
     { open: { args: [1], code: 'open', scope: 'interaction', stream: 'motor' } },
     { close: { args: [1], code: 'close', scope: 'interaction', stream: 'motor' } },
     { drop: { args: [1, 2, 3, 4, 5], code: 'drop', scope: 'interaction', stream: 'motor' } },
@@ -28,12 +29,21 @@ const commands = [
     { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'interaction', stream: 'motor' } },
     { break: { args: [0], code: 'break', scope: 'interaction', stream: 'motor' } },
     { search: { args: [0], code: 'search', scope: 'interaction', stream: 'motor' } },
+    { lock: { args: [1], code: 'lock', scope: 'interaction', stream: 'motor' } },
+    { unlock: { args: [1], code: 'unlock', scope: 'interaction', stream: 'motor' } },
   ],
   [
     { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'interaction', stream: 'motor' } },
     { lock: { args: [1], code: 'lock', scope: 'interaction', stream: 'motor' } },
   ],
 ];
+
+const talents = {
+  rage: { code: 'rage', args: [0] },
+  mihe: { code: 'mihe', args: [0, 1] },
+  mahe: { code: 'mahe', args: [0, 1] },
+  vamp: { code: 'vamp', args: [1] },
+};
 
 const translateArray = (arr, input, cmd, args) => {
   for (let i = 0; i < cmd.length; i++) {
@@ -69,6 +79,20 @@ export const translate = (input) => {
     translateArray(commands, input, cmd, args)
     || { name: 'unknown', input, args, code: 'unk', scope: 'unknown', stream: 'meta' }
   );
+};
+
+export const findTalent = (input) => {
+  input = input.trim().toLowerCase();
+  const [cmd, ...args] = input.match(/\S+/g) || [];
+  const keys = Object.keys(talents);
+  const values = Object.values(talents);
+  const index = keys.indexOf(cmd);
+
+  if (index > -1 && values[index].args.indexOf(args.length) > -1) {
+    return Object.assign({}, values[index], { input, args });
+  }
+
+  return undefined;
 };
 
 export const resolve = {};

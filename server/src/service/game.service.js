@@ -64,26 +64,31 @@ const resolveCombat = async (units, queue) => {
   if (queue.length) {
     const { sourceId, targetId, attack } = queue.shift(); // Next in line
     const [source, target] = [units.find(u => u.id === sourceId), units.find(u => u.id === targetId)];
-
     if (source.room === target.room) {
-      const total = roll(attack.acc);
-      const hit = total >= target.ac;
+      const { cost = 0 } = attack;
 
-      if (hit) {
-        const damage = roll(attack.dmg);
-        emit(source.id, 'message', { type: 'error', value: `You hit ${target.hitName} for ${damage} damage!` });
-        emit(target.id, 'message', { type: 'error', value: `${titleCase(source.hitName)} hits you for for ${damage} damage!` });
-        toRoom(source.room, 'message', { type: 'error', value: `${titleCase(source.hitName)} hits ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
+      if (source.exp >= cost) {
+        source.exp -= cost;
+        const total = roll(attack.acc);
+        const hit = total >= target.ac;
 
-        target.hp -= damage;
+        if (hit) {
+          const damage = roll(attack.dmg);
+          emit(source.id, 'message', { type: 'error', value: `You hit ${target.hitName} for ${damage} damage!` });
+          emit(target.id, 'message', { type: 'error', value: `${titleCase(source.hitName)} hits you for for ${damage} damage!` });
+          toRoom(source.room, 'message', { type: 'error', value: `${titleCase(source.hitName)} hits ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
 
-        if (target.hp <= 0) {
-          remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
+          target.hp -= damage;
+          if (attack.proc) attack.proc(source, target, damage);
+
+          if (target.hp <= 0) {
+            remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
+          }
+        } else {
+          emit(source.id, 'message', { type: 'cool', value: `You swing at ${target.hitName}, but miss!!` });
+          emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} swings at you, but misses!` });
+          toRoom(source.room, 'message', { type: 'cool', value: `${titleCase(source.hitName)} swings at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
         }
-      } else {
-        emit(source.id, 'message', { type: 'cool', value: `You swing at ${target.hitName}, but miss!!` });
-        emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} swings at you, but misses!` });
-        toRoom(source.room, 'message', { type: 'cool', value: `${titleCase(source.hitName)} swings at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
       }
     } else {
       remove(queue, el => (el.sourceId === sourceId && el.targetId === targetId) || (el.sourceId === targetId && el.targetId === sourceId));
@@ -91,19 +96,23 @@ const resolveCombat = async (units, queue) => {
 
     resolveCombat(units, queue);
   } else {
-    // Bury the dead first
+    // Award the brave
+    await Promise.all(units.filter(u => u.hp > 0).map(async (unit) => {
+      await Promise.all([
+        setData(unit.id, 'hp', unit.hp),
+        setData(unit.id, 'exp', unit.exp),
+        unit.heartbeat(),
+      ]);
+      return unit.status();
+    }));
+
+    // Bury the dead
     await Promise.all(units.filter(u => u.hp <= 0).map(async (unit) => {
       const involved = resolveQueue.filter(q => q.targetId === unit.id && units.find(u => u.id === q.sourceId).hp > 0).map(q => q.sourceId);
       return unit.death(involved);
     }));
 
-    // Award the brave
-    await Promise.all(units.filter(u => u.hp > 0).map(async (unit) => {
-      await setData(unit.id, 'hp', unit.hp);
-      await unit.heartbeat();
-      return unit.status();
-    }));
-
+    // Resolved
     resolveLoop.next('resolveLoop');
   }
 };

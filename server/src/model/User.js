@@ -1,5 +1,4 @@
-import { of } from 'rxjs';
-import { tap, delay, delayWhen } from 'rxjs/operators';
+import { tap, mergeMap, delay, delayWhen } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { getSocket } from '../service/socket.service';
@@ -55,10 +54,10 @@ export default class User extends Unit {
   }
 
   async perform(action) {
-    if (performs.has(this.id)) this.abortAction('Must wait until next round!');
+    if (performs.has(this.id)) return this.abortAction('Must wait until next round!');
 
     writeStream(`${this.id}.perform`, createAction(
-      tap(() => performs.add(this.id)),
+      tap(async () => { performs.add(this.id); }),
       delayWhen(() => attackLoop),
       tap(() => performs.delete(this.id)),
     ));
@@ -100,8 +99,8 @@ export default class User extends Unit {
 
   async death() {
     breakAttack(this.id);
-    writeStream(`${this.id}.attack`, 'abort');
     writeStream(this.id, 'abort');
+    ['attack'].concat(this.talents).forEach(stream => writeStream(`${this.id}.stream`, 'abort'));
 
     await Promise.all([
       this.setData(this.id, 'hp', this.mhp),
