@@ -1,19 +1,5 @@
 import { getData } from './data.service';
-
-const getCoords = (row, col, dir) => {
-  switch (dir) {
-    case 'n': { row--; break; }
-    case 's': { row++; break; }
-    case 'e': { col++; break; }
-    case 'w': { col--; break; }
-    case 'ne': { row--; col++; break; }
-    case 'nw': { row--; col--; break; }
-    case 'se': { row++; col++; break; }
-    case 'sw': { row++; col--; break; }
-    default: break;
-  }
-  return { row, col };
-};
+import { getCoords } from './util.service';
 
 const mapRooms = async (map, room, row, col, size) => {
   if (map[row][col]) return;
@@ -51,12 +37,37 @@ const mapRooms = async (map, room, row, col, size) => {
 
 export const minimap = async (startRoom, r) => {
   const size = r * 2 + 3;
-  const row = Math.floor(size / 2);
-  const col = Math.floor(size / 2);
+  const start = Math.floor(size / 2);
   const map = new Array(size).fill(0).map(() => new Array(size).fill(0));
-  await mapRooms(map, startRoom, row, col, size);
-  map[row][col].me = true;
+  const world = await getData('map');
+  const [key] = Object.entries(world).find(([, value]) => startRoom.id === value.id);
+  const [startRow, startCol] = key.split('.');
+
+  for (let row = 1; row < size - 1; row++) {
+    const deltaRow = start - row;
+    const lookupRow = startRow - deltaRow;
+
+    for (let col = 1; col < size - 1; col++) {
+      const deltaCol = start - col;
+      const lookupCol = startCol - deltaCol;
+      const room = world[`${lookupRow}.${lookupCol}`];
+      if (room) map[row][col] = { exits: room.dirs };
+    }
+  }
+
+  map[start][start].me = true;
+
   return map;
 };
+
+// export const minimap = async (startRoom, r) => {
+//   const size = r * 2 + 3;
+//   const row = Math.floor(size / 2);
+//   const col = Math.floor(size / 2);
+//   const map = new Array(size).fill(0).map(() => new Array(size).fill(0));
+//   await mapRooms(map, startRoom, row, col, size);
+//   map[row][col].me = true;
+//   return map;
+// };
 
 export const stfu = () => {};

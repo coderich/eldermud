@@ -1,5 +1,3 @@
-import { getData } from './data.service';
-
 const sockets = {};
 
 export const getSocket = (id) => {
@@ -24,7 +22,6 @@ export const broadcast = async (ids, type, payload) => {
 };
 
 export const toRoom = async (room, type, payload, options = {}) => {
-  room = (typeof room === 'string' ? await getData(room) : room);
   let players = await room.Players();
   if (options.omit) players = players.filter(it => options.omit.indexOf(it.id) === -1);
   players.forEach(player => player.emit(type, payload));

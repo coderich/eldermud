@@ -9,6 +9,7 @@
 
 import redis from 'redis';
 import * as Models from '../model';
+import { getCoords } from './util.service';
 
 import db from '../data';
 import tmpl from '../template';
@@ -84,7 +85,28 @@ export const incData = async (id, field, number) => {
 
 Object.assign(api, { getData, getList, setData, delData, pushData, pullData, incData });
 
-// Fixtures
-Object.entries({ ...db, ...tmpl }).forEach(([key, value]) => {
-  setData(key, value);
-});
+// Bootrap
+(async () => {
+  const mapRealm = async (map, room, row, col) => {
+    const id = `${row}.${col}`;
+    if (map[id]) return;
+
+    map[id] = { id: room.id, dirs: Object.keys(room.exits) };
+    const dirs = Object.keys(room.exits);
+
+    await Promise.all(dirs.map(async (dir) => {
+      const coor = getCoords(row, col, dir);
+      const nextRoom = await room.Exit(dir);
+      return mapRealm(map, nextRoom, coor.row, coor.col);
+    }));
+  };
+
+  // Load all data fixtures
+  await Promise.all(Object.entries({ ...db, ...tmpl }).map(([key, value]) => setData(key, value)));
+
+  // Create map of realm
+  const map = {};
+  const startRoom = await getData('room.1');
+  await mapRealm(map, startRoom, 0, 0);
+  await setData('map', map);
+})();

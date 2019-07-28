@@ -1,4 +1,3 @@
-// import { writeStream, createAction } from '../service/stream.service';
 import Model from '../core/Model';
 
 export default class Talent extends Model {

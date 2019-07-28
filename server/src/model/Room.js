@@ -1,7 +1,7 @@
 import { isObjectLike, flatten } from 'lodash';
 import Model from '../core/Model';
 import { toRoom } from '../service/socket.service';
-import { numToArray } from '../service/game.service';
+import { numToArray } from '../service/util.service';
 
 const rooms = new Set();
 

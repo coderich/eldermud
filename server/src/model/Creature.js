@@ -2,7 +2,7 @@ import { tap, mergeMap, delay, delayWhen, finalize } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { addAttack, resolveLoop } from '../service/game.service';
-import { toRoom, emit, broadcast } from '../service/socket.service';
+import { toRoom, broadcast } from '../service/socket.service';
 import { writeStream, createAction, createLoop } from '../service/stream.service';
 import Unit from './Unit';
 
@@ -96,17 +96,19 @@ export default class Creature extends Unit {
     deaths.add(this.id);
 
     // Remove the creature
-    await Promise.all([
+    const [,, deathRoom] = await Promise.all([
       this.disconnect(),
       this.delData(this.id),
-      toRoom(this.room, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` }),
+      this.getData(this.room),
     ]);
+
+    toRoom(deathRoom, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
 
     // Award involved players
     const share = Math.ceil(this.exp / involved.length);
-    involved.forEach((unitId) => {
-      this.incData(unitId, 'exp', share);
-      emit(unitId, 'message', { type: 'info', value: `You gain ${share} experience.` });
+    involved.forEach((unit) => {
+      unit.exp += share;
+      unit.emit('message', { type: 'info', value: `You gain ${share} experience.` });
     });
 
     const now = new Date().getTime();

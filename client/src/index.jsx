@@ -54,7 +54,7 @@ const reducers = [
 server.on('message', (data) => {
   // console.log(data);
   switch (data.type) {
-    case 'status': return actions.prompt.dispatch(`[HP=${data.value.hp}]:`);
+    case 'status': return actions.prompt.dispatch(`[HP=${data.value.hp},SP=${data.value.exp}]:`);
     case 'minimap': return actions.minimap.dispatch(data.value);
     default: return actions.response.dispatch(data);
   }
