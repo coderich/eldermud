@@ -35,7 +35,7 @@ const Component = memo((props) => {
 
       jsPlumb.registerConnectionTypes({
         basic: {
-          paintStyle: { stroke: 'white', strokeWidth: 3 },
+          paintStyle: { stroke: 'black', strokeWidth: 3 },
         },
       });
 
