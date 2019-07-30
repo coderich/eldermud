@@ -43,6 +43,7 @@ const talents = {
   mihe: { code: 'mihe', args: [0, 1] },
   mahe: { code: 'mahe', args: [0, 1] },
   vamp: { code: 'vamp', args: [1] },
+  dble: { code: 'dble', args: [1] },
 };
 
 const translateArray = (arr, input, cmd, args) => {

@@ -102,7 +102,7 @@ export default class Creature extends Unit {
       this.getData(this.room),
     ]);
 
-    toRoom(deathRoom, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
+    await toRoom(deathRoom, 'message', { type: 'info', value: `The ${this.name} falls to the floor dead.` });
 
     // Award involved players
     const share = Math.ceil(this.exp / involved.length);

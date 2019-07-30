@@ -1,4 +1,4 @@
-import { tap, mergeMap, delay, delayWhen } from 'rxjs/operators';
+import { tap, delay, delayWhen } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { getSocket } from '../service/socket.service';
@@ -115,6 +115,7 @@ export default class User extends Unit {
     this.emit('message', { type: 'info', value: 'You have died.' });
     this.broadcastToRoom(this.room, 'message', { type: 'info', value: `${this.name} has died.` });
     this.status();
+    this.minimap(room);
   }
 
   async describe(type, ...rest) {

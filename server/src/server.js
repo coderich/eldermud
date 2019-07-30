@@ -19,10 +19,11 @@ const newUser = id => ({
   mhp: 30,
   ac: 10,
   exp: 0,
-  talents: ['rage', 'mihe', 'vamp'],
+  talents: ['rage', 'mihe', 'vamp', 'dble'],
   isLoggedIn: true,
   room: 'room.1',
   items: [],
+  combatants: [],
 });
 
 server.on('connection', async (socket) => {

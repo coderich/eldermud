@@ -8,7 +8,6 @@ import { toRoom, emit } from './socket.service';
 import { titleCase, numToArray } from './util.service';
 
 let attackQueue = {};
-let resolveQueue = {};
 const chance = new Chance();
 
 export const eventEmitter = new EventEmitter();
@@ -58,10 +57,11 @@ const getAllUnitsInCombat = (queue) => {
   );
 };
 
-const resolveCombat = async (units, queue) => {
+const resolveCombat = async (units, queue, resolveQueue) => {
   if (queue.length) {
     const { sourceId, targetId, attack } = queue.shift(); // Next in line
     const [source, target] = [units.find(u => u.id === sourceId), units.find(u => u.id === targetId)];
+
     if (source.room === target.room) {
       const { cost = 0 } = attack;
 
@@ -93,40 +93,52 @@ const resolveCombat = async (units, queue) => {
       remove(queue, el => (el.sourceId === sourceId && el.targetId === targetId) || (el.sourceId === targetId && el.targetId === sourceId));
     }
 
-    resolveCombat(units, queue);
-  } else {
-    // Bury the dead
-    await Promise.all(units.filter(u => u.hp <= 0).map(async (unit) => {
-      const involved = resolveQueue.filter(q => q.targetId === unit.id).map(q => units.find(u => u.id === q.sourceId)).filter(u => u && u.hp > 0);
-      return unit.death(involved);
-      // const involved = resolveQueue.filter(q => q.targetId === unit.id && units.find(u => u.id === q.sourceId).hp > 0).map(q => q.sourceId);
-      // return unit.death(involved);
-    }));
+    return resolveCombat(units, queue, resolveQueue);
+  }
 
-    // Award the brave
-    await Promise.all(units.filter(u => u.hp > 0).map(async (unit) => {
-      await Promise.all([
-        setData(unit.id, 'hp', unit.hp),
-        setData(unit.id, 'exp', unit.exp),
-        unit.heartbeat(),
-      ]);
-      return unit.status();
-    }));
+  // Bury the dead
+  await Promise.all(units.filter(u => u.hp <= 0).map(async (unit) => {
+    const involved = resolveQueue.filter(q => q.targetId === unit.id).map(q => units.find(u => u.id === q.sourceId)).filter(u => u && u.hp > 0);
+    return unit.death(involved);
+  }));
 
-    // Resolved
-    resolveLoop.next('resolveLoop');
+  // Award the brave
+  return Promise.all(units.filter(u => u.hp > 0).map(async (unit) => {
+    await Promise.all([
+      setData(unit.id, 'hp', unit.hp),
+      setData(unit.id, 'exp', unit.exp),
+      unit.heartbeat(),
+    ]);
+    return unit.status();
+  }));
+};
+
+const getAttackQueue = (queue) => {
+  return Object.entries(queue).reduce((prev, [sourceId, props]) => {
+    return prev.concat({ sourceId, ...props });
+  }, []).sort((a, b) => b.initiative - a.initiative);
+};
+
+export const instaAttack = async (sourceId, targetId, attack) => {
+  const insta = [{ sourceId, targetId, attack }];
+  const queue = getAttackQueue(Object.assign({}, attackQueue, { [sourceId]: { targetId, attack } }));
+  const units = await getAllUnitsInCombat(queue);
+  await resolveCombat(units, insta, queue);
+
+  if (insta.length === 0) {
+    Object.entries(attackQueue).forEach(([key, value]) => {
+      if (value.targetId === targetId) delete attackQueue[key];
+    });
   }
 };
 
 export const attackLoop = interval(4000).pipe(
   tap(async () => {
-    const queue = Object.entries(attackQueue).reduce((prev, [sourceId, props]) => {
-      return prev.concat({ sourceId, ...props });
-    }, []).sort((a, b) => b.initiative - a.initiative);
+    const queue = getAttackQueue(attackQueue);
     attackQueue = {};
-    resolveQueue = [...queue];
     const units = await getAllUnitsInCombat(queue);
-    resolveCombat(units, queue);
+    await resolveCombat(units, queue, [...queue]);
+    resolveLoop.next('resolveLoop');
   }),
   share(),
   publish(),
