@@ -1,6 +1,6 @@
 import { mergeMap, delay } from 'rxjs/operators';
-import { getData, setData, pushData, pullData } from '../service/data.service';
-import { createAction } from '../service/stream.service';
+import { getData, setData, pushData, pullData } from '../../service/data.service';
+import { createAction } from '../../service/stream.service';
 
 export default async (id, dir, name) => createAction(
   mergeMap(async () => {
@@ -12,7 +12,7 @@ export default async (id, dir, name) => createAction(
     unit.emit('message', { type: 'info', value: `moving ${name}...` });
     return { unit, from: room, to: exit };
   }),
-  delay(1000),
+  // delay(1000),
   mergeMap(async ({ unit, from, to }) => {
     await Promise.all([setData(id, 'room', to.id), pushData(to.id, 'units', unit.id), pullData(from.id, 'units', unit.id)]);
     if (unit.isUser) {

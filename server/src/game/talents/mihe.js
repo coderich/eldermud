@@ -1,6 +1,6 @@
 import { mergeMap } from 'rxjs/operators';
-import { getData, setData, incData } from '../service/data.service';
-import { createAction } from '../service/stream.service';
+import { getData, setData, incData } from '../../service/data.service';
+import { createAction } from '../../service/stream.service';
 
 const cost = 10;
 const code = 'mihe';

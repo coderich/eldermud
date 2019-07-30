@@ -67,7 +67,7 @@ export default class User extends Unit {
 
   async minimap(fromRoom) {
     const room = fromRoom || await this.Room();
-    const value = await minimap(room, 2);
+    const value = await minimap(room, 3);
     this.emit('message', { type: 'minimap', value });
   }
 

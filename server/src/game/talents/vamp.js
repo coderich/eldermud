@@ -1,5 +1,5 @@
 import { attack } from '../actions';
-import { emit } from '../service/socket.service';
+import { emit } from '../../service/socket.service';
 
 export default async (id, command) => {
   const input = command.args.join(' ');

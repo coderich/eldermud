@@ -1,7 +1,7 @@
 import { tap, mergeMap, delayWhen } from 'rxjs/operators';
-import { getData, setData } from '../service/data.service';
-import { createAction, createLoop, writeStream } from '../service/stream.service';
-import { resolveLoop, addAttack } from '../service/game.service';
+import { getData, setData } from '../../service/data.service';
+import { createAction, createLoop, writeStream } from '../../service/stream.service';
+import { resolveLoop, addAttack } from '../../service/game.service';
 
 export default async (id, input, attack) => {
   return createAction(

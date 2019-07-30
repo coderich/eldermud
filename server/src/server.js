@@ -4,8 +4,8 @@ import { getData, setData, pushData } from './service/data.service';
 import { translate, findTalent } from './service/command.service';
 import { setSocket } from './service/socket.service';
 import { writeStream } from './service/stream.service';
-import * as actions from './actions';
-import * as talents from './talents';
+import * as actions from './game/actions';
+import * as talents from './game/talents';
 
 // Setup Server
 const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 });

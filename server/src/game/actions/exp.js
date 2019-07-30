@@ -1,7 +1,7 @@
 import { mergeMap } from 'rxjs/operators';
-import { getData } from '../service/data.service';
-import { emit } from '../service/socket.service';
-import { createAction } from '../service/stream.service';
+import { getData } from '../../service/data.service';
+import { emit } from '../../service/socket.service';
+import { createAction } from '../../service/stream.service';
 
 export default async (id, target) => createAction(
   mergeMap(async () => {

@@ -1,6 +1,6 @@
 import { delay, mergeMap } from 'rxjs/operators';
-import { getData, setData, incData } from '../service/data.service';
-import { writeStream, createAction, createLoop } from '../service/stream.service';
+import { getData, setData, incData } from '../../service/data.service';
+import { writeStream, createAction, createLoop } from '../../service/stream.service';
 
 const cost = 50;
 const code = 'rage';

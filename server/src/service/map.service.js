@@ -36,22 +36,22 @@ const mapRooms = async (map, room, row, col, size) => {
 };
 
 export const minimap = async (startRoom, r) => {
-  const size = r * 2 + 3;
+  const size = r * 2 + 1;
   const start = Math.floor(size / 2);
   const map = new Array(size).fill(0).map(() => new Array(size).fill(0));
   const world = await getData('map');
   const [key] = Object.entries(world).find(([, value]) => startRoom.id === value.id);
   const [startRow, startCol] = key.split('.');
 
-  for (let row = 1; row < size - 1; row++) {
+  for (let row = 0; row < size; row++) {
     const deltaRow = start - row;
     const lookupRow = startRow - deltaRow;
 
-    for (let col = 1; col < size - 1; col++) {
+    for (let col = 0; col < size; col++) {
       const deltaCol = start - col;
       const lookupCol = startCol - deltaCol;
       const room = world[`${lookupRow}.${lookupCol}`];
-      if (room) map[row][col] = { exits: room.dirs };
+      if (room) map[row][col] = { exits: room.dirs, row: room.row, col: room.col };
     }
   }
 

@@ -13,6 +13,7 @@ import { getCoords } from './util.service';
 
 import db from '../data';
 import tmpl from '../template';
+import * as maps from '../game/maps';
 
 redis.addCommand('json.get');
 redis.addCommand('json.set');
@@ -91,7 +92,7 @@ Object.assign(api, { getData, getList, setData, delData, pushData, pullData, inc
     const id = `${row}.${col}`;
     if (map[id]) return;
 
-    map[id] = { id: room.id, dirs: Object.keys(room.exits) };
+    map[id] = { id: room.id, row, col, dirs: Object.keys(room.exits) };
     const dirs = Object.keys(room.exits);
 
     await Promise.all(dirs.map(async (dir) => {
@@ -102,7 +103,8 @@ Object.assign(api, { getData, getList, setData, delData, pushData, pullData, inc
   };
 
   // Load all data fixtures
-  await Promise.all(Object.entries({ ...db, ...tmpl }).map(([key, value]) => setData(key, value)));
+  // await Promise.all(Object.entries({ ...db, ...tmpl }).map(([key, value]) => setData(key, value)));
+  await Promise.all(Object.entries(maps.academy).map(([key, value]) => setData(key, value)));
 
   // Create map of realm
   const map = {};

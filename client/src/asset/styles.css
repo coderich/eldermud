@@ -5,3 +5,10 @@ body {
   background-attachment: fixed;
   background-position: center;
 }
+
+.map {
+  background-image: url("./academy.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 20px
+}

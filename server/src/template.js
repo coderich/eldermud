@@ -61,6 +61,26 @@ export default {
     id: 'attack.bite',
     type: 'slashing',
   },
+  'quest.signup': {
+    id: 'quest.signup',
+    sequence: [
+      { type: 'query', message: 'Next! (without lifting his eyes he asks) Name?' },
+      { type: 'query', message: 'Random... is that really your name?' },
+      { type: 'info', message: '(pausing to scan his documents) Mumbles: another newbie...' },
+      { type: 'query', message: 'What track?' },
+      { type: 'query', message: '(for the first time making eye contact) A Wizard, you\'re sure about that?' },
+      { type: 'info', message: '(shrugging, he hands you a pen and notebook) Down the hall, room 3.' },
+      { type: 'info', message: 'Next!' },
+    ],
+  },
+  'npc.ragnar': {
+    id: 'npc.ragnar',
+    memo: 'fighter trainer',
+  },
+  'npc.larry': {
+    id: 'npc.larry',
+    memo: 'training admissions',
+  },
   // 'talent.rage': {
   //   id: 'talent.rage',
   //   name: 'rage',

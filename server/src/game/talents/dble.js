@@ -1,7 +1,7 @@
 import { mergeMap } from 'rxjs/operators';
-import { getData } from '../service/data.service';
-import { createAction } from '../service/stream.service';
-import { instaAttack } from '../service/game.service';
+import { getData } from '../../service/data.service';
+import { createAction } from '../../service/stream.service';
+import { instaAttack } from '../../service/game.service';
 
 const cost = 0;
 

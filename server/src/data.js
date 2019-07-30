@@ -123,7 +123,7 @@ export default {
     id: 'item.1',
     type: 'key',
     name: 'set of keys',
-    description: 'A beautiful key',
+    description: 'A beautiful keychain',
     obstacles: ['obstacle.1'],
     state: { hidden: true },
   },

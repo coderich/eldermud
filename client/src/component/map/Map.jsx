@@ -1,11 +1,11 @@
-// https://community.jsplumbtoolkit.com/doc/endpoints.html
+// http://jsplumb.github.io/jsplumb/types.html#connection-type
 import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 import { jsPlumb } from 'jsplumb';
 import Room from './Room';
 
 const viewport = {
-  // flexWrap: 'nowrap',
+  flexWrap: 'nowrap',
 };
 
 const Component = memo((props) => {
@@ -33,6 +33,12 @@ const Component = memo((props) => {
       jsPlumb.reset();
       jsPlumb.setContainer(containerId);
 
+      jsPlumb.registerConnectionTypes({
+        basic: {
+          paintStyle: { stroke: 'white', strokeWidth: 3 },
+        },
+      });
+
       maps.minimap.forEach((arr, row) => {
         arr.forEach((data, col) => {
           if (data) {
@@ -43,7 +49,14 @@ const Component = memo((props) => {
               const endpoint = 'Blank';
               const connector = 'Straight';
               const { target, anchors } = getInfo(row, col, exit);
-              jsPlumb.connect({ source, target, anchors, endpoint, connector });
+              jsPlumb.connect({
+                source,
+                target,
+                anchors,
+                endpoint,
+                connector,
+                type: 'basic',
+              });
             });
           }
         });
@@ -51,8 +64,19 @@ const Component = memo((props) => {
     });
   });
 
+
+  let me;
+  maps.minimap.forEach((arr, row) => {
+    arr.forEach((data, col) => {
+      if (data && data.me) me = data;
+    });
+  });
+  const xOffset = (20 * me.col * 2);
+  const yOffset = (20 * me.row * 2) - 12;
+  const backgroundPosition = `calc(50% - ${xOffset}px) calc(50% - ${yOffset}px)`;
+
   return (
-    <div id={containerId} style={viewport}>
+    <div id={containerId} className="map" style={{ alignSelf: 'center', backgroundPosition }}>
       {maps.minimap.map((arr, row) => {
         const rowId = `container-${row}-${now}`;
 
