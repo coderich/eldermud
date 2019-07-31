@@ -12,7 +12,7 @@ const Component = memo((props) => {
   return (
     <div id={id} style={{ ...style, opacity: data }}>
       <svg viewBox="0 0 75 75" width="20px">
-        <path d="m5,22 18,-18 28,0 18,18 0,28 -18,18, -28,0 -18,-18z" stroke="black" strokeWidth="0" fill={data.me ? 'limegreen' : 'transparent'} />
+        <path d="m5,22 18,-18 28,0 18,18 0,28 -18,18, -28,0 -18,-18z" stroke="black" strokeWidth="0" fill={data.me ? 'red' : 'transparent'} />
       </svg>
     </div>
   );

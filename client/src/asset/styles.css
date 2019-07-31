@@ -10,5 +10,11 @@ body {
   background-image: url("./academy.jpg");
   background-repeat: no-repeat;
   background-position: center;
-  border-radius: 20px
+  border-radius: 20px;
+}
+
+.door {
+  background-image: url("./door.svg");
+  /*width: 20px;
+  height: 20px;*/
 }
