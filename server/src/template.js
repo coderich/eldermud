@@ -1,50 +1,8 @@
+// https://www.dmsguild.com/
+// http://archive.wizards.com/default.asp?x=dnd/mwa/archiveall
+// https://www.pinterest.com/glennlikes2/rpg-maps/
+
 export default {
-  'blueprint.rat': {
-    id: 'blueprint.rat',
-    name: 'rat',
-    dc: 1,
-    ac: 8,
-    hp: '2d4+2',
-    exp: 1, // per hp?
-    sizes: [
-      ['small', 'wimpy', 'fragile', 'scrawny'],
-      ['', 'angry'],
-      [''],
-    ],
-    attacks: {
-      'attack.bite': {
-        dmg: '1d3',
-        acc: '1d20',
-      },
-    },
-    roams: false,
-    follows: true,
-  },
-  'blueprint.cavebear': {
-    id: 'blueprint.cavebear',
-    name: 'cave bear',
-    dc: 3,
-    ac: 12,
-    hp: 50,
-    exp: 6, // per hp?
-    spawn: new Date().getTime(),
-    respawn: 60000, // 1 minute
-    attacks: {
-      'attack.bite': {
-        dmg: '4d3',
-        acc: '1d20',
-      },
-      'attack.claw': {
-        dmg: '3d3',
-        acc: '2d10',
-      },
-    },
-    drops: {
-      'item.idk': {
-        pct: 10,
-      },
-    },
-  },
   'attack.punch': {
     id: 'attack.punch',
     type: 'bludgeoning',
@@ -64,7 +22,7 @@ export default {
   'quest.signup': {
     id: 'quest.signup',
     sequence: [
-      { type: 'query', message: 'Next! (without lifting his eyes he asks) Name?' },
+      { type: 'query', message: 'Next! (without lifting his eyes he says) Name?' },
       { type: 'query', message: 'Random... is that really your name?' },
       { type: 'info', message: '(pausing to scan his documents) Mumbles: another newbie...' },
       { type: 'query', message: 'What track?' },

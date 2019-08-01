@@ -157,15 +157,16 @@ export default {
   },
   'room.13': {
     id: 'room.13',
-    name: 'Hallway, Center',
+    name: 'Kitchen',
     description: chance.paragraph(),
     exits: { e: 'room.11' },
+    shop: 'shop.helfgrim',
     items: [],
     units: [],
   },
   'room.14': {
     id: 'room.14',
-    name: 'Hallway, Center',
+    name: 'Reception Hall',
     description: chance.paragraph(),
     exits: { e: 'room.12' },
     items: [],

@@ -24,16 +24,16 @@ const Component = memo((props) => {
       case 'w': return { target: `room-${row}-${col - 1}-${now}`, anchors: ['Left', 'Right'] };
       case 'ne': return { target: `room-${row - 1}-${col + 1}-${now}`, anchors: ['TopRight', 'BottomLeft'] };
       case 'nw': return { target: `room-${row - 1}-${col - 1}-${now}`, anchors: ['TopLeft', 'BottomRight'],
-        overlays: [
-          ['Custom', {
-            create: (component) => {
-              const img = document.createElement('img');
-              img.setAttribute('src', DoorOpen);
-              img.setAttribute('style', 'width:20px;');
-              return img;
-            },
-          }],
-        ],
+        // overlays: [
+        //   ['Custom', {
+        //     create: (component) => {
+        //       const img = document.createElement('img');
+        //       img.setAttribute('src', DoorOpen);
+        //       img.setAttribute('style', 'width:20px;');
+        //       return img;
+        //     },
+        //   }],
+        // ],
       };
       case 'se': return { target: `room-${row + 1}-${col + 1}-${now}`, anchors: ['BottomRight', 'TopLeft'] };
       case 'sw': return { target: `room-${row + 1}-${col - 1}-${now}`, anchors: ['BottomLeft', 'TopRight'] };

@@ -3,14 +3,6 @@ import Chance from 'chance';
 const chance = new Chance();
 
 export default {
-  'user.1': {
-    id: 'user.1',
-    name: 'chardy',
-    room: 'room.1',
-    hp: 25,
-    mhp: 30,
-    items: [],
-  },
   'room.1': {
     id: 'room.1',
     name: 'Hallway, Start',
@@ -38,7 +30,7 @@ export default {
     respawn: '1d5000+1000',
     spawnlings: {
       num: '1d2+1',
-      blueprints: ['blueprint.rat', 'blueprint.cavebear'],
+      templates: ['blueprint.rat', 'blueprint.cavebear'],
     },
   },
   'room.4': {
@@ -68,7 +60,7 @@ export default {
     respawn: '1d15000+30000',
     spawnlings: {
       num: 1,
-      blueprints: ['blueprint.rat'],
+      templates: ['blueprint.rat'],
     },
   },
   'room.7': {
@@ -82,7 +74,7 @@ export default {
     respawn: '1d15000+30000',
     spawnlings: {
       num: 1,
-      blueprints: ['blueprint.rat'],
+      templates: ['blueprint.rat'],
     },
   },
   'room.8': {
@@ -104,7 +96,7 @@ export default {
     respawn: '1d15000+30000',
     spawnlings: {
       num: '1d3+1',
-      blueprints: ['blueprint.rat'],
+      templates: ['blueprint.rat'],
     },
   },
   'obstacle.1': {
@@ -118,40 +110,5 @@ export default {
   //   type: 'compound',
   //   refs: [1],
   //   state: {},
-  // },
-  'item.1': {
-    id: 'item.1',
-    type: 'key',
-    name: 'set of keys',
-    description: 'A beautiful keychain',
-    obstacles: ['obstacle.1'],
-    state: { hidden: true },
-  },
-  'item.2': {
-    id: 'item.2',
-    type: 'general',
-    name: 'rope',
-    description: 'A beautiful rope',
-    state: {},
-  },
-  'item.3': {
-    id: 'item.3',
-    type: 'general',
-    name: 'water bottle',
-    description: 'A beautiful water bottle',
-    state: {},
-  },
-  // 'storyline.1': {
-  //   id: 1,
-  //   repeat: 0,
-  //   sequence: [
-  //     { type: 'info', message: 'You come there' },
-  //     {
-  //       type: 'query',
-  //       message: 'What now!?',
-  //       response: {
-  //       },
-  //     },
-  //   ],
   // },
 };

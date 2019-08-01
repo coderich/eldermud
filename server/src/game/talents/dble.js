@@ -20,7 +20,8 @@ export default async (id, command) => createAction(
         dmg: '2d10+10',
         acc: 20,
         proc: (source, t, damage) => {
-          source.hp = Math.max(1, source.hp - damage);
+          const recoil = Math.round(damage / 2);
+          source.hp = Math.max(1, source.hp - recoil);
         },
       });
     });

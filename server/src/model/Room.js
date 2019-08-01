@@ -18,13 +18,13 @@ export default class Room extends Model {
     const templateIds = creatures.map(c => c.template);
 
     if (!templateIds.length && this.spawn && this.spawn <= now) {
-      const { num, blueprints } = this.spawnlings;
-      const templates = await Promise.all(blueprints.map(id => this.getData(id)));
+      const { num, templates } = this.spawnlings;
+      const spawnlings = await Promise.all(templates.map(id => this.getData(id)));
       const numToSpawn = this.roll(num);
 
       await Promise.all(numToArray(numToSpawn).map(() => {
         // First try for bosses
-        const [boss] = templates.filter((t) => {
+        const [boss] = spawnlings.filter((t) => {
           const inRoom = templateIds.indexOf(t.id) > -1;
           if (inRoom) return false;
           if (!t.spawn) return false;
@@ -38,7 +38,7 @@ export default class Room extends Model {
         }
 
         // Next try for ordinary creatures
-        const regulars = templates.filter(t => !t.spawn);
+        const regulars = spawnlings.filter(t => !t.spawn);
         const regular = regulars[Math.floor(Math.random() * regulars.length)];
 
         if (regular) {
@@ -142,5 +142,10 @@ export default class Room extends Model {
 
   async Creatures() {
     return (await this.Units()).filter(unit => unit.isCreature);
+  }
+
+  async Shop() {
+    if (!this.shop) return undefined;
+    return this.getData(this.shop);
   }
 }

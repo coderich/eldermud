@@ -27,6 +27,7 @@ const commands = [
   [
     { exp: { args: [0], code: 'exp', scope: 'interaction', stream: 'motor' } },
     { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'interaction', stream: 'motor' } },
+    { buy: { args: [1, 2, 3, 4, 5], code: 'buy', scope: 'interaction', stream: 'motor' } },
     { break: { args: [0], code: 'break', scope: 'interaction', stream: 'motor' } },
     { search: { args: [0], code: 'search', scope: 'interaction', stream: 'motor' } },
     { lock: { args: [1], code: 'lock', scope: 'interaction', stream: 'motor' } },
@@ -35,6 +36,7 @@ const commands = [
   [
     { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'interaction', stream: 'motor' } },
     { lock: { args: [1], code: 'lock', scope: 'interaction', stream: 'motor' } },
+    { list: { args: [0], code: 'list', scope: 'interaction', stream: 'motor' } },
   ],
 ];
 

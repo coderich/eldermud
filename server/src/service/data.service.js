@@ -11,8 +11,8 @@ import redis from 'redis';
 import * as Models from '../model';
 import { getCoords } from './util.service';
 
-import db from '../data';
-import tmpl from '../template';
+import db from '../db';
+import gameData from '../game/data';
 import * as maps from '../game/maps';
 
 redis.addCommand('json.get');
@@ -103,7 +103,7 @@ Object.assign(api, { getData, getList, setData, delData, pushData, pullData, inc
   };
 
   // Load all data fixtures
-  // await Promise.all(Object.entries({ ...db, ...tmpl }).map(([key, value]) => setData(key, value)));
+  await Promise.all(Object.entries({ ...db, ...gameData }).map(([key, value]) => setData(key, value)));
   await Promise.all(Object.entries(maps.academy).map(([key, value]) => setData(key, value)));
 
   // Create map of realm

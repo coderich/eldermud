@@ -18,7 +18,7 @@ const newUser = id => ({
   hp: 30,
   mhp: 30,
   ac: 10,
-  exp: 0,
+  exp: 10000,
   talents: ['rage', 'mihe', 'vamp', 'dble'],
   isLoggedIn: true,
   room: 'room.1',
@@ -72,6 +72,10 @@ server.on('connection', async (socket) => {
       case 'break': {
         return writeStream(userId, await actions.break(userId));
       }
+      case 'buy': {
+        const target = command.args.join(' ');
+        return writeStream(userId, await actions.buy(userId, target));
+      }
       case 'open': case 'close': {
         const target = command.args.join(' ');
         return writeStream(userId, await actions[command.name](userId, target));
@@ -89,6 +93,9 @@ server.on('connection', async (socket) => {
       }
       case 'inventory': {
         return writeStream(userId, await actions.inventory(userId));
+      }
+      case 'list': {
+        return writeStream(userId, await actions.list(userId));
       }
       case 'lock': {
         const target = command.args.join(' ');

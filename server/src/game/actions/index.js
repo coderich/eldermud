@@ -1,10 +1,12 @@
 export { default as attack } from './attack';
 export { default as break } from './break';
+export { default as buy } from './buy';
 export { default as close } from './close';
 export { default as drop } from './drop';
 export { default as exp } from './exp';
 export { default as get } from './get';
 export { default as inventory } from './inventory';
+export { default as list } from './list';
 export { default as lock } from './lock';
 export { default as look } from './look';
 export { default as move } from './move';

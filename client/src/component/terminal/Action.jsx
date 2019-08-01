@@ -1,5 +1,5 @@
 import React, { PropTypes, Fragment, memo } from '@coderich/hotrod/react';
-import { Chip, Avatar } from '@material-ui/core';
+import { List, ListItem, ListItemText } from '@material-ui/core';
 
 const Action = memo((props) => {
   const { prompt, action: { type, value } } = props;
@@ -40,6 +40,19 @@ const Action = memo((props) => {
         case '*combat engaged*': case '*combat off*': return <div style={{ color: '#BFBB3C' }}>{value}</div>;
         default: return <div>{value}</div>;
       }
+    }
+    case 'shop': {
+      return (
+        <List dense>
+          {value.map((item) => {
+            return (
+              <ListItem key={item.name}>
+                <ListItemText primary={`(${item.cost}) ${item.name}`} />
+              </ListItem>
+            );
+          })}
+        </List>
+      );
     }
     default: {
       return <span />;
