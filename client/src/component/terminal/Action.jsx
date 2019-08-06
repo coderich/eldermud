@@ -1,6 +1,16 @@
 import React, { PropTypes, Fragment, memo } from '@coderich/hotrod/react';
 import { List, ListItem, ListItemText } from '@material-ui/core';
 
+const cyan = 'cyan';
+const red = '#EE766D';
+const green = 'limegreen';
+const purple = '#98389E';
+const pink = '#EF8CF9';
+const cool = 'cadetblue';
+const water = '#6876f7';
+const maroon = '#BFBB3C';
+const highlight = '#fffb7f';
+
 const Action = memo((props) => {
   const { prompt, action: { type, value } } = props;
 
@@ -8,10 +18,10 @@ const Action = memo((props) => {
     // case 'command': return `${prompt} ${value}`;
     case 'room': return (
       <Fragment>
-        <div style={{ color: 'cyan' }}>{value.name}</div>
+        <div style={{ color: cyan }}>{value.name}</div>
         {value.description && <div style={{ textIndent: '30px' }}>{value.description}</div>}
         {value.items.length > 0 && (
-          <div style={{ color: 'cadetblue' }}>
+          <div style={{ color: cool }}>
             <span>You notice </span>
             <span>{value.items.join(', ')}</span>
             <span> here.</span>
@@ -19,28 +29,16 @@ const Action = memo((props) => {
         )}
         {value.units.length > 0 && (
           <div>
-            <span style={{ color: '#98389E' }}>Also here: </span>
-            <span style={{ color: '#EF8CF9' }}>{value.units.join(', ')}</span>
+            <span style={{ color: purple }}>Also here: </span>
+            <span style={{ color: pink }}>{value.units.join(', ')}</span>
           </div>
         )}
-        <div style={{ color: 'limegreen' }}>
+        <div style={{ color: green }}>
           <span>Obvious exits: </span>
           <span>{value.exits.join(', ')}</span>
         </div>
       </Fragment>
     );
-    case 'cool': {
-      return <div style={{ color: 'cadetblue' }}>{value}</div>;
-    }
-    case 'error': {
-      return <div style={{ color: '#EE766D' }}>{value}</div>;
-    }
-    case 'info': {
-      switch (value.toLowerCase()) {
-        case '*combat engaged*': case '*combat off*': return <div style={{ color: '#BFBB3C' }}>{value}</div>;
-        default: return <div>{value}</div>;
-      }
-    }
     case 'shop': {
       return (
         <List dense>
@@ -53,6 +51,45 @@ const Action = memo((props) => {
           })}
         </List>
       );
+    }
+    case 'spawn': {
+      return (
+        <div style={{ color: green }}>
+          <span style={{ color: highlight }}>A {value.name}</span>
+          <span> {value.moves}s into the room from nowhere.</span>
+        </div>
+      );
+    }
+    case 'enter': {
+      return (
+        <div style={{ color: green }}>
+          <span style={{ color: value.type === 'user' ? red : highlight }}>{value.name}</span>
+          <span> walks into the room from the {value.from}.</span>
+        </div>
+      );
+    }
+    case 'leave': {
+      return (
+        <div style={{ color: green }}>
+          <span style={{ color: value.type === 'user' ? red : highlight }}>{value.name}</span>
+          <span> just left to the {value.to}.</span>
+        </div>
+      );
+    }
+    case 'cool': {
+      return <div style={{ color: cool }}>{value}</div>;
+    }
+    case 'water': {
+      return <div style={{ color: water }}>{value}</div>;
+    }
+    case 'error': {
+      return <div style={{ color: red }}>{value}</div>;
+    }
+    case 'info': {
+      switch (value.toLowerCase()) {
+        case '*combat engaged*': case '*combat off*': return <div style={{ color: maroon }}>{value}</div>;
+        default: return <div>{value}</div>;
+      }
     }
     default: {
       return <span />;

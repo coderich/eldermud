@@ -1,17 +1,5 @@
 import { clone, isObjectLike } from 'lodash';
-
-const directions = {
-  n: 'north',
-  s: 'south',
-  e: 'east',
-  w: 'west',
-  ne: 'northeast',
-  nw: 'northwest',
-  se: 'southeast',
-  sw: 'southwest',
-  u: 'up',
-  d: 'down',
-};
+import { directions } from '../service/util.service';
 
 export default class Describer {
   constructor(id, getData) {
@@ -40,7 +28,13 @@ export default class Describer {
         break;
       }
       case 'exits': {
-        return Promise.all(Object.entries(target).map(([dir, obj]) => this.describe('exit', { [dir]: obj })));
+        const dirs = Object.keys(directions);
+
+        return Promise.all(Object.entries(target).sort(([a], [b]) => {
+          const indexA = dirs.indexOf(a);
+          const indexB = dirs.indexOf(b);
+          return indexA - indexB;
+        }).map(([dir, obj]) => this.describe('exit', { [dir]: obj })));
       }
       case 'exit': {
         // Basic exit

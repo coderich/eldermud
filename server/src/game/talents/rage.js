@@ -4,7 +4,6 @@ import { writeStream, createAction, createLoop } from '../../service/stream.serv
 
 const cost = 50;
 const code = 'rage';
-const name = 'rage';
 const duration = 10;
 
 export default async (id, command) => createAction(
@@ -15,8 +14,8 @@ export default async (id, command) => createAction(
 
     return unit.perform(async () => {
       await incData(id, 'exp', -cost);
-      unit.emit('message', { type: 'info', value: `You focus your energy towards ${name}` });
-      unit.emit('message', { type: 'info', value: 'You feel enraged!' });
+      unit.emit('message', { type: 'water', value: 'You focus your energy inwards.' });
+      unit.emit('message', { type: 'water', value: 'You feel enraged!' });
 
       let count = 0;
       writeStream(stream, 'abort');

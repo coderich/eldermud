@@ -1,6 +1,7 @@
 // https://www.dmsguild.com/
 // http://archive.wizards.com/default.asp?x=dnd/mwa/archiveall
 // https://www.pinterest.com/glennlikes2/rpg-maps/
+// http://pyromancers.com/
 
 export default {
   'user.1': {

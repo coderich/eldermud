@@ -1,7 +1,7 @@
 import { isObjectLike, flatten } from 'lodash';
 import Model from '../core/Model';
 import { toRoom } from '../service/socket.service';
-import { numToArray } from '../service/util.service';
+import { numToArray, randomElement } from '../service/util.service';
 
 const rooms = new Set();
 
@@ -39,7 +39,7 @@ export default class Room extends Model {
 
         // Next try for ordinary creatures
         const regulars = spawnlings.filter(t => !t.spawn);
-        const regular = regulars[Math.floor(Math.random() * regulars.length)];
+        const regular = randomElement(regulars);
 
         if (regular) {
           templateIds.push(regular.id);
@@ -73,11 +73,12 @@ export default class Room extends Model {
       template,
       room: this.id,
       spawnRoom: this.id,
+      name: `${randomElement(templateData.adjectives)} ${templateData.name}`,
       combatants: [],
     }));
     await this.pushData(this.id, 'units', creature.id);
     creature.connect();
-    return toRoom(this, 'message', { type: 'info', value: `A ${creature.name} appears out of nowhere!` });
+    return toRoom(this, 'message', { type: 'spawn', value: { name: creature.name, moves: randomElement(creature.moves) } });
   }
 
   async search() {

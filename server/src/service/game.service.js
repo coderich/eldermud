@@ -5,7 +5,7 @@ import { Subject, interval } from 'rxjs';
 import { tap, share, publish } from 'rxjs/operators';
 import { getData, setData } from './data.service';
 import { toRoom, emit } from './socket.service';
-import { titleCase, numToArray } from './util.service';
+import { titleCase, numToArray, randomElement } from './util.service';
 
 let attackQueue = {};
 const chance = new Chance();
@@ -73,9 +73,10 @@ const resolveCombat = async (units, queue, resolveQueue) => {
 
         if (hit) {
           const damage = roll(attack.dmg);
-          emit(source.id, 'message', { type: 'error', value: `You hit ${target.hitName} for ${damage} damage!` });
-          emit(target.id, 'message', { type: 'error', value: `${titleCase(source.hitName)} hits you for for ${damage} damage!` });
-          toRoom(combatRoom, 'message', { type: 'error', value: `${titleCase(source.hitName)} hits ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
+          const verb = randomElement(attack.hits);
+          emit(source.id, 'message', { type: 'error', value: `You ${verb} ${target.hitName} for ${damage} damage!` });
+          emit(target.id, 'message', { type: 'error', value: `${titleCase(source.hitName)} ${verb}s you for ${damage} damage!` });
+          toRoom(combatRoom, 'message', { type: 'error', value: `${titleCase(source.hitName)} ${verb}s ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
 
           target.hp -= damage;
           if (attack.proc) attack.proc(source, target, damage);
@@ -84,9 +85,10 @@ const resolveCombat = async (units, queue, resolveQueue) => {
             remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
           }
         } else {
-          emit(source.id, 'message', { type: 'cool', value: `You swing at ${target.hitName}, but miss!!` });
-          emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} swings at you, but misses!` });
-          toRoom(combatRoom, 'message', { type: 'cool', value: `${titleCase(source.hitName)} swings at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
+          const verb = randomElement(attack.misses);
+          emit(source.id, 'message', { type: 'cool', value: `You ${verb} at ${target.hitName}, but miss!` });
+          emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at you, but misses!` });
+          toRoom(combatRoom, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
         }
       }
     } else {

@@ -3,6 +3,7 @@ import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { addAttack, resolveLoop } from '../service/game.service';
 import { toRoom, broadcast } from '../service/socket.service';
+import { randomElement } from '../service/util.service';
 import { writeStream, createAction, createLoop } from '../service/stream.service';
 import Unit from './Unit';
 
@@ -12,6 +13,7 @@ const deaths = new Set();
 export default class Creature extends Unit {
   constructor(...args) {
     super(...args);
+    this.type = 'creature';
     this.isCreature = true;
     this.hitName = `the ${this.name}`;
     this.breakAction = (msg) => { throw new AbortActionError(msg); };
@@ -45,7 +47,8 @@ export default class Creature extends Unit {
               const unit = await this.getData(this.id);
               const room = await unit.Room();
               const players = await room.Players();
-              const [attack] = Object.values(unit.attacks);
+              const attack = randomElement(unit.attacks);
+              // const [attack] = Object.values(unit.attacks);
 
               if (!players.length) {
                 await this.break(); // Nothing to fight

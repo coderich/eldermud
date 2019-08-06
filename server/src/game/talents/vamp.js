@@ -8,9 +8,11 @@ export default async (id, command) => {
     cost: 20,
     dmg: '2d5+3',
     acc: '3d5+5',
+    hits: ['drain'],
+    misses: ['reach'],
     proc: (source, target, damage) => {
-      source.hp = Math.max(source.mhp, source.hp + damage);
-      emit(id, 'message', { type: 'info', value: `You drain ${damage} life points.` });
+      source.hp = Math.min(source.mhp, source.hp + damage);
+      emit(id, 'message', { type: 'info', value: `You gain ${damage} life points.` });
     },
   });
 };

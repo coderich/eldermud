@@ -14,6 +14,7 @@ const performs = new Set();
 export default class User extends Unit {
   constructor(...args) {
     super(...args);
+    this.type = 'user';
     this.isUser = true;
     this.hitName = this.name;
     this.describer = new Describer(this.id, this.getData);

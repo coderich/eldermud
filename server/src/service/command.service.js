@@ -1,52 +1,58 @@
 const commands = [
   [
-    { attack: { args: [1, 2, 3], code: 'a', scope: 'interaction', stream: 'motor' } },
-    { down: { args: [0], code: 'd', scope: 'navigation', stream: 'motor' } },
-    { east: { args: [0], code: 'e', scope: 'navigation', stream: 'motor' } },
-    { get: { args: [1, 2, 3, 4, 5], code: 'get', scope: 'interaction', stream: 'motor' } },
-    { inventory: { args: [0], code: 'i', scope: '', stream: 'info' } },
-    { look: { args: [0, 1], code: 'l', scope: 'interaction', stream: 'info' } },
-    { north: { args: [0], code: 'n', scope: 'navigation', stream: 'motor' } },
-    { south: { args: [0], code: 's', scope: 'navigation', stream: 'motor' } },
-    { up: { args: [0], code: 'u', scope: 'navigation', stream: 'motor' } },
-    { west: { args: [0], code: 'w', scope: 'navigation', stream: 'motor' } },
-    { x: { args: [0], code: 'x', alias: 'exit', scope: '', stream: 'meta' } },
+    { attack: { args: [1, 2, 3], code: 'a', scope: 'action' } },
+    { down: { args: [0], code: 'd', scope: 'navigation' } },
+    { east: { args: [0], code: 'e', scope: 'navigation' } },
+    { get: { args: [1, 2, 3, 4, 5], code: 'get', scope: 'action' } },
+    { inventory: { args: [0], code: 'i', scope: '' } },
+    { look: { args: [0, 1], code: 'l', scope: 'action' } },
+    { north: { args: [0], code: 'n', scope: 'navigation' } },
+    { south: { args: [0], code: 's', scope: 'navigation' } },
+    { up: { args: [0], code: 'u', scope: 'navigation' } },
+    { west: { args: [0], code: 'w', scope: 'navigation' } },
+    { x: { args: [0], code: 'x', alias: 'exit', scope: '' } },
   ],
   [
-    { ne: { args: [0], code: 'ne', alias: 'northeast', scope: 'navigation', stream: 'motor' } },
-    { nw: { args: [0], code: 'nw', alias: 'northwest', scope: 'navigation', stream: 'motor' } },
-    { se: { args: [0], code: 'se', alias: 'southeast', scope: 'navigation', stream: 'motor' } },
-    { sw: { args: [0], code: 'sw', alias: 'southwest', scope: 'navigation', stream: 'motor' } },
-    { ul: { args: [1], code: 'unlock', alias: 'unlock', scope: 'interaction', stream: 'motor' } },
-    { open: { args: [1], code: 'open', scope: 'interaction', stream: 'motor' } },
-    { close: { args: [1], code: 'close', scope: 'interaction', stream: 'motor' } },
-    { drop: { args: [1, 2, 3, 4, 5], code: 'drop', scope: 'interaction', stream: 'motor' } },
-    { repeat: { args: [0], code: 're', scope: '', stream: 'meta' } },
-    { exit: { args: [0], code: 'x', scope: '', stream: 'meta' } },
+    { ne: { args: [0], code: 'ne', alias: 'northeast', scope: 'navigation' } },
+    { nw: { args: [0], code: 'nw', alias: 'northwest', scope: 'navigation' } },
+    { se: { args: [0], code: 'se', alias: 'southeast', scope: 'navigation' } },
+    { sw: { args: [0], code: 'sw', alias: 'southwest', scope: 'navigation' } },
+    { ul: { args: [1], code: 'unlock', alias: 'unlock', scope: 'action' } },
+    { equip: { args: [1, 2, 3, 4, 5], code: 'equip', scope: 'action' } },
+    { open: { args: [1], code: 'open', scope: 'action' } },
+    { close: { args: [1], code: 'close', scope: 'action' } },
+    { drop: { args: [1, 2, 3, 4, 5], code: 'drop', scope: 'action' } },
+    { repeat: { args: [0], code: 're', scope: '' } },
+    { exit: { args: [0], code: 'x', scope: '' } },
   ],
   [
-    { exp: { args: [0], code: 'exp', scope: 'interaction', stream: 'motor' } },
-    { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'interaction', stream: 'motor' } },
-    { buy: { args: [1, 2, 3, 4, 5], code: 'buy', scope: 'interaction', stream: 'motor' } },
-    { break: { args: [0], code: 'break', scope: 'interaction', stream: 'motor' } },
-    { search: { args: [0], code: 'search', scope: 'interaction', stream: 'motor' } },
-    { lock: { args: [1], code: 'lock', scope: 'interaction', stream: 'motor' } },
-    { unlock: { args: [1], code: 'unlock', scope: 'interaction', stream: 'motor' } },
+    { exp: { args: [0], code: 'exp', scope: 'action' } },
+    { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'action' } },
+    { buy: { args: [1, 2, 3, 4, 5], code: 'buy', scope: 'action' } },
+    { break: { args: [0], code: 'break', scope: 'action' } },
+    { search: { args: [0], code: 'search', scope: 'action' } },
+    { lock: { args: [1], code: 'lock', scope: 'action' } },
+    { unlock: { args: [1], code: 'unlock', scope: 'action' } },
   ],
   [
-    { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'interaction', stream: 'motor' } },
-    { lock: { args: [1], code: 'lock', scope: 'interaction', stream: 'motor' } },
-    { list: { args: [0], code: 'list', scope: 'interaction', stream: 'motor' } },
+    { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'action' } },
+    { lock: { args: [1], code: 'lock', scope: 'action' } },
+    { list: { args: [0], code: 'list', scope: 'action' } },
+
+    // Talents
+    { rage: { args: [0], code: 'rage', scope: 'talent' } },
+    { mihe: { args: [0, 1], code: 'mihe', scope: 'talent' } },
+    { mahe: { args: [0, 1], code: 'mahe', scope: 'talent' } },
+    { vamp: { args: [1], code: 'vamp', scope: 'talent' } },
+    { dble: { args: [1], code: 'dble', scope: 'talent' } },
+
+    // Channels
+    { '/gos': { args: [0], code: 'gos', scope: 'channel' } },
+    { '/auc': { args: [0], code: 'auc', scope: 'channel' } },
+    { '/log': { args: [0], code: 'log', scope: 'channel' } },
+    { '/his': { args: [0], code: 'his', scope: 'channel' } },
   ],
 ];
-
-const talents = {
-  rage: { code: 'rage', args: [0] },
-  mihe: { code: 'mihe', args: [0, 1] },
-  mahe: { code: 'mahe', args: [0, 1] },
-  vamp: { code: 'vamp', args: [1] },
-  dble: { code: 'dble', args: [1] },
-};
 
 const translateArray = (arr, input, cmd, args) => {
   for (let i = 0; i < cmd.length; i++) {
@@ -63,7 +69,6 @@ const translateArray = (arr, input, cmd, args) => {
             args,
             scope: data.scope,
             code: data.code,
-            stream: data.stream,
           };
         }
       }
@@ -76,26 +81,26 @@ const translateArray = (arr, input, cmd, args) => {
 export const translate = (input) => {
   input = input.trim().toLowerCase();
   const [cmd, ...args] = input.match(/\S+/g) || [];
-  if (!cmd) return { name: 'none', input, args, code: null, scope: 'default', stream: 'info' };
+  if (!cmd) return { name: 'none', input, args, code: null, scope: 'default' };
 
   return (
     translateArray(commands, input, cmd, args)
-    || { name: 'unknown', input, args, code: 'unk', scope: 'unknown', stream: 'meta' }
+    || { name: 'unknown', input, args, code: 'unk', scope: 'unknown' }
   );
 };
 
-export const findTalent = (input) => {
-  input = input.trim().toLowerCase();
-  const [cmd, ...args] = input.match(/\S+/g) || [];
-  const keys = Object.keys(talents);
-  const values = Object.values(talents);
-  const index = keys.indexOf(cmd);
+// export const findTalent = (input) => {
+//   input = input.trim().toLowerCase();
+//   const [cmd, ...args] = input.match(/\S+/g) || [];
+//   const keys = Object.keys(talents);
+//   const values = Object.values(talents);
+//   const index = keys.indexOf(cmd);
 
-  if (index > -1 && values[index].args.indexOf(args.length) > -1) {
-    return Object.assign({}, values[index], { input, args });
-  }
+//   if (index > -1 && values[index].args.indexOf(args.length) > -1) {
+//     return Object.assign({}, values[index], { input, args });
+//   }
 
-  return undefined;
-};
+//   return undefined;
+// };
 
 export const resolve = {};

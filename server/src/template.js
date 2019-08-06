@@ -3,22 +3,6 @@
 // https://www.pinterest.com/glennlikes2/rpg-maps/
 
 export default {
-  'attack.punch': {
-    id: 'attack.punch',
-    type: 'bludgeoning',
-  },
-  'attack.bite': {
-    id: 'attack.bite',
-    type: 'piercing',
-  },
-  'attack.claw': {
-    id: 'attack.claw',
-    type: 'slashing',
-  },
-  'attack.sword': {
-    id: 'attack.bite',
-    type: 'slashing',
-  },
   'quest.signup': {
     id: 'quest.signup',
     sequence: [

@@ -1,6 +1,7 @@
 import { mergeMap, delay } from 'rxjs/operators';
 import { getData, setData, pushData, pullData } from '../../service/data.service';
 import { createAction } from '../../service/stream.service';
+import { directions, rdirections } from '../../service/util.service';
 
 export default async (id, dir, name) => createAction(
   mergeMap(async () => {
@@ -18,8 +19,8 @@ export default async (id, dir, name) => createAction(
     if (unit.isUser) {
       const message = await unit.describe('room', to);
       unit.emit('message', message);
-      unit.broadcastToRoom(to.id, 'message', { type: 'info', value: `${unit.name} has just entered the room.` });
-      unit.broadcastToRoom(from.id, 'message', { type: 'info', value: `${unit.name} has just left the room.` });
+      unit.broadcastToRoom(to.id, 'message', { type: 'enter', value: { name: unit.name, type: unit.type, from: rdirections[dir] } });
+      unit.broadcastToRoom(from.id, 'message', { type: 'leave', value: { name: unit.name, type: unit.type, to: directions[dir] } });
       unit.minimap(to);
     }
   }),

@@ -10,13 +10,29 @@ export default {
     name: 'Dagger',
     type: 'weapon',
     cost: 40,
-    dmg: '1d6+2',
+    attack: {
+      type: 'piercing',
+      dmg: '1d6',
+      mod: {
+        str: 0.10,
+        agi: 0.07,
+        int: 0.03,
+      },
+    },
   },
   'object.shortsword': {
     id: 'object.shortsword',
     name: 'ShortSword',
     type: 'weapon',
     cost: 100,
-    dmg: '2d6+3',
+    attack: {
+      type: 'piercing',
+      dmg: '1d8+3',
+      mod: {
+        str: 0.10,
+        agi: 0.07,
+        int: 0.03,
+      },
+    },
   },
 };
