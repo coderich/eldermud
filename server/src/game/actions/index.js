@@ -15,5 +15,6 @@ export { default as open } from './open';
 export { default as say } from './say';
 export { default as scan } from './scan';
 export { default as search } from './search';
+export { default as sell } from './sell';
 export { default as unlock } from './unlock';
 export { default as use } from './use';

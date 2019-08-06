@@ -47,14 +47,22 @@ export const breakAttack = async (id) => {
 export const getAttack = id => attackQueue[id];
 export const resolveLoop = new Subject().pipe(share());
 
-const getAllUnitsInCombat = (queue) => {
-  return Promise.all(
-    Array.from(queue.reduce((set, { sourceId, targetId }) => {
-      set.add(sourceId);
+const getAllUnitsInCombat = async (queue) => {
+  const set = new Set();
+
+  queue.forEach(async ({ sourceId, targetId }) => {
+    set.add(sourceId);
+
+    if (targetId === 'room') {
+      const source = await getData(sourceId);
+      const room = await source.Room();
+      room.units.forEach(id => set.add(id));
+    } else {
       set.add(targetId);
-      return set;
-    }, new Set())).map(id => getData(id)),
-  );
+    }
+  });
+
+  return Promise.all(Array.from(set).map(id => getData(id)));
 };
 
 const resolveCombat = async (units, queue, resolveQueue) => {
@@ -62,7 +70,22 @@ const resolveCombat = async (units, queue, resolveQueue) => {
     const { sourceId, targetId, attack } = queue.shift(); // Next in line
     const [source, target] = [units.find(u => u.id === sourceId), units.find(u => u.id === targetId)];
 
-    if (source.room === target.room) {
+    if (targetId === 'room') {
+      const combatRoom = await getData(source.room);
+      remove(resolveQueue, el => (el.sourceId === sourceId && el.targetId === targetId));
+
+      combatRoom.units.forEach((unitId) => {
+        if (unitId !== sourceId) {
+          const obj = { sourceId, targetId: unitId, attack };
+          queue.unshift(obj);
+          resolveQueue.unshift(obj);
+        }
+      });
+
+      return resolveCombat(units, queue, resolveQueue);
+    }
+
+    if (source && target && source.room === target.room) {
       const { cost = 0 } = attack;
 
       if (source.exp >= cost) {
@@ -134,7 +157,7 @@ export const instaAttack = async (sourceId, targetId, attack) => {
   }
 };
 
-export const attackLoop = interval(4000).pipe(
+export const attackLoop = interval(4500).pipe(
   tap(async () => {
     const queue = getAttackQueue(attackQueue);
     attackQueue = {};
@@ -146,7 +169,7 @@ export const attackLoop = interval(4000).pipe(
   publish(),
 ); attackLoop.connect();
 
-export const healthLoop = interval(12000).pipe(
+export const healthLoop = interval(13500).pipe(
   share(),
   publish(),
 ); healthLoop.connect();

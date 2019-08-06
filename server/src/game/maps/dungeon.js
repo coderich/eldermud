@@ -94,6 +94,7 @@ export default {
     units: [],
     spawn: new Date().getTime(),
     respawn: '1d15000+30000',
+    shop: 'shop.helfgrim',
     spawnlings: {
       num: '1d3+1',
       templates: ['blueprint.rat'],

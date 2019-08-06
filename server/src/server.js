@@ -19,7 +19,7 @@ const newUser = id => ({
   mhp: 30,
   ac: 10,
   exp: 10000,
-  talents: ['rage', 'mihe', 'vamp', 'dble'],
+  talents: ['rage', 'mihe', 'vamp', 'dble', 'hail'],
   isLoggedIn: true,
   room: 'room.1',
   items: [],
@@ -113,6 +113,10 @@ server.on('connection', async (socket) => {
           }
           case 'search': {
             return writeStream(userId, await actions.search(userId));
+          }
+          case 'sell': {
+            const target = command.args.join(' ');
+            return writeStream(userId, await actions.sell(userId, target));
           }
           case 'unlock': {
             const target = command.args.join(' ');

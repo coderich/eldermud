@@ -29,6 +29,7 @@ const commands = [
     { exp: { args: [0], code: 'exp', scope: 'action' } },
     { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'action' } },
     { buy: { args: [1, 2, 3, 4, 5], code: 'buy', scope: 'action' } },
+    { sell: { args: [1, 2, 3, 4, 5], code: 'sell', scope: 'action' } },
     { break: { args: [0], code: 'break', scope: 'action' } },
     { search: { args: [0], code: 'search', scope: 'action' } },
     { lock: { args: [1], code: 'lock', scope: 'action' } },
@@ -40,11 +41,12 @@ const commands = [
     { list: { args: [0], code: 'list', scope: 'action' } },
 
     // Talents
-    { rage: { args: [0], code: 'rage', scope: 'talent' } },
+    { dble: { args: [1], code: 'dble', scope: 'talent' } },
+    { hail: { args: [0], code: 'hail', scope: 'talent' } },
     { mihe: { args: [0, 1], code: 'mihe', scope: 'talent' } },
     { mahe: { args: [0, 1], code: 'mahe', scope: 'talent' } },
+    { rage: { args: [0], code: 'rage', scope: 'talent' } },
     { vamp: { args: [1], code: 'vamp', scope: 'talent' } },
-    { dble: { args: [1], code: 'dble', scope: 'talent' } },
 
     // Channels
     { '/gos': { args: [0], code: 'gos', scope: 'channel' } },
@@ -88,19 +90,5 @@ export const translate = (input) => {
     || { name: 'unknown', input, args, code: 'unk', scope: 'unknown' }
   );
 };
-
-// export const findTalent = (input) => {
-//   input = input.trim().toLowerCase();
-//   const [cmd, ...args] = input.match(/\S+/g) || [];
-//   const keys = Object.keys(talents);
-//   const values = Object.values(talents);
-//   const index = keys.indexOf(cmd);
-
-//   if (index > -1 && values[index].args.indexOf(args.length) > -1) {
-//     return Object.assign({}, values[index], { input, args });
-//   }
-
-//   return undefined;
-// };
 
 export const resolve = {};

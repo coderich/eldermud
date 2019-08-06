@@ -38,6 +38,7 @@ export const writeStream = (id, action) => {
       concatMap(thunk => thunk().pipe(
         catchError((e) => {
           if (e instanceof AbortActionError) throw e;
+          console.log(e);
           return of(e);
         }),
       )),
