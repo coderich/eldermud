@@ -1,9 +1,9 @@
 import { mergeMap } from 'rxjs/operators';
 import { getData } from '../../service/data.service';
 import { createAction } from '../../service/stream.service';
-import { instaAttack } from '../../service/game.service';
+import { instaAttack, isValidTarget } from '../../service/game.service';
 
-const cost = 0;
+const cost = 20;
 
 export default async (id, command) => createAction(
   mergeMap(async () => {
@@ -17,14 +17,15 @@ export default async (id, command) => createAction(
     return unit.perform(async () => {
       instaAttack(id, target.id, {
         cost,
-        dmg: '2d10+10',
+        dmg: '1d2',
         acc: 20,
-        hits: ['cleave'],
-        post: (source, t, attack, others, damage) => {
-          if (damage) {
-            const recoil = Math.round(damage / 2);
-            source.hp = Math.max(1, source.hp - recoil);
-          }
+        hits: ['pound'],
+        pre: (source, t, attack, others) => {
+          others.forEach((other) => {
+            if (isValidTarget(source, other)) {
+              other.stun();
+            }
+          });
         },
       });
     });

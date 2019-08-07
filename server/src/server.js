@@ -19,7 +19,7 @@ const newUser = id => ({
   mhp: 30,
   ac: 10,
   exp: 10000,
-  talents: ['rage', 'mihe', 'vamp', 'dble', 'hail'],
+  talents: ['rage', 'mihe', 'vamp', 'dble', 'hail', 'tote'],
   isLoggedIn: true,
   room: 'room.1',
   items: [],

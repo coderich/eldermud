@@ -25,6 +25,21 @@ export const roll = (dice) => {
   return eval(`${value} ${op} ${mod}`); // eslint-disable-line
 };
 
+export const isValidTarget = (source, target) => {
+  return true;
+};
+
+export const isValidRoomTarget = async (source) => {
+  const room = await source.Room();
+  const units = await Promise.all(room.units.map(id => getData(id)));
+
+  for (let i = 0; i < units.length; i++) {
+    if (isValidTarget(source, units[i])) return true;
+  }
+
+  return false;
+};
+
 export const addAttack = (sourceId, targetId, attack) => {
   attackQueue[sourceId] = {
     targetId,
@@ -39,7 +54,7 @@ export const breakAttack = async (id) => {
   if (attack) {
     delete attackQueue[id];
     const [unit, target] = await Promise.all([getData(id), getData(attack.targetId)]);
-    unit.emit('message', { type: 'info', value: '*Combat Off*' });
+    unit.emit('message', { type: 'maroon', value: '*Combat Off*' });
     if (unit.isUser && target.isUser) target.emit('message', { type: 'info', value: `${unit.name} breaks combat.` });
   }
 };
@@ -50,19 +65,14 @@ export const resolveLoop = new Subject().pipe(share());
 const getAllUnitsInCombat = async (queue) => {
   const set = new Set();
 
-  queue.forEach(async ({ sourceId, targetId }) => {
+  await Promise.all(queue.map(async ({ sourceId, targetId }) => {
     set.add(sourceId);
+    const source = await getData(sourceId);
+    const room = await source.Room();
+    room.units.forEach(id => set.add(id));
+  }));
 
-    if (targetId === 'room') {
-      const source = await getData(sourceId);
-      const room = await source.Room();
-      room.units.forEach(id => set.add(id));
-    } else {
-      set.add(targetId);
-    }
-  });
-
-  return Promise.all(Array.from(set).map(id => getData(id)));
+  return (await Promise.all(Array.from(set).map(id => getData(id)))).filter(u => u);
 };
 
 const describer = async (source, target, attack, damage) => {
@@ -85,18 +95,16 @@ const resolveCombat = async (units, queue, resolveQueue) => {
   if (queue.length) {
     const { sourceId, targetId, attack } = queue.shift(); // Next in line
     const [source, target] = [units.find(u => u.id === sourceId), units.find(u => u.id === targetId)];
+    const others = units.filter(u => u.room === source.room && u.id !== source.id);
     attack.describer = attack.describer || describer;
 
     if (targetId === 'room') {
-      const combatRoom = await getData(source.room);
       remove(resolveQueue, el => (el.sourceId === sourceId && el.targetId === targetId));
 
-      combatRoom.units.forEach((unitId) => {
-        if (unitId !== sourceId) {
-          const obj = { sourceId, targetId: unitId, attack };
-          queue.unshift(obj);
-          resolveQueue.unshift(obj);
-        }
+      others.forEach((unit) => {
+        const obj = { sourceId, targetId: unit.id, attack };
+        queue.unshift(obj);
+        resolveQueue.unshift(obj);
       });
 
       return resolveCombat(units, queue, resolveQueue);
@@ -106,19 +114,21 @@ const resolveCombat = async (units, queue, resolveQueue) => {
       const { cost = 0 } = attack;
 
       if (source.exp >= cost) {
+        if (attack.pre) attack.pre(source, target, attack, others);
+
+        let damage = 0;
         source.exp -= cost;
         const total = roll(attack.acc);
         const hit = total >= target.ac;
 
         if (hit) {
-          const damage = roll(attack.dmg);
+          damage = roll(attack.dmg);
           target.hp -= damage;
-          await attack.describer(source, target, attack, damage);
-          if (attack.proc) attack.proc(source, target, attack, damage);
-          if (target.hp <= 0) remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
-        } else {
-          await attack.describer(source, target, attack);
         }
+
+        await attack.describer(source, target, attack, damage);
+        if (attack.post) attack.post(source, target, attack, others, damage);
+        if (target.hp <= 0) remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
       }
     } else {
       remove(queue, el => (el.sourceId === sourceId && el.targetId === targetId) || (el.sourceId === targetId && el.targetId === sourceId));
@@ -155,12 +165,11 @@ export const instaAttack = async (sourceId, targetId, attack) => {
   const queue = getAttackQueue(Object.assign({}, attackQueue, { [sourceId]: { targetId, attack } }));
   const units = await getAllUnitsInCombat(queue);
   await resolveCombat(units, insta, queue);
-
-  if (insta.length === 0) {
-    Object.entries(attackQueue).forEach(([key, value]) => {
-      if (value.targetId === targetId) delete attackQueue[key];
-    });
-  }
+  // if (insta.length === 0) {
+  //   Object.entries(attackQueue).forEach(([key, value]) => {
+  //     if (value.targetId === targetId) delete attackQueue[key];
+  //   });
+  // }
 };
 
 export const attackLoop = interval(4500).pipe(

@@ -46,6 +46,7 @@ const commands = [
     { mihe: { args: [0, 1], code: 'mihe', scope: 'talent' } },
     { mahe: { args: [0, 1], code: 'mahe', scope: 'talent' } },
     { rage: { args: [0], code: 'rage', scope: 'talent' } },
+    { tote: { args: [1], code: 'tote', scope: 'talent' } },
     { vamp: { args: [1], code: 'vamp', scope: 'talent' } },
 
     // Channels

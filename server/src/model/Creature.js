@@ -48,7 +48,6 @@ export default class Creature extends Unit {
               const room = await unit.Room();
               const players = await room.Players();
               const attack = randomElement(unit.attacks);
-              // const [attack] = Object.values(unit.attacks);
 
               if (!players.length) {
                 await this.break(); // Nothing to fight

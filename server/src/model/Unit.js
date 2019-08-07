@@ -1,6 +1,7 @@
-import { writeStream, closeStream } from '../service/stream.service';
+import { delayWhen } from 'rxjs/operators';
+import { createAction, writeStream, closeStream } from '../service/stream.service';
 import { unsetSocket } from '../service/socket.service';
-import { breakAttack } from '../service/game.service';
+import { breakAttack, resolveLoop } from '../service/game.service';
 import Model from '../core/Model';
 
 export default class Unit extends Model {
@@ -35,6 +36,16 @@ export default class Unit extends Model {
     writeStream(`${this.id}.attack`, 'abort');
     this.delData(this.id, 'target');
     return this.breakAction(value);
+  }
+
+  stun() {
+    breakAttack(this.id);
+    writeStream(this.id, 'abort');
+    writeStream(`${this.id}.attack`, 'abort');
+    this.delData(this.id, 'target');
+    writeStream(this.id, createAction(
+      delayWhen(() => resolveLoop),
+    ));
   }
 
   async Room() {

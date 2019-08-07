@@ -82,8 +82,14 @@ const Action = memo((props) => {
     case 'water': {
       return <div style={{ color: water }}>{value}</div>;
     }
-    case 'error': {
+    case 'error': case 'red': {
       return <div style={{ color: red }}>{value}</div>;
+    }
+    case 'warning': {
+      return <div style={{ color: highlight }}>{value}</div>;
+    }
+    case 'maroon': {
+      return <div style={{ color: maroon }}>{value}</div>;
     }
     case 'info': {
       switch (value.toLowerCase()) {
