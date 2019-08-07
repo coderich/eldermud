@@ -24,7 +24,6 @@ const IndexPage = memo((props) => {
           <Grid item xs={4}>Str:</Grid>
           <Grid item xs={4}>Agi:</Grid>
           <Grid item xs={4}>Int:</Grid>
-
         </Grid>
         <Grid item style={{ height: mapSize, ...style }}>
           <MapView />

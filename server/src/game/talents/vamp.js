@@ -10,12 +10,9 @@ export default async (id, command) => {
     acc: '3d5+5',
     hits: ['sap'],
     misses: ['reach'],
-    // describer: (source, target, attack, damage) => {
-
-    // },
     proc: (source, target, attack, damage) => {
       source.hp = Math.min(source.mhp, source.hp + damage);
-      emit(id, 'message', { type: 'water', value: `You gain ${damage} life points.` });
+      emit(id, 'message', { type: 'water', value: `You gain ${damage} health.` });
     },
   });
 };

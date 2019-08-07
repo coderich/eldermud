@@ -47,7 +47,7 @@ export default async (id, input, attack) => {
         mergeMap(async () => {
           const [unit, target] = await Promise.all([getData(id), getData(targetId)]);
           if (attack.scope === 'room' && !await isValidRoomTarget(unit)) unit.break('*Combat Off*');
-          if (!attack.scope === 'room' && (!target || unit.room !== target.room)) unit.break('*Combat Off*');
+          else if (!target || unit.room !== target.room) unit.break('*Combat Off*');
         }),
       ));
     }),

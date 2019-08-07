@@ -8,9 +8,5 @@ export default async (id, command) => {
     hits: ['pummel'],
     misses: ['reach'],
     scope: 'room',
-    // proc: (source, target, damage) => {
-    //   source.hp = Math.min(source.mhp, source.hp + damage);
-    //   emit(id, 'message', { type: 'info', value: `You gain ${damage} life points.` });
-    // },
   });
 };

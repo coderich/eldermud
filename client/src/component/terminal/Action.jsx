@@ -12,7 +12,7 @@ const maroon = '#BFBB3C';
 const highlight = '#fffb7f';
 
 const Action = memo((props) => {
-  const { prompt, action: { type, value } } = props;
+  const { action: { type, value } } = props;
 
   switch (type) {
     // case 'command': return `${prompt} ${value}`;
@@ -100,6 +100,5 @@ const Action = memo((props) => {
 export default Action;
 
 Action.propTypes = {
-  prompt: PropTypes.string.isRequired,
   action: PropTypes.instanceOf(Object).isRequired,
 };

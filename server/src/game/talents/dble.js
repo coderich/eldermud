@@ -20,7 +20,7 @@ export default async (id, command) => createAction(
         dmg: '2d10+10',
         acc: 20,
         hits: ['cleave'],
-        proc: (source, t, damage) => {
+        proc: (source, t, attack, damage) => {
           const recoil = Math.round(damage / 2);
           source.hp = Math.max(1, source.hp - recoil);
         },
