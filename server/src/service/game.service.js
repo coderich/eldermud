@@ -65,10 +65,27 @@ const getAllUnitsInCombat = async (queue) => {
   return Promise.all(Array.from(set).map(id => getData(id)));
 };
 
+const describer = async (source, target, attack, damage) => {
+  const combatRoom = await getData(source.room);
+
+  if (damage) {
+    const verb = randomElement(attack.hits);
+    emit(source.id, 'message', { type: 'error', value: `You ${verb} ${target.hitName} for ${damage} damage!` });
+    emit(target.id, 'message', { type: 'error', value: `${titleCase(source.hitName)} ${verb}s you for ${damage} damage!` });
+    toRoom(combatRoom, 'message', { type: 'error', value: `${titleCase(source.hitName)} ${verb}s ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
+  } else {
+    const verb = randomElement(attack.misses);
+    emit(source.id, 'message', { type: 'cool', value: `You ${verb} at ${target.hitName}, but miss!` });
+    emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at you, but misses!` });
+    toRoom(combatRoom, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
+  }
+};
+
 const resolveCombat = async (units, queue, resolveQueue) => {
   if (queue.length) {
     const { sourceId, targetId, attack } = queue.shift(); // Next in line
     const [source, target] = [units.find(u => u.id === sourceId), units.find(u => u.id === targetId)];
+    attack.describer = attack.describer || describer;
 
     if (targetId === 'room') {
       const combatRoom = await getData(source.room);
@@ -92,26 +109,15 @@ const resolveCombat = async (units, queue, resolveQueue) => {
         source.exp -= cost;
         const total = roll(attack.acc);
         const hit = total >= target.ac;
-        const combatRoom = await getData(source.room);
 
         if (hit) {
           const damage = roll(attack.dmg);
-          const verb = randomElement(attack.hits);
-          emit(source.id, 'message', { type: 'error', value: `You ${verb} ${target.hitName} for ${damage} damage!` });
-          emit(target.id, 'message', { type: 'error', value: `${titleCase(source.hitName)} ${verb}s you for ${damage} damage!` });
-          toRoom(combatRoom, 'message', { type: 'error', value: `${titleCase(source.hitName)} ${verb}s ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
-
           target.hp -= damage;
-          if (attack.proc) attack.proc(source, target, damage);
-
-          if (target.hp <= 0) {
-            remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
-          }
+          await attack.describer(source, target, attack, damage);
+          if (attack.proc) attack.proc(source, target, attack, damage);
+          if (target.hp <= 0) remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
         } else {
-          const verb = randomElement(attack.misses);
-          emit(source.id, 'message', { type: 'cool', value: `You ${verb} at ${target.hitName}, but miss!` });
-          emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at you, but misses!` });
-          toRoom(combatRoom, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
+          await attack.describer(source, target, attack);
         }
       }
     } else {

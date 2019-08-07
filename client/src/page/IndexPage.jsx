@@ -19,8 +19,12 @@ const IndexPage = memo((props) => {
   return (
     <Grid container style={{ height: '100vh' }}>
       <Grid item container style={{ width: mapSize }} direction="column" justify="flex-end">
-        <Grid item style={style} xs>
-          (look obj) (st) (things you see)
+        <Grid item container style={style} xs alignContent="flex-start" spacing={2}>
+          <Grid item xs={12}>Name:</Grid>
+          <Grid item xs={4}>Str:</Grid>
+          <Grid item xs={4}>Agi:</Grid>
+          <Grid item xs={4}>Int:</Grid>
+
         </Grid>
         <Grid item style={{ height: mapSize, ...style }}>
           <MapView />

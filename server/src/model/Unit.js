@@ -18,7 +18,7 @@ export default class Unit extends Model {
     closeStream(this.id);
     unsetSocket(this.id);
     const room = await this.getData(this.id, 'room');
-    this.pullData(room, 'units', this.id);
+    return this.pullData(room, 'units', this.id);
   }
 
   async status() {
