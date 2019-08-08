@@ -13,7 +13,6 @@ export default async (id, command) => {
     post: (source, target, attack, others, damage) => {
       if (damage) {
         source.hp = Math.min(source.mhp, source.hp + damage);
-        emit(id, 'message', { type: 'water', value: `You gain ${damage} health.` });
       }
     },
   });

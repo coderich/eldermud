@@ -6,7 +6,7 @@ export default {
     ac: 8,
     hp: '2d4+2',
     exp: 1, // per hp?
-    adjectives: ['small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
+    adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
     moves: ['creep', 'scuttle', 'sneak', 'ooze'],
     attacks: [
       {
@@ -38,7 +38,7 @@ export default {
     exp: 6, // per hp?
     spawn: new Date().getTime(),
     respawn: 60000, // 1 minute
-    adjectives: ['angry', 'fierce'],
+    adjectives: ['', 'angry', 'fierce'],
     moves: ['stomp', 'leap'],
     attacks: [
       {

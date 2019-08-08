@@ -19,7 +19,7 @@ export default async (id, command) => createAction(
         cost,
         dmg: '2d10+10',
         acc: 20,
-        hits: ['cleave'],
+        hits: ['double edge'],
         post: (source, t, attack, others, damage) => {
           if (damage) {
             const recoil = Math.round(damage / 2);

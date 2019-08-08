@@ -1,4 +1,4 @@
-import { delayWhen } from 'rxjs/operators';
+import { tap, delayWhen } from 'rxjs/operators';
 import { createAction, writeStream, closeStream } from '../service/stream.service';
 import { unsetSocket } from '../service/socket.service';
 import { breakAttack, resolveLoop } from '../service/game.service';
@@ -43,8 +43,12 @@ export default class Unit extends Model {
     writeStream(this.id, 'abort');
     writeStream(`${this.id}.attack`, 'abort');
     this.delData(this.id, 'target');
+    this.emit('message', { type: 'water', value: 'You are stunned!' });
     writeStream(this.id, createAction(
       delayWhen(() => resolveLoop),
+      tap(() => {
+        this.emit('message', { type: 'info', value: 'You are no longer stunned.' });
+      }),
     ));
   }
 

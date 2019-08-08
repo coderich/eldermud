@@ -26,7 +26,8 @@ export const roll = (dice) => {
 };
 
 export const isValidTarget = (source, target) => {
-  return true;
+  if (source.id !== target.id) return true;
+  return false;
 };
 
 export const isValidRoomTarget = async (source) => {
@@ -75,7 +76,7 @@ const getAllUnitsInCombat = async (queue) => {
   return (await Promise.all(Array.from(set).map(id => getData(id)))).filter(u => u);
 };
 
-const describer = async (source, target, attack, damage) => {
+const describer = async (source, target, attack, others, damage) => {
   const combatRoom = await getData(source.room);
 
   if (damage) {
@@ -85,9 +86,9 @@ const describer = async (source, target, attack, damage) => {
     toRoom(combatRoom, 'message', { type: 'error', value: `${titleCase(source.hitName)} ${verb}s ${target.hitName} for ${damage} damage!` }, { omit: [source.id, target.id] });
   } else {
     const verb = randomElement(attack.misses);
-    emit(source.id, 'message', { type: 'cool', value: `You ${verb} at ${target.hitName}, but miss!` });
-    emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at you, but misses!` });
-    toRoom(combatRoom, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at ${target.hitName}, but misses!` }, { omit: [source.id, target.id] });
+    emit(source.id, 'message', { type: 'cool', value: `You ${verb} at ${target.hitName}!` });
+    emit(target.id, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at you!` });
+    toRoom(combatRoom, 'message', { type: 'cool', value: `${titleCase(source.hitName)} ${verb}s at ${target.hitName}!` }, { omit: [source.id, target.id] });
   }
 };
 
@@ -114,7 +115,7 @@ const resolveCombat = async (units, queue, resolveQueue) => {
       const { cost = 0 } = attack;
 
       if (source.exp >= cost) {
-        if (attack.pre) attack.pre(source, target, attack, others);
+        if (attack.pre) await attack.pre(source, target, attack, others);
 
         let damage = 0;
         source.exp -= cost;
@@ -126,8 +127,8 @@ const resolveCombat = async (units, queue, resolveQueue) => {
           target.hp -= damage;
         }
 
-        await attack.describer(source, target, attack, damage);
-        if (attack.post) attack.post(source, target, attack, others, damage);
+        await attack.describer(source, target, attack, others, damage);
+        if (attack.post) await attack.post(source, target, attack, others, damage);
         if (target.hp <= 0) remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
       }
     } else {
@@ -172,7 +173,7 @@ export const instaAttack = async (sourceId, targetId, attack) => {
   // }
 };
 
-export const attackLoop = interval(4500).pipe(
+export const attackLoop = interval(5000).pipe(
   tap(async () => {
     const queue = getAttackQueue(attackQueue);
     attackQueue = {};
@@ -184,7 +185,7 @@ export const attackLoop = interval(4500).pipe(
   publish(),
 ); attackLoop.connect();
 
-export const healthLoop = interval(13500).pipe(
+export const healthLoop = interval(15000).pipe(
   share(),
   publish(),
 ); healthLoop.connect();

@@ -15,7 +15,7 @@ export default async (id, command) => createAction(
       const roll = unit.roll('3d3+3');
       const hp = Math.min(unit.mhp, unit.hp + roll);
       setData(id, 'hp', hp);
-      unit.emit('message', { type: 'water', value: `You cast ${name}, you recover ${roll} health!` });
+      unit.emit('message', { type: 'water', value: `You cast ${name}, recovering ${roll} health!` });
       unit.status();
     });
   }),
