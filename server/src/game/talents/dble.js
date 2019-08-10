@@ -4,6 +4,7 @@ import { createAction } from '../../service/stream.service';
 import { instaAttack } from '../../service/game.service';
 
 const cost = 0;
+const set = new Set();
 
 export default async (id, command) => createAction(
   mergeMap(async () => {
@@ -11,11 +12,14 @@ export default async (id, command) => createAction(
     const unit = await getData(id);
     const room = await unit.Room();
     const target = await room.resolveTarget('units', input, { omit: [unit.id] });
+    if (set.has(id)) unit.breakAction('Must wait for cooldown');
     if (cost > unit.exp) unit.breakAction('Insufficient power.');
     if (!target) unit.breakAction('You don\'t see that here!');
 
     return unit.perform(async () => {
-      instaAttack(id, target.id, {
+      set.add(id);
+
+      await instaAttack(id, target.id, {
         cost,
         dmg: '2d10+10',
         acc: 20,
@@ -27,6 +31,10 @@ export default async (id, command) => createAction(
           }
         },
       });
+
+      setTimeout(() => {
+        set.delete(id);
+      }, 15000);
     });
   }),
 );

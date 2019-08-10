@@ -1,7 +1,7 @@
 import 'file-loader?name=[name].[ext]!./index.html'; // eslint-disable-line
 import 'jsplumb/css/jsplumbtoolkit-defaults.css';
-import React, { Provider } from '@coderich/hotrod/react';
 import { Services, Action, Selector, Reducer } from '@coderich/hotrod';
+import React, { Provider } from '@coderich/hotrod/react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,11 +19,14 @@ const actions = {
   }),
   response: new Action('response'),
   prompt: new Action('prompt'),
+  stats: new Action('stats'),
   minimap: new Action('minimap'),
 };
 
 const selectors = {
+  data: new Selector('data').default({}),
   prompt: new Selector('data.prompt').default('>'),
+  stats: new Selector('data.stats').default({}),
   responses: new Selector('data.responses').default([]),
   maps: new Selector('data.maps').default({ minimap: [] }),
 };
@@ -32,6 +35,11 @@ const reducers = [
   new Reducer(actions.prompt, selectors.prompt, ({
     success: (prompt, { payload }) => {
       return payload;
+    },
+  })),
+  new Reducer(actions.stats, selectors.data, ({
+    success: (data, { payload }) => {
+      data.stats = payload;
     },
   })),
   new Reducer(actions.command, selectors.responses, ({
@@ -54,6 +62,7 @@ const reducers = [
 server.on('message', (data) => {
   console.log(data);
   switch (data.type) {
+    case 'stats': return actions.stats.dispatch(data.value);
     case 'status': return actions.prompt.dispatch(`[HP=${data.value.hp},SP=${data.value.exp}]:`);
     case 'minimap': return actions.minimap.dispatch(data.value);
     default: return actions.response.dispatch(data);

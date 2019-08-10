@@ -1,14 +1,13 @@
-import { tap, delayWhen } from 'rxjs/operators';
+import { tap, delay } from 'rxjs/operators';
 import { createAction, writeStream, closeStream } from '../service/stream.service';
 import { unsetSocket } from '../service/socket.service';
-import { breakAttack, resolveLoop } from '../service/game.service';
+import { breakAttack } from '../service/game.service';
 import Model from '../core/Model';
 
 export default class Unit extends Model {
   constructor(...args) {
     super(...args);
     this.isUnit = true;
-    this.timeout = ms => new Promise(res => setTimeout(res, ms));
   }
 
   async disconnect() {
@@ -20,6 +19,10 @@ export default class Unit extends Model {
     unsetSocket(this.id);
     const room = await this.getData(this.id, 'room');
     return this.pullData(room, 'units', this.id);
+  }
+
+  async stats() {
+    return this.noop;
   }
 
   async status() {
@@ -38,14 +41,14 @@ export default class Unit extends Model {
     return this.breakAction(value);
   }
 
-  stun() {
+  stun(duration) {
     breakAttack(this.id);
     writeStream(this.id, 'abort');
     writeStream(`${this.id}.attack`, 'abort');
     this.delData(this.id, 'target');
     this.emit('message', { type: 'water', value: 'You are stunned!' });
     writeStream(this.id, createAction(
-      delayWhen(() => resolveLoop),
+      delay(duration),
       tap(() => {
         this.emit('message', { type: 'info', value: 'You are no longer stunned.' });
       }),
@@ -58,6 +61,10 @@ export default class Unit extends Model {
 
   async Items() {
     return Promise.all(this.items.map(item => this.getData(item)));
+  }
+
+  async Equipped() {
+    return Promise.all(this.equipped.map(item => this.getData(item)));
   }
 
   async Keys() {

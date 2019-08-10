@@ -48,7 +48,7 @@ const Component = memo((props) => {
 
       jsPlumb.registerConnectionTypes({
         basic: {
-          paintStyle: { stroke: 'black', strokeWidth: 3 },
+          paintStyle: { stroke: 'white', strokeWidth: 1 },
         },
       });
 
@@ -87,9 +87,10 @@ const Component = memo((props) => {
   const xOffset = (20 * me.col * 2);
   const yOffset = (20 * me.row * 2) - 12;
   const backgroundPosition = `calc(50% - ${xOffset}px) calc(50% - ${yOffset}px)`;
+  {/*<div id={containerId} className="map" style={{ alignSelf: 'center', backgroundPosition, backgroundColor: 'lightgrey' }}>*/}
 
   return (
-    <div id={containerId} className="map" style={{ alignSelf: 'center', backgroundPosition, backgroundColor: 'lightgrey' }}>
+    <div id={containerId}>
       {maps.minimap.map((arr, row) => {
         const rowId = `container-${row}-${now}`;
 

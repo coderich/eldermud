@@ -1,6 +1,6 @@
 export default {
   'shop.helfgrim': {
     id: 'shop.helfgrim',
-    items: ['object.rope', 'object.dagger', 'object.shortsword'],
+    items: ['object.rope', 'object.dagger', 'object.shortsword', 'object.skullcap', 'object.shield'],
   },
 };

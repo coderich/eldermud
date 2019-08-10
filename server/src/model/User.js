@@ -72,6 +72,34 @@ export default class User extends Unit {
     this.emit('message', { type: 'minimap', value });
   }
 
+  async stats() {
+    const user = await this.getData(this.id);
+    const equipped = await user.Equipped();
+
+    this.emit('message', {
+      type: 'stats',
+      value: {
+        name: user.name,
+        lvl: 1,
+        str: 6,
+        agi: 4,
+        int: 4,
+        hp: user.mhp,
+        ac: 2,
+        ma: 11,
+        talents: user.talents,
+        equipped: equipped.reduce((prev, curr) => {
+          return Object.assign(prev, {
+            [curr.location]: {
+              type: curr.type,
+              name: curr.name,
+            },
+          });
+        }, {}),
+      },
+    });
+  }
+
   async status() {
     const user = await this.getData(this.id);
     this.emit('message', { type: 'status', value: { hp: user.hp, exp: user.exp } });

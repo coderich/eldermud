@@ -44,3 +44,5 @@ export const titleCase = name => name.charAt(0).toUpperCase() + name.slice(1);
 export const numToArray = num => Array.from(Array(num));
 
 export const randomElement = arr => arr[Math.floor(Math.random() * arr.length)];
+
+export const timeout = ms => new Promise(res => setTimeout(res, ms));

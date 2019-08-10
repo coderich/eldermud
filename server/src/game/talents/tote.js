@@ -27,7 +27,7 @@ export default async (id, command) => createAction(
 
           others.forEach((other) => {
             if (isValidTarget(source, other)) {
-              other.stun();
+              other.stun(3500);
             }
           });
         },

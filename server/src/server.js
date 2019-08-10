@@ -23,6 +23,7 @@ const newUser = id => ({
   isLoggedIn: true,
   room: 'room.1',
   items: [],
+  equipped: [],
   combatants: [],
 });
 
@@ -34,6 +35,7 @@ server.on('connection', async (socket) => {
   await pushData('room.1', 'units', userId);
   writeStream(userId, await actions.scan(userId));
   user.minimap();
+  user.stats();
   user.status();
   user.connect();
 

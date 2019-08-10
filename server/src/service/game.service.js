@@ -56,7 +56,7 @@ export const breakAttack = async (id) => {
     delete attackQueue[id];
     const [unit, target] = await Promise.all([getData(id), getData(attack.targetId)]);
     unit.emit('message', { type: 'maroon', value: '*Combat Off*' });
-    if (unit.isUser && target.isUser) target.emit('message', { type: 'info', value: `${unit.name} breaks combat.` });
+    if (unit.isUser && target && target.isUser) target.emit('message', { type: 'info', value: `${unit.name} breaks combat.` });
   }
 };
 
@@ -100,6 +100,8 @@ const resolveCombat = async (units, queue, resolveQueue) => {
     attack.describer = attack.describer || describer;
 
     if (targetId === 'room') {
+      source.exp -= attack.cost;
+      attack.cost = 0;
       remove(resolveQueue, el => (el.sourceId === sourceId && el.targetId === targetId));
 
       others.forEach((unit) => {
