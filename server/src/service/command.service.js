@@ -34,6 +34,7 @@ const commands = [
     { search: { args: [0], code: 'search', scope: 'action' } },
     { lock: { args: [1], code: 'lock', scope: 'action' } },
     { unlock: { args: [1], code: 'unlock', scope: 'action' } },
+    { remove: { args: [1, 2, 3], code: 'remove', scope: 'action' } },
   ],
   [
     { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'action' } },

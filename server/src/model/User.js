@@ -89,10 +89,15 @@ export default class User extends Unit {
         ma: 11,
         talents: user.talents,
         equipped: equipped.reduce((prev, curr) => {
+          const attack = curr.attack || {};
+          const defense = curr.defense || {};
+
           return Object.assign(prev, {
             [curr.location]: {
               type: curr.type,
               name: curr.name,
+              dmg: attack.dmg,
+              prot: defense.prot,
             },
           });
         }, {}),

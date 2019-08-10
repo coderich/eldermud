@@ -14,7 +14,10 @@ export default {
     cost: 40,
     attack: {
       type: 'piercing',
-      dmg: '1d6',
+      acc: '3d5+5',
+      dmg: '1d6+1',
+      hits: ['stab', 'spike'],
+      misses: ['lunge', 'swipe'],
       mod: {
         str: 0.10,
         agi: 0.07,
@@ -30,7 +33,10 @@ export default {
     cost: 100,
     attack: {
       type: 'piercing',
-      dmg: '1d8+3',
+      dmg: '1d10+3',
+      acc: '3d5+5',
+      hits: ['thrust', 'slash'],
+      misses: ['lunge', 'swing'],
       mod: {
         str: 0.10,
         agi: 0.07,
@@ -46,7 +52,7 @@ export default {
     cost: 50,
     defense: {
       type: 'cloth',
-      toughness: 1,
+      prot: 1,
     },
   },
   'object.shield': {
@@ -57,7 +63,7 @@ export default {
     cost: 500,
     defense: {
       type: 'iron',
-      toughness: 4,
+      prot: 4,
     },
   },
 };

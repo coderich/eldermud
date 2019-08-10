@@ -12,6 +12,7 @@ export { default as lock } from './lock';
 export { default as look } from './look';
 export { default as move } from './move';
 export { default as open } from './open';
+export { default as remove } from './remove';
 export { default as say } from './say';
 export { default as scan } from './scan';
 export { default as search } from './search';

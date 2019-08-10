@@ -130,6 +130,12 @@ export default {
     exits: { w: 'room.5' },
     items: [],
     units: [],
+    spawn: new Date().getTime(),
+    respawn: '1d5000+1000',
+    spawnlings: {
+      num: '1d2+1',
+      templates: ['blueprint.rat', 'blueprint.cavebear'],
+    },
   },
   'room.10': {
     id: 'room.10',

@@ -77,6 +77,7 @@ export const pushData = async (id, field, data) => {
 
 export const pullData = async (id, field, data) => {
   const index = await toPromise(client.json_arrindex, id, `.${field}`, JSON.stringify(data));
+  if (index < 0) return null;
   return JSON.parse(await toPromise(client.json_arrpop, id, `.${field}`, index));
 };
 

@@ -1,5 +1,6 @@
 import { mergeMap } from 'rxjs/operators';
 import { getData, pushData, pullData } from '../../service/data.service';
+import { breakAttack } from '../../service/game.service';
 import { createAction } from '../../service/stream.service';
 
 export default async (id, target) => createAction(
@@ -11,6 +12,7 @@ export default async (id, target) => createAction(
 
     switch (item.type) {
       case 'weapon': {
+        breakAttack(unit.id);
         const weapon = equipped.find(it => it.type === 'weapon');
         if (weapon) await pullData(id, 'equipped', weapon.id);
         break;
@@ -27,8 +29,7 @@ export default async (id, target) => createAction(
     }
 
     await pushData(id, 'equipped', item.id);
-    const message = await unit.describe('info', `You equip ${item.name}.`);
-    unit.emit('message', message);
+    unit.emit('message', await unit.describe('info', `You equip ${item.name}.`));
     unit.stats();
   }),
 );

@@ -1,6 +1,6 @@
 import SocketServer from 'socket.io';
 import Chance from 'chance';
-import { getData, setData, pushData } from './service/data.service';
+import { getData, getList, setData, pushData } from './service/data.service';
 import { translate } from './service/command.service';
 import { setSocket } from './service/socket.service';
 import { writeStream } from './service/stream.service';
@@ -69,7 +69,9 @@ server.on('connection', async (socket) => {
       default: {
         switch (command.name) {
           case 'attack': {
-            const attack = { dmg: '2d5+3', acc: '3d5+5', hits: ['hit'], misses: ['swing'] };
+            const equipped = await getList(userId, 'equipped');
+            const weapon = equipped.find(eq => eq.type === 'weapon');
+            const attack = weapon ? weapon.attack : { dmg: '1d3', acc: '3d5+5', hits: ['punch'], misses: ['swing'] };
             const target = command.args.join(' ');
             return writeStream(userId, await actions.attack(userId, target, attack));
           }
@@ -112,6 +114,10 @@ server.on('connection', async (socket) => {
           case 'look': {
             const target = command.args.join(' ');
             return writeStream(userId, await actions.look(userId, target));
+          }
+          case 'remove': {
+            const target = command.args.join(' ');
+            return writeStream(userId, await actions.remove(userId, target));
           }
           case 'search': {
             return writeStream(userId, await actions.search(userId));
