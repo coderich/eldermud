@@ -1,18 +1,15 @@
 import React, { memo, PropTypes } from '@coderich/hotrod/react';
 import '../asset/styles.css';
 
-const Layout = memo((props) => {
+const Container = memo((props) => {
   const { children } = props;
 
   return (
-    <main className="canvas">
-      {children}
-    </main>
   );
 });
 
-export default Layout;
+export default Container;
 
-Layout.propTypes = {
+Container.propTypes = {
   children: PropTypes.node.isRequired,
 };

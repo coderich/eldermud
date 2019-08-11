@@ -1,9 +1,11 @@
 body {
+  color: white !important;
   font-family: "Courier" !important;
-  background-image: url("./bg.jpg");
+  background-color: black !important;
+  /*background-image: url("./bg.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: center;
+  background-position: center;*/
 }
 
 .map {
@@ -18,3 +20,27 @@ body {
   /*width: 20px;
   height: 20px;*/
 }
+
+#root {
+  width: 100vw !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+.canvas {
+  width: inherit;
+  height: inherit;
+  overflow: hidden;
+  overflow-y: hidden;
+  flex-wrap: 'nowrap';
+}
+
+.bubble = {
+  padding: 10;
+  background-color: rgba(0,0,0,.8);
+  max-height: '100%';
+  overflow: 'hidden';
+  border: '10px double #1C6EA4';
+  border-radius: '40px';
+  flex-wrap: 'nowrap';
+};

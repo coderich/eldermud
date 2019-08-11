@@ -2,6 +2,7 @@ import { mergeMap, delay } from 'rxjs/operators';
 import { getData } from '../../service/data.service';
 import { translate } from '../../service/command.service';
 import { createAction } from '../../service/stream.service';
+import { breakAttack } from '../../service/game.service';
 
 export default async (id, target) => createAction(
   mergeMap(async () => {
@@ -10,6 +11,7 @@ export default async (id, target) => createAction(
     const { code: dir } = translate(target);
     const door = await room.Door(dir) || unit.abortAction('There is nothing in that direction!');
     const keys = await unit.Keys() || unit.abortAction('You have no keys!');
+    await breakAttack(unit.id);
     unit.emit('message', { type: 'info', value: 'Attempting to unlock the door...' });
     return { keys, unit, door };
   }),

@@ -15,7 +15,6 @@ const Action = memo((props) => {
   const { action: { type, value } } = props;
 
   switch (type) {
-    // case 'command': return `${prompt} ${value}`;
     case 'room': return (
       <Fragment>
         <div style={{ color: cyan }}>{value.name}</div>

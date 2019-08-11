@@ -10,9 +10,12 @@ export default async (id, target) => createAction(
     const equipped = await unit.Equipped();
     if (!equipped.find(eq => eq.id === item.id)) unit.abortAction('Not equipped!');
 
-    if (item.type === 'weapon') breakAttack(unit.id);
-    await pullData(id, 'equipped', item.id);
-    unit.emit('message', await unit.describe('info', `You remove ${item.name}.`));
+    await Promise.all([
+      breakAttack(unit.id),
+      pullData(id, 'equipped', item.id),
+    ]);
+
+    unit.emit('message', { type: 'info', value: `You remove ${item.name}.` });
     unit.stats();
   }),
 );

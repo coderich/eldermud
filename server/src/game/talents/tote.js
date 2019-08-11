@@ -13,7 +13,7 @@ export default async (id, command) => createAction(
     const unit = await getData(id);
     const room = await unit.Room();
     const target = await room.resolveTarget('units', input, { omit: [unit.id] });
-    if (cost > unit.exp) unit.breakAction('Insufficient power.');
+    if (cost > unit.exp) unit.breakAction('Insufficient mana.');
     if (!target) unit.breakAction('You don\'t see that here!');
 
     return unit.perform(async () => {

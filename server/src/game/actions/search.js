@@ -1,16 +1,13 @@
 import { mergeMap } from 'rxjs/operators';
 import { getData } from '../../service/data.service';
 import { createAction } from '../../service/stream.service';
-import { getAttack } from '../../service/game.service';
+import { breakAttack } from '../../service/game.service';
 
 export default async id => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
-
-    if (getAttack(id)) unit.breakAction('You may not search while attacking!');
-
+    await breakAttack(unit.id);
     unit.broadcastToRoom(unit.room, 'message', { type: 'info', value: `${unit.name} is searching the room.` });
-
     const room = await unit.Room();
     const items = await room.search();
     if (!items.length) unit.breakAction('Your search revealed nothing.');

@@ -12,7 +12,6 @@ export default async (id, target) => createAction(
 
     switch (item.type) {
       case 'weapon': {
-        breakAttack(unit.id);
         const weapon = equipped.find(it => it.type === 'weapon');
         if (weapon) await pullData(id, 'equipped', weapon.id);
         break;
@@ -28,7 +27,11 @@ export default async (id, target) => createAction(
       }
     }
 
-    await pushData(id, 'equipped', item.id);
+    await Promise.all([
+      breakAttack(unit.id),
+      pushData(id, 'equipped', item.id),
+    ]);
+
     unit.emit('message', await unit.describe('info', `You equip ${item.name}.`));
     unit.stats();
   }),

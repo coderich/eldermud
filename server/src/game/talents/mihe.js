@@ -8,7 +8,7 @@ const name = 'minor healing';
 export default async (id, command) => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
-    if (cost > unit.exp) unit.breakAction('Insufficient power.');
+    if (cost > unit.exp) unit.breakAction('Insufficient mana.');
 
     return unit.perform(async () => {
       await incData(id, 'exp', -cost);

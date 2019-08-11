@@ -6,7 +6,7 @@ const style = {
   height: '100%',
   color: 'white',
   overflowY: 'auto',
-  // backgroundColor: '#36454f',
+  backgroundColor: '#36454f',
 };
 
 const Output = (props, ref) => {

@@ -16,15 +16,18 @@ const newUser = id => ({
   id,
   name: chance.name(),
   hp: 30,
+  ma: 5,
   mhp: 30,
+  mma: 10,
   ac: 10,
-  exp: 10000,
-  talents: ['rage', 'mihe', 'vamp', 'dble', 'hail', 'tote'],
+  exp: 100,
   isLoggedIn: true,
   room: 'room.1',
   items: [],
   equipped: [],
   combatants: [],
+  // talents: [],
+  talents: ['rage', 'mihe', 'vamp', 'dble', 'hail', 'tote'],
 });
 
 server.on('connection', async (socket) => {

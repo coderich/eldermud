@@ -100,15 +100,26 @@ const resolveCombat = async (units, queue, resolveQueue) => {
     attack.describer = attack.describer || describer;
 
     if (targetId === 'room') {
-      source.exp -= attack.cost;
-      attack.cost = 0;
+      const { cost = 0 } = attack;
       remove(resolveQueue, el => (el.sourceId === sourceId && el.targetId === targetId));
 
-      others.forEach((unit) => {
-        const obj = { sourceId, targetId: unit.id, attack };
-        queue.unshift(obj);
-        resolveQueue.unshift(obj);
-      });
+      if (source.exp >= cost) {
+        source.exp -= cost;
+
+        if (others.length) {
+          source.exp -= attack.cost;
+          const dmg = roll(attack.dmg);
+          await attack.describer(source, targetId, attack, others, dmg);
+
+          others.forEach((unit) => {
+            const obj = { sourceId, targetId: unit.id, attack: { cost: 0, dmg, acc: 20, describer: () => {} } };
+            queue.unshift(obj);
+            resolveQueue.unshift(obj);
+          });
+        }
+      } else {
+        source.emit('message', { type: 'info', value: 'Insufficient mana.' });
+      }
 
       return resolveCombat(units, queue, resolveQueue);
     }
@@ -132,6 +143,8 @@ const resolveCombat = async (units, queue, resolveQueue) => {
         await attack.describer(source, target, attack, others, damage);
         if (attack.post) await attack.post(source, target, attack, others, damage);
         if (target.hp <= 0) remove(queue, el => el.sourceId === targetId || el.targetId === targetId);
+      } else {
+        source.emit('message', { type: 'info', value: 'Insufficient mana.' });
       }
     } else {
       remove(queue, el => (el.sourceId === sourceId && el.targetId === targetId) || (el.sourceId === targetId && el.targetId === sourceId));

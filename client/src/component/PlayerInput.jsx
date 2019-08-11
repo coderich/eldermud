@@ -1,4 +1,4 @@
-import React, { PropTypes, memo, useState } from '@coderich/hotrod/react';
+import React, { PropTypes, memo, useState, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 
 const style = {
@@ -13,14 +13,14 @@ const style = {
 };
 
 const Input = memo((props) => {
-  const { onSubmit, prompt } = props;
+  const { command } = props;
   const [value, setValue] = useState('');
   const history = [];
 
   const handleSubmit = (e) => {
     e.preventDefault();
     history.push(value);
-    onSubmit(value);
+    command(value);
     setValue('');
   };
 
@@ -36,7 +36,7 @@ const Input = memo((props) => {
     <form style={style} onSubmit={handleSubmit}>
       <Grid container>
         <Grid item>
-          <span>{prompt}</span>
+          <span>#&gt;</span>
         </Grid>
         <Grid item style={{ flexGrow: 1 }}>
           <input autoFocus onBlur={onBlur} value={value} onChange={handleChange} style={style} />
@@ -46,9 +46,12 @@ const Input = memo((props) => {
   );
 });
 
-export default Input;
+export default connect({
+  actions: {
+    command: 'command',
+  },
+})(Input);
 
 Input.propTypes = {
-  prompt: PropTypes.string.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  command: PropTypes.func.isRequired,
 };

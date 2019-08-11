@@ -7,11 +7,12 @@ export default async (id, target) => createAction(
     const unit = await getData(id);
     const room = await unit.Room();
     const shop = await room.Shop() || unit.abortAction('There is no shop here!');
-    const template = await shop.resolveTarget('items', target) || unit.abortAction('This shop does not carry that item!');
-    if (template.cost > unit.exp) unit.breakAction('Insufficient power.');
+    // const template = await shop.resolveTarget('items', target) || unit.abortAction('This shop does not carry that item!');
+    const template = await shop.resolveTarget('items', target) || unit.abortAction('Item not available. Type "list" to see available items.');
+    if (template.cost > unit.exp) unit.breakAction('You do not have sufficient funds.');
     const item = await shop.createItem(template);
     await Promise.all([incData(unit.id, 'exp', -template.cost), pushData(unit.id, 'items', item.id)]);
-    unit.emit('message', { type: 'info', value: `You just bought ${item.name}` });
+    unit.emit('message', { type: 'info', value: `You buy ${item.name} for ${template.cost} spoils.` });
     unit.status();
   }),
 );

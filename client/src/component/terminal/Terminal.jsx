@@ -1,66 +1,36 @@
 import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
-import { Grid, Box } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Action from './Action';
-import Input from './Input';
 
 const container = {
   fontSize: '16px',
   width: '100%',
   height: '100%',
-};
-
-const viewport = {
   flexWrap: 'nowrap',
-  width: '100%',
-  height: '100%',
-};
-
-const screen = {
-  flexGrow: 1,
-  flexWrap: 'nowrap',
-  width: '100%',
-  height: '100%',
-  color: 'lightgray',
   overflowY: 'hidden',
+  color: 'lightgray',
 };
 
 const Terminal = memo((props) => {
-  const { prompt, command, responses } = props;
-
-  const onSubmit = (value) => {
-    command(value);
-  };
+  const { responses } = props;
 
   return (
-    <Box p={1} style={container}>
-      <Grid container direction="column" style={viewport}>
-        <Grid item container direction="column" justify="flex-end" style={screen}>
-          {responses.map((action, i) => (
-            <Grid item key={i}>
-              <Action prompt={prompt} action={action} />
-            </Grid>
-          ))}
+    <Grid style={container} container direction="column" justify="flex-end">
+      {responses.map((action, i) => (
+        <Grid item key={i}>
+          <Action action={action} />
         </Grid>
-        <Grid item>
-          <Input prompt={prompt} onSubmit={onSubmit} />
-        </Grid>
-      </Grid>
-    </Box>
+      ))}
+    </Grid>
   );
 });
 
 export default connect({
-  actions: {
-    command: 'command',
-  },
   selectors: {
-    prompt: 'prompt',
     responses: 'responses',
   },
 })(Terminal);
 
 Terminal.propTypes = {
-  prompt: PropTypes.string.isRequired,
-  command: PropTypes.func.isRequired,
   responses: PropTypes.instanceOf(Array).isRequired,
 };

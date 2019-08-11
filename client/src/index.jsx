@@ -20,6 +20,7 @@ const actions = {
   response: new Action('response'),
   prompt: new Action('prompt'),
   stats: new Action('stats'),
+  status: new Action('status'),
   minimap: new Action('minimap'),
 };
 
@@ -27,6 +28,7 @@ const selectors = {
   data: new Selector('data').default({}),
   prompt: new Selector('data.prompt').default('>'),
   stats: new Selector('data.stats').default({}),
+  status: new Selector('data.status').default({}),
   responses: new Selector('data.responses').default([]),
   maps: new Selector('data.maps').default({ minimap: [] }),
 };
@@ -42,14 +44,14 @@ const reducers = [
       data.stats = payload;
     },
   })),
-  new Reducer(actions.command, selectors.responses, ({
-    success: (responses, { payload }) => {
-      responses.push({ type: 'command', value: payload });
+  new Reducer(actions.status, selectors.data, ({
+    success: (data, { payload }) => {
+      data.status = payload;
     },
   })),
-  new Reducer(actions.response, selectors.responses, ({
-    success: (responses, { payload }) => {
-      responses.push(payload);
+  new Reducer(actions.response, selectors.data, ({
+    success: (data, { payload }) => {
+      data.responses = data.responses.slice(-39).concat(payload);
     },
   })),
   new Reducer(actions.minimap, selectors.maps, ({
@@ -60,12 +62,20 @@ const reducers = [
 ];
 
 server.on('message', (data) => {
-  console.log(data);
   switch (data.type) {
-    case 'stats': return actions.stats.dispatch(data.value);
-    case 'status': return actions.prompt.dispatch(`[HP=${data.value.hp},SP=${data.value.exp}]:`);
-    case 'minimap': return actions.minimap.dispatch(data.value);
-    default: return actions.response.dispatch(data);
+    case 'stats': {
+      return actions.stats.dispatch(data.value);
+    }
+    case 'status': {
+      actions.prompt.dispatch(`[HP=${data.value.hp},MA=${data.value.ma}]:`);
+      return actions.status.dispatch(data.value);
+    }
+    case 'minimap': {
+      return actions.minimap.dispatch(data.value);
+    }
+    default: {
+      return actions.response.dispatch(data);
+    }
   }
 });
 

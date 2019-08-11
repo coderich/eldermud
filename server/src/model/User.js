@@ -33,13 +33,14 @@ export default class User extends Unit {
         delayWhen(() => healthLoop),
         delay(500), // Allow battle to resolve
         tap(async () => {
+          const promises = [];
           const user = await this.getData(this.id);
-          const beat = Math.floor(user.mhp * 0.05);
-          const hp = Math.min(user.mhp, user.hp + beat);
-          if (hp !== user.hp) {
-            await this.setData(this.id, 'hp', hp);
-            user.status();
-          }
+          const [health, mana] = [Math.floor(user.mhp * 0.05), Math.ceil(user.mma * 0.05)];
+          const [hp, ma] = [Math.min(user.mhp, user.hp + health), Math.min(user.mma, user.ma + mana)];
+          if (hp !== user.hp) promises.push(this.setData(this.id, 'hp', hp));
+          if (ma !== user.ma) promises.push(this.setData(this.id, 'ma', ma));
+          await Promise.all(promises);
+          if (promises.length) user.status();
         }),
       ));
     }
@@ -84,9 +85,10 @@ export default class User extends Unit {
         str: 6,
         agi: 4,
         int: 4,
-        hp: user.mhp,
         ac: 2,
-        ma: 11,
+        hp: user.mhp,
+        ma: user.mma,
+        exp: user.exp,
         talents: user.talents,
         equipped: equipped.reduce((prev, curr) => {
           const attack = curr.attack || {};
@@ -107,7 +109,16 @@ export default class User extends Unit {
 
   async status() {
     const user = await this.getData(this.id);
-    this.emit('message', { type: 'status', value: { hp: user.hp, exp: user.exp } });
+    this.emit('message', {
+      type: 'status',
+      value: {
+        hp: user.hp,
+        mhp: user.mhp,
+        ma: user.ma,
+        mma: user.mma,
+        exp: user.exp,
+      },
+    });
   }
 
   async broadcastToRoom(roomId, type, payload) {
