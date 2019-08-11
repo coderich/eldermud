@@ -10,10 +10,10 @@ export default async (id, command) => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
     const stream = `${this.id}.${code}`;
-    if (cost > unit.exp) unit.breakAction('Insufficient mana.');
+    if (cost > unit.ma) unit.breakAction('Insufficient mana.');
 
     return unit.perform(async () => {
-      await incData(id, 'exp', -cost);
+      await incData(id, 'ma', -cost);
       unit.emit('message', { type: 'water', value: 'You focus your energy inwards.' });
       unit.emit('message', { type: 'water', value: 'You feel enraged!' });
 

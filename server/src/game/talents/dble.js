@@ -13,7 +13,7 @@ export default async (id, command) => createAction(
     const room = await unit.Room();
     const target = await room.resolveTarget('units', input, { omit: [unit.id] });
     if (set.has(id)) unit.breakAction('Must wait for cooldown');
-    if (cost > unit.exp) unit.breakAction('Insufficient mana.');
+    if (cost > unit.ma) unit.breakAction('Insufficient mana.');
     if (!target) unit.breakAction('You don\'t see that here!');
 
     return unit.perform(async () => {

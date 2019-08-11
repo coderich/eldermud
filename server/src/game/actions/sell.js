@@ -18,7 +18,7 @@ export default async (id, target) => createAction(
       delData(item.id),
     ]);
 
-    unit.emit('message', { type: 'info', value: `You sell ${item.name} for ${price} spoils.` });
+    unit.emit('message', { type: 'info', value: `You sell ${item.name} for ${price} souls.` });
     unit.status();
     unit.stats();
   }),

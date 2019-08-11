@@ -5,6 +5,24 @@ export default {
     type: 'general',
     cost: 30,
   },
+  'object.healthpotion': {
+    id: 'object.healthpotion',
+    name: 'health potion',
+    type: 'potion',
+    cost: 30,
+    effects: [
+      { effect: 'increase-health', roll: '1d10+5', duration: 1 },
+    ],
+  },
+  'object.manapotion': {
+    id: 'object.manapotion',
+    name: 'mana potion',
+    type: 'potion',
+    cost: 50,
+    effects: [
+      { effect: 'increase-mana', roll: '1d10+5', duration: 1 },
+    ],
+  },
   'object.dagger': {
     id: 'object.dagger',
     name: 'dagger',

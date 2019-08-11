@@ -11,7 +11,7 @@ const bubble = {
   padding: 10,
   backgroundColor: 'rgba(0,0,0,.8)',
   maxHeight: '100%',
-  border: '10px double #1C6EA4',
+  border: '1px dashed #1C6EA4',
   borderRadius: '40px',
 };
 
@@ -27,7 +27,7 @@ const IndexPage = memo((props) => {
         </Grid>
       </Grid>
       <Grid className="canvas" container item xs>
-        <Grid className="canvas" container item xs={7} direction="column" style={bubble}>
+        <Grid className="canvas" container item xs={7} direction="column" style={bubble} spacing={1}>
           <Grid className="canvas" item xs>
             <Terminal />
           </Grid>

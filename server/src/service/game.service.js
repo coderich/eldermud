@@ -103,11 +103,9 @@ const resolveCombat = async (units, queue, resolveQueue) => {
       const { cost = 0 } = attack;
       remove(resolveQueue, el => (el.sourceId === sourceId && el.targetId === targetId));
 
-      if (source.exp >= cost) {
-        source.exp -= cost;
-
+      if (!cost || source.ma >= cost) {
         if (others.length) {
-          source.exp -= attack.cost;
+          source.ma -= cost;
           const dmg = roll(attack.dmg);
           await attack.describer(source, targetId, attack, others, dmg);
 
@@ -127,11 +125,11 @@ const resolveCombat = async (units, queue, resolveQueue) => {
     if (source && target && source.room === target.room) {
       const { cost = 0 } = attack;
 
-      if (source.exp >= cost) {
+      if (!cost || source.ma >= cost) {
         if (attack.pre) await attack.pre(source, target, attack, others);
 
         let damage = 0;
-        source.exp -= cost;
+        source.ma -= cost;
         const total = roll(attack.acc);
         const hit = total >= target.ac;
 

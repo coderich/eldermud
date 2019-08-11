@@ -1,5 +1,4 @@
 import React, { PropTypes, memo, useState, connect } from '@coderich/hotrod/react';
-import { Grid } from '@material-ui/core';
 
 const style = {
   width: '100%',
@@ -34,14 +33,7 @@ const Input = memo((props) => {
 
   return (
     <form style={style} onSubmit={handleSubmit}>
-      <Grid container>
-        <Grid item>
-          <span>#&gt;</span>
-        </Grid>
-        <Grid item style={{ flexGrow: 1 }}>
-          <input autoFocus onBlur={onBlur} value={value} onChange={handleChange} style={style} />
-        </Grid>
-      </Grid>
+      <input autoFocus onBlur={onBlur} value={value} onChange={handleChange} style={style} />
     </form>
   );
 });

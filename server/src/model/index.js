@@ -1,4 +1,3 @@
-export { default as Talent } from './Talent';
 export { default as Creature } from './Creature';
 export { default as Exit } from './Exit';
 export { default as Item } from './Item';

@@ -6,6 +6,6 @@ import { createAction } from '../../service/stream.service';
 export default async (id, target) => createAction(
   mergeMap(async () => {
     const exp = await getData(id, 'exp');
-    emit(id, 'message', { type: 'info', value: `You have ${exp} spoils of war.` });
+    emit(id, 'message', { type: 'info', value: `You have ${exp} souls.` });
   }),
 );

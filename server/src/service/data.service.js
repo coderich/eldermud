@@ -105,7 +105,7 @@ Object.assign(api, { getData, getList, setData, delData, pushData, pullData, inc
 
   // Load all data fixtures
   await Promise.all(Object.entries({ ...db, ...gameData }).map(([key, value]) => setData(key, value)));
-  await Promise.all(Object.entries(maps.academy).map(([key, value]) => setData(key, value)));
+  await Promise.all(Object.entries(maps.dungeon).map(([key, value]) => setData(key, value)));
 
   // Create map of realm
   const map = {};

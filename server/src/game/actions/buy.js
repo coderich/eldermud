@@ -12,7 +12,7 @@ export default async (id, target) => createAction(
     if (template.cost > unit.exp) unit.breakAction('You do not have sufficient funds.');
     const item = await shop.createItem(template);
     await Promise.all([incData(unit.id, 'exp', -template.cost), pushData(unit.id, 'items', item.id)]);
-    unit.emit('message', { type: 'info', value: `You buy ${item.name} for ${template.cost} spoils.` });
+    unit.emit('message', { type: 'info', value: `You buy ${item.name} for ${template.cost} souls.` });
     unit.status();
   }),
 );

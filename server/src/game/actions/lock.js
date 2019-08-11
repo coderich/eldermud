@@ -10,6 +10,7 @@ export default async (id, target) => createAction(
     const room = await unit.Room();
     const { code: dir } = translate(target);
     const door = await room.Door(dir) || unit.abortAction('There is nothing in that direction!');
+    if (door.state.open) unit.abortAction('The door must first be closed!');
     const keys = await unit.Keys() || unit.abortAction('You have no keys!');
     await breakAttack(unit.id);
     unit.emit('message', { type: 'info', value: 'Attempting to lock the door...' });

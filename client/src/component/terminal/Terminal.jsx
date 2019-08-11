@@ -7,8 +7,9 @@ const container = {
   width: '100%',
   height: '100%',
   flexWrap: 'nowrap',
-  overflowY: 'hidden',
+  overflow: 'hidden',
   color: 'lightgray',
+  wordWrap: 'wrap',
 };
 
 const Terminal = memo((props) => {

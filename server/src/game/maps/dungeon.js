@@ -8,8 +8,9 @@ export default {
     name: 'Hallway, Start',
     description: chance.paragraph(),
     exits: { s: 'room.2' },
-    items: ['item.2', 'item.3'],
+    items: ['item.1'],
     units: [],
+    shop: 'shop.helfgrim',
   },
   'room.2': {
     id: 'room.2',
@@ -18,6 +19,7 @@ export default {
     exits: { w: 'room.4', n: 'room.1', s: { 'room.3': ['obstacle.1'] } },
     items: [],
     units: [],
+    shop: 'shop.magic',
   },
   'room.3': {
     id: 'room.3',
@@ -94,7 +96,6 @@ export default {
     units: [],
     spawn: new Date().getTime(),
     respawn: '1d15000+30000',
-    shop: 'shop.helfgrim',
     spawnlings: {
       num: '1d3+1',
       templates: ['blueprint.rat'],
