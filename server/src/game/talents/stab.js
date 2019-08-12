@@ -11,12 +11,12 @@ export default async (id, command) => createAction(
     const target = await room.resolveTarget('units', input, { omit: [unit.id] });
     const talent = await getData('talent.stab');
 
-    if (unit.cooldowns.stab) unit.breakAction('Must wait for cooldown.');
+    if (unit.cooldowns[talent.code]) unit.breakAction('Must wait for cooldown.');
     if (talent.req.ma > unit.ma) unit.breakAction('Insufficient mana.');
     if (!target) unit.breakAction('You don\'t see that here!');
 
     return unit.perform(async () => {
-      await setData(id, 'cooldowns.stab', 10);
+      await setData(id, `cooldowns.${talent.code}`, talent.cooldown);
 
       await instaAttack(id, target.id, {
         cost: talent.req.ma,

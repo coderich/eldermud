@@ -1,5 +1,5 @@
 import { mergeMap } from 'rxjs/operators';
-import { getData, pushData, incData } from '../../service/data.service';
+import { getData, setData, pushData, incData } from '../../service/data.service';
 import { createAction } from '../../service/stream.service';
 
 export default async (id, target) => createAction(
@@ -13,10 +13,9 @@ export default async (id, target) => createAction(
     if (unit.str < str || unit.agi < agi || unit.int < int) unit.breakAction('Failed to meet requirements.');
     if (unit.exp < talent.cost) unit.breakAction('Insufficient souls.');
 
-    await Promise.all([
-      pushData(unit.id, 'talents', talent.id),
-      incData(unit.id, 'exp', -talent.cost),
-    ]);
+    const promises = [pushData(unit.id, 'talents', talent.id), incData(unit.id, 'exp', -talent.cost)];
+    if (talent.cooldown) promises.push(setData(unit.id, `cooldowns.${talent.code}`, 0));
+    await Promise.all(promises);
 
     unit.stats();
     unit.status();

@@ -15,11 +15,10 @@ if ($history.location.search) query = `${$history.location.search.substr(1)}&${q
 const server = SocketIO('http://localhost:3003', { query });
 
 const actions = {
-  command: new Action('command', (payload, { $http }) => {
-    server.send(payload);
-  }),
+  command: new Action('command', (payload, { $http }) => { server.send(payload); }),
   response: new Action('response'),
   prompt: new Action('prompt'),
+  room: new Action('room'),
   stats: new Action('stats'),
   status: new Action('status'),
   minimap: new Action('minimap'),
@@ -28,6 +27,7 @@ const actions = {
 const selectors = {
   data: new Selector('data').default({}),
   prompt: new Selector('data.prompt').default('>'),
+  room: new Selector('data.room').default({}),
   stats: new Selector('data.stats').default({}),
   status: new Selector('data.status').default({}),
   responses: new Selector('data.responses').default([]),
@@ -38,6 +38,11 @@ const reducers = [
   new Reducer(actions.prompt, selectors.prompt, ({
     success: (prompt, { payload }) => {
       return payload;
+    },
+  })),
+  new Reducer(actions.room, selectors.data, ({
+    success: (data, { payload }) => {
+      data.room = payload;
     },
   })),
   new Reducer(actions.stats, selectors.data, ({
@@ -76,6 +81,11 @@ server.on('message', (data) => {
     }
     case 'minimap': {
       return actions.minimap.dispatch(data.value);
+    }
+    case 'room': {
+      actions.room.dispatch(data.value);
+      actions.response.dispatch(data);
+      break;
     }
     default: {
       return actions.response.dispatch(data);

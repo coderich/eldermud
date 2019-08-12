@@ -1,8 +1,8 @@
 import React, { memo, connect } from '@coderich/hotrod/react';
-import { Box, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Terminal from '../component/terminal/Terminal';
 import MapView from '../component/map/Map';
-import Player from '../component/Player';
+import RoomHUD from '../component/RoomHUD';
 import PlayerStatus from '../component/PlayerStatus';
 
 const mapSize = '320px';
@@ -19,20 +19,22 @@ const IndexPage = memo((props) => {
   return (
     <Grid className="canvas" container>
       <Grid className="canvas" container item direction="column" style={{ width: mapSize }}>
-        <Grid item xs style={bubble}>
-          <Player />
+        <Grid container item xs style={{ height: '100%', overflowY: 'auto', ...bubble }}>
+          <RoomHUD />
         </Grid>
         <Grid item style={bubble}>
           <MapView />
         </Grid>
       </Grid>
       <Grid className="canvas" container item xs>
-        <Grid className="canvas" container item xs={7} direction="column" style={bubble} spacing={1}>
-          <Grid className="canvas" item xs>
-            <Terminal />
-          </Grid>
-          <Grid item>
-            <PlayerStatus />
+        <Grid className="canvas" container item xs={7} style={bubble}>
+          <Grid className="canvas" container item direction="column" spacing={1}>
+            <Grid className="canvas" item xs>
+              <Terminal />
+            </Grid>
+            <Grid item>
+              <PlayerStatus />
+            </Grid>
           </Grid>
         </Grid>
         <Grid className="canvas" container item xs={5} style={bubble}>

@@ -131,6 +131,11 @@ export default class User extends Unit {
 
   async status() {
     const user = await this.getData(this.id);
+    // const talents = await this.getList(this.id, 'talents');
+    // const cooldowns = Object.entries(user.cooldowns).reduce((prev, [talentId, time]) => {
+    //   const talent = talents.find(t => t.id === talentId);
+    //   return Object.assign(prev, { [talent.name]: time });
+    // }, {});
 
     this.emit('message', {
       type: 'status',

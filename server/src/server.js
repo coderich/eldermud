@@ -22,7 +22,7 @@ const newUser = (id, { str, agi, int, tals = [] }) => ({
   hp: svl(str),
   ma: svl(int),
   ac: 10,
-  exp: 0,
+  exp: 100000,
   name: chance.name(),
   isLoggedIn: true,
   room: 'room.1',
