@@ -4,6 +4,7 @@ import { getData, getList, setData, pushData } from './service/data.service';
 import { translate } from './service/command.service';
 import { setSocket } from './service/socket.service';
 import { writeStream } from './service/stream.service';
+import { timeout } from './service/util.service';
 import * as actions from './game/actions';
 import * as talents from './game/talents';
 
@@ -31,11 +32,18 @@ const newUser = id => ({
 });
 
 server.on('connection', async (socket) => {
-  const { id } = socket;
-  const userId = `user.${id}`;
+  let user;
+  const { id, handshake: { query } } = socket;
+  const userId = query.uid || `user.${id}`;
   setSocket(userId, socket);
-  const user = await setData(userId, newUser(userId));
-  await pushData('room.1', 'units', userId);
+
+  if (query.uid) {
+    user = await getData(userId);
+  } else {
+    user = await setData(userId, newUser(userId));
+  }
+
+  await pushData(user.room, 'units', userId);
   writeStream(userId, await actions.scan(userId));
   user.minimap();
   user.stats();

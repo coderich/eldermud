@@ -6,7 +6,7 @@ import Progress from './Progress';
 const PlayerStatus = memo((props) => {
   const { status } = props;
   const pctHP = Math.round((status.hp / status.mhp) * 100);
-  const pctMA = Math.round((status.ma / status.mma) * 100);
+  // const pctMA = Math.round((status.ma / status.mma) * 100);
 
   return (
     <Grid container>
@@ -16,7 +16,7 @@ const PlayerStatus = memo((props) => {
           <Grid item style={{ flexGrow: 1 }}><PlayerInput /></Grid>
         </Grid>
         <Grid item>
-          <Progress val={status.hp} max={status.mhp} height={20} backgroundColor={pctHP < 33 ? 'red' : (pctHP < 66 ? 'yellow' : 'limegreen')} />
+          <Progress val={status.hp} max={status.mhp} height={20} backgroundColor={pctHP < 33 ? 'red' : (pctHP < 66 ? 'orange' : 'limegreen')} />
         </Grid>
         <Grid item>
           <Progress val={status.ma} max={status.mma} height={20} backgroundColor="#6876f7" />

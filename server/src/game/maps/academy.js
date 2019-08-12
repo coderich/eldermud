@@ -166,7 +166,7 @@ export default {
     name: 'Kitchen',
     description: chance.paragraph(),
     exits: { e: 'room.11' },
-    shop: 'shop.helfgrim',
+    shop: 'shop.general',
     items: [],
     units: [],
   },

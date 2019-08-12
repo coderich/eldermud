@@ -9,9 +9,9 @@ import SocketIO from 'socket.io-client';
 import Routes from './Routes';
 import store from './store';
 
-const { $history } = Services.get();
-
-const server = SocketIO('http://localhost:3003');
+const { $history, $storage } = Services.get();
+const query = Object.entries($storage.get('query') || {}).map(([key, value]) => `${key}=${value}`).join('&');
+const server = SocketIO('http://localhost:3003', { query });
 
 const actions = {
   command: new Action('command', (payload, { $http }) => {
@@ -67,6 +67,9 @@ server.on('message', (data) => {
       return actions.stats.dispatch(data.value);
     }
     case 'status': {
+      const q = $storage.get('query') || {};
+      q.uid = data.value.id;
+      $storage.set('query', q);
       actions.prompt.dispatch(`[HP=${data.value.hp},MA=${data.value.ma}]:`);
       return actions.status.dispatch(data.value);
     }

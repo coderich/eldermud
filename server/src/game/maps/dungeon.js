@@ -10,7 +10,8 @@ export default {
     exits: { s: 'room.2' },
     items: ['item.1'],
     units: [],
-    shop: 'shop.helfgrim',
+    shop: 'shop.general',
+    trainer: 'trainer.universal',
   },
   'room.2': {
     id: 'room.2',
@@ -19,7 +20,6 @@ export default {
     exits: { w: 'room.4', n: 'room.1', s: { 'room.3': ['obstacle.1'] } },
     items: [],
     units: [],
-    shop: 'shop.magic',
   },
   'room.3': {
     id: 'room.3',

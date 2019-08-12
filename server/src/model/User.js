@@ -112,6 +112,7 @@ export default class User extends Unit {
     this.emit('message', {
       type: 'status',
       value: {
+        id: user.id,
         hp: user.hp,
         mhp: user.mhp,
         ma: user.ma,

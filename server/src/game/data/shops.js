@@ -1,10 +1,6 @@
 export default {
-  'shop.helfgrim': {
-    id: 'shop.helfgrim',
-    items: ['object.dagger', 'object.shortsword'],
-  },
-  'shop.magic': {
-    id: 'shop.magic',
-    items: ['object.healthpotion', 'object.manapotion'],
+  'shop.general': {
+    id: 'shop.general',
+    items: ['object.healthpotion', 'object.manapotion', 'object.dagger', 'object.shortsword'],
   },
 };
