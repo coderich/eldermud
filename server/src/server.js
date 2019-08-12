@@ -4,7 +4,7 @@ import { getData, getList, setData, pushData } from './service/data.service';
 import { translate } from './service/command.service';
 import { setSocket } from './service/socket.service';
 import { writeStream } from './service/stream.service';
-import { timeout } from './service/util.service';
+import { svl } from './service/util.service';
 import * as actions from './game/actions';
 import * as talents from './game/talents';
 
@@ -13,22 +13,23 @@ const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 }
 
 const chance = new Chance();
 
-const newUser = id => ({
+const newUser = (id, { str, agi, int, tals = [] }) => ({
   id,
-  name: chance.name(),
-  hp: 30,
-  mhp: 30,
-  ma: 10,
-  mma: 10,
+  lvl: 1,
+  str,
+  agi,
+  int,
+  hp: svl(str),
+  ma: svl(int),
   ac: 10,
-  exp: 100,
+  exp: 0,
+  name: chance.name(),
   isLoggedIn: true,
   room: 'room.1',
   items: [],
   equipped: [],
-  combatants: [],
-  // talents: [],
-  talents: ['rage', 'mihe', 'vamp', 'dble', 'hail', 'tote'],
+  talents: tals,
+  cooldowns: {},
 });
 
 server.on('connection', async (socket) => {
@@ -40,14 +41,30 @@ server.on('connection', async (socket) => {
   if (query.uid) {
     user = await getData(userId);
   } else {
-    user = await setData(userId, newUser(userId));
+    const { hero } = query;
+
+    switch (hero) {
+      case 'warrior': {
+        user = await setData(userId, newUser(userId, { str: 5, agi: 2, int: 1 }));
+        break;
+      }
+      case 'thief': {
+        user = await setData(userId, newUser(userId, { str: 2, agi: 5, int: 1 }));
+        break;
+      }
+      case 'wizard': {
+        user = await setData(userId, newUser(userId, { str: 2, agi: 1, int: 5 }));
+        break;
+      }
+      default: {
+        user = await setData(userId, newUser(userId, { str: 1, agi: 1, int: 1 }));
+        break;
+      }
+    }
   }
 
   await pushData(user.room, 'units', userId);
   writeStream(userId, await actions.scan(userId));
-  user.minimap();
-  user.stats();
-  user.status();
   user.connect();
 
   socket.on('disconnecting', async (reason) => {
@@ -71,7 +88,7 @@ server.on('connection', async (socket) => {
       case 'talent': {
         const unit = await getData(userId);
         if (unit.talents.indexOf(command.code) === -1) return unit.emit('message', { type: 'info', value: 'Your command had no effect.' });
-        return writeStream(userId, await talents[command.code](userId, command));
+        return writeStream(userId, await talents[command.name](userId, command));
       }
       case 'channel': {
         console.log('switch to channel', command.code);
@@ -115,6 +132,10 @@ server.on('connection', async (socket) => {
           case 'inventory': {
             return writeStream(userId, await actions.inventory(userId));
           }
+          case 'learn': {
+            const target = command.args.join(' ');
+            return writeStream(userId, await actions.learn(userId, target));
+          }
           case 'list': {
             return writeStream(userId, await actions.list(userId));
           }
@@ -136,6 +157,10 @@ server.on('connection', async (socket) => {
           case 'sell': {
             const target = command.args.join(' ');
             return writeStream(userId, await actions.sell(userId, target));
+          }
+          case 'train': {
+            const target = command.args.join(' ');
+            return writeStream(userId, await actions.train(userId, target));
           }
           case 'unlock': {
             const target = command.args.join(' ');

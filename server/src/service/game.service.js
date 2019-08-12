@@ -1,29 +1,16 @@
 import { EventEmitter } from 'events';
-import Chance from 'chance';
 import { remove } from 'lodash';
 import { Subject, interval } from 'rxjs';
-import { tap, share, publish } from 'rxjs/operators';
+import { tap, share, publish, retry, delayWhen } from 'rxjs/operators';
 import { getData, setData } from './data.service';
 import { toRoom, emit } from './socket.service';
-import { titleCase, numToArray, randomElement } from './util.service';
+import { roll, titleCase, randomElement } from './util.service';
 
 let attackQueue = {};
-const chance = new Chance();
+
+export { roll };
 
 export const eventEmitter = new EventEmitter();
-
-export const roll = (dice) => {
-  if (typeof dice !== 'string') return dice;
-
-  const input = dice.match(/\S+/g).join('');
-  const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+|-|\\*|\\/]?)(\d*)/);
-
-  const value = numToArray(Number.parseInt(rolls, 10)).reduce((prev, curr) => {
-    return prev + chance.integer({ min: 1, max: sides });
-  }, 0);
-
-  return eval(`${value} ${op} ${mod}`); // eslint-disable-line
-};
 
 export const isValidTarget = (source, target) => {
   if (source.id !== target.id) return true;
@@ -161,6 +148,7 @@ const resolveCombat = async (units, queue, resolveQueue) => {
   return Promise.all(units.filter(u => u.hp > 0).map(async (unit) => {
     await Promise.all([
       setData(unit.id, 'hp', unit.hp),
+      setData(unit.id, 'ma', unit.ma),
       setData(unit.id, 'exp', unit.exp),
       unit.heartbeat(),
     ]);
@@ -186,7 +174,18 @@ export const instaAttack = async (sourceId, targetId, attack) => {
   // }
 };
 
-export const attackLoop = interval(5000).pipe(
+export const tick = interval(1000).pipe(
+  share(),
+  publish(),
+); tick.connect();
+
+let attackLoopCounter = 0;
+export const attackLoop = interval(0).pipe(
+  delayWhen(() => tick),
+  tap(() => {
+    if (++attackLoopCounter < 5) throw new Error('not yet');
+    attackLoopCounter = 0;
+  }),
   tap(async () => {
     const queue = getAttackQueue(attackQueue);
     attackQueue = {};
@@ -194,11 +193,19 @@ export const attackLoop = interval(5000).pipe(
     await resolveCombat(units, queue, [...queue]);
     resolveLoop.next('resolveLoop');
   }),
+  retry(),
   share(),
   publish(),
 ); attackLoop.connect();
 
-export const healthLoop = interval(15000).pipe(
+let healthLoopCounter = 0;
+export const healthLoop = interval(0).pipe(
+  delayWhen(() => tick),
+  tap(() => {
+    if (++healthLoopCounter < 15) throw new Error('not yet');
+    healthLoopCounter = 0;
+  }),
+  retry(),
   share(),
   publish(),
 ); healthLoop.connect();

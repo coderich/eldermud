@@ -31,8 +31,8 @@ export default {
     spawn: new Date().getTime(),
     respawn: '1d5000+1000',
     spawnlings: {
-      num: '1d2+1',
-      templates: ['blueprint.rat', 'blueprint.cavebear'],
+      num: '1d3+1',
+      templates: ['blueprint.ant', 'blueprint.rat', 'blueprint.cavebear'],
     },
   },
   'room.4': {
@@ -42,6 +42,12 @@ export default {
     exits: { w: 'room.5', e: 'room.2' },
     items: [],
     units: [],
+    spawn: new Date().getTime(),
+    respawn: '1d10000+10000',
+    spawnlings: {
+      num: 1,
+      templates: ['blueprint.ant'],
+    },
   },
   'room.5': {
     id: 'room.5',
@@ -50,6 +56,12 @@ export default {
     exits: { w: 'room.6', e: 'room.4' },
     items: [],
     units: [],
+    spawn: new Date().getTime(),
+    respawn: '1d10000+10000',
+    spawnlings: {
+      num: 1,
+      templates: ['blueprint.ant'],
+    },
   },
   'room.6': {
     id: 'room.6',
@@ -59,10 +71,10 @@ export default {
     items: [],
     units: [],
     spawn: new Date().getTime(),
-    respawn: '1d15000+30000',
+    respawn: '1d10000+10000',
     spawnlings: {
       num: 1,
-      templates: ['blueprint.rat'],
+      templates: ['blueprint.ant'],
     },
   },
   'room.7': {
@@ -73,10 +85,10 @@ export default {
     items: [],
     units: [],
     spawn: new Date().getTime(),
-    respawn: '1d15000+30000',
+    respawn: '1d10000+10000',
     spawnlings: {
       num: 1,
-      templates: ['blueprint.rat'],
+      templates: ['blueprint.ant'],
     },
   },
   'room.8': {
@@ -86,6 +98,12 @@ export default {
     exits: { w: 'room.7', e: 'room.9' },
     items: [],
     units: [],
+    spawn: new Date().getTime(),
+    respawn: '1d10000+10000',
+    spawnlings: {
+      num: 1,
+      templates: ['blueprint.ant'],
+    },
   },
   'room.9': {
     id: 'room.9',
@@ -95,17 +113,17 @@ export default {
     items: ['item.1'],
     units: [],
     spawn: new Date().getTime(),
-    respawn: '1d15000+30000',
+    respawn: '1d15000+20000',
     spawnlings: {
-      num: '1d3+1',
-      templates: ['blueprint.rat'],
+      num: '1d2+1',
+      templates: ['blueprint.ant', 'blueprint.rat'],
     },
   },
   'obstacle.1': {
     id: 'obstacle.1',
     type: 'door',
     name: 'door',
-    state: { open: false, locked: false },
+    state: { open: false, locked: true },
   },
   // 'obstacle.10': {
   //   id: 10,

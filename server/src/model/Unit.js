@@ -67,6 +67,10 @@ export default class Unit extends Model {
     return Promise.all(this.equipped.map(item => this.getData(item)));
   }
 
+  async Talents() {
+    return Promise.all(this.talents.map(item => this.getData(item)));
+  }
+
   async Keys() {
     const items = await this.Items();
     const keys = items.filter(item => item.type === 'key');

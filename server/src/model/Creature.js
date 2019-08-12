@@ -16,6 +16,7 @@ export default class Creature extends Unit {
     this.type = 'creature';
     this.isCreature = true;
     this.hitName = `the ${this.name}`;
+    this.ma = 0;
     this.breakAction = (msg) => { throw new AbortActionError(msg); };
     this.abortAction = (msg) => { throw new AbortActionError(msg); };
     this.abortStream = (msg) => { throw new AbortStreamError(msg); };
@@ -77,7 +78,7 @@ export default class Creature extends Unit {
       delay(500), // Allow battle to resolve
       mergeMap(async () => {
         const unit = await this.getData(this.id);
-        const beat = unit.mhp * 0.02;
+        const beat = Math.floor(unit.mhp * 0.05);
         const hp = Math.min(unit.mhp, unit.hp + beat);
 
         if (hp !== unit.hp) {

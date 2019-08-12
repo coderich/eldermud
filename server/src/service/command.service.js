@@ -42,19 +42,23 @@ const commands = [
     { list: { args: [0], code: 'list', scope: 'action' } },
 
     // Talents
-    { dble: { args: [1], code: 'dble', scope: 'talent' } },
-    { hail: { args: [0], code: 'hail', scope: 'talent' } },
-    { mihe: { args: [0, 1], code: 'mihe', scope: 'talent' } },
-    { mahe: { args: [0, 1], code: 'mahe', scope: 'talent' } },
-    { rage: { args: [0], code: 'rage', scope: 'talent' } },
-    { tote: { args: [1], code: 'tote', scope: 'talent' } },
-    { vamp: { args: [1], code: 'vamp', scope: 'talent' } },
+    { dble: { args: [1], code: 'talent.dble', scope: 'talent' } },
+    { hail: { args: [0], code: 'talent.hail', scope: 'talent' } },
+    { mend: { args: [0, 1], code: 'talent.mend', scope: 'talent' } },
+    { rage: { args: [0], code: 'talent.rage', scope: 'talent' } },
+    { stab: { args: [1, 2, 3], code: 'talent.stab', scope: 'talent' } },
+    { tote: { args: [1], code: 'talent.tote', scope: 'talent' } },
+    { vamp: { args: [1], code: 'talent.vamp', scope: 'talent' } },
 
     // Channels
     { '/gos': { args: [0], code: 'gos', scope: 'channel' } },
     { '/auc': { args: [0], code: 'auc', scope: 'channel' } },
     { '/log': { args: [0], code: 'log', scope: 'channel' } },
     { '/his': { args: [0], code: 'his', scope: 'channel' } },
+  ],
+  [
+    { train: { args: [1], code: 'train', scope: 'action' } },
+    { learn: { args: [1], code: 'learn', scope: 'action' } },
   ],
 ];
 

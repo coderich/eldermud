@@ -18,12 +18,11 @@ const bar = {
 };
 
 const Progress = memo((props) => {
-  const { val, max, height, backgroundColor } = props;
-  const pct = Math.round((val / max) * 100);
+  const { pct, label, height, backgroundColor } = props;
 
   return (
-    <Grid container justify="center" style={{ width: '100%', textAlign: 'center', height, ...container }}>
-      <Grid item style={{ zIndex: 100 }}><strong>{val} / {max}</strong></Grid>
+    <Grid container justify="center" style={{ width: '100%', height, ...container }}>
+      <Grid item style={{ zIndex: 100 }}><strong>{label}</strong></Grid>
       <Grid item style={{ backgroundColor, width: `${pct}%`, ...bar }} />
     </Grid>
   );
@@ -32,8 +31,8 @@ const Progress = memo((props) => {
 export default Progress;
 
 Progress.propTypes = {
-  val: PropTypes.number.isRequired,
-  max: PropTypes.number.isRequired,
+  pct: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
   height: PropTypes.number.isRequired,
   backgroundColor: PropTypes.string.isRequired,
 };

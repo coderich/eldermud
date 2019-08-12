@@ -10,7 +10,8 @@ import Routes from './Routes';
 import store from './store';
 
 const { $history, $storage } = Services.get();
-const query = Object.entries($storage.get('query') || {}).map(([key, value]) => `${key}=${value}`).join('&');
+let query = Object.entries($storage.get('query') || {}).map(([key, value]) => `${key}=${value}`).join('&');
+if ($history.location.search) query = `${$history.location.search.substr(1)}&${query}`;
 const server = SocketIO('http://localhost:3003', { query });
 
 const actions = {

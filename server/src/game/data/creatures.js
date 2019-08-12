@@ -1,10 +1,32 @@
 export default {
+  'blueprint.ant': {
+    id: 'blueprint.ant',
+    name: 'ant',
+    dc: 1,
+    ac: 5,
+    hp: 3,
+    exp: 1,
+    adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny'],
+    moves: ['creep', 'scuttle'],
+    attacks: [
+      {
+        dmg: '1d2',
+        acc: '1d20-5',
+        spd: 1000,
+        type: 'P',
+        hits: ['nibble', 'bite', 'chomp'],
+        misses: ['lunge'],
+      },
+    ],
+    roams: false,
+    follows: true,
+  },
   'blueprint.rat': {
     id: 'blueprint.rat',
     name: 'rat',
     dc: 1,
     ac: 8,
-    hp: '2d4+2',
+    hp: 9,
     exp: 1, // per hp?
     adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
     moves: ['creep', 'scuttle', 'sneak', 'ooze'],
@@ -18,7 +40,7 @@ export default {
         misses: ['swipe'],
       },
       {
-        dmg: '2d4+1',
+        dmg: '1d6+1',
         acc: '1d20',
         spd: 1000,
         type: 'P',

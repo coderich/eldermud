@@ -74,7 +74,6 @@ export default class Room extends Model {
       room: this.id,
       spawnRoom: this.id,
       name: `${randomElement(templateData.adjectives)} ${templateData.name}`,
-      combatants: [],
     }));
     await this.pushData(this.id, 'units', creature.id);
     creature.connect();
@@ -148,5 +147,10 @@ export default class Room extends Model {
   async Shop() {
     if (!this.shop) return undefined;
     return this.getData(this.shop);
+  }
+
+  async Trainer() {
+    if (!this.trainer) return undefined;
+    return this.getData(this.trainer);
   }
 }

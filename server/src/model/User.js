@@ -3,7 +3,8 @@ import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
 import { getSocket } from '../service/socket.service';
 import { writeStream, createAction, createLoop } from '../service/stream.service';
-import { breakAttack, attackLoop, healthLoop } from '../service/game.service';
+import { breakAttack, attackLoop, healthLoop, tick } from '../service/game.service';
+import { tnl, svl } from '../service/util.service';
 import { minimap } from '../service/map.service';
 import Describer from '../core/Describer';
 import Unit from './Unit';
@@ -21,7 +22,15 @@ export default class User extends Unit {
     this.socket = getSocket(this.id);
   }
 
-  connect() {
+  async connect() {
+    await Promise.all([
+      this.minimap(),
+      this.setData(this.id, 'mhp', svl(this.str)),
+      this.setData(this.id, 'mma', svl(this.int)),
+    ]);
+
+    this.stats();
+    this.status();
     this.heartbeat();
   }
 
@@ -35,10 +44,23 @@ export default class User extends Unit {
         tap(async () => {
           const promises = [];
           const user = await this.getData(this.id);
-          const [health, mana] = [Math.floor(user.mhp * 0.05), Math.ceil(user.mma * 0.05)];
+          const [health, mana] = [Math.ceil(user.mhp * 0.05), Math.ceil(user.mma * 0.05)];
           const [hp, ma] = [Math.min(user.mhp, user.hp + health), Math.min(user.mma, user.ma + mana)];
           if (hp !== user.hp) promises.push(this.setData(this.id, 'hp', hp));
           if (ma !== user.ma) promises.push(this.setData(this.id, 'ma', ma));
+          await Promise.all(promises);
+          if (promises.length) user.status();
+        }),
+      ));
+
+      writeStream(`${this.id}.cooldowns`, createLoop(
+        delayWhen(() => tick),
+        tap(async () => {
+          const promises = [];
+          const user = await this.getData(this.id);
+          Object.entries(user.cooldowns).forEach(([talent, time]) => {
+            if (time) promises.push(this.incData(this.id, `cooldowns.${talent}`, -1));
+          });
           await Promise.all(promises);
           if (promises.length) user.status();
         }),
@@ -81,10 +103,10 @@ export default class User extends Unit {
       type: 'stats',
       value: {
         name: user.name,
-        lvl: 1,
-        str: 6,
-        agi: 4,
-        int: 4,
+        lvl: user.lvl,
+        str: user.str,
+        agi: user.agi,
+        int: user.int,
         ac: 2,
         hp: user.mhp,
         ma: user.mma,
@@ -109,6 +131,7 @@ export default class User extends Unit {
 
   async status() {
     const user = await this.getData(this.id);
+
     this.emit('message', {
       type: 'status',
       value: {
@@ -118,6 +141,8 @@ export default class User extends Unit {
         ma: user.ma,
         mma: user.mma,
         exp: user.exp,
+        tnl: tnl(user.lvl),
+        cooldowns: user.cooldowns,
       },
     });
   }
@@ -149,7 +174,9 @@ export default class User extends Unit {
     ['attack'].concat(this.talents).forEach(stream => writeStream(`${this.id}.stream`, 'abort'));
 
     await Promise.all([
+      this.setData(this.id, 'exp', Math.ceil(this.exp / 2)),
       this.setData(this.id, 'hp', this.mhp),
+      this.setData(this.id, 'ma', this.mma),
       this.setData(this.id, 'room', 'room.1'),
       this.pullData(this.room, 'units', this.id),
       this.pushData('room.1', 'units', this.id),
