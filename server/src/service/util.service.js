@@ -64,7 +64,8 @@ export const rdirections = {
   d: 'up',
 };
 
-export const tnl = level => Math.floor(10 * (level ** 2));
+export const tnl = level => Math.floor(100 * (level ** (1.3 + (level / 10))));
+// export const tnl = level => 100 * (level ** 2) - (100 * level); // D&D
 
 export const svl = (level) => {
   let value = 0;
