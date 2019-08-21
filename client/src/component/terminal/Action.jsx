@@ -1,5 +1,5 @@
 import React, { PropTypes, Fragment, memo } from '@coderich/hotrod/react';
-import { List, ListItem, ListItemText } from '@material-ui/core';
+import { Grid, List, ListItem, ListItemText } from '@material-ui/core';
 
 const cyan = 'cyan';
 const red = '#EE766D';
@@ -10,6 +10,11 @@ const cool = 'cadetblue';
 const water = '#6876f7';
 const maroon = '#BFBB3C';
 const highlight = '#fffb7f';
+
+const cell = {
+  border: '1px dashed #2F2F2F',
+  color: pink,
+};
 
 const Action = memo((props) => {
   const { action: { type, value } } = props;
@@ -27,10 +32,56 @@ const Action = memo((props) => {
           </div>
         )}
         {value.units.length > 0 && (
-          <div>
-            <span style={{ color: purple }}>Also here: </span>
-            <span style={{ color: pink }}>{value.units.join(', ')}</span>
-          </div>
+          <React.Fragment>
+            <Grid container>
+              <Grid container item style={{ margin: 5 }} direction="column">
+                <fieldset className="canvas">
+                  <legend>Leader: cave bear<sup>[c2]</sup></legend>
+                  <Grid container item align="center">
+                    <Grid container item style={{ color: 'white' }}>
+                      <Grid item xs={1} />
+                      <Grid item xs>1</Grid>
+                      <Grid item xs>2</Grid>
+                      <Grid item xs>3</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item xs={1} style={{ textAlign: 'right', color: 'white' }}>c&nbsp;</Grid>
+                      <Grid item xs style={cell}>priest</Grid>
+                      <Grid item xs style={cell}>cave bear</Grid>
+                      <Grid item xs style={cell}>priest</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item xs={1} style={{ textAlign: 'right', color: 'white' }}>b&nbsp;</Grid>
+                      <Grid item xs style={cell}>archer</Grid>
+                      <Grid item xs style={cell} />
+                      <Grid item xs style={cell}>archer</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item xs={1} style={{ textAlign: 'right', color: 'white' }}>a&nbsp;</Grid>
+                      <Grid item xs style={cell}>rat</Grid>
+                      <Grid item xs style={cell}>ant</Grid>
+                      <Grid item xs style={cell}>rat</Grid>
+                    </Grid>
+                  </Grid>
+                </fieldset>
+              </Grid>
+              <Grid container item style={{ margin: 5 }} direction="column">
+                <fieldset className="canvas">
+                  <legend>Leader: Random<sup>[a1]</sup></legend>
+                  <Grid container item align="center" style={{ color: pink }}>
+                    <Grid container item>
+                      <Grid item xs>Random<sup>[a1]</sup></Grid>
+                      <Grid item xs>Dusty<sup>[a2]</sup></Grid>
+                    </Grid>
+                  </Grid>
+                </fieldset>
+              </Grid>
+            </Grid>
+            <div>
+              <span style={{ color: purple }}>Also here: </span>
+              <span style={{ color: pink }}>{value.units.join(', ')}</span>
+            </div>
+          </React.Fragment>
         )}
         <div style={{ color: green }}>
           <span>Obvious exits: </span>

@@ -1,7 +1,7 @@
 import React, { PropTypes, memo } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 
-const borderRadius = '40px';
+const borderRadius = '0px';
 
 const container = {
   border: '1px solid lightgrey',

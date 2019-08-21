@@ -6,6 +6,7 @@ export default {
     ac: 5,
     hp: 3,
     exp: 1,
+    leadership: 0,
     adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny'],
     moves: ['creep', 'scuttle'],
     attacks: [
@@ -14,6 +15,7 @@ export default {
         acc: '1d20-5',
         spd: 1000,
         type: 'P',
+        range: 1,
         hits: ['nibble', 'bite', 'chomp'],
         misses: ['lunge'],
       },
@@ -27,7 +29,8 @@ export default {
     dc: 1,
     ac: 8,
     hp: 9,
-    exp: 1, // per hp?
+    exp: 1,
+    leadership: 0,
     adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
     moves: ['creep', 'scuttle', 'sneak', 'ooze'],
     attacks: [
@@ -36,6 +39,7 @@ export default {
         acc: '1d20',
         spd: 1000,
         type: 'P',
+        range: 1,
         hits: ['claw', 'scratch'],
         misses: ['swipe'],
       },
@@ -44,6 +48,7 @@ export default {
         acc: '1d20',
         spd: 1000,
         type: 'P',
+        range: 1,
         hits: ['gnaw', 'bite', 'chomp'],
         misses: ['snap', 'lunge'],
       },
@@ -58,16 +63,20 @@ export default {
     ac: 12,
     hp: 50,
     exp: 6, // per hp?
+    leadership: 3,
     spawn: new Date().getTime(),
     respawn: 60000, // 1 minute
     adjectives: ['', 'angry', 'fierce'],
     moves: ['stomp', 'leap'],
+    party: ['blueprint.rat', 'blueprint.ant'],
+    talents: ['talent.roar'],
     attacks: [
       {
         dmg: '2d4+1',
         acc: '2d10',
         spd: 1000,
         type: 'P',
+        range: 1,
         hits: ['claw', 'tear'],
         misses: ['swipe'],
       },
@@ -76,6 +85,7 @@ export default {
         acc: '2d10',
         spd: 1000,
         type: 'P',
+        range: 1,
         hits: ['gnaw', 'bite', 'chomp'],
         misses: ['snap', 'lunge'],
       },
