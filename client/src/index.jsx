@@ -5,9 +5,11 @@ import React, { Provider } from '@coderich/hotrod/react';
 import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { MuiThemeProvider } from '@material-ui/core/styles';
 import SocketIO from 'socket.io-client';
 import Routes from './Routes';
 import store from './store';
+import theme from './theme';
 
 const { $history, $storage } = Services.get();
 let query = Object.entries($storage.get('query') || {}).map(([key, value]) => `${key}=${value}`).join('&');
@@ -98,11 +100,13 @@ store.loadModule('app', { actions, selectors, reducers });
 
 ReactDOM.render(
   <CssBaseline>
-    <Provider store={store}>
-      <Router history={$history}>
-        <Routes />
-      </Router>
-    </Provider>
+    <MuiThemeProvider theme={theme}>
+      <Provider store={store}>
+        <Router history={$history}>
+          <Routes />
+        </Router>
+      </Provider>
+    </MuiThemeProvider>
   </CssBaseline>,
   global.document.getElementById('root'),
 );

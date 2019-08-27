@@ -1,23 +1,30 @@
-import React, { PropTypes, Fragment, memo } from '@coderich/hotrod/react';
-import { Grid, List, ListItem, ListItemText } from '@material-ui/core';
+import React, { PropTypes, Fragment, memo, connect } from '@coderich/hotrod/react';
+import { Grid, List, ListItem, ListItemText, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
 
-const cyan = 'cyan';
-const red = '#EE766D';
-const green = 'limegreen';
-const purple = '#98389E';
-const pink = '#EF8CF9';
-const cool = 'cadetblue';
-const water = '#6876f7';
-const maroon = '#BFBB3C';
-const highlight = '#fffb7f';
+// const numToArray = num => Array.from(Array(num));
 
-const cell = {
-  border: '1px dashed #2F2F2F',
-  color: pink,
-};
+// const makeCell = (w, h, label) => {
+//   return (
+//     <Grid container direction="column">
+//       {numToArray(h).map(() => {
+//         return (
+//           <Grid container item xs>
+//             {numToArray(w).map(() => {
+//               return (
+//                 <Grid itemn xs>{label}</Grid>
+//               );
+//             })}
+//           </Grid>
+//         );
+//       })}
+//     </Grid>
+//   );
+// };
 
 const Action = memo((props) => {
-  const { action: { type, value } } = props;
+  const { theme, action: { type, value } } = props;
+  const { cyan, red, green, purple, pink, cool, water, maroon, highlight } = theme.colors;
+  const cell = { border: '1px dashed #2F2F2F', color: pink };
 
   switch (type) {
     case 'room': return (
@@ -36,42 +43,106 @@ const Action = memo((props) => {
             <Grid container>
               <Grid container item style={{ margin: 5 }} direction="column">
                 <fieldset className="canvas">
-                  <legend>Leader: cave bear<sup>[c2]</sup></legend>
-                  <Grid container item align="center">
-                    <Grid container item style={{ color: 'white' }}>
-                      <Grid item xs={1} />
-                      <Grid item xs>1</Grid>
-                      <Grid item xs>2</Grid>
-                      <Grid item xs>3</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item xs={1} style={{ textAlign: 'right', color: 'white' }}>c&nbsp;</Grid>
-                      <Grid item xs style={cell}>priest</Grid>
-                      <Grid item xs style={cell}>cave bear</Grid>
-                      <Grid item xs style={cell}>priest</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item xs={1} style={{ textAlign: 'right', color: 'white' }}>b&nbsp;</Grid>
-                      <Grid item xs style={cell}>archer</Grid>
-                      <Grid item xs style={cell} />
-                      <Grid item xs style={cell}>archer</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item xs={1} style={{ textAlign: 'right', color: 'white' }}>a&nbsp;</Grid>
-                      <Grid item xs style={cell}>rat</Grid>
-                      <Grid item xs style={cell}>ant</Grid>
-                      <Grid item xs style={cell}>rat</Grid>
-                    </Grid>
-                  </Grid>
+                  <legend>party</legend>
+                  <Table>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell rowSpan={3}>titan</TableCell>
+                        <TableCell>mad wizard</TableCell>
+                        <TableCell>small priest</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell />
+                        <TableCell>nimble archer</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>large ant</TableCell>
+                        <TableCell>giant rat</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
                 </fieldset>
               </Grid>
               <Grid container item style={{ margin: 5 }} direction="column">
                 <fieldset className="canvas">
-                  <legend>Leader: Random<sup>[a1]</sup></legend>
-                  <Grid container item align="center" style={{ color: pink }}>
+                  <legend>party</legend>
+                  <Grid container item align="center">
                     <Grid container item>
-                      <Grid item xs>Random<sup>[a1]</sup></Grid>
-                      <Grid item xs>Dusty<sup>[a2]</sup></Grid>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>a<sup>3</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>huge titan (head)</Grid>
+                      <Grid item xs style={{ ...cell, color: purple }}>mad wizard</Grid>
+                      <Grid item xs style={cell}>small priest</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>b<sup>2</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>huge titan (body)</Grid>
+                      <Grid item xs style={cell} />
+                      <Grid item xs style={cell}>nimble archer</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>c<sup>1</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>huge titan (legs)</Grid>
+                      <Grid item xs style={cell}>large ant</Grid>
+                      <Grid item xs style={cell}>giant rat</Grid>
+                    </Grid>
+                  </Grid>
+                </fieldset>
+              </Grid>
+              <Grid container item style={{ margin: 5 }} direction="column" xs={6}>
+                <fieldset className="canvas">
+                  <legend>adult dragon</legend>
+                  <Grid container item align="center">
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>e<sup>3</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>(tail)</Grid>
+                      <Grid item xs style={cell}>(body)</Grid>
+                      <Grid item xs style={cell}>(body)</Grid>
+                      <Grid item xs style={cell}>(head)</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>f<sup>2</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>(tail)</Grid>
+                      <Grid item xs style={cell}>(body)</Grid>
+                      <Grid item xs style={cell}>(body)</Grid>
+                      <Grid item xs style={cell}>(head)</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>f<sup>1</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>(tail)</Grid>
+                      <Grid item xs style={cell}>(claw)</Grid>
+                      <Grid item xs style={cell}>(claw)</Grid>
+                      <Grid item xs style={cell} />
+                    </Grid>
+                  </Grid>
+                </fieldset>
+              </Grid>
+              {/*<Grid container item style={{ margin: 5 }} direction="column" xs={4}>
+                <fieldset className="canvas">
+                  <legend>large titan</legend>
+                  <Grid container item align="center">
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>d<sup>3</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>(head)</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>e<sup>2</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>(body)</Grid>
+                    </Grid>
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>f<sup>1</sup>&nbsp;</Grid>
+                      <Grid item xs style={cell}>(legs)</Grid>
+                    </Grid>
+                  </Grid>
+                </fieldset>
+              </Grid>*/}
+              <Grid container item style={{ margin: 5 }} direction="column" xs={8}>
+                <fieldset className="canvas">
+                  <legend>party</legend>
+                  <Grid container item align="center">
+                    <Grid container item>
+                      <Grid item style={{ textAlign: 'right', color: 'white' }}>g<sup>1</sup>&nbsp;</Grid>
+                      <Grid item xs style={{ ...cell, color: purple }}>Random</Grid>
+                      <Grid item xs style={cell}>Dusty</Grid>
                     </Grid>
                   </Grid>
                 </fieldset>
@@ -153,8 +224,13 @@ const Action = memo((props) => {
   }
 });
 
-export default Action;
+export default connect({
+  selectors: {
+    theme: 'theme',
+  },
+})(Action);
 
 Action.propTypes = {
+  theme: PropTypes.instanceOf(Object).isRequired,
   action: PropTypes.instanceOf(Object).isRequired,
 };

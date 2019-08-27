@@ -1,6 +1,5 @@
 import { Config, Services, createStore } from '@coderich/hotrod';
-import { createMuiTheme } from '@material-ui/core/styles';
-// import appModule from './module/app';
+import theme from './theme';
 
 // Configure first
 Config.set('lib.history.type', 'browser');
@@ -15,10 +14,6 @@ const store = createStore(
   undefined,
   { app, data: { responses: [] } },
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(), // eslint-disable-line
-).withTheme(createMuiTheme({
-  typography: {
-    useNextVariants: true,
-  },
-}));
+).withTheme(theme);
 
 export default store;

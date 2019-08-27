@@ -6,7 +6,6 @@ export default {
     ac: 5,
     hp: 3,
     exp: 1,
-    leadership: 0,
     adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny'],
     moves: ['creep', 'scuttle'],
     attacks: [
@@ -30,7 +29,6 @@ export default {
     ac: 8,
     hp: 9,
     exp: 1,
-    leadership: 0,
     adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
     moves: ['creep', 'scuttle', 'sneak', 'ooze'],
     attacks: [
@@ -95,5 +93,64 @@ export default {
         pct: 10,
       },
     },
+  },
+  'blueprint.titan': {
+    id: 'blueprint.titan',
+    name: 'titan',
+    dc: 3,
+    ac: 12,
+    hp: 50,
+    exp: 6, // per hp?
+    leadership: 3,
+    spawn: new Date().getTime(),
+    respawn: 60000, // 1 minute
+    adjectives: ['', 'angry', 'fierce'],
+    moves: ['stomp', 'walk'],
+    party: ['blueprint.titan'],
+    attacks: [
+      {
+        dmg: '2d4+1',
+        acc: '2d10',
+        spd: 1000,
+        type: 'P',
+        range: 1,
+        hits: ['bash', 'smash'],
+        misses: ['swipe'],
+      },
+    ],
+    layout: [
+      ['head'],
+      ['body'],
+      ['legs'],
+    ],
+  },
+  'blueprint.dragon': {
+    id: 'blueprint.dragon',
+    name: 'dragon',
+    dc: 3,
+    ac: 12,
+    hp: 50,
+    exp: 6, // per hp?
+    spawn: new Date().getTime(),
+    respawn: 60000, // 1 minute
+    adjectives: ['', 'angry', 'fierce'],
+    moves: ['stomp', 'walk'],
+    attacks: [
+      {
+        dmg: '2d4+1',
+        acc: '2d10',
+        spd: 1000,
+        type: 'P',
+        range: 1,
+        hits: ['bash', 'smash'],
+        misses: ['swipe'],
+      },
+    ],
+    layout: [
+      ['none', 'none', 'head'],
+      ['none', 'none', 'neck'],
+      ['tail', 'body', 'body'],
+      ['tail', 'claw', 'claw'],
+    ],
   },
 };
