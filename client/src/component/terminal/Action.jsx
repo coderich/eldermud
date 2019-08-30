@@ -1,30 +1,11 @@
 import React, { PropTypes, Fragment, memo, connect } from '@coderich/hotrod/react';
-import { Grid, List, ListItem, ListItemText, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
-
-// const numToArray = num => Array.from(Array(num));
-
-// const makeCell = (w, h, label) => {
-//   return (
-//     <Grid container direction="column">
-//       {numToArray(h).map(() => {
-//         return (
-//           <Grid container item xs>
-//             {numToArray(w).map(() => {
-//               return (
-//                 <Grid itemn xs>{label}</Grid>
-//               );
-//             })}
-//           </Grid>
-//         );
-//       })}
-//     </Grid>
-//   );
-// };
+import { Grid, List, ListItem, ListItemText, Divider } from '@material-ui/core';
+import Party from './Party';
 
 const Action = memo((props) => {
-  const { theme, action: { type, value } } = props;
+  const { theme, action } = props;
+  const { type, value } = action;
   const { cyan, red, green, purple, pink, cool, water, maroon, highlight } = theme.colors;
-  const cell = { border: '1px dashed #2F2F2F', color: pink };
 
   switch (type) {
     case 'room': return (
@@ -41,111 +22,46 @@ const Action = memo((props) => {
         {value.units.length > 0 && (
           <React.Fragment>
             <Grid container>
-              <Grid container item style={{ margin: 5 }} direction="column">
-                <fieldset className="canvas">
-                  <legend>party</legend>
-                  <Table>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell rowSpan={3}>titan</TableCell>
-                        <TableCell>mad wizard</TableCell>
-                        <TableCell>small priest</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell />
-                        <TableCell>nimble archer</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>large ant</TableCell>
-                        <TableCell>giant rat</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </fieldset>
-              </Grid>
-              <Grid container item style={{ margin: 5 }} direction="column">
-                <fieldset className="canvas">
-                  <legend>party</legend>
-                  <Grid container item align="center">
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>a<sup>3</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>huge titan (head)</Grid>
-                      <Grid item xs style={{ ...cell, color: purple }}>mad wizard</Grid>
-                      <Grid item xs style={cell}>small priest</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>b<sup>2</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>huge titan (body)</Grid>
-                      <Grid item xs style={cell} />
-                      <Grid item xs style={cell}>nimble archer</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>c<sup>1</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>huge titan (legs)</Grid>
-                      <Grid item xs style={cell}>large ant</Grid>
-                      <Grid item xs style={cell}>giant rat</Grid>
-                    </Grid>
-                  </Grid>
-                </fieldset>
-              </Grid>
-              <Grid container item style={{ margin: 5 }} direction="column" xs={6}>
-                <fieldset className="canvas">
-                  <legend>adult dragon</legend>
-                  <Grid container item align="center">
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>e<sup>3</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>(tail)</Grid>
-                      <Grid item xs style={cell}>(body)</Grid>
-                      <Grid item xs style={cell}>(body)</Grid>
-                      <Grid item xs style={cell}>(head)</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>f<sup>2</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>(tail)</Grid>
-                      <Grid item xs style={cell}>(body)</Grid>
-                      <Grid item xs style={cell}>(body)</Grid>
-                      <Grid item xs style={cell}>(head)</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>f<sup>1</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>(tail)</Grid>
-                      <Grid item xs style={cell}>(claw)</Grid>
-                      <Grid item xs style={cell}>(claw)</Grid>
-                      <Grid item xs style={cell} />
-                    </Grid>
-                  </Grid>
-                </fieldset>
-              </Grid>
-              {/*<Grid container item style={{ margin: 5 }} direction="column" xs={4}>
-                <fieldset className="canvas">
-                  <legend>large titan</legend>
-                  <Grid container item align="center">
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>d<sup>3</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>(head)</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>e<sup>2</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>(body)</Grid>
-                    </Grid>
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>f<sup>1</sup>&nbsp;</Grid>
-                      <Grid item xs style={cell}>(legs)</Grid>
-                    </Grid>
-                  </Grid>
-                </fieldset>
-              </Grid>*/}
-              <Grid container item style={{ margin: 5 }} direction="column" xs={8}>
-                <fieldset className="canvas">
-                  <legend>party</legend>
-                  <Grid container item align="center">
-                    <Grid container item>
-                      <Grid item style={{ textAlign: 'right', color: 'white' }}>g<sup>1</sup>&nbsp;</Grid>
-                      <Grid item xs style={{ ...cell, color: purple }}>Random</Grid>
-                      <Grid item xs style={cell}>Dusty</Grid>
-                    </Grid>
-                  </Grid>
-                </fieldset>
+              <Grid container item direction="column" style={{ margin: 5 }}>
+                <Party
+                  index={0}
+                  width={3}
+                  height={3}
+                  matrix={[
+                    [{ label: 'large titan', props: { rowSpan: 3 } }, { label: 'mad wizard' }, { label: 'small priest' }],
+                    [{ skip: true }, { label: 'nimble archer' }],
+                    [{ label: 'large ant' }, { label: 'giant rat' }],
+                  ]}
+                />
+                <Divider style={{ margin: 5 }} />
+                <Party
+                  index={3}
+                  width={3}
+                  height={3}
+                  matrix={[
+                    [{ label: 'titan', props: { rowSpan: 3 } }, { label: 'giant snake', props: { colSpan: 2 } }],
+                    [{ label: 'giant snake', props: { colSpan: 2 } }],
+                    [{ label: 'large ant' }, { label: 'giant rat' }],
+                  ]}
+                />
+                <Divider style={{ margin: 5 }} />
+                <Party
+                  index={6}
+                  width={8}
+                  height={1}
+                  matrix={[
+                    [
+                      { label: 'Random' },
+                      { label: 'Dusty' },
+                      { label: 'Crimp' },
+                      { label: 'Marine' },
+                      { label: 'Dartanian' },
+                      { label: 'MrMillhouse' },
+                      { label: 'Constant' },
+                      { label: 'Zilo' },
+                    ],
+                  ]}
+                />
               </Grid>
             </Grid>
             <div>

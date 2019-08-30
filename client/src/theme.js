@@ -14,11 +14,23 @@ export default createMuiTheme({
   overrides: {
     MuiTableCell: {
       root: {
-        border: '1px dashed white',
+        padding: 0,
+        border: '1px dashed rgb(47, 47, 47)',
         borderBottom: null,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        '&:last-child': {
+          paddingRight: 0,
+        },
       },
       body: {
         color: pink,
+      },
+    },
+    MuiTypography: {
+      root: {
+        fontFamily: 'Courier !important',
+        fontSize: '16px !important',
       },
     },
   },
