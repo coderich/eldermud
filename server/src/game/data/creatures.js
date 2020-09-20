@@ -102,26 +102,22 @@ export default {
     hp: 50,
     exp: 6, // per hp?
     leadership: 3,
+    dimensions: [1, 3],
     spawn: new Date().getTime(),
     respawn: 60000, // 1 minute
     adjectives: ['', 'angry', 'fierce'],
     moves: ['stomp', 'walk'],
-    party: ['blueprint.titan'],
+    party: ['blueprint.rat'],
     attacks: [
       {
         dmg: '2d4+1',
         acc: '2d10',
         spd: 1000,
         type: 'P',
-        range: 1,
+        range: 2,
         hits: ['bash', 'smash'],
         misses: ['swipe'],
       },
-    ],
-    layout: [
-      ['head'],
-      ['body'],
-      ['legs'],
     ],
   },
   'blueprint.dragon': {
@@ -145,12 +141,6 @@ export default {
         hits: ['bash', 'smash'],
         misses: ['swipe'],
       },
-    ],
-    layout: [
-      ['none', 'none', 'head'],
-      ['none', 'none', 'neck'],
-      ['tail', 'body', 'body'],
-      ['tail', 'claw', 'claw'],
     ],
   },
 };

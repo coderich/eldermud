@@ -17,7 +17,7 @@ if ($history.location.search) query = `${$history.location.search.substr(1)}&${q
 const server = SocketIO('http://localhost:3003', { query });
 
 const actions = {
-  command: new Action('command', (payload, { $http }) => { server.send(payload); }),
+  command: new Action('command', (payload, { $http }) => { console.log('xmas'); server.send(payload); }),
   response: new Action('response'),
   prompt: new Action('prompt'),
   room: new Action('room'),
@@ -64,6 +64,7 @@ const reducers = [
   })),
   new Reducer(actions.minimap, selectors.maps, ({
     success: (maps, { payload }) => {
+      console.log('do it doug', maps, payload);
       maps.minimap = payload;
     },
   })),
@@ -86,8 +87,10 @@ server.on('message', (data) => {
     }
     case 'room': {
       actions.room.dispatch(data.value);
-      actions.response.dispatch(data);
-      break;
+      return actions.response.dispatch(data);
+    }
+    case 'unit': {
+      return actions.response.dispatch(data);
     }
     default: {
       return actions.response.dispatch(data);

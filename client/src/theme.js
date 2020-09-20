@@ -9,13 +9,14 @@ const cool = 'cadetblue';
 const water = '#6876f7';
 const maroon = '#BFBB3C';
 const highlight = '#fffb7f';
+const lightgray = 'rgb(47, 47, 47)';
 
 export default createMuiTheme({
   overrides: {
     MuiTableCell: {
       root: {
         padding: 0,
-        border: '1px dashed rgb(47, 47, 47)',
+        border: `1px dashed ${lightgray}`,
         borderBottom: null,
         whiteSpace: 'nowrap',
         overflow: 'hidden',
@@ -39,7 +40,7 @@ export default createMuiTheme({
       align: 'center',
     },
   },
-  colors: { cyan, red, green, purple, pink, cool, water, maroon, highlight },
+  colors: { cyan, red, green, purple, pink, cool, water, maroon, highlight, lightgray },
   typography: {
     useNextVariants: true,
   },

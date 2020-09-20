@@ -8,6 +8,12 @@ body {
   background-position: center;*/
 }
 
+sup {
+  font-size: 0.83em;
+  vertical-align: super;
+  line-height: 0;
+}
+
 .map {
   background-image: url("./academy.jpg");
   background-repeat: no-repeat;
@@ -45,6 +51,6 @@ body {
   flex-wrap: 'nowrap';
 }
 
-.MuiTableCell-root {
+/*.MuiTableCell-root {
   font-size: 0.75rem !important;
-}
+}*/

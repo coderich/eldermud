@@ -1,6 +1,11 @@
-import React, { PropTypes, Fragment, memo, connect } from '@coderich/hotrod/react';
-import { Grid, List, ListItem, ListItemText, Divider } from '@material-ui/core';
+import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
+import { Grid, List, ListItem, ListItemText } from '@material-ui/core';
 import Party from './Party';
+
+const intersperse = (arr, sep) => {
+  if (arr.length === 0) return [];
+  return arr.slice(1).reduce((xs, x, i) => xs.concat([sep, x]), [arr[0]]);
+};
 
 const Action = memo((props) => {
   const { theme, action } = props;
@@ -8,74 +13,77 @@ const Action = memo((props) => {
   const { cyan, red, green, purple, pink, cool, water, maroon, highlight } = theme.colors;
 
   switch (type) {
-    case 'room': return (
-      <Fragment>
-        <div style={{ color: cyan }}>{value.name}</div>
-        {value.description && <div style={{ textIndent: '30px' }}>{value.description}</div>}
-        {value.items.length > 0 && (
-          <div style={{ color: cool }}>
-            <span>You notice </span>
-            <span>{value.items.join(', ')}</span>
-            <span> here.</span>
-          </div>
-        )}
-        {value.units.length > 0 && (
-          <React.Fragment>
-            <Grid container>
-              <Grid container item direction="column" style={{ margin: 5 }}>
-                <Party
-                  index={0}
-                  width={3}
-                  height={3}
-                  matrix={[
-                    [{ label: 'large titan', props: { rowSpan: 3 } }, { label: 'mad wizard' }, { label: 'small priest' }],
-                    [{ skip: true }, { label: 'nimble archer' }],
-                    [{ label: 'large ant' }, { label: 'giant rat' }],
-                  ]}
-                />
-                <Divider style={{ margin: 5 }} />
-                <Party
-                  index={3}
-                  width={3}
-                  height={3}
-                  matrix={[
-                    [{ label: 'titan', props: { rowSpan: 3 } }, { label: 'giant snake', props: { colSpan: 2 } }],
-                    [{ label: 'giant snake', props: { colSpan: 2 } }],
-                    [{ label: 'large ant' }, { label: 'giant rat' }],
-                  ]}
-                />
-                <Divider style={{ margin: 5 }} />
-                <Party
-                  index={6}
-                  width={8}
-                  height={1}
-                  matrix={[
-                    [
-                      { label: 'Random' },
-                      { label: 'Dusty' },
-                      { label: 'Crimp' },
-                      { label: 'Marine' },
-                      { label: 'Dartanian' },
-                      { label: 'MrMillhouse' },
-                      { label: 'Constant' },
-                      { label: 'Zilo' },
-                    ],
-                  ]}
-                />
-              </Grid>
-            </Grid>
+    case 'room': {
+      const { name, description, items = [], units = [], exits = [] } = value;
+
+      return (
+        <div>
+          <div style={{ color: cyan }}>{name}</div>
+
+          {description && <div style={{ textIndent: '30px' }}>{description}</div>}
+
+          {items.length > 0 && (
+            <div style={{ color: cool }}>
+              <span>You notice </span>
+              <span>{items.join(', ')}</span>
+              <span> here.</span>
+            </div>
+          )}
+
+          {units.length > 0 && (
             <div>
               <span style={{ color: purple }}>Also here: </span>
-              <span style={{ color: pink }}>{value.units.join(', ')}</span>
+              <span style={{ color: pink }}>
+                {intersperse(units.map((unit) => {
+                  return <span key={unit.name}>{unit.name}{unit.size ? <sup>+{unit.size}</sup> : ''}</span>;
+                }), ', ')}
+              </span>
             </div>
-          </React.Fragment>
-        )}
-        <div style={{ color: green }}>
-          <span>Obvious exits: </span>
-          <span>{value.exits.join(', ')}</span>
+          )}
+
+          <div style={{ color: green }}>
+            <span>Obvious exits: </span>
+            <span>{exits.join(', ')}</span>
+          </div>
         </div>
-      </Fragment>
-    );
+      );
+    }
+    case 'unit': {
+      const { name, description, notices = [], party } = value;
+
+      return (
+        <div>
+          <div style={{ color: cyan }}>{name}</div>
+          <div style={{ textIndent: '30px' }}>{description}</div>
+          {notices.map((notice, i) => <div key={i} style={{ color: maroon }}>{notice}</div>)}
+
+          {party && (
+            <div>
+              <Party
+                index={0}
+                label="party"
+                size={party.size}
+                matrix={party.matrix}
+              />
+            </div>
+          )}
+        </div>
+      );
+    }
+    case 'party': {
+      const party = value;
+      const { size = [1, 1], matrix } = party;
+      return (
+        <Grid container item direction="column">
+          <Grid item key={party.leader}>
+            <Party
+              size={size}
+              matrix={matrix}
+            />
+          </Grid>
+        </Grid>
+      );
+    }
     case 'shop': {
       return (
         <List dense>

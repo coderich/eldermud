@@ -13,7 +13,7 @@
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
-    "@coderich/ratchet": "^1.2.0"
+    "@coderich/ratchet": "^1.2.2"
   },
   "scripts": {
     "start": "node -r esm src/server.js",

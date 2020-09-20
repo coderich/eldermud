@@ -2,6 +2,7 @@ export { default as Creature } from './Creature';
 export { default as Exit } from './Exit';
 export { default as Item } from './Item';
 export { default as Obstacle } from './Obstacle';
+export { default as Party } from './Party';
 export { default as Room } from './Room';
 export { default as Shop } from './Shop';
 export { default as Trainer } from './Trainer';

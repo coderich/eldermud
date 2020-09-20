@@ -1,3 +1,4 @@
+import { uniq } from 'lodash';
 import { tap, mergeMap, delay, delayWhen, finalize } from 'rxjs/operators';
 import AbortActionError from '../error/AbortActionError';
 import AbortStreamError from '../error/AbortStreamError';
@@ -16,6 +17,7 @@ export default class Creature extends Unit {
     this.type = 'creature';
     this.isCreature = true;
     this.hitName = `the ${this.name}`;
+    this.ranges = uniq(this.attacks.map(attack => attack.range));
     this.ma = 0;
     this.breakAction = (msg) => { throw new AbortActionError(msg); };
     this.abortAction = (msg) => { throw new AbortActionError(msg); };

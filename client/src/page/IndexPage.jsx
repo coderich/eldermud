@@ -1,4 +1,4 @@
-import React, { memo, connect } from '@coderich/hotrod/react';
+import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 import Terminal from '../component/terminal/Terminal';
 import MapView from '../component/map/Map';
@@ -13,9 +13,13 @@ const bubble = {
   maxHeight: '100%',
   border: '1px dashed #1C6EA4',
   borderRadius: '40px',
+  padding: 10,
 };
 
 const IndexPage = memo((props) => {
+  const { theme } = props;
+  const { lightgray } = theme.colors;
+
   return (
     <Grid className="canvas" container>
       <Grid className="canvas" container item direction="column" style={{ width: mapSize }}>
@@ -23,7 +27,7 @@ const IndexPage = memo((props) => {
           {/*<RoomHUD />*/}
         </Grid>
         <Grid item style={bubble}>
-          <MapView />
+          {/*<MapView />*/}
         </Grid>
       </Grid>
       <Grid className="canvas" container item xs>
@@ -32,6 +36,7 @@ const IndexPage = memo((props) => {
             <Grid className="canvas" item xs>
               <Terminal />
             </Grid>
+            <Grid item><hr style={{ border: `1px solid ${lightgray}` }} /></Grid>
             <Grid item>
               <PlayerView />
             </Grid>
@@ -44,4 +49,12 @@ const IndexPage = memo((props) => {
   );
 });
 
-export default connect()(IndexPage);
+export default connect({
+  selectors: {
+    theme: 'theme',
+  },
+})(IndexPage);
+
+IndexPage.propTypes = {
+  theme: PropTypes.instanceOf(Object).isRequired,
+};
