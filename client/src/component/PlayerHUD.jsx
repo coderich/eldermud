@@ -20,8 +20,6 @@ const Player = memo((props) => {
         <Grid item xs={4}>ac: {stats.ac}</Grid>
         <Grid item xs={4}>ma: {stats.ma}</Grid>
         <Grid item xs={12} />
-        <Grid item xs={12}>weapon: {weapon.name} ({weapon.dmg})</Grid>
-        <Grid item xs={12}>off-hand: {shield.name} (+{shield.prot})</Grid>
       </Grid>
       <Grid item>
         <hr style={{ color: 'white' }} />
@@ -36,6 +34,13 @@ const Player = memo((props) => {
             </React.Fragment>
           );
         })}
+        <Grid item xs={5}>weapon</Grid>
+        <Grid item xs={5}>{weapon.name}</Grid>
+        <Grid item xs={2}>{weapon.dmg}</Grid>
+
+        <Grid item xs={5}>off-hand</Grid>
+        <Grid item xs={5}>{shield.name}</Grid>
+        <Grid item xs={2}>+{shield.prot}</Grid>
       </Grid>
       <Grid item>
         <hr style={{ color: 'white' }} />
