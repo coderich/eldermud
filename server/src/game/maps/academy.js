@@ -175,6 +175,7 @@ export default {
     name: 'Reception Hall',
     description: chance.paragraph(),
     exits: { e: 'room.12' },
+    trainer: 'trainer.universal',
     items: [],
     units: [],
   },

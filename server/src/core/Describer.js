@@ -18,7 +18,7 @@ export default class Describer {
         target.exits = await this.describe('exits', target.exits);
         target.items = await this.describe('items', await target.Items());
         target.units = (await target.Units())
-          .filter(unit => unit.id !== this.id && !unit.party)
+          .filter(unit => unit.id !== this.id)
           .sort((a, b) => {
             if (a.isUser && b.isUser) return 0;
             if (a.isCreature && b.isCreature) return 0;
@@ -26,8 +26,10 @@ export default class Describer {
             if (b.isUser) return 1;
             return -1;
           })
-          .map(unit => ({ name: unit.name }));
-          // .concat({ name: 'mad wizard', size: 4 });
+          .map(unit => ({
+            id: unit.id,
+            name: unit.name,
+          }));
         if (!opts.full) delete target.description;
         break;
       }

@@ -7,7 +7,10 @@ export default async (id, command) => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
     const talent = await getData('talent.mend');
+    if (unit.cooldowns[talent.code]) unit.breakAction('Must wait for cooldown.');
     if (talent.req.ma > unit.ma) unit.breakAction('Insufficient mana.');
+
+    await setData(id, `cooldowns.${talent.code}`, talent.cooldown);
 
     return unit.perform(async () => {
       await incData(id, 'ma', -talent.req.ma);

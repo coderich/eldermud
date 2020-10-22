@@ -3,8 +3,8 @@ import { Grid } from '@material-ui/core';
 import Terminal from '../component/terminal/Terminal';
 import MapView from '../component/map/Map';
 import RoomHUD from '../component/RoomHUD';
-import PlayerStatus from '../component/PlayerStatus';
 import PlayerView from '../component/PlayerView';
+import PlayerHUD from '../component/PlayerHUD';
 
 const mapSize = '320px';
 
@@ -17,17 +17,19 @@ const bubble = {
 };
 
 const IndexPage = memo((props) => {
-  const { theme } = props;
+  const { theme, connected } = props;
   const { lightgray } = theme.colors;
+
+  if (!connected) return '';
 
   return (
     <Grid className="canvas" container>
       <Grid className="canvas" container item direction="column" style={{ width: mapSize }}>
         <Grid container item xs style={{ height: '100%', overflowY: 'auto', ...bubble }}>
-          {/*<RoomHUD />*/}
+          <RoomHUD />
         </Grid>
         <Grid item style={bubble}>
-          {/*<MapView />*/}
+          <MapView />
         </Grid>
       </Grid>
       <Grid className="canvas" container item xs>
@@ -43,6 +45,7 @@ const IndexPage = memo((props) => {
           </Grid>
         </Grid>
         <Grid className="canvas" container item xs={5} style={bubble}>
+          <PlayerHUD />
         </Grid>
       </Grid>
     </Grid>
@@ -51,10 +54,12 @@ const IndexPage = memo((props) => {
 
 export default connect({
   selectors: {
+    connected: 'connected',
     theme: 'theme',
   },
 })(IndexPage);
 
 IndexPage.propTypes = {
+  connected: PropTypes.bool.isRequired,
   theme: PropTypes.instanceOf(Object).isRequired,
 };

@@ -1,5 +1,5 @@
 import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
-import { Grid, Avatar } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import PlayerInput from './PlayerInput';
 import Progress from './Progress';
 
@@ -10,12 +10,12 @@ const avatar = {
   backgroundColor: 'grey',
 };
 
-const talent = {
+const talent = time => ({
   width: '65px',
   height: '65px',
-  backgroundColor: 'grey',
+  backgroundColor: time ? 'grey' : 'green',
   border: '1px solid white',
-};
+});
 
 const inv = {
   height: '50px',
@@ -39,10 +39,13 @@ const PlayerView = memo((props) => {
         <Grid item style={{ padding: 10 }} xs>
           <Grid container item direction="column" spacing={2}>
             <Grid container item justify="space-around">
-              <Grid item style={talent}>A</Grid>
-              <Grid item style={talent}>B</Grid>
-              <Grid item style={talent}>C</Grid>
-              <Grid item style={talent}>D</Grid>
+              {Object.entries(status.cooldowns).map(([tal, time]) => {
+                return (
+                  <Grid item key={tal} style={talent(time)}>
+                    {tal}
+                  </Grid>
+                );
+              })}
             </Grid>
             <Grid container item spacing={1}>
               <Grid item xs={12}>

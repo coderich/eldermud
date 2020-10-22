@@ -17,13 +17,14 @@ if ($history.location.search) query = `${$history.location.search.substr(1)}&${q
 const server = SocketIO('http://localhost:3003', { query });
 
 const actions = {
-  command: new Action('command', (payload, { $http }) => { console.log('xmas'); server.send(payload); }),
+  command: new Action('command', (payload) => { server.send(payload); }),
   response: new Action('response'),
   prompt: new Action('prompt'),
   room: new Action('room'),
   stats: new Action('stats'),
   status: new Action('status'),
   minimap: new Action('minimap'),
+  connect: new Action('connect'),
 };
 
 const selectors = {
@@ -31,9 +32,10 @@ const selectors = {
   prompt: new Selector('data.prompt').default('>'),
   room: new Selector('data.room').default({}),
   stats: new Selector('data.stats').default({}),
-  status: new Selector('data.status').default({}),
+  status: new Selector('data.status').default({ cooldowns: [] }),
   responses: new Selector('data.responses').default([]),
   maps: new Selector('data.maps').default({ minimap: [] }),
+  connected: new Selector('data.connected').default(false),
 };
 
 const reducers = [
@@ -63,9 +65,13 @@ const reducers = [
     },
   })),
   new Reducer(actions.minimap, selectors.maps, ({
-    success: (maps, { payload }) => {
-      console.log('do it doug', maps, payload);
-      maps.minimap = payload;
+    success: (data, { payload }) => {
+      data.minimap = payload;
+    },
+  })),
+  new Reducer(actions.connect, selectors.connected, ({
+    success: (data, { payload }) => {
+      return payload;
     },
   })),
 ];
@@ -91,6 +97,9 @@ server.on('message', (data) => {
     }
     case 'unit': {
       return actions.response.dispatch(data);
+    }
+    case 'connect': {
+      return actions.connect.dispatch(true);
     }
     default: {
       return actions.response.dispatch(data);

@@ -35,7 +35,7 @@ const Action = memo((props) => {
               <span style={{ color: purple }}>Also here: </span>
               <span style={{ color: pink }}>
                 {intersperse(units.map((unit) => {
-                  return <span key={unit.name}>{unit.name}{unit.size ? <sup>+{unit.size}</sup> : ''}</span>;
+                  return <span key={unit.id}>{unit.name}{unit.size ? <sup>+{unit.size}</sup> : ''}</span>;
                 }), ', ')}
               </span>
             </div>

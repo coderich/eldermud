@@ -29,9 +29,13 @@ export default class User extends Unit {
       this.setData(this.id, 'mma', svl(this.int)),
     ]);
 
-    this.stats();
-    this.status();
-    this.heartbeat();
+    await Promise.all([
+      this.stats(),
+      this.status(),
+      this.heartbeat(),
+    ]);
+
+    this.emit('message', { type: 'connect' });
   }
 
   heartbeat() {

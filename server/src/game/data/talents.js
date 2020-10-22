@@ -5,6 +5,7 @@ export default {
     code: 'mend',
     type: 'talent',
     cost: 150,
+    cooldown: 8,
     req: {
       ma: 6,
       int: 3,

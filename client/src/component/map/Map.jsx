@@ -78,19 +78,20 @@ const Component = memo((props) => {
     });
   });
 
-  let me;
+  let me = { row: 0, col: 0 };
+
   maps.minimap.forEach((arr, row) => {
     arr.forEach((data, col) => {
       if (data && data.me) me = data;
     });
   });
-  const xOffset = (20 * me.col * 2);
-  const yOffset = (20 * me.row * 2) - 12;
+
+  const xOffset = (20 * me.col * 2) + 10;
+  const yOffset = (20 * me.row * 2) - 10;
   const backgroundPosition = `calc(50% - ${xOffset}px) calc(50% - ${yOffset}px)`;
-  {/*<div id={containerId} className="map" style={{ alignSelf: 'center', backgroundPosition, backgroundColor: 'lightgrey' }}>*/}
 
   return (
-    <div id={containerId}>
+    <div id={containerId} className="map" style={{ alignSelf: 'center', backgroundPosition, backgroundColor: 'lightgrey' }}>
       {maps.minimap.map((arr, row) => {
         const rowId = `container-${row}-${now}`;
 
