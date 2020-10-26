@@ -87,29 +87,29 @@ export const incData = async (id, field, number) => {
 
 Object.assign(api, { getData, getList, setData, delData, pushData, pullData, incData });
 
-// // Bootrap
-// (async () => {
-//   const mapRealm = async (map, room, row, col) => {
-//     const id = `${row}.${col}`;
-//     if (map[id]) return;
+// Bootrap
+(async () => {
+  const mapRealm = async (map, room, row, col, depth) => {
+    const id = `${row}.${col}.${depth}`;
+    if (map[id]) return;
 
-//     map[id] = { id: room.id, row, col, dirs: Object.keys(room.exits) };
-//     const dirs = Object.keys(room.exits);
+    map[id] = { id: room.id, row, col, depth, dirs: Object.keys(room.exits) };
+    const dirs = Object.keys(room.exits);
 
-//     await Promise.all(dirs.map(async (dir) => {
-//       const coor = getCoords(row, col, dir);
-//       const nextRoom = await room.Exit(dir);
-//       return mapRealm(map, nextRoom, coor.row, coor.col);
-//     }));
-//   };
+    await Promise.all(dirs.map(async (dir) => {
+      const coor = getCoords(row, col, dir);
+      const nextRoom = await room.Exit(dir);
+      return mapRealm(map, nextRoom, coor.row, coor.col, nextRoom.depth);
+    }));
+  };
 
-//   // Load all data fixtures
-//   await Promise.all(Object.entries({ ...db, ...gameData }).map(([key, value]) => setData(key, value)));
-//   await Promise.all(Object.entries(maps.academy).map(([key, value]) => setData(key, value)));
+  // Load all data fixtures
+  await Promise.all(Object.entries({ ...db, ...gameData }).map(([key, value]) => setData(key, value)));
+  await Promise.all(Object.entries(maps.town).map(([key, value]) => setData(key, value)));
 
-//   // Create map of realm
-//   const map = {};
-//   const startRoom = await getData('room.1');
-//   await mapRealm(map, startRoom, 0, 0);
-//   await setData('map', map);
-// })();
+  // Create map of realm
+  const map = {};
+  const startRoom = await getData('room.1');
+  await mapRealm(map, startRoom, 0, 0, startRoom.depth);
+  await setData('map', map);
+})();

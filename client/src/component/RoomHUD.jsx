@@ -12,7 +12,7 @@ const RoomHUD = memo((props) => {
 
   return (
     <Grid container direction="column" spacing={1}>
-      <Grid item>{room.name}</Grid>
+      <Grid item>{room.name} {room.id}</Grid>
       <Grid item>
         <Paper style={{ overflowX: 'auto' }}>
           <Toolbar style={toolbar}>

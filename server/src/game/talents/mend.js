@@ -10,13 +10,14 @@ export default async (id, command) => createAction(
     if (unit.cooldowns[talent.code]) unit.breakAction('Must wait for cooldown.');
     if (talent.req.ma > unit.ma) unit.breakAction('Insufficient mana.');
 
-    await setData(id, `cooldowns.${talent.code}`, talent.cooldown);
-
     return unit.perform(async () => {
-      await incData(id, 'ma', -talent.req.ma);
       const roll = unit.roll('1d6+2');
       const hp = Math.min(unit.mhp, unit.hp + roll);
-      await setData(id, 'hp', hp);
+      await Promise.all([
+        setData(id, `cooldowns.${talent.code}`, talent.cooldown),
+        incData(id, 'ma', -talent.req.ma),
+        setData(id, 'hp', hp),
+      ]);
       unit.emit('message', { type: 'water', value: `You cast ${talent.name}, recovering ${roll} health!` });
       unit.status();
     });

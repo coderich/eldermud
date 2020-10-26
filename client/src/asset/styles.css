@@ -14,12 +14,12 @@ sup {
   line-height: 0;
 }
 
-.map {
+/*.map {
   background-image: url("./academy.jpg");
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 20px;
-}
+}*/
 
 .door {
   background-image: url("./door.svg");

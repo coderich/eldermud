@@ -3,8 +3,8 @@ import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 import { jsPlumb } from 'jsplumb';
 import Room from './Room';
-import Door from '../../asset/door.svg';
-import DoorOpen from '../../asset/door-open.svg';
+// import Door from '../../asset/door.svg';
+// import DoorOpen from '../../asset/door-open.svg';
 
 const viewport = {
   flexWrap: 'nowrap',
@@ -91,7 +91,7 @@ const Component = memo((props) => {
   const backgroundPosition = `calc(50% - ${xOffset}px) calc(50% - ${yOffset}px)`;
 
   return (
-    <div id={containerId} className="map" style={{ alignSelf: 'center', backgroundPosition, backgroundColor: 'lightgrey' }}>
+    <div id={containerId} className="map" style={{ alignSelf: 'center', backgroundPosition }}>
       {maps.minimap.map((arr, row) => {
         const rowId = `container-${row}-${now}`;
 
