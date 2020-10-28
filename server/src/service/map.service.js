@@ -35,8 +35,8 @@ const mapRooms = async (map, room, row, col, size) => {
   }));
 };
 
-export const minimap = async (startRoom, r) => {
-  const size = r * 2 + 1;
+export const minimap = async (startRoom, ra) => {
+  const size = ra * 2 + 1;
   const start = Math.floor(size / 2);
   const map = new Array(size).fill(0).map(() => new Array(size).fill(0));
   const world = await getData('map');
@@ -51,7 +51,33 @@ export const minimap = async (startRoom, r) => {
       const deltaCol = start - col;
       const lookupCol = startCol - deltaCol;
       const room = world[`${lookupRow}.${lookupCol}.${depth}`];
-      if (room) map[row][col] = { exits: room.dirs, row: room.row, col: room.col };
+
+      if (room) {
+        map[row][col] = {
+          row: room.row,
+          col: room.col,
+          exits: room.dirs.map((dir) => {
+            const obj = { dir };
+            const { row: r, col: c } = getCoords(lookupRow, lookupCol, dir);
+            const d = parseInt(depth, 10);
+            const [level, down, up] = [world[`${r}.${c}.${d}`], world[`${r}.${c}.${d - 1}`], world[`${r}.${c}.${d + 1}`]];
+            if (level) obj.conn = 'basic';
+            if (down) obj.conn = 'stairs:down';
+            if (up) obj.conn = 'stairs:up';
+            return obj;
+          }),
+          // exits: room.dirs.reduce((prev, dir) => {
+          //   const coords = getCoords(row, col, dir);
+          //   const exit = world[`${coords.row}.${coords.col}.${depth}`] || world[`${coords.row}.${coords.col}.${depth - 1}`] || world[`${coords.row}.${coords.col}.${depth + 1}`];
+
+          //   return Object.assign(prev, {
+          //     [dir]: {
+          //       conn: 'basic',
+          //     },
+          //   });
+          // }, {}),
+        };
+      }
     }
   }
 
@@ -59,15 +85,5 @@ export const minimap = async (startRoom, r) => {
 
   return map;
 };
-
-// export const minimap = async (startRoom, r) => {
-//   const size = r * 2 + 3;
-//   const row = Math.floor(size / 2);
-//   const col = Math.floor(size / 2);
-//   const map = new Array(size).fill(0).map(() => new Array(size).fill(0));
-//   await mapRooms(map, startRoom, row, col, size);
-//   map[row][col].me = true;
-//   return map;
-// };
 
 export const stfu = () => {};

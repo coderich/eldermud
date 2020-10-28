@@ -2,9 +2,8 @@
 import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 import { jsPlumb } from 'jsplumb';
+import { getInfo } from '../../service/MinimapService';
 import Room from './Room';
-// import Door from '../../asset/door.svg';
-// import DoorOpen from '../../asset/door-open.svg';
 
 const viewport = {
   flexWrap: 'nowrap',
@@ -12,43 +11,19 @@ const viewport = {
 
 const Component = memo((props) => {
   const { maps } = props;
-
   const now = new Date().getTime();
   const containerId = `container-${now}`;
-
-  const getInfo = (row, col, exit) => {
-    switch (exit) {
-      case 'n': return { target: `room-${row - 1}-${col}-${now}`, anchors: ['Top', 'Bottom'] };
-      case 's': return { target: `room-${row + 1}-${col}-${now}`, anchors: ['Bottom', 'Top'] };
-      case 'e': return { target: `room-${row}-${col + 1}-${now}`, anchors: ['Right', 'Left'] };
-      case 'w': return { target: `room-${row}-${col - 1}-${now}`, anchors: ['Left', 'Right'] };
-      case 'ne': return { target: `room-${row - 1}-${col + 1}-${now}`, anchors: ['TopRight', 'BottomLeft'] };
-      case 'nw': return { target: `room-${row - 1}-${col - 1}-${now}`, anchors: ['TopLeft', 'BottomRight'],
-        // overlays: [
-        //   ['Custom', {
-        //     create: (component) => {
-        //       const img = document.createElement('img');
-        //       img.setAttribute('src', DoorOpen);
-        //       img.setAttribute('style', 'width:20px;');
-        //       return img;
-        //     },
-        //   }],
-        // ],
-      };
-      case 'se': return { target: `room-${row + 1}-${col + 1}-${now}`, anchors: ['BottomRight', 'TopLeft'] };
-      case 'sw': return { target: `room-${row + 1}-${col - 1}-${now}`, anchors: ['BottomLeft', 'TopRight'] };
-      default: return { target: `room-${row}-${col}-${now}` };
-    }
-  };
 
   global.requestAnimationFrame(() => {
     jsPlumb.ready(() => {
       jsPlumb.reset();
       jsPlumb.setContainer(containerId);
-
       jsPlumb.registerConnectionTypes({
         basic: {
           paintStyle: { stroke: 'white', strokeWidth: 1 },
+        },
+        stairs: {
+          paintStyle: { stroke: 'none' },
         },
       });
 
@@ -61,7 +36,9 @@ const Component = memo((props) => {
             exits.forEach((exit) => {
               const endpoint = 'Blank';
               const connector = 'Straight';
-              const { target, anchors, overlays = [] } = getInfo(row, col, exit);
+              const { target, anchors, overlays = [] } = getInfo(row, col, exit, now);
+              const [type] = exit.conn.split(':');
+
               jsPlumb.connect({
                 source,
                 target,
@@ -69,7 +46,7 @@ const Component = memo((props) => {
                 endpoint,
                 connector,
                 overlays,
-                type: 'basic',
+                type,
               });
             });
           }
@@ -86,8 +63,8 @@ const Component = memo((props) => {
     });
   });
 
-  const xOffset = (20 * me.col * 2) + 10;
-  const yOffset = (20 * me.row * 2) - 10;
+  const xOffset = (20 * me.col * 2);
+  const yOffset = (20 * me.row * 2);
   const backgroundPosition = `calc(50% - ${xOffset}px) calc(50% - ${yOffset}px)`;
 
   return (
