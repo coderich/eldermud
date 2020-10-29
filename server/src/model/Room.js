@@ -6,6 +6,11 @@ import { numToArray, randomElement } from '../service/util.service';
 const rooms = new Set();
 
 export default class Room extends Model {
+  constructor(props) {
+    if (!Object.prototype.hasOwnProperty.call(props, 'depth')) props.depth = 1;
+    super(props);
+  }
+
   async initialize() {
     if (rooms.has(this.id)) return this;
 

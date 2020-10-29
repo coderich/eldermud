@@ -93,7 +93,7 @@ Object.assign(api, { getData, getList, setData, delData, pushData, pullData, inc
     const id = `${row}.${col}.${depth}`;
     if (map[id]) return;
 
-    map[id] = { id: room.id, row, col, depth, dirs: Object.keys(room.exits) };
+    map[id] = { id: room.id, row, col, depth, fov: room.fov, exits: room.exits };
     const dirs = Object.keys(room.exits);
 
     await Promise.all(dirs.map(async (dir) => {

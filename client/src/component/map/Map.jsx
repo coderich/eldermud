@@ -1,8 +1,7 @@
 // http://jsplumb.github.io/jsplumb/types.html#connection-type
 import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
-import { jsPlumb } from 'jsplumb';
-import { getInfo } from '../../service/MinimapService';
+import { draw } from '../../service/MinimapService';
 import Room from './Room';
 
 const viewport = {
@@ -14,61 +13,23 @@ const Component = memo((props) => {
   const now = new Date().getTime();
   const containerId = `container-${now}`;
 
-  global.requestAnimationFrame(() => {
-    jsPlumb.ready(() => {
-      jsPlumb.reset();
-      jsPlumb.setContainer(containerId);
-      jsPlumb.registerConnectionTypes({
-        basic: {
-          paintStyle: { stroke: 'white', strokeWidth: 1 },
-        },
-        stairs: {
-          paintStyle: { stroke: 'none' },
-        },
-      });
+  global.requestAnimationFrame(() => draw(maps, now));
+  global.window.onresize = () => draw(maps, now);
 
-      maps.minimap.forEach((arr, row) => {
-        arr.forEach((data, col) => {
-          if (data) {
-            const { exits } = data;
-            const source = `room-${row}-${col}-${now}`;
+  // let me = { row: 0, col: 0 };
 
-            exits.forEach((exit) => {
-              const endpoint = 'Blank';
-              const connector = 'Straight';
-              const { target, anchors, overlays = [] } = getInfo(row, col, exit, now);
-              const [type] = exit.conn.split(':');
+  // maps.minimap.forEach((arr, row) => {
+  //   arr.forEach((data, col) => {
+  //     if (data && data.me) me = data;
+  //   });
+  // });
 
-              jsPlumb.connect({
-                source,
-                target,
-                anchors,
-                endpoint,
-                connector,
-                overlays,
-                type,
-              });
-            });
-          }
-        });
-      });
-    });
-  });
-
-  let me = { row: 0, col: 0 };
-
-  maps.minimap.forEach((arr, row) => {
-    arr.forEach((data, col) => {
-      if (data && data.me) me = data;
-    });
-  });
-
-  const xOffset = (20 * me.col * 2);
-  const yOffset = (20 * me.row * 2);
-  const backgroundPosition = `calc(50% - ${xOffset}px) calc(50% - ${yOffset}px)`;
+  // const xOffset = (20 * me.col * 2) + 10;
+  // const yOffset = (20 * me.row * 2);
+  // const backgroundPosition = `calc(50% - ${xOffset}px) calc(50% - ${yOffset}px)`;
 
   return (
-    <div id={containerId} className="map" style={{ alignSelf: 'center', backgroundPosition }}>
+    <div id={containerId} className="map" style={{ alignSelf: 'center' }}>
       {maps.minimap.map((arr, row) => {
         const rowId = `container-${row}-${now}`;
 

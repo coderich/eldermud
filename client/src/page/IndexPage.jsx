@@ -5,6 +5,7 @@ import MapView from '../component/map/Map';
 import RoomHUD from '../component/RoomHUD';
 import PlayerView from '../component/PlayerView';
 import PlayerHUD from '../component/PlayerHUD';
+import PlayerStatus from '../component/PlayerStatus';
 
 const mapSize = '320px';
 
@@ -28,9 +29,6 @@ const IndexPage = memo((props) => {
         <Grid container item xs style={{ height: '100%', overflowY: 'auto', ...bubble }}>
           <RoomHUD />
         </Grid>
-        <Grid item style={bubble}>
-          <MapView />
-        </Grid>
       </Grid>
       <Grid className="canvas" container item xs>
         <Grid className="canvas" container item xs={7} style={bubble}>
@@ -40,7 +38,7 @@ const IndexPage = memo((props) => {
             </Grid>
             <Grid item><hr style={{ border: `1px solid ${lightgray}` }} /></Grid>
             <Grid item>
-              <PlayerView />
+              <PlayerStatus />
             </Grid>
           </Grid>
         </Grid>

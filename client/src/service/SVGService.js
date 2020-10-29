@@ -64,7 +64,7 @@ export const gate = `
   </svg>
 `;
 
-export const room = `
+export const hexagon = `
   <svg viewBox="0 0 75 75">
     <path d="m5,22 18,-18 28,0 18,18 0,28 -18,18, -28,0 -18,-18z" />
   </svg>

@@ -1,5 +1,5 @@
-// import { jsPlumb, jsPlumbUtil } from 'jsplumb';
-import { forward, doorOpen } from './SVGService';
+import { jsPlumb } from 'jsplumb';
+import { forward } from './SVGService';
 
 // // this function takes a point from the midline and projects it to the
 // // upper or lower guideline.
@@ -93,9 +93,9 @@ const getOverlays = (exit) => {
           create: (component) => {
             const el = global.document.createElement('div');
             const svg = global.document.createElement('div');
-            svg.innerHTML = doorOpen;
-            svg.setAttribute('style', 'width:18px;height:18px;fill:lightGrey;');
-            // svg.style.transform = `rotate(${rotation}deg)`;
+            svg.innerHTML = forward;
+            svg.setAttribute('style', 'width:15px;height:15px;fill:lightGrey;');
+            svg.style.transform = `rotate(${rotation}deg)`;
             el.appendChild(svg);
             return el;
           },
@@ -120,6 +120,51 @@ export const getInfo = (row, col, exit, now) => {
   }
 };
 
-export const draw = (map) => {
+export const draw = (maps, now) => {
+  const containerId = `container-${now}`;
 
+  jsPlumb.ready(() => {
+    jsPlumb.reset();
+    jsPlumb.setContainer(containerId);
+    jsPlumb.registerConnectionTypes({
+      basic: {
+        paintStyle: { stroke: 'white', strokeWidth: 1 },
+      },
+      stairs: {
+        paintStyle: { stroke: 'none' },
+      },
+      blocked: {
+        paintStyle: { stroke: 'red', strokeWidth: 5 },
+      },
+      unblocked: {
+        paintStyle: { stroke: 'white', strokeWidth: 5 },
+      },
+    });
+
+    maps.minimap.forEach((arr, row) => {
+      arr.forEach((data, col) => {
+        if (data) {
+          const { exits } = data;
+          const source = `room-${row}-${col}-${now}`;
+
+          exits.forEach((exit) => {
+            const endpoint = 'Blank';
+            const connector = 'Straight';
+            const { target, anchors, overlays = [] } = getInfo(row, col, exit, now);
+            const [type] = exit.conn.split(':');
+
+            jsPlumb.connect({
+              source,
+              target,
+              anchors,
+              endpoint,
+              connector,
+              overlays,
+              type,
+            });
+          });
+        }
+      });
+    });
+  });
 };

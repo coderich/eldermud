@@ -1,9 +1,14 @@
 export default {
-  'trainer.universal': {
-    id: 'trainer.universal',
-    talents: [
-      'talent.mend',
-      'talent.stab',
-    ],
+  'trainer.priest': {
+    id: 'trainer.priest',
+    talents: ['talent.mend'],
+  },
+  'trainer.mage': {
+    id: 'trainer.mage',
+    talents: ['talent.mend'],
+  },
+  'trainer.warrior': {
+    id: 'trainer.warrior',
+    talents: ['talent.mend'],
   },
 };
