@@ -5,7 +5,7 @@ export default {
     description: '',
     exits: { n: 'room.2', s: { 'room.out': ['obstacle.southGate'] } },
     items: [],
-    units: [],
+    units: ['npc.cityGuard'],
   },
   'room.2': {
     id: 'room.2',
@@ -113,7 +113,7 @@ export default {
     description: '',
     exits: { w: 'room.2' },
     items: [],
-    units: [],
+    units: ['npc.oldMan'],
   },
   'room.sw1': {
     id: 'room.sw1',

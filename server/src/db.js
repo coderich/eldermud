@@ -4,14 +4,6 @@
 // http://pyromancers.com/
 
 export default {
-  'user.1': {
-    id: 'user.1',
-    name: 'chardy',
-    room: 'room.1',
-    hp: 25,
-    mhp: 30,
-    items: [],
-  },
   'item.1': {
     id: 'item.1',
     template: 'object.key',

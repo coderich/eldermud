@@ -1,6 +1,6 @@
 import Chance from 'chance';
 import { clone, isObjectLike } from 'lodash';
-import { directions } from '../service/util.service';
+import { directions, titleCase } from '../service/util.service';
 
 const chance = new Chance();
 
@@ -70,7 +70,7 @@ export default class Describer {
         const healthPct = Math.round((target.hp / target.mhp) * 100);
         const woundIndex = Math.floor((100 - healthPct) / 15);
         const notices = [
-          `${target.isUser ? 'He' : 'It'} appears to be ${wounds[woundIndex]}.`,
+          `${titleCase(target.pronoun)} appears to be ${wounds[woundIndex]}.`,
         ];
 
         return {

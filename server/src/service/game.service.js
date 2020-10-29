@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 import { remove } from 'lodash';
 import { Subject, interval } from 'rxjs';
 import { tap, share, publish, retry, delayWhen } from 'rxjs/operators';
-import { getData, setData } from './data.service';
+import { getData, setData, incData, pushData } from './data.service';
 import { toRoom, emit } from './socket.service';
 import { roll, titleCase, randomElement } from './util.service';
 
@@ -209,3 +209,46 @@ export const healthLoop = interval(0).pipe(
   share(),
   publish(),
 ); healthLoop.connect();
+
+export const resolveTrigger = (room, from, to, trigger) => {
+  const { id, effects } = trigger;
+  const historyId = `${from.id}:${id}`;
+  const historyCount = to.history[historyId] || 0;
+
+  // Save update to history
+  setData(to.id, 'history', Object.assign(to.history, { [historyId]: historyCount + 1 }));
+
+  // Perform effects
+  effects.forEach((effect) => {
+    const { type, limit = Infinity } = effect;
+    const [action, target] = type.split(':');
+
+    if (historyCount < limit) {
+      switch (action) {
+        case 'info': {
+          to.emit('message', { type: 'info', value: effect.info });
+          break;
+        }
+        case 'html': {
+          to.emit('message', { type: 'html', value: effect.html });
+          break;
+        }
+        case 'increase': {
+          const rolled = roll(effect.roll);
+          incData(to.id, target, rolled);
+          to.status();
+          break;
+        }
+        case 'decrease': {
+          const rolled = roll(effect.roll);
+          incData(to.id, target, -rolled);
+          to.status();
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }
+  });
+};

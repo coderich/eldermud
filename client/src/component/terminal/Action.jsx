@@ -49,24 +49,13 @@ const Action = memo((props) => {
       );
     }
     case 'unit': {
-      const { name, description, notices = [], party } = value;
+      const { name, description, notices = [] } = value;
 
       return (
         <div>
           <div style={{ color: cyan }}>{name}</div>
           <div style={{ textIndent: '30px' }}>{description}</div>
           {notices.map((notice, i) => <div key={i} style={{ color: maroon }}>{notice}</div>)}
-
-          {party && (
-            <div>
-              <Party
-                index={0}
-                label="party"
-                size={party.size}
-                matrix={party.matrix}
-              />
-            </div>
-          )}
         </div>
       );
     }
@@ -141,6 +130,9 @@ const Action = memo((props) => {
         case '*combat engaged*': case '*combat off*': return <div style={{ color: maroon }}>{value}</div>;
         default: return <div>{value}</div>;
       }
+    }
+    case 'html': {
+      return <div dangerouslySetInnerHTML={{ __html: value }} />;
     }
     default: {
       return <span />;

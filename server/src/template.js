@@ -56,7 +56,7 @@ export default {
   //   cd: 0,
   //   type: 'combat',
   //   target: 'unit',
-  //   effect: [
+  //   effects: [
   //     { type: 'harm', roll: '3d3+3', element: 'magic', duration: 1 },
   //   ],
   // },
@@ -68,7 +68,7 @@ export default {
   //   cd: 10,
   //   type: 'instance',
   //   target: 'room',
-  //   effect: [
+  //   effects: [
   //     { type: 'harm', roll: '3d3+3', element: 'physical', duration: 1 },
   //     { type: 'stun', element: 'pure', duration: 1 },
   //   ],
@@ -81,7 +81,7 @@ export default {
   //   cd: 10,
   //   type: 'instance',
   //   target: 'unit',
-  //   effect: [
+  //   effects: [
   //     { type: 'harm', target: 'target', roll: '3d3+3', element: 'physical', duration: 1 },
   //     { type: 'harm', target: 'self', roll: '3d3+3', element: 'physical', duration: 1 },
   //   ],

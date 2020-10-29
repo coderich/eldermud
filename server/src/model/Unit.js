@@ -5,8 +5,9 @@ import { breakAttack } from '../service/game.service';
 import Model from '../core/Model';
 
 export default class Unit extends Model {
-  constructor(...args) {
-    super(...args);
+  constructor(props) {
+    props.pronoun = props.pronoun || 'it';
+    super(props);
     this.isUnit = true;
   }
 

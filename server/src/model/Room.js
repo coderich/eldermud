@@ -145,6 +145,10 @@ export default class Room extends Model {
     return (await this.Units()).filter(unit => unit.isUser);
   }
 
+  async NPCs() {
+    return (await this.Units()).filter(unit => unit.isNPC);
+  }
+
   async Creatures() {
     return (await this.Units()).filter(unit => unit.isCreature);
   }

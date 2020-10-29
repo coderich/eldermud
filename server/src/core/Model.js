@@ -1,5 +1,6 @@
 import { Model } from '@coderich/hotrod';
 import { roll } from '../service/game.service';
+import { titleCase } from '../service/util.service';
 
 export default class extends Model {
   constructor(props) {
@@ -13,9 +14,8 @@ export default class extends Model {
   }
 
   async resolveTarget(domain, target, options = {}) {
-    const tcm = domain.charAt(0).toUpperCase() + domain.slice(1);
     let index;
-    let items = await this[tcm]();
+    let items = await this[titleCase(domain)]();
 
     if (options.omit) items = items.filter(it => options.omit.indexOf(it.id) === -1);
 

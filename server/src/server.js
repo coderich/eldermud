@@ -30,6 +30,7 @@ const newUser = (id, { str, agi, int, tals = [] }) => ({
   equipped: [],
   talents: tals,
   cooldowns: {},
+  history: {},
 });
 
 server.on('connection', async (socket) => {
@@ -128,6 +129,10 @@ server.on('connection', async (socket) => {
           case 'get': {
             const target = command.args.join(' ');
             return writeStream(userId, await actions.get(userId, target));
+          }
+          case 'greet': {
+            const target = command.args.join(' ');
+            return writeStream(userId, await actions.greet(userId, target));
           }
           case 'inventory': {
             return writeStream(userId, await actions.inventory(userId));

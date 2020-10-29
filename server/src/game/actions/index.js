@@ -6,6 +6,7 @@ export { default as drop } from './drop';
 export { default as equip } from './equip';
 export { default as exp } from './exp';
 export { default as get } from './get';
+export { default as greet } from './greet';
 export { default as inventory } from './inventory';
 export { default as learn } from './learn';
 export { default as list } from './list';
