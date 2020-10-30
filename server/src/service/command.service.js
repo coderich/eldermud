@@ -26,6 +26,7 @@ const commands = [
     { exit: { args: [0], code: 'x', scope: '' } },
   ],
   [
+    { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', scope: 'action' } },
     { exp: { args: [0], code: 'exp', scope: 'action' } },
     { use: { args: [1, 2, 3, 4, 5], code: 'use', scope: 'action' } },
     { buy: { args: [1, 2, 3, 4, 5], code: 'buy', scope: 'action' } },
@@ -57,7 +58,7 @@ const commands = [
     { '/his': { args: [0], code: 'his', scope: 'channel' } },
   ],
   [
-    { greet: { args: [0, 1], code: 'greet', scope: 'action' } },
+    { greet: { args: [0, 1, 2, 3, 4, 5], code: 'greet', scope: 'action' } },
     { train: { args: [1], code: 'train', scope: 'action' } },
     { learn: { args: [1], code: 'learn', scope: 'action' } },
   ],

@@ -210,45 +210,66 @@ export const healthLoop = interval(0).pipe(
   publish(),
 ); healthLoop.connect();
 
-export const resolveTrigger = (room, from, to, trigger) => {
-  const { id, effects } = trigger;
-  const historyId = `${from.id}:${id}`;
-  const historyCount = to.history[historyId] || 0;
+export const createItem = (templateData) => {
+  const now = new Date().getTime();
+  const id = `item.${templateData.id}.${now}`;
+  const template = templateData.id;
+  return setData(id, Object.assign({}, templateData, { id, template, state: {} }));
+};
 
-  // Save update to history
-  setData(to.id, 'history', Object.assign(to.history, { [historyId]: historyCount + 1 }));
+export const resolveInteraction = (room, npc, user, cmd, input) => {
+  const { triggers = [] } = npc;
+  const words = input.trim().toLowerCase().split(' ').map(w => w.trim());
 
-  // Perform effects
-  effects.forEach((effect) => {
-    const { type, limit = Infinity } = effect;
-    const [action, target] = type.split(':');
+  triggers.filter((trigger) => {
+    const { cmd: tcmd, keywords } = trigger;
+    if (tcmd !== cmd) return false;
+    if (keywords && !words.some(word => keywords.indexOf(word) > -1)) return false;
+    return true;
+  }).forEach((trigger) => {
+    const { id, effects = [] } = trigger;
+    const historyId = `${npc.id}:${id}`;
+    const historyCount = user.history[historyId] || 0;
 
-    if (historyCount < limit) {
-      switch (action) {
-        case 'info': {
-          to.emit('message', { type: 'info', value: effect.info });
-          break;
-        }
-        case 'html': {
-          to.emit('message', { type: 'html', value: effect.html });
-          break;
-        }
-        case 'increase': {
-          const rolled = roll(effect.roll);
-          incData(to.id, target, rolled);
-          to.status();
-          break;
-        }
-        case 'decrease': {
-          const rolled = roll(effect.roll);
-          incData(to.id, target, -rolled);
-          to.status();
-          break;
-        }
-        default: {
-          break;
+    // Save update to history
+    setData(user.id, 'history', Object.assign(user.history, { [historyId]: historyCount + 1 }));
+
+    // Perform effects
+    effects.forEach((effect) => {
+      const { type, limit = Infinity } = effect;
+      const [action, target] = type.split(':');
+
+      if (historyCount < limit) {
+        switch (action) {
+          case 'info': {
+            user.emit('message', { type: 'info', value: effect.info });
+            break;
+          }
+          case 'html': {
+            user.emit('message', { type: 'html', value: effect.html });
+            break;
+          }
+          case 'increase': {
+            const rolled = roll(effect.roll);
+            incData(user.id, target, rolled);
+            user.status();
+            break;
+          }
+          case 'decrease': {
+            const rolled = roll(effect.roll);
+            incData(user.id, target, -rolled);
+            user.status();
+            break;
+          }
+          case 'give': {
+            getData(target).then(data => createItem(data).then(item => pushData(user.id, 'items', item.id)));
+            break;
+          }
+          default: {
+            break;
+          }
         }
       }
-    }
+    });
   });
 };

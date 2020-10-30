@@ -97,6 +97,10 @@ server.on('connection', async (socket) => {
       }
       default: {
         switch (command.name) {
+          case 'ask': {
+            const target = command.args.join(' ');
+            return writeStream(userId, await actions.ask(userId, target));
+          }
           case 'attack': {
             const equipped = await getList(userId, 'equipped');
             const weapon = equipped.find(eq => eq.type === 'weapon');

@@ -1,5 +1,5 @@
 import { of } from 'rxjs';
-import { writeStream } from '../../src/service/StreamService';
+import { writeStream } from '../../src/service/stream.service';
 
 const timeout = ms => new Promise(res => setTimeout(res, ms));
 

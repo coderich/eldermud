@@ -22,17 +22,17 @@ export default {
       {
         id: 'combat',
         cmd: 'ask',
-        targets: ['combat', 'fight'],
+        keywords: ['combat', 'fight'],
         effects: [
           { type: 'html', html: '<div class="dialog">It\'s all about courage, strategy, and luck!</div>' },
           { type: 'increase:exp', roll: 10, limit: 1 },
-          { type: 'increase:exp', roll: 10, limit: 1 },
+          { type: 'give:object.dagger', roll: 1, limit: 1 },
         ],
       },
       {
         id: 'bottle',
         cmd: 'give',
-        targets: ['item.bottle'],
+        keywords: ['item.bottle'],
         effects: [
           { type: 'info', info: '' },
           { type: 'increase:exp', roll: 100, limit: 1 },

@@ -2,7 +2,7 @@ import { mergeMap } from 'rxjs/operators';
 import { getData } from '../../service/data.service';
 import { toRoom } from '../../service/socket.service';
 import { createAction } from '../../service/stream.service';
-import { resolveTrigger } from '../../service/game.service';
+import { resolveInteraction } from '../../service/game.service';
 
 export default async (id, input) => {
   return createAction(
@@ -24,8 +24,7 @@ export default async (id, input) => {
 
         if (target.isNPC) {
           unit.broadcastToRoom(room.id, 'message', { type: 'info', value: `${unit.name} greets ${target.name}.` });
-          const trigger = target.triggers.find(t => t.cmd === 'greet');
-          if (trigger) resolveTrigger(room, target, unit, trigger);
+          resolveInteraction(room, target, unit, 'greet', input);
         }
       }
     }),

@@ -203,4 +203,9 @@ export default class User extends Unit {
   async describe(type, ...rest) {
     return { type, value: await this.describer.describe(type, ...rest) };
   }
+
+  say(phrase) {
+    this.emit('message', { type: 'info', value: `You say "${phrase}"` });
+    this.broadcastToRoom(this.room, 'message', { type: 'info', value: `${this.name} says "${phrase}"` });
+  }
 }
