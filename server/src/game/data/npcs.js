@@ -3,7 +3,16 @@ export default {
     id: 'npc.cityGuard',
     name: 'City guard',
     pronoun: 'he',
-    triggers: [],
+    triggers: [
+      {
+        id: 'greet',
+        cmd: 'greet',
+        effects: [
+          { type: 'html', html: "<div class='dialog'>Hello traveler. I am ${this.npc.name}.</div>" },
+          { type: 'increase:exp', roll: 10, limit: 1 },
+        ],
+      },
+    ],
   },
 
   'npc.oldMan': {

@@ -1,16 +1,13 @@
-import { EventEmitter } from 'events';
 import { remove } from 'lodash';
 import { Subject, interval } from 'rxjs';
 import { tap, share, publish, retry, delayWhen } from 'rxjs/operators';
 import { getData, setData, incData, pushData } from './data.service';
 import { toRoom, emit } from './socket.service';
-import { roll, titleCase, randomElement } from './util.service';
+import { roll, titleCase, randomElement, fillTemplate } from './util.service';
 
 let attackQueue = {};
 
 export { roll };
-
-export const eventEmitter = new EventEmitter();
 
 export const isValidTarget = (source, target) => {
   if (source.id !== target.id) return true;
@@ -220,6 +217,7 @@ export const createItem = (templateData) => {
 export const resolveInteraction = (room, npc, user, cmd, input) => {
   const { triggers = [] } = npc;
   const words = input.trim().toLowerCase().split(' ').map(w => w.trim());
+  const templateVars = { room, npc, user, cmd, input };
 
   triggers.filter((trigger) => {
     const { cmd: tcmd, keywords } = trigger;
@@ -242,11 +240,11 @@ export const resolveInteraction = (room, npc, user, cmd, input) => {
       if (historyCount < limit) {
         switch (action) {
           case 'info': {
-            user.emit('message', { type: 'info', value: effect.info });
+            user.emit('message', { type: 'info', value: fillTemplate(effect.info, templateVars) });
             break;
           }
           case 'html': {
-            user.emit('message', { type: 'html', value: effect.html });
+            user.emit('message', { type: 'html', value: fillTemplate(effect.html, templateVars) });
             break;
           }
           case 'increase': {

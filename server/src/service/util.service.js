@@ -6,6 +6,21 @@ export const numToArray = num => Array.from(Array(num));
 export const titleCase = name => name.charAt(0).toUpperCase() + name.slice(1);
 export const randomElement = arr => arr[Math.floor(Math.random() * arr.length)];
 export const timeout = ms => new Promise(res => setTimeout(res, ms));
+// export const tnl = level => 100 * (level ** 2) - (100 * level); // D&D
+export const tnl = level => Math.floor(100 * (level ** (1.3 + (level / 10))));
+export const rgen = level => Math.floor(level / 5) + 1;
+export const fillTemplate = (str, vars) => new Function(`return \`${str}\`;`).call(vars); // eslint-disable-line
+
+export const svl = (level) => {
+  let value = 0;
+
+  for (let i = 1; i <= level; i++) {
+    const mul = Math.floor(i / 5) + 3;
+    value += mul * i;
+  }
+
+  return value;
+};
 
 export const roll = (dice) => {
   if (typeof dice !== 'string') return dice;
@@ -60,19 +75,3 @@ export const rdirections = {
   u: 'down',
   d: 'up',
 };
-
-export const tnl = level => Math.floor(100 * (level ** (1.3 + (level / 10))));
-// export const tnl = level => 100 * (level ** 2) - (100 * level); // D&D
-
-export const svl = (level) => {
-  let value = 0;
-
-  for (let i = 1; i <= level; i++) {
-    const mul = Math.floor(i / 5) + 3;
-    value += mul * i;
-  }
-
-  return value;
-};
-
-export const rgen = level => Math.floor(level / 5) + 1;
