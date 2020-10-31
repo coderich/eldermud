@@ -13,7 +13,7 @@ export default async (id, target) => createAction(
     const stat = stats.find(st => st.indexOf(target) === 0);
     if (!await room.Trainer()) unit.abortAction('There is no trainer here!');
     if (!stat) unit.abortAction('Train what? (STR|AGI|INT)');
-    if (unit.exp < needed) unit.breakAction('Insufficient souls.');
+    if (unit.exp < needed) unit.breakAction('You have insufficient focus.');
 
     const promises = [incData(unit.id, 'lvl', 1), incData(unit.id, 'exp', -needed)];
 

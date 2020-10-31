@@ -113,7 +113,7 @@ export default class Creature extends Unit {
     const share = Math.ceil(this.exp / involved.length);
     involved.forEach((unit) => {
       unit.exp += share;
-      unit.emit('message', { type: 'info', value: `You gain ${share} souls.` });
+      unit.emit('message', { type: 'info', value: `You gain ${share} focus.` });
     });
 
     const now = new Date().getTime();

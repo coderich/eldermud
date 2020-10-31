@@ -12,7 +12,7 @@ export default async (id, input) => {
       const unit = await getData(id);
       const room = await unit.Room();
       const target = await room.resolveTarget('units', subject, { omit: [id] });
-      if (!target || !target.isNPC) unit.say(`ask ${input}`);
+      if (!phrase || !target || !target.isNPC) unit.say(`ask ${input}`);
       else resolveInteraction(room, target, unit, 'ask', phrase);
     }),
   );

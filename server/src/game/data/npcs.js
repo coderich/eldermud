@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string, no-multi-str */
 export default {
   'npc.cityGuard': {
     id: 'npc.cityGuard',
@@ -8,7 +9,15 @@ export default {
         id: 'greet',
         cmd: 'greet',
         effects: [
-          { type: 'html', html: "<div class='dialog'>Hello traveler. I am ${this.npc.name}.</div>" },
+          {
+            type: 'html',
+            html: "\
+              <div class='dialog'>\
+                <p>Greetings traveler!</p>\
+                <p>My name's ${this.npc.name}; I'm a member of Firebend's Royal Guard.</p>\
+              </div>\
+            ",
+          },
           { type: 'increase:exp', roll: 10, limit: 1 },
         ],
       },
@@ -24,8 +33,25 @@ export default {
         id: 'greet',
         cmd: 'greet',
         effects: [
-          { type: 'html', html: '<div class="dialog">Hi. I\'m a wise <strong>old</strong> man.</div>' },
+          {
+            type: 'html',
+            html: "\
+              <div class='dialog'>\
+                <p>${this.npc.name} looks at you and grumbles:</p>\
+                <p>That scoundrel <span class='highlight'>Weaponsmith</span>! He's ducking me, I just know it...</p>\
+              </div>\
+            ",
+          },
           { type: 'increase:exp', roll: 10, limit: 1 },
+        ],
+      },
+      {
+        id: 'quest',
+        cmd: 'ask',
+        keywords: ['weaponsmith'],
+        effects: [
+          { type: 'html', html: '<div class="dialog">Go check on him!</div>' },
+          { type: 'begin:quest', quest: 'quest.weaponsmith', limit: 1 },
         ],
       },
       {

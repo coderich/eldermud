@@ -1,0 +1,44 @@
+Baron's wife alleges theivery in the small town of Firebend
+Sheriff ordered lockdown due to pressure from Baron himself
+City guards stationed at each gate
+Barracks has army, but they aren't quick to act to chase a ghost
+Most townfolk are not worried and waiting for the missing item(s) to magically reappear and back to normal
+
+Outside of marketplace a shady character is waiting for the weaponsmith to show his face and settle a score
+The weaponsmith is MIA and the shady guy feels he's ducking him, he wants to fight/combat
+You can go check to see if weaponsmith is there for him (he's not) since he feels he runs if he gets near
+If you do this the shady guy will give you his extra pocket knife since he's upgraded for the impending battle
+
+Under the marketplace is a storage room with a few rats/ants and boxes (chests). The boxes will contain various items to aid in the quest. (torch, armor)
+
+The weaponsmith guy happened to spot an odd mirage and followed it into hidden tunnels
+There the weaponsmith encountered kobolds, fought many off, but fell into a trap and is deep down in a hole
+Find weaponsmith and he'll share what he knows, impart his gauntlet of strength + weapon to you, and wish you luck
+Will require rope and grapple to "go hole" and climb back out
+
+The Baron's wife does not know exactly what's missing. She heard noise and spotted a small, almost reptilian-like figure, scuttling away into the darkness at night. She knows something was taken.
+
+Behind the Baron's house is a secret door, covered in debris, that leads to underground storage
+Long forgotten you will find spiders, some cheap clothes (armor), and the hidden tunnel behind a giant crate (move crate?)
+
+---------------------------------------------------
+
++ Need ability to trigger event upon enter room
+    Guard should halt you and ask what's your business
+
++ Asking shady about weaponsmith should start the quest
+    Entering weaponshop after quest starts progresses it
+    Returning after visiting weaponshop and "greeting" shady continues the dialog
+    Greeting shady before completing quest should be reflected
+
++ "go" commands; perform if requirements met
+
++ "blockades"; Can moving up from hole be blockaded and check for rope?
+
++ "move" commands; perform if requirements met
+
++ "look" command; checking for additional detail in a room (eg look crate)
+
++ "use" torch?
+
++ Rooms with no light source

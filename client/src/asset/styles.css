@@ -60,6 +60,7 @@ sup {
   margin: 10px;
   padding: 10px;
 }
-/*.MuiTableCell-root {
-  font-size: 0.75rem !important;
-}*/
+
+.highlight {
+  color: #fffb7f;
+}

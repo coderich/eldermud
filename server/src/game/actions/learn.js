@@ -10,8 +10,8 @@ export default async (id, target) => createAction(
     const talent = (await trainer.resolveTarget('talents', target)) || unit.abortAction('Trainer does not know that talent!');
     if (await unit.resolveTarget('talents', target)) unit.abortAction('You already know that talent!');
     const { str = 0, agi = 0, int = 0 } = talent.req;
-    if (unit.str < str || unit.agi < agi || unit.int < int) unit.breakAction('Failed to meet requirements.');
-    if (unit.exp < talent.cost) unit.breakAction('Insufficient souls.');
+    if (unit.str < str || unit.agi < agi || unit.int < int) unit.breakAction('You fail to meet requirements.');
+    if (unit.exp < talent.cost) unit.breakAction('You have insufficient focus.');
 
     const promises = [pushData(unit.id, 'talents', talent.id), incData(unit.id, 'exp', -talent.cost)];
     if (talent.cooldown) promises.push(setData(unit.id, `cooldowns.${talent.code}`, 0));
