@@ -5,17 +5,10 @@ export default {
     triggers: [
       {
         id: 'check',
-        cmd: 'greet',
+        event: 'room:enter',
+        criteria: "${this.room.id} === 'room.weapons'",
         effects: [
-          {
-            type: 'html',
-            html: "\
-              <div class='dialog'>\
-                <p>Greetings traveler!</p>\
-                <p>My name's ${this.npc.name}; I'm a member of Firebend's Royal Guard.</p>\
-              </div>\
-            ",
-          },
+          { type: 'progress:quest', roll: 1, limit: 1 },
           { type: 'increase:exp', roll: 10, limit: 1 },
         ],
       },

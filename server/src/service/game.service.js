@@ -4,6 +4,7 @@ import { tap, share, publish, retry, delayWhen } from 'rxjs/operators';
 import { getData, setData, incData, pushData } from './data.service';
 import { toRoom, emit } from './socket.service';
 import { roll, titleCase, randomElement, fillTemplate } from './util.service';
+import { gameEmitter } from './event.service';
 
 let attackQueue = {};
 
@@ -261,6 +262,10 @@ export const resolveInteraction = (room, npc, user, cmd, input) => {
           }
           case 'give': {
             getData(target).then(data => createItem(data).then(item => pushData(user.id, 'items', item.id)));
+            break;
+          }
+          case 'begin': {
+            getData(effect.quest).then(quest => gameEmitter.emit('quest:begin', { user, quest }));
             break;
           }
           default: {

@@ -51,7 +51,7 @@ export default {
         keywords: ['weaponsmith'],
         effects: [
           { type: 'html', html: '<div class="dialog">Go check on him!</div>' },
-          { type: 'begin:quest', quest: 'quest.weaponsmith', limit: 1 },
+          { type: 'begin:quest', quest: 'quest.weaponsmith' },
         ],
       },
       {

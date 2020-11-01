@@ -7,6 +7,7 @@ import { writeStream } from './service/stream.service';
 import { svl } from './service/util.service';
 import * as actions from './game/actions';
 import * as talents from './game/talents';
+import './game/listeners';
 
 // Setup Server
 const server = new SocketServer(3003, { serveClient: false, pingTimeout: 30000 });
@@ -31,6 +32,7 @@ const newUser = (id, { str, agi, int, tals = [] }) => ({
   talents: tals,
   cooldowns: {},
   history: {},
+  quests: {},
 });
 
 server.on('connection', async (socket) => {

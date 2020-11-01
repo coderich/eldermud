@@ -1,5 +1,6 @@
 import { mergeMap, delay } from 'rxjs/operators';
 import { getData, setData, pushData, pullData } from '../../service/data.service';
+import { gameEmitter } from '../../service/event.service';
 import { createAction } from '../../service/stream.service';
 import { directions, rdirections } from '../../service/util.service';
 
@@ -15,7 +16,14 @@ export default async (id, dir, name) => createAction(
   }),
   delay(1000),
   mergeMap(async ({ unit, from, to }) => {
+    // Save data
     await Promise.all([setData(id, 'room', to.id), pushData(to.id, 'units', unit.id), pullData(from.id, 'units', unit.id)]);
+
+    // Events
+    gameEmitter.emit('room:leave', { room: from, unit });
+    gameEmitter.emit('room:enter', { room: to, unit });
+
+    //
     if (unit.isUser) {
       const message = await unit.describe('room', to);
       unit.emit('message', message);
