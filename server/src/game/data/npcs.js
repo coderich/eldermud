@@ -34,6 +34,7 @@ export default {
         cmd: 'greet',
         effects: [
           {
+            criteria: "!this.user.history['quest.weaponsmith']",
             type: 'html',
             html: "\
               <div class='dialog'>\
@@ -42,36 +43,44 @@ export default {
               </div>\
             ",
           },
+          {
+            criteria: "this.user.history['quest.weaponsmith'] && this.user.history['quest.weaponsmith'].indexOf('check') === -1",
+            type: 'html',
+            html: "\
+              <div class='dialog'>\
+                <p>Come back when you have more information on weaponsmith!</p>\
+              </div>\
+            ",
+          },
+        ],
+      },
+      {
+        id: 'greet2',
+        cmd: 'greet',
+        criteria: "this.user.history['quest.weaponsmith'] && this.user.history['quest.weaponsmith'].indexOf('check') > -1",
+        effects: [
+          {
+            type: 'html',
+            html: "<div class='dialog'>Heh... doesn't surprise me.</div>",
+          },
+          {
+            type: 'html',
+            html: "<div class='dialog'>Here, take this:.</div>",
+          },
           { type: 'increase:exp', roll: 10, limit: 1 },
+          { type: 'give:object.dagger', roll: 1, limit: 1 },
+          { type: 'end:quest', quest: 'quest.weaponsmith', limit: 1 },
         ],
       },
       {
         id: 'quest',
         cmd: 'ask',
+        // criteria: "'weaponsmith'.indexOf(`${this.cmd}`) === 0",
         keywords: ['weaponsmith'],
         effects: [
           { type: 'html', html: '<div class="dialog">Go check on him!</div>' },
-          { type: 'begin:quest', quest: 'quest.weaponsmith' },
-        ],
-      },
-      {
-        id: 'combat',
-        cmd: 'ask',
-        keywords: ['combat', 'fight'],
-        effects: [
-          { type: 'html', html: '<div class="dialog">It\'s all about courage, strategy, and luck!</div>' },
+          { type: 'begin:quest', quest: 'quest.weaponsmith', limit: 1 },
           { type: 'increase:exp', roll: 10, limit: 1 },
-          { type: 'give:object.dagger', roll: 1, limit: 1 },
-        ],
-      },
-      {
-        id: 'bottle',
-        cmd: 'give',
-        keywords: ['item.bottle'],
-        effects: [
-          { type: 'info', info: '' },
-          { type: 'increase:exp', roll: 100, limit: 1 },
-          { type: 'begin:quest', quest: 'quest.1', limit: 1 },
         ],
       },
     ],

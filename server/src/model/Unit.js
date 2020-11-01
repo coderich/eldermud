@@ -78,4 +78,8 @@ export default class Unit extends Model {
     if (keys.length) return keys;
     return undefined;
   }
+
+  Quests() {
+    return this.getList(this.id, 'quests');
+  }
 }

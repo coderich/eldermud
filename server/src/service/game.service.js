@@ -1,9 +1,9 @@
-import { remove } from 'lodash';
+import { remove, get } from 'lodash';
 import { Subject, interval } from 'rxjs';
 import { tap, share, publish, retry, delayWhen } from 'rxjs/operators';
 import { getData, setData, incData, pushData } from './data.service';
 import { toRoom, emit } from './socket.service';
-import { roll, titleCase, randomElement, fillTemplate } from './util.service';
+import { roll, titleCase, randomElement, fillTemplate, runCriteria } from './util.service';
 import { gameEmitter } from './event.service';
 
 let attackQueue = {};
@@ -215,6 +215,67 @@ export const createItem = (templateData) => {
   return setData(id, Object.assign({}, templateData, { id, template, state: {} }));
 };
 
+export const resolveTrigger = (trigger, sourceId, templateVars) => {
+  templateVars.get = get;
+  const { id, effects = [] } = trigger;
+  const { user } = templateVars;
+  const historyId = `${sourceId}:${id}`;
+  const historyCount = user.history[historyId] || 0;
+
+  // Criteria check
+  if (!runCriteria(trigger.criteria, templateVars)) return;
+
+  // Save update to history
+  setData(user.id, 'history', Object.assign(user.history, { [historyId]: historyCount + 1 }));
+
+  // Perform effects
+  effects.forEach((effect) => {
+    const { type, limit = Infinity } = effect;
+    const [action, target] = type.split(':');
+
+    if (!runCriteria(effect.criteria, templateVars)) return;
+    if (historyCount >= limit) return;
+
+    switch (action) {
+      case 'info': {
+        user.emit('message', { type: 'info', value: fillTemplate(effect.info, templateVars) });
+        break;
+      }
+      case 'html': {
+        user.emit('message', { type: 'html', value: fillTemplate(effect.html, templateVars) });
+        break;
+      }
+      case 'increase': {
+        const rolled = roll(effect.roll);
+        incData(user.id, target, rolled);
+        user.status();
+        break;
+      }
+      case 'decrease': {
+        const rolled = roll(effect.roll);
+        incData(user.id, target, -rolled);
+        user.status();
+        break;
+      }
+      case 'give': {
+        getData(target).then(data => createItem(data).then(item => pushData(user.id, 'items', item.id)));
+        break;
+      }
+      case 'begin': {
+        getData(effect.quest).then(quest => gameEmitter.emit('quest:begin', { user, quest }));
+        break;
+      }
+      case 'progress': {
+        getData(effect.quest).then(quest => gameEmitter.emit('quest:progress', { user, effect, trigger }));
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  });
+};
+
 export const resolveInteraction = (room, npc, user, cmd, input) => {
   const { triggers = [] } = npc;
   const words = input.trim().toLowerCase().split(' ').map(w => w.trim());
@@ -226,53 +287,6 @@ export const resolveInteraction = (room, npc, user, cmd, input) => {
     if (keywords && !words.some(word => keywords.indexOf(word) > -1)) return false;
     return true;
   }).forEach((trigger) => {
-    const { id, effects = [] } = trigger;
-    const historyId = `${npc.id}:${id}`;
-    const historyCount = user.history[historyId] || 0;
-
-    // Save update to history
-    setData(user.id, 'history', Object.assign(user.history, { [historyId]: historyCount + 1 }));
-
-    // Perform effects
-    effects.forEach((effect) => {
-      const { type, limit = Infinity } = effect;
-      const [action, target] = type.split(':');
-
-      if (historyCount < limit) {
-        switch (action) {
-          case 'info': {
-            user.emit('message', { type: 'info', value: fillTemplate(effect.info, templateVars) });
-            break;
-          }
-          case 'html': {
-            user.emit('message', { type: 'html', value: fillTemplate(effect.html, templateVars) });
-            break;
-          }
-          case 'increase': {
-            const rolled = roll(effect.roll);
-            incData(user.id, target, rolled);
-            user.status();
-            break;
-          }
-          case 'decrease': {
-            const rolled = roll(effect.roll);
-            incData(user.id, target, -rolled);
-            user.status();
-            break;
-          }
-          case 'give': {
-            getData(target).then(data => createItem(data).then(item => pushData(user.id, 'items', item.id)));
-            break;
-          }
-          case 'begin': {
-            getData(effect.quest).then(quest => gameEmitter.emit('quest:begin', { user, quest }));
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-      }
-    });
+    resolveTrigger(trigger, npc.id, templateVars);
   });
 };

@@ -10,6 +10,7 @@ export const timeout = ms => new Promise(res => setTimeout(res, ms));
 export const tnl = level => Math.floor(100 * (level ** (1.3 + (level / 10))));
 export const rgen = level => Math.floor(level / 5) + 1;
 export const fillTemplate = (str, vars) => new Function(`return \`${str}\`;`).call(vars); // eslint-disable-line
+export const runCriteria = (str, vars) => str ? new Function(`return Boolean(eval(${str}));`).call(vars) : true; // eslint-disable-line
 
 export const svl = (level) => {
   let value = 0;

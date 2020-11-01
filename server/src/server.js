@@ -32,7 +32,7 @@ const newUser = (id, { str, agi, int, tals = [] }) => ({
   talents: tals,
   cooldowns: {},
   history: {},
-  quests: {},
+  quests: [],
 });
 
 server.on('connection', async (socket) => {
