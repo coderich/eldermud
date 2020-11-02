@@ -12,6 +12,11 @@ gameEmitter.on('quest:progress', ({ user, effect, trigger }) => {
   setData(user.id, 'history', user.history);
 });
 
+gameEmitter.on('quest:conclude', ({ user, effect, trigger }) => {
+  user.history[effect.quest].push(trigger.id);
+  setData(user.id, 'history', user.history);
+});
+
 gameEmitter.on('room:enter', async (event) => {
   const { unit } = event;
   if (!unit.isUser) return;

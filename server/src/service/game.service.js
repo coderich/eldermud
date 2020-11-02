@@ -269,6 +269,10 @@ export const resolveTrigger = (trigger, sourceId, templateVars) => {
         getData(effect.quest).then(quest => gameEmitter.emit('quest:progress', { user, effect, trigger }));
         break;
       }
+      case 'conclude': {
+        getData(effect.quest).then(quest => gameEmitter.emit('quest:conclude', { user, effect, trigger }));
+        break;
+      }
       default: {
         break;
       }

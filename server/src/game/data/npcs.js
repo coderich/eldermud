@@ -69,7 +69,7 @@ export default {
           },
           { type: 'increase:exp', roll: 10, limit: 1 },
           { type: 'give:object.dagger', roll: 1, limit: 1 },
-          { type: 'end:quest', quest: 'quest.weaponsmith', limit: 1 },
+          { type: 'conclude:quest', quest: 'quest.weaponsmith', limit: 1 },
         ],
       },
       {
