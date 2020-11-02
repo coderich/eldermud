@@ -5,7 +5,6 @@ import AbortActionError from '../error/AbortActionError';
 const streams = {};
 
 export const createAction = (...operators) => () => of('action').pipe(
-  // delay(50),
   ...operators,
   catchError((e) => {
     if (e instanceof AbortActionError) return empty();

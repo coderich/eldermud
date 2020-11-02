@@ -10,6 +10,17 @@ https://github.com/colyseus/colyseus
 https://github.com/lance-gg/lance
 https://github.com/actionhero/actionhero-tutorial
 
+https://www.fantasynamegenerators.com/town_names.php
+http://donjon.bin.sh/code/dungeon/
+https://github.com/nagoshiashumari/rpg-awesome-raw
+https://nagoshiashumari.github.io/Rpg-Awesome/
+https://2minutetabletop.com/how-to-design-a-town/
+https://www.reddit.com/r/rpg/comments/8liwjz/how_to_create_a_peculiar_little_town/
+https://www.dmsguild.com/browse.php?filters=0_45474_45393_0_45536_0_0_0&pfrom=0&pto=0
+https://online.anyflip.com/duex/ixpz/mobile/index.html#p=196
+https://orkerhulen.dk/onewebmedia/Monster%20Manual.pdf
+http://getasword.com/blog/300-nobility-titles-and-ranks-in-medieval-europe/
+
 
 * use "meta" in your actions to describe what caused the update. This can be passed down to client for render.
 

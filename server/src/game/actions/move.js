@@ -4,7 +4,7 @@ import { gameEmitter } from '../../service/event.service';
 import { createAction } from '../../service/stream.service';
 import { directions, rdirections } from '../../service/util.service';
 
-export default async (id, dir, name) => createAction(
+export default (id, dir, name) => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
     const room = await unit.Room();

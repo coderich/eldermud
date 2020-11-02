@@ -4,7 +4,7 @@ import { tap, share, publish, retry, delayWhen } from 'rxjs/operators';
 import { getData, setData, incData, pushData } from './data.service';
 import { toRoom, emit } from './socket.service';
 import { roll, titleCase, randomElement, fillTemplate, runCriteria } from './util.service';
-import { gameEmitter } from './event.service';
+import { actionEmitter, gameEmitter } from './event.service';
 
 let attackQueue = {};
 
@@ -292,5 +292,11 @@ export const resolveInteraction = (room, npc, user, cmd, input) => {
     return true;
   }).forEach((trigger) => {
     resolveTrigger(trigger, npc.id, templateVars);
+  });
+};
+
+export const attemptAction = (name, event, thunk) => {
+  return actionEmitter.emit('action', { type: `pre:${name}`, data: event }).then(() => thunk()).then((result) => {
+    return actionEmitter.emit('action', { type: `post:${name}`, data: event });
   });
 };

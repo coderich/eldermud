@@ -36,6 +36,12 @@ export const roll = (dice) => {
   return eval(`${value} ${op} ${mod}`); // eslint-disable-line
 };
 
+export const promiseChain = (promises) => {
+  return promises.reduce((chain, promise) => {
+    return chain.then(chainResults => promise([...chainResults]).then(promiseResult => [...chainResults, promiseResult]));
+  }, Promise.resolve([]));
+};
+
 export const getCoords = (row, col, dir) => {
   switch (dir) {
     case 'n': { row--; break; }

@@ -42,6 +42,7 @@ export default {
     depth: 2,
     items: [],
     units: [],
+    trainer: 'trainer.mage',
   },
   'room.market2': {
     id: 'room.market2',
@@ -255,7 +256,7 @@ export default {
     id: 'room.arenaNW2',
     name: '',
     description: '',
-    exits: { w: 'room.arenaW1', s: 'room.arenaW2' },
+    exits: { w: 'room.arenaNW1', s: 'room.arenaW2' },
     fov: 'arena',
     items: [],
     units: [],

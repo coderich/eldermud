@@ -3,7 +3,7 @@ import { getData } from '../../service/data.service';
 import { createAction } from '../../service/stream.service';
 import { breakAttack } from '../../service/game.service';
 
-export default async id => createAction(
+export default id => createAction(
   mergeMap(async () => {
     const unit = await getData(id);
     await breakAttack(unit.id);

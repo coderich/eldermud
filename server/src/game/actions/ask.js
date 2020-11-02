@@ -3,7 +3,7 @@ import { getData } from '../../service/data.service';
 import { createAction } from '../../service/stream.service';
 import { resolveInteraction } from '../../service/game.service';
 
-export default async (id, input) => {
+export default (id, input) => {
   const [, phrase] = input.match(/"([\S\s]+)"/) || [];
   const subject = input.substr(0, input.indexOf('"')).trim();
 

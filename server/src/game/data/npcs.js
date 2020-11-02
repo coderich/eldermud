@@ -52,6 +52,7 @@ export default {
               </div>\
             ",
           },
+          { type: 'increase:exp', roll: 10, limit: 1 },
         ],
       },
       {

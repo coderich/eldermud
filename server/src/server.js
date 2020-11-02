@@ -60,14 +60,14 @@ server.on('connection', async (socket) => {
         break;
       }
       default: {
-        user = await setData(userId, newUser(userId, { str: 1, agi: 1, int: 1 }));
+        user = await setData(userId, newUser(userId, { str: 3, agi: 3, int: 3 }));
         break;
       }
     }
   }
 
   await pushData(user.room, 'units', userId);
-  writeStream(userId, await actions.scan(userId));
+  writeStream(userId, actions.scan(userId));
   user.connect();
 
   socket.on('disconnecting', async (reason) => {
@@ -86,7 +86,7 @@ server.on('connection', async (socket) => {
 
     switch (command.scope) {
       case 'navigation': {
-        return writeStream(userId, await actions.move(userId, command.code, command.name));
+        return writeStream(userId, actions.move(userId, command.code, command.name));
       }
       case 'talent': {
         const unit = await getData(userId);
@@ -101,91 +101,91 @@ server.on('connection', async (socket) => {
         switch (command.name) {
           case 'ask': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.ask(userId, target));
+            return writeStream(userId, actions.ask(userId, target));
           }
           case 'attack': {
             const equipped = await getList(userId, 'equipped');
             const weapon = equipped.find(eq => eq.type === 'weapon');
             const attack = weapon ? weapon.attack : { dmg: '1d3', acc: '3d5+5', hits: ['punch'], misses: ['swing'] };
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.attack(userId, target, attack));
+            return writeStream(userId, actions.attack(userId, target, attack));
           }
           case 'break': {
-            return writeStream(userId, await actions.break(userId));
+            return writeStream(userId, actions.break(userId));
           }
           case 'buy': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.buy(userId, target));
+            return writeStream(userId, actions.buy(userId, target));
           }
           case 'open': case 'close': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions[command.name](userId, target));
+            return writeStream(userId, actions[command.name](userId, target));
           }
           case 'drop': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.drop(userId, target));
+            return writeStream(userId, actions.drop(userId, target));
           }
           case 'equip': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.equip(userId, target));
+            return writeStream(userId, actions.equip(userId, target));
           }
           case 'exp': {
-            return writeStream(userId, await actions.exp(userId));
+            return writeStream(userId, actions.exp(userId));
           }
           case 'get': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.get(userId, target));
+            return writeStream(userId, actions.get(userId, target));
           }
           case 'greet': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.greet(userId, target));
+            return writeStream(userId, actions.greet(userId, target));
           }
           case 'inventory': {
-            return writeStream(userId, await actions.inventory(userId));
+            return writeStream(userId, actions.inventory(userId));
           }
           case 'learn': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.learn(userId, target));
+            return writeStream(userId, actions.learn(userId, target));
           }
           case 'list': {
-            return writeStream(userId, await actions.list(userId));
+            return writeStream(userId, actions.list(userId));
           }
           case 'lock': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.lock(userId, target));
+            return writeStream(userId, actions.lock(userId, target));
           }
           case 'look': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.look(userId, target));
+            return writeStream(userId, actions.look(userId, target));
           }
           case 'remove': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.remove(userId, target));
+            return writeStream(userId, actions.remove(userId, target));
           }
           case 'search': {
-            return writeStream(userId, await actions.search(userId));
+            return writeStream(userId, actions.search(userId));
           }
           case 'sell': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.sell(userId, target));
+            return writeStream(userId, actions.sell(userId, target));
           }
           case 'train': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.train(userId, target));
+            return writeStream(userId, actions.train(userId, target));
           }
           case 'unlock': {
             const target = command.args.join(' ');
-            return writeStream(userId, await actions.unlock(userId, target));
+            return writeStream(userId, actions.unlock(userId, target));
           }
           case 'use': {
             const dir = translate(command.args[command.args.length - 1]);
-            return writeStream(userId, await actions.use(userId, command, dir));
+            return writeStream(userId, actions.use(userId, command, dir));
           }
           case 'none': {
-            return writeStream(userId, await actions.scan(userId));
+            return writeStream(userId, actions.scan(userId));
           }
           default: {
-            return writeStream(userId, await actions.say(userId, command.input));
+            return writeStream(userId, actions.say(userId, command.input));
           }
           // default: {
           //   return socket.emit('message', { type: 'info', value: 'Your command had no effect.' });
