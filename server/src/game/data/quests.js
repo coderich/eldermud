@@ -14,8 +14,8 @@ export default {
       // },
       {
         id: 'check',
-        event: 'room:enter',
-        criteria: "this.room.id === 'room.weapons'",
+        event: 'post:move',
+        criteria: "this.to.id === 'room.weapons'",
         effects: [
           { type: 'progress:quest', quest: 'quest.weaponsmith', limit: 1 },
           { type: 'increase:exp', roll: 50, limit: 1 },

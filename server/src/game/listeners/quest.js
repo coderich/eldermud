@@ -17,14 +17,14 @@ gameEmitter.on('quest:conclude', ({ user, effect, trigger }) => {
   setData(user.id, 'history', user.history);
 });
 
-gameEmitter.on('room:enter', async (event) => {
+gameEmitter.on('post:move', async (event) => {
   const { unit } = event;
   if (!unit.isUser) return;
   event.user = event.unit;
   const quests = await unit.Quests();
 
   //
-  quests.filter(q => q.triggers.find(t => t.event === 'room:enter')).forEach((quest) => {
+  quests.filter(q => q.triggers.find(t => t.event === 'post:move')).forEach((quest) => {
     quest.triggers.forEach(trigger => resolveTrigger(trigger, quest.id, event));
   });
 });

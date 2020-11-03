@@ -11,8 +11,10 @@ export default (id, dir, name) => createAction(
     const exit = await room.Exit(dir) || unit.abortAction('There is no exit in that direction!');
     const obstacles = await room.Obstacle(dir);
     if (obstacles && !obstacles.some(obstacle => obstacle.resolve())) unit.abortAction('There is an obstacle in your way!');
+    const event = { unit, from: room, to: exit };
+    await gameEmitter.emit('pre:move', event);
     unit.emit('message', { type: 'info', value: `moving ${name}...` });
-    return { unit, from: room, to: exit };
+    return event;
   }),
   delay(1000),
   mergeMap(async ({ unit, from, to }) => {
@@ -20,7 +22,7 @@ export default (id, dir, name) => createAction(
     await Promise.all([setData(id, 'room', to.id), pushData(to.id, 'units', unit.id), pullData(from.id, 'units', unit.id)]);
 
     // Events
-    gameEmitter.emit('room:leave', { room: from, unit });
+    gameEmitter.emit('post:move', { unit, from, to });
     gameEmitter.emit('room:enter', { room: to, unit });
 
     //

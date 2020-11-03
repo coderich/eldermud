@@ -13,14 +13,3 @@ export const serverEmitter = new EventEmitter();
  * Used to emit game events
  */
 export const gameEmitter = new EventEmitter();
-
-/**
- * ActionEmitter
- *
- * Used to emit actions. This wrapper allows interceptors to prevent the action from occuring
- */
-export const actionEmitter = new EventEmitter().on('action', async (event, next) => {
-  const { type, data } = event;
-  await gameEmitter.emit(type, data);
-  next();
-});
