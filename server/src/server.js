@@ -60,7 +60,7 @@ server.on('connection', async (socket) => {
         break;
       }
       default: {
-        user = await setData(userId, newUser(userId, { str: 3, agi: 3, int: 3 }));
+        user = await setData(userId, newUser(userId, { str: 3, agi: 2, int: 1 }));
         break;
       }
     }

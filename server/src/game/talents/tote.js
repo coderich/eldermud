@@ -4,7 +4,6 @@ import { createAction } from '../../service/stream.service';
 import { instaAttack, isValidTarget } from '../../service/game.service';
 import { toRoom } from '../../service/socket.service';
 
-
 const cost = 20;
 
 export default async (id, command) => createAction(

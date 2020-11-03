@@ -7,7 +7,7 @@ export default {
     cost: 150,
     cooldown: 8,
     req: {
-      ma: 6,
+      ma: 4,
       int: 3,
     },
   },
