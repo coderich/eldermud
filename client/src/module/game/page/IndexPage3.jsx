@@ -2,7 +2,6 @@ import React, { memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 import Terminal from '../component/terminal/Terminal';
 import MapView from '../component/map/Map';
-import Player from '../component/Player';
 import PlayerInput from '../component/PlayerInput';
 
 const mapSize = '320px';

@@ -1,9 +1,7 @@
 import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
 import Terminal from '../component/terminal/Terminal';
-import MapView from '../component/map/Map';
 import RoomHUD from '../component/RoomHUD';
-import PlayerView from '../component/PlayerView';
 import PlayerHUD from '../component/PlayerHUD';
 import PlayerStatus from '../component/PlayerStatus';
 

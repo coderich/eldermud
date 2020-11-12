@@ -1,7 +1,7 @@
 // http://jsplumb.github.io/jsplumb/types.html#connection-type
 import React, { PropTypes, memo, connect } from '@coderich/hotrod/react';
 import { Grid } from '@material-ui/core';
-import { draw } from '../../service/MinimapService';
+import { draw } from '../../../../service/MinimapService';
 import Room from './Room';
 
 const viewport = {

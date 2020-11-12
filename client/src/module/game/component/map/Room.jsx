@@ -1,5 +1,5 @@
 import React, { PropTypes, memo } from '@coderich/hotrod/react';
-import { hexagon } from '../../service/SVGService';
+import { hexagon } from '../../../../service/SVGService';
 
 const style = { stroke: 'red', width: 20, height: 20, margin: 10 };
 
