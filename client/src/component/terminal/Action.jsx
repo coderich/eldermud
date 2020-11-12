@@ -132,7 +132,7 @@ const Action = memo((props) => {
       }
     }
     case 'html': {
-      console.log(value);
+      console.log('strange', value);
       return <div dangerouslySetInnerHTML={{ __html: value }} />;
     }
     default: {

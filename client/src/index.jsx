@@ -25,6 +25,7 @@ const actions = {
   status: new Action('status'),
   minimap: new Action('minimap'),
   connect: new Action('connect'),
+  addRoomPath: new Action('addRoomPath'),
 };
 
 const selectors = {
@@ -36,6 +37,7 @@ const selectors = {
   responses: new Selector('data.responses').default([]),
   maps: new Selector('data.maps').default({ minimap: [] }),
   connected: new Selector('data.connected').default(false),
+  roomPaths: new Selector('data.roomPaths').default([]),
 };
 
 const reducers = [
@@ -72,6 +74,13 @@ const reducers = [
   new Reducer(actions.connect, selectors.connected, ({
     success: (data, { payload }) => {
       return payload;
+    },
+  })),
+  new Reducer(actions.addRoomPath, selectors.data, ({
+    success: (data, { payload }) => {
+      const { from, to } = payload;
+      data.roomPaths = data.roomPaths || [];
+      data.roomPaths.push({ x1: from.x, y1: from.y, x2: to.x, y2: to.y });
     },
   })),
 ];
