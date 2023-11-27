@@ -6,15 +6,12 @@ import ReactDOM from 'react-dom';
 import { Router } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import SocketIO from 'socket.io-client';
 import Routes from './Routes';
 import store from './store';
 import theme from './theme';
+import server from './server';
 
 const { $history, $storage } = Services.get();
-let query = Object.entries($storage.get('query') || {}).map(([key, value]) => `${key}=${value}`).join('&');
-if ($history.location.search) query = `${$history.location.search.substr(1)}&${query}`;
-const server = SocketIO('http://localhost:3003', { query });
 
 const actions = {
   command: new Action('command', (payload) => { server.send(payload); }),

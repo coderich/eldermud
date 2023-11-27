@@ -20,7 +20,7 @@ https://www.dmsguild.com/browse.php?filters=0_45474_45393_0_45536_0_0_0&pfrom=0&
 https://online.anyflip.com/duex/ixpz/mobile/index.html#p=196
 https://orkerhulen.dk/onewebmedia/Monster%20Manual.pdf
 http://getasword.com/blog/300-nobility-titles-and-ranks-in-medieval-europe/
-
+https://api.fungenerators.com
 
 * use "meta" in your actions to describe what caused the update. This can be passed down to client for render.
 

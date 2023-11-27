@@ -1,0 +1,12 @@
+* Combat Mechanics
+  - I like the idea of combat tactics; how many things you can perform in a given round (ie swing and use potion)
+  - How about channeling abilities?
+  - Should each unit have their own initiative/timing for attacks rather than the game pulse "round"?
+  ! I'm back to the idea of each action taking time to prepare, execute immediate, and then time to recover. Once you give a command you cannot take it back. You cannot move/run until your command has finished executing. You cannot move/run and attack at the same time. There could be abilities to maneuver during combat which keeps you in the room and does something useful. You could also have the concept of "chase" target so that you try to move and attack at the same time...
+
+* Need to figure out exp + currency mechanics
+* Need class/race combos
+  - Leaving things open-ended is not good; the player needs a vision and direction
+  - I like the idea that classes and races have set attribute boosts per level and special traits/abilities
+* Ability to "join" channel and play the game solo (tutorial, quests, etc)
+* Ability to "enter" and "exit" the realm
