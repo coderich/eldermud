@@ -3,7 +3,7 @@ module.exports = class Stream {
   #action;
   #flowing = false;
 
-  constructor(...thunks) {
+  constructor(name, ...thunks) {
     this.#thunks = thunks.flat();
     this.#flow();
   }
@@ -35,6 +35,6 @@ module.exports = class Stream {
   }
 
   static define(name, ...thunks) {
-    return (Stream[name] = new Stream(thunks));
+    return (Stream[name] = new Stream(name, thunks));
   }
 };
