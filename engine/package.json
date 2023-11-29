@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "lint": "eslint ./",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@coderich/util": "^0.1.4"
+  },
+  "devDependencies": {
+    "@coderich/dev": "^0.1.0"
+  }
+}
