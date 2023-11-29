@@ -2,9 +2,10 @@ const { pipeline } = require('@coderich/util');
 const { AbortError } = require('./Error');
 
 module.exports = class Action {
-  constructor(name, ...steps) {
-    return (startValue) => {
-      const context = {};
+  constructor(id, ...steps) {
+    steps = steps.flat();
+
+    return (startValue, context = {}) => {
       const listeners = [];
 
       let resolve, reject, started = false, aborted = false;
@@ -15,13 +16,13 @@ module.exports = class Action {
         reject(new AbortError('Action Aborted', data));
       };
 
-      pipeline(steps.flat().map((step, index) => value => new Promise((res, rej) => {
-        setImmediate(() => {
+      pipeline(steps.map((step, index) => value => new Promise((res, rej) => {
+        setImmediate(async () => {
           if (!aborted) {
-            if (!started) listeners.forEach(l => l(0));
+            if (!started) await Promise.all(listeners.map(l => l(0)));
             started = true;
-            Promise.race([promise, step(value, context)]).then((d) => {
-              listeners.forEach(l => l(index + 1));
+            Promise.race([promise, step(value, context)]).then(async (d) => {
+              await Promise.all(listeners.map(l => l(index + 1)));
               res(d);
             }).catch(rej);
           }
@@ -32,16 +33,17 @@ module.exports = class Action {
         if (!(e instanceof AbortError)) throw e;
         return e;
       }), {
-        name: { value: name },
-        abort: { value: context.abort },
+        id: { value: id },
+        steps: { value: steps.length },
+        abort: { get() { return reason => context.abort(reason) && this; } },
+        listen: { get() { return listener => listeners.push(listener) && this; } },
         aborted: { get: () => aborted },
         started: { get: () => started },
-        listen: { value: listener => listeners.push(listener) },
       });
     };
   }
 
-  static define(name, ...steps) {
-    return (Action[name] = new Action(name, steps));
+  static define(id, ...steps) {
+    return (Action[id] = new Action(id, steps));
   }
 };

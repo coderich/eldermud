@@ -3,24 +3,45 @@ const Action = require('./Action');
 const Stream = require('./Stream');
 
 module.exports = class Actor extends EventEmitter {
+  constructor(id) {
+    super();
+    this.id = id;
+  }
+
   perform(action, data) {
-    action = (action instanceof Action ?? Action[action]);
-    const promise = action(data);
-    this.emit(`pre:${action.name}`, { action, promise, data });
-    promise.listen(i => i ?? this.emit(`start:${promise.name}`, { action, promise, data }));
-    promise.then(result => this.emit(`post:${promise.name}`, { action, promise, result }));
+    action = action instanceof Action ? action : Action[action];
+    const promise = action(data, { actor: this });
+    this.emit(`pre:${action.id}`, { action, promise, data });
+    promise.listen((i) => { if (i === 0) this.emit(`start:${promise.id}`, { action, promise, data }); });
+    promise.then(result => this.emit(`post:${promise.id}`, { action, promise, result }));
     return promise;
   }
 
   stream(stream, action, data) {
-    stream = stream instanceof Stream ?? Stream[stream];
-    stream.push(() => this.perform(action, data));
+    stream = stream instanceof Stream ? stream : Stream[stream];
+    return new Promise((resolve, reject) => {
+      stream.push(() => this.perform(action, data).then(resolve).catch(reject));
+    });
   }
 
-  mirror(action, promise) {
+  follow(sourcePromise, data) {
+    let promise;
+
+    const abort = () => promise.abort();
+
+    // Follow the source steps
+    const sourceSteps = Array.from(new Array(sourcePromise.steps + 1)).map((_, index) => {
+      return new Promise((resolve) => {
+        sourcePromise.then(() => { if (sourcePromise.aborted) abort(); }).catch(abort);
+        sourcePromise.listen((i) => { if (i === index) console.log(i) && resolve(); });
+      });
+    });
+
+    // Delay execution until the source step is finished
+    return (promise = this.perform(sourcePromise.id, data).listen(i => sourceSteps[i]));
   }
 
-  static define(name) {
-    return (Actor[name] = new Actor(name));
+  static define(id) {
+    return (Actor[id] = new Actor(id));
   }
 };

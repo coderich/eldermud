@@ -66,6 +66,13 @@ describe('Engine', () => {
       expect(promise.aborted).toBe(true);
       expect(promise.started).toBe(true);
     });
+
+    test('listener', async () => {
+      const listener = jest.fn(() => {});
+      const data = await Action.compete().listen(listener);
+      expect(data).toEqual({ stretched: true });
+      expect(listener).toHaveBeenCalledTimes(5);
+    });
   });
 
   describe('Stream', () => {
