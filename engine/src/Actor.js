@@ -30,15 +30,15 @@ module.exports = class Actor extends EventEmitter {
     const abort = () => promise.abort();
 
     // Follow the source steps
-    const sourceSteps = Array.from(new Array(sourcePromise.steps + 1)).map((_, index) => {
+    const sourceSteps = Array.from(new Array(sourcePromise.steps)).map((_, index) => {
       return new Promise((resolve) => {
         sourcePromise.then(() => { if (sourcePromise.aborted) abort(); }).catch(abort);
-        sourcePromise.listen((i) => { if (i === index) console.log(i) && resolve(); });
+        sourcePromise.listen((i) => { if (i === index + 1) resolve(); }); // our 0 index should be i = 1
       });
     });
 
     // Delay execution until the source step is finished
-    return (promise = this.perform(sourcePromise.id, data).listen(i => sourceSteps[i]));
+    return (promise = this.perform(sourcePromise.id, data).listen(i => sourceSteps[i - 1])); // Skip the "start" step
   }
 
   static define(id) {

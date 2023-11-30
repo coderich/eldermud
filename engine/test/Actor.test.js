@@ -45,8 +45,14 @@ describe('Actor', () => {
 
   test('events + follow', (done) => {
     Actor.player1.once('start:compete', async ({ promise }) => {
-      await new Actor().follow(promise);
+      const actor = new Actor();
+      await actor.follow(promise);
       expect(warmup).toHaveBeenCalledTimes(2);
+      expect(run).toHaveBeenCalledTimes(2);
+      expect(look).toHaveBeenCalledTimes(2);
+      expect(stretch).toHaveBeenCalledTimes(2);
+      expect(stretch).toHaveBeenCalledWith({ looked: true }, { abort: expect.any(Function), actor });
+      expect(stretch).toHaveBeenCalledWith({ looked: true }, { abort: expect.any(Function), actor: Actor.player1 });
       done();
     });
 
