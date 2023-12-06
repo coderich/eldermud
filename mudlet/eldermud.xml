@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE MudletPackage>
+<MudletPackage version="1.001">
+	<TriggerPackage />
+	<TimerPackage />
+	<AliasPackage />
+	<ActionPackage />
+	<ScriptPackage>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>gmcp</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>component</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>layout</name>
+				<packageName></packageName>
+				<script>clearWindow();
+enableCommandLine();
+disableScrollBar();
+
+eldermud = eldermud or {}
+
+-- Regions
+eldermud.leftRegion = Geyser.Container:new({
+  name = "leftRegion",
+  x = 0, y = 0, width = "25%", height = "100%", color = "blue",
+})
+
+eldermud.bodyRegion = Geyser.Container:new({
+  name = "bodyRegion",
+  x = "25%", y = 0, width = "50%", height = "100%",
+})
+
+eldermud.rightRegion = Geyser.Container:new({
+  name = "rightRegion",
+  x = "75%", y = 0, width = "25%", height = "100%",
+})
+
+-- Containers
+eldermud.mapContainer = Geyser.Container:new({
+  name = "mapContainer",
+  x = 0, y = 0, width = "100%", height = "30%",
+}, eldermud.leftRegion)
+
+eldermud.roomContainer = Geyser.Container:new({
+  name = "roomContainer",
+  x = 0, y = "30%", width = "100%", height = "70%",
+}, eldermud.leftRegion)
+
+eldermud.menuContainer = Geyser.Container:new({
+  name = "menuContainer",
+  x = 0, y = 20, width = "100%", height = "-20px",
+}, eldermud.rightRegion)
+</script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
+</MudletPackage>
