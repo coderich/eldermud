@@ -13,14 +13,14 @@
     "test": "jest",
     "lint": "eslint ./",
     "dev": "coderich-dev",
-    "start": "nodemon ./app.js -e js"
+    "start": "nodemon ./app.js -e js,yml"
   },
   "dependencies": {
     "@coderich/config": "^1.0.0",
     "@coderich/gameflow": "^1.0.0",
-    "@coderich/gameserver": "^1.0.0",
-    "@coderich/redis": "1.0.0",
-    "@coderich/util": "0.1.5"
+    "@coderich/gameserver": "^1.1.0",
+    "@coderich/util": "0.1.5",
+    "redis": "4.6.11"
   },
   "devDependencies": {
     "@coderich/dev": "^0.1.0",

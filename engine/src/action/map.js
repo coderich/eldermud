@@ -1,15 +1,10 @@
 const { Action } = require('@coderich/gameflow');
 
-const coords = {
-  n: [0, 2, 0],
-  s: [0, -2, 0],
-  e: [2, 0, 0],
-  w: [-2, 0, 0],
-};
+const { coords } = Config.get('action.map');
 
 Action.define('map', async (_, { actor }) => {
-  const map = Config.get('data.map.dungeon');
-  const $actor = await DB.get(actor.id);
+  const [actorMap, actorRoom] = await Redis.mGet([`${actor}.map`, `${actor}.room`]);
+  const map = Config.get(`data.${actorMap}`);
 
   const rooms = Object.entries(map).reduce((arr, [key, value], i) => {
     return arr.concat({
@@ -44,7 +39,7 @@ Action.define('map', async (_, { actor }) => {
     }, {}));
   }, []);
 
-  const room = rooms.find(el => el.key === $actor.room).id;
+  const room = rooms.find(el => el.key === actorRoom).id;
 
   actor.socket.emit('map', {
     name: 'Eldermud',

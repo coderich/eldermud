@@ -4,7 +4,7 @@ const eslintConfig = getEslintConfig();
 
 eslintConfig.globals = {
   Config: 'readonly',
-  DB: 'readonly',
+  Redis: 'readonly',
 };
 
 module.exports = eslintConfig;

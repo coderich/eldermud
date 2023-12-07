@@ -1,4 +1,4 @@
-const { Actor } = require('@coderich/gameflow');
+const { Actor, Stream } = require('@coderich/gameflow');
 const { Server } = require('@coderich/gameserver');
 
 const server = new Server({
@@ -6,17 +6,23 @@ const server = new Server({
 });
 
 server.on('connect', ({ socket }) => {
-  console.log(socket.id, 'has connected');
-  Object.assign(Actor.define(socket.id), { socket }).perform('login');
+  Object.assign(Actor.define(socket.id), {
+    socket,
+    streams: ['navigation'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
+    toString: () => Actor[socket.id].username || Actor[socket.id].id,
+  }).perform('login').then(() => {
+    Actor[socket.id]?.perform('play');
+  });
+});
+
+server.on('disconnect', ({ socket }) => {
+  Actor[socket.id]?.perform('logout').then(() => {
+    delete Actor[socket.id];
+  });
 });
 
 server.on('cmd', ({ socket, data }) => {
   Actor[socket.id]?.perform('translate', data);
-});
-
-server.on('disconnect', ({ socket }) => {
-  console.log(socket.id, 'has disconnected');
-  delete Actor[socket.id];
 });
 
 module.exports = server;

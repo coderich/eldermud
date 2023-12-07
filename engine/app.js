@@ -1,11 +1,14 @@
-const { Action } = require('@coderich/gameflow');
+const Util = require('@coderich/util');
+const RedisClient = require('./src/client/RedisClient');
+const ConfigClient = require('./src/client/ConfigClient');
 const server = require('./src/server');
-const UtilService = require('./src/service/UtilService');
 
-(async () => {
+(() => {
   if (require.main === module) {
-    UtilService.requireDir(`${__dirname}/src/action`);
-    await Action.bootstrap();
+    global.Config = new ConfigClient();
+    global.Config.set('data', Util.requireDir(`${__dirname}/src/data`));
+    global.Redis = new RedisClient(Config.get('redis'));
+    Util.requireDir(`${__dirname}/src/action`);
     server.start();
   }
 })();
