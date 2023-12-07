@@ -1,0 +1,8 @@
+dialog - Series of Q&A to continue (cut scene, quests, etc)
+choice - Select an option to continue
+status - Personal info (hud update)
+table - Tabular display info (store list, etc)
+map - Map info
+room - Room info
+quest - Quest(s) info
+text - Catchall to display pre-formatted/colored text
