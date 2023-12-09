@@ -11,7 +11,7 @@ server.on('connect', ({ socket }) => {
     streams: ['navigation'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
     toString: () => `eldermud:${Actor[socket.id].username || Actor[socket.id].id}`,
   }).perform('login').then(() => {
-    Actor[socket.id]?.perform('play');
+    Actor[socket.id]?.perform('engine');
   });
 });
 

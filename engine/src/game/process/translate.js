@@ -93,5 +93,5 @@ const translateArray = (arr, input, cmd, args) => {
 Action.define('translate', (input, { actor }) => {
   input = input.text.trim().toLowerCase();
   const [cmd, ...args] = input.match(/\S+/g) || [];
-  actor.perform('process', cmd ? translateArray(commands, input, cmd, args) || { name: 'unknown', input, args, code: 'unk', scope: 'unknown' } : { name: 'none', input, args, code: null, scope: 'default' });
+  return cmd ? translateArray(commands, input, cmd, args) || { name: 'unknown', input, args, code: 'unk', scope: 'unknown' } : { name: 'none', input, args, code: null, scope: 'default' };
 });

@@ -13,7 +13,6 @@ Action.define('room', [
         units: Array.from(room.units.values()).map(unit => ({ name: unit.username })),
       };
 
-      console.log($room);
       actor.emit('room', $room);
     }
   },

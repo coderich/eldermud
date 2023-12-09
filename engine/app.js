@@ -7,7 +7,7 @@ const server = require('./src/server');
   if (require.main === module) {
     global.Config = new ConfigClient(`${__dirname}/src/config`);
     global.Redis = new RedisClient(Config.get('redis'));
-    Util.requireDir(`${__dirname}/src/action`);
+    Util.requireDir(`${__dirname}/src/game`);
     server.start();
   }
 })();

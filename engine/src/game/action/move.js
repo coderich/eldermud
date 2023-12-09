@@ -15,12 +15,7 @@ Action.define('move', [
   // Attempt to move...
   ({ dir, map, room }, { actor, abort }) => {
     const exit = Config.get(`${map}.rooms.${room}.exits.${dir}.id`);
-
-    if (!exit) {
-      actor.socket.emit('text', 'No exit in that direction!');
-      abort('No exit in that direction!');
-    }
-
+    if (!exit) return abort('No exit in that direction!');
     return { dir, map, room, exit };
   },
 
