@@ -8,8 +8,9 @@ const server = new Server({
 server.on('connect', ({ socket }) => {
   Object.assign(Actor.define(socket.id), {
     socket,
+    type: 'player',
     streams: ['navigation'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
-    toString: () => `eldermud:${Actor[socket.id].username || Actor[socket.id].id}`,
+    toString: () => `eldermud:player.${Actor[socket.id].username || Actor[socket.id].id}`,
   }).perform('login').then(() => {
     Actor[socket.id]?.perform('engine');
   });

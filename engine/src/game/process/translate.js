@@ -1,5 +1,11 @@
 const { Action } = require('@coderich/gameflow');
 
+/**
+ * Each set of commands is ordered by "tier" giving priority to them when it comes to matching.
+ * The "args" attribute indicates the number of args that the input must have specified in order to be a match.
+ * The "code" is a short-hand code used in the game logic.
+ * The "scope" helps narrow down how to handle this action.
+ */
 const commands = [
   [
     { attack: { args: [1, 2, 3], code: 'a', scope: 'action' } },
@@ -74,7 +80,7 @@ const translateArray = (arr, input, cmd, args) => {
       for (let j = 0; j < tier.length; j++) {
         const [[key, data]] = Object.entries(tier[j]);
 
-        if (key.indexOf(cmd) === 0 && data.args.indexOf(args.length) > -1) {
+        if (key.indexOf(cmd) === 0 && data.args.includes(args.length)) {
           return {
             name: data.alias || key,
             input,
@@ -87,11 +93,11 @@ const translateArray = (arr, input, cmd, args) => {
     }
   }
 
-  return undefined;
+  return { name: 'unknown', input, args, code: 'unk', scope: 'unknown' };
 };
 
 Action.define('translate', (input, { actor }) => {
   input = input.text.trim().toLowerCase();
   const [cmd, ...args] = input.match(/\S+/g) || [];
-  return cmd ? translateArray(commands, input, cmd, args) || { name: 'unknown', input, args, code: 'unk', scope: 'unknown' } : { name: 'none', input, args, code: null, scope: 'default' };
+  return cmd ? translateArray(commands, input, cmd, args) : { name: 'none', input, args, code: null, scope: 'default' };
 });

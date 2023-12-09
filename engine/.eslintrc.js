@@ -7,8 +7,8 @@ Object.assign(eslintConfig.rules, {
 });
 
 eslintConfig.globals = {
-  Config: 'readonly',
-  Redis: 'readonly',
+  CONFIG: 'readonly',
+  REDIS: 'readonly',
 };
 
 module.exports = eslintConfig;

@@ -1,12 +1,12 @@
 const { Action } = require('@coderich/gameflow');
 
-const { map, room } = Config.get('action.login');
+const { map, room } = CONFIG.get('action.login');
 
 Action.define('login', (data, { actor }) => {
   return actor.socket.query('login', data).then(({ username, password, option }) => {
     switch (option) {
       case 'guest': {
-        return Redis.mSet({
+        return REDIS.mSet({
           [`${actor}.room`]: room,
           [`${actor}.map`]: map,
         }).then(() => Object.assign(actor, { username: actor.id }));

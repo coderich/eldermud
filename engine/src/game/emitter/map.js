@@ -1,10 +1,10 @@
 const { Action } = require('@coderich/gameflow');
 
-const { coords } = Config.get('action.map');
+const { coords } = CONFIG.get('action.map');
 
 Action.define('map', async (_, { actor }) => {
-  const [actorMap, actorRoom] = await Redis.mGet([`${actor}.map`, `${actor}.room`]);
-  const map = Config.get(actorMap);
+  const [actorMap, actorRoom] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
+  const map = CONFIG.get(actorMap);
 
   // Convert to array of rooms
   const rooms = Object.values(map.rooms).map(({ id, name }, i) => ({ id: i + 1, key: id, name, x: 0, y: 0, z: 0 }));

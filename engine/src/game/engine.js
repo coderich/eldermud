@@ -1,8 +1,8 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('engine', (_, { actor }) => {
-  Redis.mGet([`${actor}.map`, `${actor}.room`]).then(([map, room]) => {
-    Config.get(`${map}.rooms.${room}.units`).add(actor);
+  REDIS.mGet([`${actor}.map`, `${actor}.room`]).then(([map, room]) => {
+    CONFIG.get(`${map}.rooms.${room}.units`).add(actor);
     actor.perform('map');
     actor.perform('room');
   });
@@ -10,7 +10,7 @@ Action.define('engine', (_, { actor }) => {
   actor.on('post:translate', ({ result }) => {
     switch (result.scope) {
       case 'navigation': return actor.stream(actor.streams.navigation, 'move', result.code);
-      default: return null;
+      default: return actor.socket.emit('text', `You say "${result.input}"`);
     }
   });
 

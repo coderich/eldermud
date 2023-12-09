@@ -19,21 +19,25 @@
 clearWindow();
 disableScrollBar();
 
--- Regions
-local topRegion = Geyser.Container:new({
-  name = 'topRegion',
-  x = 0, y = 0, width = '100%', height = '50%',
+local canvas = Geyser.VBox:new({
+  x = 0, y = 0, width = '100%', height = '100%',
 });
 
-local bottomRegion = Geyser.Container:new({
+-- Regions
+local topRegion = Geyser.HBox:new({
+  name = 'topRegion',
+  x = 0, y = 0, width = '100%', height = '100%',
+}, canvas);
+
+local bottomRegion = Geyser.HBox:new({
   name = 'bottomRegion',
-  x = 0, y = '-50%', width = '100%', height = '50%',
-});
+  x = 0, y = 0, width = '100%', height = '100%',
+}, canvas);
 
 -- Containers
 eldermud.mapContainer = Geyser.Container:new({
   name = 'mapContainer',
-  x = 0, y = 0, width = '50%', height = '100%',
+  x = 0, y = 0, width = '100%', height = '100%',
 }, topRegion);
 
 eldermud.consoleContainer = Geyser.Container:new({
@@ -54,7 +58,7 @@ killAnonymousEventHandler(eldermud.cmdLineHandlerId or -1)
 
 setCmdLineStyleSheet("main", [[
   QPlainTextEdit {
-    padding-left: 0px;
+    padding-left: 10px;
     color: black;
     background-color: grey;
   }
@@ -74,7 +78,7 @@ end)
 
 local console = Geyser.MiniConsole:new({
   name = "console",
-  x = 0, y = 10, width = "100%", height = "100%",
+  x = 0, y = 0, width = "100%", height = "100%",
   -- color = "black",
   fontSize = 14,
   autoWrap = true,
@@ -102,12 +106,19 @@ console:clear();
 				<name>eldermud.map</name>
 				<packageName></packageName>
 				<script>eldermud = eldermud or {}
-
 -- deleteMap();
 
 Geyser.Mapper:new({
   name = "mapper",
-  x = 0, y = 0, width = "100%", height = "100%"
+  x = 0, y = 0, width = "100%", height = "80%"
+}, eldermud.mapContainer)
+
+local room = Geyser.MiniConsole:new({
+  name = "room",
+  x = 0, y = "80%", width = "100%", height = "20%",
+  color = "black",
+  fontSize = 14,
+  scrollBar = false,
 }, eldermud.mapContainer)
 
 setMapZoom(25)
@@ -136,6 +147,14 @@ function eldermud:map()
   end
   
   centerview(gmcp.eldermud.map.room)
+end
+
+function eldermud:room()
+  room:clear();
+  room:cecho(gmcp.eldermud.room.name .. "\n");
+  -- room:echo('Obvious exits: ');
+  -- for i,v in ipairs(gmcp.eldermud.room.exits) do room:echo(v); end;
+  if (#gmcp.eldermud.room.units &gt; 0) then room:echo("fantastic!\n"); end;
 end
 
 
@@ -180,6 +199,7 @@ end
 </script>
 				<eventHandlerList>
 					<string>gmcp.eldermud.map</string>
+					<string>gmcp.eldermud.room</string>
 				</eventHandlerList>
 			</Script>
 			<Script isActive="yes" isFolder="no">

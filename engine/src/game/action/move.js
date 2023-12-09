@@ -5,7 +5,7 @@ Action.define('move', [
   // Prepare...
   (dir, { actor }) => {
     return Promise.all([
-      Redis.mGet([`${actor}.map`, `${actor}.room`]),
+      REDIS.mGet([`${actor}.map`, `${actor}.room`]),
       Util.timeout(100),
     ]).then(([[map, room]]) => {
       return { dir, map, room };
@@ -14,7 +14,7 @@ Action.define('move', [
 
   // Attempt to move...
   ({ dir, map, room }, { actor, abort }) => {
-    const exit = Config.get(`${map}.rooms.${room}.exits.${dir}.id`);
+    const exit = CONFIG.get(`${map}.rooms.${room}.exits.${dir}.id`);
     if (!exit) return abort('No exit in that direction!');
     return { dir, map, room, exit };
   },
@@ -24,8 +24,8 @@ Action.define('move', [
 
   // Moved.
   async ({ map, room, exit }, { actor }) => {
-    await Redis.set(`${actor}.room`, exit);
-    Config.get(`${map}.rooms.${room}.units`).delete(actor);
-    Config.get(`${map}.rooms.${exit}.units`).add(actor);
+    await REDIS.set(`${actor}.room`, exit);
+    CONFIG.get(`${map}.rooms.${room}.units`).delete(actor);
+    CONFIG.get(`${map}.rooms.${exit}.units`).add(actor);
   },
 ]);
