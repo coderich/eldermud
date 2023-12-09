@@ -1,5 +1,4 @@
 module.exports = {
-  // id: 'ant',
   name: 'ant',
   dc: 1,
   ac: 5,

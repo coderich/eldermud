@@ -17,49 +17,53 @@
 				<script>eldermud = eldermud or {}
 
 clearWindow();
--- enableCommandLine();
-disableCommandLine();
 disableScrollBar();
 
--- Canvas
-local canvas = Geyser.Container:new({
-  name = 'canvas',
-  x = 0, y = 0, width = '100%', height = '100%',
+-- Regions
+local topRegion = Geyser.Container:new({
+  name = 'topRegion',
+  x = 0, y = 0, width = '100%', height = '50%',
 });
 
--- Regions
-eldermud.leftRegion = Geyser.Container:new({
-  name = 'leftRegion',
-  x = 0, y = 0, width = '25%', height = '100%',
-}, canvas);
-
-eldermud.bodyRegion = Geyser.Container:new({
-  name = "bodyRegion",
-  x = "25%", y = 0, width = "50%", height = "100%",
-}, canvas)
-
-eldermud.rightRegion = Geyser.Container:new({
-  name = "rightRegion",
-  x = "75%", y = 0, width = "25%", height = "100%",
-}, canvas)
+local bottomRegion = Geyser.Container:new({
+  name = 'bottomRegion',
+  x = 0, y = '-50%', width = '100%', height = '50%',
+});
 
 -- Containers
 eldermud.mapContainer = Geyser.Container:new({
-  name = "mapContainer",
-  x = 0, y = 0, width = "100%", height = "50%",
-}, eldermud.leftRegion)
+  name = 'mapContainer',
+  x = 0, y = 0, width = '50%', height = '100%',
+}, topRegion);
 
--- eldermud.roomContainer = Geyser.Container:new({
-  -- name = "roomContainer",
-  -- x = 0, y = "30%", width = "100%", height = "70%",
--- }, eldermud.leftRegion)
+eldermud.consoleContainer = Geyser.Container:new({
+  name = 'consoleContainer',
+  x = 0, y = 0, width = '100%', height = '100%',
+}, bottomRegion);
+</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>cmdLine</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {}
 
--- eldermud.menuContainer = Geyser.Container:new({
-  -- name = "menuContainer",
-  -- x = 0, y = 20, width = "100%", height = "-20px",
--- }, eldermud.rightRegion)
+clearCmdLine()
+enableCommandLine()
+killAnonymousEventHandler(eldermud.cmdLineHandlerId or -1)
 
+setCmdLineStyleSheet("main", [[
+  QPlainTextEdit {
+    padding-left: 0px;
+    color: black;
+    background-color: grey;
+  }
+]])
 
+eldermud.cmdLineHandlerId = registerAnonymousEventHandler("sysDataSendRequest", function(e, text)
+  clearCmdLine()
+  sendGMCP("eldermud.cmd" .. yajl.to_string{text = text})
+end)
 </script>
 				<eventHandlerList />
 			</Script>
@@ -68,38 +72,27 @@ eldermud.mapContainer = Geyser.Container:new({
 				<packageName></packageName>
 				<script>eldermud = eldermud or {}
 
-local bodyConsole = Geyser.MiniConsole:new({
-  name = "bodyConsole",
+local console = Geyser.MiniConsole:new({
+  name = "console",
   x = 0, y = 10, width = "100%", height = "100%",
-  fontSize = 15,
+  -- color = "black",
+  fontSize = 14,
   autoWrap = true,
   scrollBar = false,
-}, eldermud.bodyRegion);
-
-setCmdLineStyleSheet("main", [[
-  QPlainTextEdit {
-    padding-left: 0px;
-    color: white;
-    background-color: grey;
-  }
-]]);
-
-local function cmd(text)
-  sendGMCP("eldermud.cmd" .. yajl.to_string{text = text})
-end
+}, eldermud.consoleContainer);
 
 local handlers = {
-  ["gmcp.eldermud.text"] = function() bodyConsole:cecho(gmcp.eldermud.text .. "\n") end,
-  ["gmcp.eldermud.dialog"] = function() bodyConsole:cecho("\n" .. gmcp.eldermud.dialog .. "\n") end,
+  ["gmcp.eldermud.text"] = function() console:cecho(gmcp.eldermud.text .. "\n") end,
+  ["gmcp.eldermud.dialog"] = function() console:cecho("\n" .. gmcp.eldermud.dialog .. "\n") end,
 };
 
 function eldermud:console(e)
   handlers[e]();
 end;
 
-bodyConsole:clear();
-bodyConsole:enableCommandLine();
-bodyConsole:setCmdAction(cmd);
+console:clear();
+-- console:enableCommandLine();
+-- console:setCmdAction(cmd);
 </script>
 				<eventHandlerList>
 					<string>gmcp.eldermud.text</string>
@@ -110,19 +103,16 @@ bodyConsole:setCmdAction(cmd);
 				<packageName></packageName>
 				<script>eldermud = eldermud or {}
 
-deleteMap();
-setMapZoom(25)
-setCustomEnvColor(0, 0, 0, 0, 255);
-setCustomEnvColor(1, 255, 0, 0, 255);
+-- deleteMap();
 
-for i,idk in ipairs(getCustomEnvColorTable()) do
-  display(i);
-end
-
-local mapper = Geyser.Mapper:new({
+Geyser.Mapper:new({
   name = "mapper",
   x = 0, y = 0, width = "100%", height = "100%"
 }, eldermud.mapContainer)
+
+setMapZoom(25)
+setCustomEnvColor(0, 0, 0, 0, 255);
+setCustomEnvColor(1, 255, 0, 0, 255);
 
 function eldermud:map()
   local areaId = 1
@@ -149,7 +139,6 @@ function eldermud:map()
 end
 
 
-
 -- 
 -- killAnonymousEventHandler(impetus.mapHandlerId or -1)
 -- 
@@ -165,7 +154,6 @@ end
   -- setMapZoom(20)
   -- centerview(1)
 -- end)
-
 
 -- deleteArea(1)
 -- local areaId = 1;
@@ -192,6 +180,32 @@ end
 </script>
 				<eventHandlerList>
 					<string>gmcp.eldermud.map</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>eldermud.login</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {}
+
+function eldermud:login()
+  sendGMCP("eldermud.login" .. yajl.to_string{option = "guest"})
+end;
+</script>
+				<eventHandlerList>
+					<string>gmcp.eldermud.login</string>
+				</eventHandlerList>
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>eldermud.room</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {}
+
+function eldermud:room()
+  display(gmcp.eldermud.room)
+end;
+</script>
+				<eventHandlerList>
+					<string>gmcp.eldermud.room</string>
 				</eventHandlerList>
 			</Script>
 		</ScriptGroup>

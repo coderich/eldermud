@@ -4,8 +4,8 @@ redis:
 
 action:
   login:
-    map: 'map.dungeon'
-    room: 'room.1'
+    map: 'map.town'
+    room: 'start'
   map:
     coords:
       n: [0, 2, 0]

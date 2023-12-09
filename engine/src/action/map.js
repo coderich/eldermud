@@ -4,47 +4,33 @@ const { coords } = Config.get('action.map');
 
 Action.define('map', async (_, { actor }) => {
   const [actorMap, actorRoom] = await Redis.mGet([`${actor}.map`, `${actor}.room`]);
-  const map = Config.get(`data.${actorMap}`);
+  const map = Config.get(actorMap);
 
-  const rooms = Object.entries(map).reduce((arr, [key, value], i) => {
-    return arr.concat({
-      id: i + 1,
-      key,
-      name: value.name,
-      x: 0,
-      y: 0,
-      z: 0,
-    });
-  }, []);
+  // Convert to array of rooms
+  const rooms = Object.values(map.rooms).map(({ id, name }, i) => ({ id: i + 1, key: id, name, x: 0, y: 0, z: 0 }));
 
-  const exits = Object.values(map).reduce((arr, room, i) => {
+  // Find exists
+  const exits = Object.values(map.rooms).map((room, i) => {
     const id = i + 1;
 
-    return arr.concat(Object.entries(room.exits).reduce((obj, [dir, exit]) => {
-      // const [root, key] = exit.split('.');
-      // const target = root === 'Room' ? exit : Doors[key].connects[dir];
-      const target = exit;
-      const thisRoom = rooms.find(el => el.id === id);
-      const nextRoom = rooms.find(el => el.key === target);
+    return Object.entries(room.exits).reduce((prev, [dir, exit]) => {
+      const $room = rooms.find(el => el.id === id);
+      const $exit = rooms.find(el => el.key === exit.id);
 
-      if (!nextRoom) return obj;
-
-      if (nextRoom.id > id) {
+      if ($exit.id > id) {
         const [x, y, z] = coords[dir];
-        nextRoom.x = thisRoom.x + x;
-        nextRoom.y = thisRoom.y + y;
-        nextRoom.z = thisRoom.z + z;
+        $exit.x = $room.x + x;
+        $exit.y = $room.y + y;
+        $exit.z = $room.z + z;
       }
-      return Object.assign(obj, { [dir]: nextRoom.id });
-    }, {}));
-  }, []);
 
+      return Object.assign(prev, { [dir]: $exit.id });
+    }, {});
+  });
+
+  // Room id you're currently in
   const room = rooms.find(el => el.key === actorRoom).id;
 
-  actor.socket.emit('map', {
-    name: 'Eldermud',
-    room,
-    rooms,
-    exits,
-  });
+  // Emit to the world
+  actor.socket.emit('map', { name: map.name, room, rooms, exits });
 });

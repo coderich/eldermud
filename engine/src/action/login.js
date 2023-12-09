@@ -9,7 +9,7 @@ Action.define('login', (data, { actor }) => {
         return Redis.mSet({
           [`${actor}.room`]: room,
           [`${actor}.map`]: map,
-        }).then(() => Object.assign(actor, { username: `${actor}` }));
+        }).then(() => Object.assign(actor, { username: actor.id }));
       }
       // case 'signup': {
       //   return DB.get(username).then((profile) => {
