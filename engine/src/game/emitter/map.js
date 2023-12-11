@@ -3,14 +3,14 @@ const { Action } = require('@coderich/gameflow');
 const { coords } = CONFIG.get('action.map');
 
 Action.define('map', async (_, { actor }) => {
-  const [actorMap, actorRoom] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
-  const map = CONFIG.get(actorMap);
+  const [dbMap, dbRoom] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
+  const [configMap, configRoom] = [CONFIG.get(dbMap), CONFIG.get(dbRoom)];
 
   // Convert to array of rooms
-  const rooms = Object.values(map.rooms).map(({ id, name }, i) => ({ id: i + 1, key: id, name, x: 0, y: 0, z: 0 }));
+  const rooms = Object.values(configMap.rooms).map(({ id, name }, i) => ({ id: i + 1, key: id, name, x: 0, y: 0, z: 0 }));
 
   // Find exists
-  const exits = Object.values(map.rooms).map((room, i) => {
+  const exits = Object.values(configMap.rooms).map((room, i) => {
     const id = i + 1;
 
     return Object.entries(room.exits).reduce((prev, [dir, exit]) => {
@@ -29,8 +29,8 @@ Action.define('map', async (_, { actor }) => {
   });
 
   // Room id you're currently in
-  const room = rooms.find(el => el.key === actorRoom).id;
+  const room = rooms.find(el => el.key === configRoom.id).id;
 
   // Emit to the world
-  actor.socket.emit('map', { name: map.name, room, rooms, exits });
+  actor.socket.emit('map', { name: configMap.name, room, rooms, exits });
 });

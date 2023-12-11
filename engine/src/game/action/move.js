@@ -2,30 +2,24 @@ const Util = require('@coderich/util');
 const { Action } = require('@coderich/gameflow');
 
 Action.define('move', [
-  // Prepare...
-  (dir, { actor }) => {
+  async ({ code: dir }, { actor, abort }) => {
     return Promise.all([
-      REDIS.mGet([`${actor}.map`, `${actor}.room`]),
+      await CONFIG.get(await REDIS.get(`${actor}.room`)),
       Util.timeout(100),
-    ]).then(([[map, room]]) => {
-      return { dir, map, room };
+    ]).then(([room]) => {
+      const exit = room?.exits?.[dir];
+      return exit ? { room, exit } : abort('No exit in that direction!');
     });
   },
 
-  // Attempt to move...
-  ({ dir, map, room }, { actor, abort }) => {
-    const exit = CONFIG.get(`${map}.rooms.${room}.exits.${dir}.id`);
-    if (!exit) return abort('No exit in that direction!');
-    return { dir, map, room, exit };
-  },
-
-  // Moving...
   () => Util.timeout(250),
 
-  // Moved.
-  async ({ map, room, exit }, { actor }) => {
-    await REDIS.set(`${actor}.room`, exit);
-    CONFIG.get(`${map}.rooms.${room}.units`).delete(actor);
-    CONFIG.get(`${map}.rooms.${exit}.units`).add(actor);
+  async ({ room, exit }, context) => {
+    const { actor } = context;
+    await REDIS.set(`${actor}.room`, `${exit}`);
+    CONFIG.get(`${room}.units`).delete(actor);
+    CONFIG.get(`${exit}.units`).add(actor);
+    room.leave?.(context);
+    exit.enter?.(context);
   },
 ]);

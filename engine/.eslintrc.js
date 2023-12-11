@@ -7,6 +7,7 @@ Object.assign(eslintConfig.rules, {
 });
 
 eslintConfig.globals = {
+  SYSTEM: 'readonly',
   CONFIG: 'readonly',
   REDIS: 'readonly',
 };

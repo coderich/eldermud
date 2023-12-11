@@ -4,8 +4,8 @@ redis:
 
 action:
   login:
-    map: 'map.town'
-    room: 'start'
+    map: '${self:map.town}'
+    room: '${self:map.town.rooms.start}'
   map:
     coords:
       n: [0, 2, 0]

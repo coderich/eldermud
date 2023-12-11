@@ -87,7 +87,10 @@ local console = Geyser.MiniConsole:new({
 
 local handlers = {
   ["gmcp.eldermud.text"] = function() console:cecho(gmcp.eldermud.text .. "\n") end,
-  ["gmcp.eldermud.dialog"] = function() console:cecho("\n" .. gmcp.eldermud.dialog .. "\n") end,
+  ["gmcp.eldermud.query"] = function()
+    console:cecho(gmcp.eldermud.query)
+  end,
+  -- ["gmcp.eldermud.dialog"] = function() console:cecho("\n" .. gmcp.eldermud.dialog .. "\n") end,
 };
 
 function eldermud:console(e)
@@ -100,6 +103,7 @@ console:clear();
 </script>
 				<eventHandlerList>
 					<string>gmcp.eldermud.text</string>
+					<string>gmcp.eldermud.query</string>
 				</eventHandlerList>
 			</Script>
 			<Script isActive="yes" isFolder="no">
@@ -111,14 +115,6 @@ console:clear();
 Geyser.Mapper:new({
   name = "mapper",
   x = 0, y = 0, width = "100%", height = "80%"
-}, eldermud.mapContainer)
-
-local room = Geyser.MiniConsole:new({
-  name = "room",
-  x = 0, y = "80%", width = "100%", height = "20%",
-  color = "black",
-  fontSize = 14,
-  scrollBar = false,
 }, eldermud.mapContainer)
 
 setMapZoom(25)
@@ -147,14 +143,6 @@ function eldermud:map()
   end
   
   centerview(gmcp.eldermud.map.room)
-end
-
-function eldermud:room()
-  room:clear();
-  room:cecho(gmcp.eldermud.room.name .. "\n");
-  -- room:echo('Obvious exits: ');
-  -- for i,v in ipairs(gmcp.eldermud.room.exits) do room:echo(v); end;
-  if (#gmcp.eldermud.room.units &gt; 0) then room:echo("fantastic!\n"); end;
 end
 
 
@@ -199,7 +187,6 @@ end
 </script>
 				<eventHandlerList>
 					<string>gmcp.eldermud.map</string>
-					<string>gmcp.eldermud.room</string>
 				</eventHandlerList>
 			</Script>
 			<Script isActive="yes" isFolder="no">
@@ -220,9 +207,26 @@ end;
 				<packageName></packageName>
 				<script>eldermud = eldermud or {}
 
+local room = Geyser.MiniConsole:new({
+  name = "room",
+  x = 0, y = "80%", width = "100%", height = "20%",
+  color = "black",
+  fontSize = 14,
+  scrollBar = false,
+  autoWrap = true,
+}, eldermud.mapContainer)
+
 function eldermud:room()
-  display(gmcp.eldermud.room)
-end;
+  room:clear();
+  room:cecho('&lt;cyan&gt;' .. gmcp.eldermud.room.name .. '\n');
+  room:cecho('&lt;DimGray&gt;' .. gmcp.eldermud.room.description .. '\n');
+  -- room:echo('Obvious exits: ');
+  -- for i,v in ipairs(gmcp.eldermud.room.exits) do room:echo(v); end;
+  if (#gmcp.eldermud.room.units &gt; 0) then
+    room:echo('Also here: ');
+    for i,v in ipairs(gmcp.eldermud.room.units) do room:echo(v.name); end;
+  end
+end
 </script>
 				<eventHandlerList>
 					<string>gmcp.eldermud.room</string>

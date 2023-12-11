@@ -7,9 +7,9 @@ Action.define('login', (data, { actor }) => {
     switch (option) {
       case 'guest': {
         return REDIS.mSet({
-          [`${actor}.room`]: room,
-          [`${actor}.map`]: map,
-        }).then(() => Object.assign(actor, { username: actor.id }));
+          [`${actor}.room`]: `${room}`,
+          [`${actor}.map`]: `${map}`,
+        }).then(() => Object.assign(actor, { name: actor.id }));
       }
       // case 'signup': {
       //   return DB.get(username).then((profile) => {

@@ -1,5 +1,6 @@
 const FS = require('fs');
 const Path = require('path');
+const Chance = require('chance').Chance();
 const Config = require('@coderich/config');
 
 const appRootPath = Path.join(__dirname, '..', '..');
@@ -26,18 +27,22 @@ module.exports = class ConfigClient extends Config {
   static #decorate(config) {
     Object.entries(config.get('map')).forEach(([key, map]) => {
       config.set(`map.${key}.id`, key);
+      config.set(`map.${key}.toString`, () => `map.${key}`);
 
       Object.entries(map.rooms).forEach(([id, room]) => {
         config.set(`map.${key}.rooms.${id}.id`, id);
         config.set(`map.${key}.rooms.${id}.type`, 'room');
+        config.set(`map.${key}.rooms.${id}.description`, Chance.paragraph());
         config.set(`map.${key}.rooms.${id}.items`, new Set());
         config.set(`map.${key}.rooms.${id}.units`, new Set());
+        config.set(`map.${key}.rooms.${id}.toString`, () => `map.${key}.rooms.${id}`);
       });
     });
 
     Object.entries(config.get('npc')).forEach(([key, npc]) => {
       config.set(`npc.${key}.id`, key);
       config.set(`npc.${key}.type`, 'npc');
+      config.set(`npc.${key}.toString`, () => `npc.${key}`);
     });
   }
 };

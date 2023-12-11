@@ -8,12 +8,10 @@ module.exports = {
     start: {
       name: 'Hallway, Start',
       exits: { s: $room('room2') },
-      units: [],
     },
     room2: {
       name: 'Room2',
       exits: { n: $room('start') },
-      units: [],
     },
   },
 };
