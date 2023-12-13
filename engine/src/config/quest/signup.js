@@ -1,5 +1,6 @@
 module.exports = {
-  steps: {
-    start: {},
+  name: 'Signup',
+  tasks: {
+    signup: {},
   },
 };

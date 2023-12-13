@@ -10,6 +10,7 @@ eslintConfig.globals = {
   SYSTEM: 'readonly',
   CONFIG: 'readonly',
   REDIS: 'readonly',
+  APP: 'readonly',
 };
 
 module.exports = eslintConfig;

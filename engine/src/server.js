@@ -9,7 +9,7 @@ server.on('connect', ({ socket }) => {
   Object.assign(Actor.define(socket.id), {
     socket,
     type: 'player',
-    streams: ['navigation', 'action'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
+    streams: ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
     toString: () => `eldermud:player.${Actor[socket.id].name || Actor[socket.id].id}`,
   }).perform('login').then(() => {
     Actor[socket.id]?.perform('engine');
@@ -23,7 +23,9 @@ server.on('disconnect', ({ socket }) => {
 });
 
 server.on('cmd', ({ socket, data }) => {
-  Actor[socket.id]?.perform('translate', data);
+  Actor[socket.id]?.perform('translate', data).then((command) => {
+    Actor[socket.id]?.perform('execute', command);
+  });
 });
 
 module.exports = server;

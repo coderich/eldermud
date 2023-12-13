@@ -19,6 +19,7 @@ const commands = [
     { up: { args: [0], code: 'u', scope: 'navigation' } },
     { west: { args: [0], code: 'w', scope: 'navigation' } },
     { x: { args: [0], code: 'x', alias: 'exit', scope: '' } },
+    { '?': { args: [0, 1, 2], code: 'help', alias: 'help', scope: 'action' } },
   ],
   [
     { ne: { args: [0], code: 'ne', alias: 'northeast', scope: 'navigation' } },
@@ -49,6 +50,7 @@ const commands = [
     { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'action' } },
     { lock: { args: [1], code: 'lock', scope: 'action' } },
     { list: { args: [0], code: 'list', scope: 'action' } },
+    { help: { args: [0], code: 'help', scope: 'action' } },
 
     // Talents
     { dble: { args: [1], code: 'talent.dble', scope: 'talent' } },

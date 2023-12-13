@@ -8,7 +8,7 @@ Action.define('move', [
       Util.timeout(100),
     ]).then(([room]) => {
       const exit = room?.exits?.[dir];
-      return exit ? { room, exit } : abort('No exit in that direction!');
+      return exit ? { room, exit } : abort('There is no exit in that direction!');
     });
   },
 

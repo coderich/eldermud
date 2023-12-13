@@ -22,25 +22,6 @@ Action.define('engine', (_, { actor }) => {
     }
   });
 
-  actor.on('post:translate', async ({ result }) => {
-    const { scope } = result;
-
-    switch (scope) {
-      case 'navigation': {
-        return actor.stream(actor.streams[scope], 'move', result);
-      }
-      case 'action': {
-        switch (result.code) {
-          case 'greet': return actor.stream(actor.streams[scope], 'greet', result);
-          default: return null;
-        }
-      }
-      default: {
-        return actor.socket.emit('text', `You say "${result.input}"`);
-      }
-    }
-  });
-
   actor.on('post:move', ({ promise }) => {
     if (promise.aborted) {
       actor.socket.emit('text', promise.reason);

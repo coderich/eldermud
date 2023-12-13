@@ -10,7 +10,7 @@ Action.define('greet', [
       const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
       const target = Array.from(units.values()).find(unit => unit.name.toLowerCase().indexOf(name) === 0);
       return target ? Promise.resolve(actor.socket.emit('text', `You greet ${target.name}.`)).then(() => {
-        target.greet?.(context);
+        target.greet?.(null, context);
       }) : actor.socket.emit('text', 'You dont see that here!');
     }
 

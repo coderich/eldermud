@@ -2,6 +2,20 @@ redis:
   url: 'redis://localhost:6379'
   namespace: 'eldermud'
 
+styles:
+  reset: '<reset>'
+  keyword: '<SkyBlue>'
+  gesture: '<wheat>'
+  room:
+    name: '<cyan>'
+    description: ''
+    here: '<violet>'
+    exits: '<ForestGreen>'
+    exit: '<ansiGreen>'
+  unit:
+    name: '<DarkTurquoise>'
+    description: ''
+
 action:
   login:
     map: '${self:map.town}'
