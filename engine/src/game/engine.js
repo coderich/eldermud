@@ -1,33 +1,16 @@
-const { Action } = require('@coderich/gameflow');
+SYSTEM.on('*', (event, { promise, actor }) => {
+  const [type] = event.split(':');
+  if (type === 'post' && promise.aborted) actor.socket.emit('text', promise.reason);
+});
 
-Action.define('engine', (_, { actor }) => {
-  REDIS.mGet([`${actor}.map`, `${actor}.room`]).then(([map, room]) => {
-    CONFIG.get(`${room}.units`).add(actor);
+SYSTEM.on('pre:move', async ({ promise, actor }) => {
+  const posture = await REDIS.get(`${actor}.posture`);
+  if (posture !== 'stand') await actor.perform('execute', { code: 'stand', scope: 'action' });
+});
 
-    if (actor.type === 'player') {
-      actor.perform('map');
-      actor.perform('room');
-    }
-  });
-
-  actor.on('*', (event, data) => {
-    const [type] = event.split(':');
-    const payload = { actor, ...data };
-
-    if (type === 'pre') {
-      data.promise.listen(i => i || Promise.all([SYSTEM.emit(event, payload), SYSTEM.emit('*', event, payload)]));
-    } else if (type === 'post') {
-      SYSTEM.emit(event, payload);
-      SYSTEM.emit('*', event, payload);
-    }
-  });
-
-  actor.on('post:move', ({ promise }) => {
-    if (promise.aborted) {
-      actor.socket.emit('text', promise.reason);
-    } else {
-      actor.perform('map');
-      actor.perform('room');
-    }
-  });
+SYSTEM.on('post:move', ({ promise, actor }) => {
+  if (!promise.aborted) {
+    actor.perform('map');
+    actor.perform('room');
+  }
 });

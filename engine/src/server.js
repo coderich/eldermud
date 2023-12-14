@@ -12,7 +12,7 @@ server.on('connect', ({ socket }) => {
     streams: ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
     toString: () => `eldermud:player.${Actor[socket.id].name || Actor[socket.id].id}`,
   }).perform('login').then(() => {
-    Actor[socket.id]?.perform('engine');
+    Actor[socket.id]?.perform('spawn');
   });
 });
 

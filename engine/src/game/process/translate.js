@@ -1,9 +1,9 @@
 const { Action } = require('@coderich/gameflow');
 
 /**
- * Each set of commands is ordered by "tier" giving priority to them when it comes to matching.
+ * Each set of commands is ordered by "tier"; the first tier can match cmds with 1 letter, tier 2 letters, etc.
  * The "args" attribute indicates the number of args that the input must have specified in order to be a match.
- * The "code" is a short-hand code used in the game logic.
+ * The "code" is a short-hand normalized code used in the game logic.
  * The "scope" helps narrow down how to handle this action.
  */
 const commands = [
@@ -50,6 +50,8 @@ const commands = [
     { push: { args: [1, 2, 3, 4, 5], code: 'push', scope: 'action' } },
     { lock: { args: [1], code: 'lock', scope: 'action' } },
     { list: { args: [0], code: 'list', scope: 'action' } },
+    { rest: { args: [0], code: 'rest', scope: 'action' } },
+    { stand: { args: [0], code: 'stand', scope: 'action' } },
     { help: { args: [0], code: 'help', scope: 'action' } },
 
     // Talents

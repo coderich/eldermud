@@ -6,12 +6,25 @@ module.exports = {
 
   rooms: {
     start: {
-      name: 'Hallway, Start',
-      exits: { s: $room('room2') },
+      name: 'Cave, Start',
+      exits: { s: $room('tunnel1') },
     },
-    room2: {
-      name: 'Room2',
-      exits: { n: $room('start') },
+    tunnel1: {
+      name: 'Tunnel',
+      exits: { n: $room('start'), s: $room('tunnel2') },
+    },
+    tunnel2: {
+      name: 'Tunnel',
+      exits: { n: $room('tunnel1'), e: $room('blockade'), w: $room('supplies') },
+    },
+    blockade: {
+      name: 'Blockade',
+      exits: { w: $room('tunnel2') },
+    },
+    supplies: {
+      char: '$',
+      name: 'Supplies',
+      exits: { e: $room('tunnel2') },
     },
   },
 };

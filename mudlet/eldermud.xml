@@ -47,7 +47,7 @@ eldermud.mapContainer = Geyser.Container:new({
   name = 'mapContainer',
 }, leftContainer);
 
-eldermud.roomContainer = Geyser.Container:new({
+eldermud.playerContainer = Geyser.Container:new({
   x = 0, y = 0, width = '100%', height = '100%',
   name = 'roomContainer',
 }, leftContainer);
@@ -76,8 +76,8 @@ local emco = EMCO:new({
 }, eldermud.consoleContainer);
 
 emco:clearAll();
--- emco:enableBlink();
-emco:disableBlink();
+emco:enableBlink();
+-- emco:disableBlink();
 emco:setFontSize(14);
 emco:setGap(10);
 emco:setConsoleColor('black');
@@ -91,6 +91,11 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.console', 'gmcp.elderm
   
   if (name == 'console' or name == 'text') then
     emco:cecho(activeTab, data .. '\n')
+  elseif (name == 'room') then
+    emco:cecho(activeTab, data.name .. '\n');
+    if (#data.description &gt; 0) then emco:cecho(activeTab, data.description .. '\n'); end;
+    if (#data.units &gt; 0) then emco:cecho(activeTab, data.unitsLabel .. table.concat(data.units, ', ') .. '\n'); end
+    emco:cecho(activeTab, data.exitsLabel .. table.concat(data.exits, ', ') .. '\n');
   elseif (name == 'table') then
     local table = TableMaker:new({
       title = data.name,
@@ -106,7 +111,10 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.console', 'gmcp.elderm
     emco:cecho(activeTab, '\n' .. table:assemble() .. '\n')
   end;
 end);
-</script>
+
+registerNamedEventHandler('Eldermud', 'eldermud.component.console.tab', 'eldermud.tab', function (event, reverse)
+  emco:cycleTab(reverse);
+end)</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
@@ -117,9 +125,10 @@ end);
   x = 0, y = 0, width = "100%", height = "100%"
 }, eldermud.mapContainer)
 
-setMapZoom(25)
-setCustomEnvColor(0, 0, 0, 0, 255);
-setCustomEnvColor(1, 255, 0, 0, 255);
+-- deleteMap()
+setMapZoom(15)
+setCustomEnvColor(0, 0, 0, 0, 255)
+setCustomEnvColor(1, 255, 0, 0, 255)
 
 registerNamedEventHandler('Eldermud', 'eldermud.component.map', 'gmcp.eldermud.map', function(e, text)
   local areaId = 1
@@ -127,62 +136,44 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.map', 'gmcp.eldermud.m
   clearAreaUserData(areaId)
   setAreaName(areaId, gmcp.eldermud.map.name)
 
+  -- First create all rooms
   for i,room in ipairs(gmcp.eldermud.map.rooms) do
-    addRoom(i);
-    setRoomArea(i, areaId);
-    setRoomCoordinates(i, room.x, room.y, room.z);
+    addRoom(room.id);
+    setRoomArea(room.id, areaId);
+    setRoomCoordinates(room.id, room.x, room.y, room.z);
+    setRoomChar(room.id, room.char);
   end
 
-  for i,exit in ipairs(gmcp.eldermud.map.exits) do
-    for k,v in pairs(exit) do
-      setExit(i, v, k)
-      setRoomEnv(i, 0);
-      -- setRoomChar(i, "☠");
-      -- setRoomChar(i, "T");
+  -- Then go back and create the exits
+  for i,room in ipairs(gmcp.eldermud.map.rooms) do
+    for j,exit in ipairs(room.exits) do
+      setRoomEnv(exit.id, 0);
+      setExit(room.id, exit.id, exit.dir);
+      -- setExitStub(i, 's', true);
+      -- setDoor(i, 's', 1);
+      -- setDoor(i, 'n', 1);
+      -- addCustomLine(i, v, k, "dot line", {100, 100, 100}, true)
     end
   end
 
   centerview(gmcp.eldermud.map.room)
 end);
-
--- function eldermud:map()
-  -- local areaId = 1
-  -- deleteArea(areaId)
-  -- clearAreaUserData(areaId)
-  -- setAreaName(areaId, gmcp.eldermud.map.name)
--- 
-  -- for i,room in ipairs(gmcp.eldermud.map.rooms) do
-    -- addRoom(i);
-    -- setRoomArea(i, areaId);
-    -- setRoomCoordinates(i, room.x, room.y, room.z);
-  -- end
--- 
-  -- for i,exit in ipairs(gmcp.eldermud.map.exits) do
-    -- for k,v in pairs(exit) do
-      -- setExit(i, v, k)
-      -- setRoomEnv(i, 0);
-      -- -- setRoomChar(i, "☠");
-      -- -- setRoomChar(i, "T");
-    -- end
-  -- end
--- 
-  -- centerview(gmcp.eldermud.map.room)
--- end</script>
+</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
-				<name>room</name>
+				<name>player</name>
 				<packageName></packageName>
-				<script>local room = Geyser.MiniConsole:new({
+				<script>local player = Geyser.MiniConsole:new({
   name = "player",
   x = 0, y = 0, width = "100%", height = "100%",
   -- color = "navyblue",
   fontSize = 14,
   scrollBar = false,
   autoWrap = true,
-}, eldermud.roomContainer)
+}, eldermud.playerContainer)
 
-room:clear();
+player:clear();
 
 -- registerNamedEventHandler('Eldermud', 'eldermud.component.room', 'gmcp.eldermud.room', function(ns, text)
   -- local name = string.sub(ns, 15);

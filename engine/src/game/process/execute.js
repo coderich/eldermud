@@ -8,12 +8,7 @@ module.exports = Action.define('execute', (command, { actor }) => {
       return actor.stream(actor.streams[scope], 'move', command);
     }
     case 'action': {
-      switch (command.code) {
-        case 'ask': return actor.stream(actor.streams[scope], 'ask', command);
-        case 'help': return actor.stream(actor.streams[scope], 'help', command);
-        case 'greet': return actor.stream(actor.streams[scope], 'greet', command);
-        default: return null;
-      }
+      return actor.stream(actor.streams[scope], command.code, command);
     }
     case 'default': {
       return actor.stream(actor.streams[scope], 'room', command);

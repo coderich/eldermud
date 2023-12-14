@@ -1,7 +1,7 @@
 module.exports = {
   name: 'Guard',
   map: '${self:map.town}',
-  room: '${self:map.town.rooms.room2}',
+  room: '${self:map.town.rooms.blockade}',
   greet: async (_, { actor }) => {
     await REDIS.incr(`${actor}.npc.guard.greet`);
     actor.socket.emit('text', APP.styleBlockText(`

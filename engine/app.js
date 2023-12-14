@@ -26,7 +26,7 @@ const server = require('./src/server');
     REDIS.mSetNX({
       [`${actor}.room`]: `${npc.room}`,
       [`${actor}.map`]: `${npc.map}`,
-    }).then(() => actor.perform('engine'));
+    }).then(() => actor.perform('spawn'));
   });
 
   // Start the server

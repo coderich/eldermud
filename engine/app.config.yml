@@ -9,9 +9,9 @@ styles:
   room:
     name: '<cyan>'
     description: ''
-    here: '<violet>'
-    exits: '<ForestGreen>'
     exit: '<ansiGreen>'
+    unitsLabel: '<violet>'
+    exitsLabel: '<ForestGreen>'
   unit:
     name: '<DarkTurquoise>'
     description: ''
@@ -20,9 +20,4 @@ action:
   login:
     map: '${self:map.town}'
     room: '${self:map.town.rooms.start}'
-  map:
-    coords:
-      n: [0, 2, 0]
-      s: [0, -2, 0]
-      e: [2, 0, 0]
-      w: [-2, 0, 0]
+    posture: 'stand'

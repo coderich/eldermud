@@ -25,12 +25,13 @@ module.exports = class ConfigClient extends Config {
   }
 
   static #decorate(config) {
-    Object.entries(config.get('map')).forEach(([key, map]) => {
+    Object.entries(config.get('map')).forEach(([key, map], i) => {
       config.set(`map.${key}.id`, key);
       config.set(`map.${key}.toString`, () => `map.${key}`);
 
-      Object.entries(map.rooms).forEach(([id, room]) => {
+      Object.entries(map.rooms).forEach(([id, room], j) => {
         config.set(`map.${key}.rooms.${id}.id`, id);
+        config.set(`map.${key}.rooms.${id}.mapId`, (i * 1000) + j + 1);
         config.set(`map.${key}.rooms.${id}.type`, 'room');
         config.set(`map.${key}.rooms.${id}.description`, Chance.paragraph());
         config.set(`map.${key}.rooms.${id}.items`, new Set());
