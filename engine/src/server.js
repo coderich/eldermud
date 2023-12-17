@@ -10,9 +10,11 @@ server.on('connect', ({ socket }) => {
     socket,
     type: 'player',
     streams: ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
-    toString: () => `eldermud:player.${Actor[socket.id].name || Actor[socket.id].id}`,
-  }).perform('login').then(() => {
-    Actor[socket.id]?.perform('spawn');
+    toString: () => `player.${Actor[socket.id].name || Actor[socket.id].id}`,
+  }).perform('login').then(async () => {
+    await socket.emit('cls');
+    await Actor[socket.id]?.perform('spawn');
+    await Actor[socket.id]?.perform('enter');
   });
 });
 
@@ -23,8 +25,8 @@ server.on('disconnect', ({ socket }) => {
 });
 
 server.on('cmd', ({ socket, data }) => {
-  Actor[socket.id]?.perform('translate', data).then((command) => {
-    Actor[socket.id]?.perform('execute', command);
+  return Actor[socket.id]?.perform('translate', data).then((command) => {
+    return Actor[socket.id]?.perform('execute', command);
   });
 });
 

@@ -17,6 +17,7 @@ Action.define('map', async (_, { actor }) => {
   // Append exits (with x,y,x coordinates) to rooms
   Object.values(configMap.rooms).forEach((room) => {
     const $room = rooms.find(el => el.id === room.mapId);
+    $room.doors = Object.entries(room.doors || {}).reduce((prev, [key, value]) => Object.assign(prev, { [key]: value.status }), {});
     $room.exits = Object.entries(room.exits).map(([dir, exit]) => {
       const $exit = rooms.find(el => el.id === exit.mapId);
 

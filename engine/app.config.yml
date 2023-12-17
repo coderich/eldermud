@@ -1,6 +1,5 @@
 redis:
   url: 'redis://localhost:6379'
-  namespace: 'eldermud'
 
 styles:
   reset: '<reset>'

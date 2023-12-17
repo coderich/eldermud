@@ -8,13 +8,16 @@ module.exports = Action.define('execute', (command, { actor }) => {
       return actor.stream(actor.streams[scope], 'move', command);
     }
     case 'action': {
-      return actor.stream(actor.streams[scope], command.code, command);
+      return actor.stream(actor.streams[scope], command.name, command);
     }
     case 'default': {
       return actor.stream(actor.streams[scope], 'room', command);
     }
-    default: {
+    case 'unknown': {
       return actor.socket.emit('text', `You say "${command.input}"`);
+    }
+    default: {
+      return null;
     }
   }
 });

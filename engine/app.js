@@ -8,7 +8,7 @@ const server = require('./src/server');
 
 (() => {
   // Yep, globals
-  global.SYSTEM = new EventEmitter().setMaxListeners(1);
+  global.SYSTEM = new EventEmitter().setMaxListeners(5);
   global.CONFIG = new ConfigClient(`${__dirname}/src/config`);
   global.REDIS = new RedisClient(CONFIG.get('redis'));
   global.APP = AppService;
@@ -20,15 +20,19 @@ const server = require('./src/server');
   Object.values(CONFIG.get('npc')).forEach((npc) => {
     const actor = Object.assign(Actor.define(`${npc}`), {
       ...npc,
-      toString: () => `eldermud:${npc}`,
+      toString: () => `${npc}`,
     });
 
     REDIS.mSetNX({
       [`${actor}.room`]: `${npc.room}`,
       [`${actor}.map`]: `${npc.map}`,
-    }).then(() => actor.perform('spawn'));
+    }).then(async () => {
+      await actor.perform('spawn');
+      await actor.perform('enter');
+    });
   });
 
   // Start the server
   server.start();
+  console.log('Server ready.');
 })();

@@ -1,3 +1,5 @@
+const Util = require('@coderich/util');
+
 exports.styleText = (text, style) => {
   return `${CONFIG.get(`styles.${style}`)}${text}${CONFIG.get('styles.reset')}`;
 };
@@ -24,6 +26,14 @@ exports.target = (list, args, by = 'name') => {
   });
 
   return result;
+};
+
+exports.instantiate = (keys) => {
+  return Util.mapPromise(keys, (key) => {
+    return Promise.all([CONFIG.get(key), REDIS.incr(`counter.${key}`)]).then(([data, counter]) => {
+      return { ...data, toString: () => `${key}.${counter}` };
+    });
+  });
 };
 
 exports.direction = {

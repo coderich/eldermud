@@ -94,27 +94,36 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.console', 'gmcp.elderm
   elseif (name == 'room') then
     emco:cecho(activeTab, data.name .. '\n');
     if (#data.description &gt; 0) then emco:cecho(activeTab, data.description .. '\n'); end;
+    if (#data.items &gt; 0) then emco:cecho(activeTab, data.itemsLabel .. table.concat(data.items, ', ') .. '\n'); end
     if (#data.units &gt; 0) then emco:cecho(activeTab, data.unitsLabel .. table.concat(data.units, ', ') .. '\n'); end
     emco:cecho(activeTab, data.exitsLabel .. table.concat(data.exits, ', ') .. '\n');
   elseif (name == 'table') then
     local table = TableMaker:new({
       title = data.name,
-      printTitle = true,
-      titleColor = "&lt;red&gt;",
+      -- printTitle = true,
+      -- titleColor = "&lt;red&gt;",
       printHeaders = true,
       separateRows = true,
     });
     
     -- Data
-    for i,col in ipairs(data.columns) do table:addColumn({ name = col }) end;
-    table:addRow(data.rows);
+    for i,col in ipairs(data.columns) do table:addColumn(col) end;
+    for i,row in ipairs(data.rows) do table:addRow(row); end;
     emco:cecho(activeTab, '\n' .. table:assemble() .. '\n')
+  elseif (name == 'cls') then
+    emco:clearAll();
   end;
 end);
 
 registerNamedEventHandler('Eldermud', 'eldermud.component.console.tab', 'eldermud.tab', function (event, reverse)
   emco:cycleTab(reverse);
-end)</script>
+end)
+
+registerNamedEventHandler('Eldermud', 'eldermud.component.console.cls', 'eldermud.cls', function (event, reverse)
+  emco:clearAll();
+end)
+
+</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
@@ -148,11 +157,12 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.map', 'gmcp.eldermud.m
   for i,room in ipairs(gmcp.eldermud.map.rooms) do
     for j,exit in ipairs(room.exits) do
       setRoomEnv(exit.id, 0);
-      setExit(room.id, exit.id, exit.dir);
-      -- setExitStub(i, 's', true);
+      if (room.doors[exit.dir] and room.doors[exit.dir] ~= 'open') then setExitStub(room.id, exit.dir, true);
+      else setExit(room.id, exit.id, exit.dir); end;
+      -- setExitStub(room.id, exit.dir, true);
       -- setDoor(i, 's', 1);
       -- setDoor(i, 'n', 1);
-      -- addCustomLine(i, v, k, "dot line", {100, 100, 100}, true)
+      -- addCustomLine(room.id, exit.id, exit.dir, "dot line", {100, 100, 100}, true)
     end
   end
 

@@ -25,10 +25,19 @@ module.exports = class ConfigClient extends Config {
   }
 
   static #decorate(config) {
-    Object.entries(config.get('map')).forEach(([key, map], i) => {
-      config.set(`map.${key}.id`, key);
-      config.set(`map.${key}.toString`, () => `map.${key}`);
+    //
+    Object.entries(config.get()).forEach(([type, models]) => {
+      if (!['redis', 'styles', 'action'].includes(type)) {
+        Object.entries(models).forEach(([key, value]) => {
+          const ns = `${type}.${key}`;
+          config.set(`${ns}.id`, key);
+          config.set(`${ns}.type`, type);
+          config.set(`${ns}.toString`, () => ns);
+        });
+      }
+    });
 
+    Object.entries(config.get('map')).forEach(([key, map], i) => {
       Object.entries(map.rooms).forEach(([id, room], j) => {
         config.set(`map.${key}.rooms.${id}.id`, id);
         config.set(`map.${key}.rooms.${id}.mapId`, (i * 1000) + j + 1);
@@ -38,12 +47,6 @@ module.exports = class ConfigClient extends Config {
         config.set(`map.${key}.rooms.${id}.units`, new Set());
         config.set(`map.${key}.rooms.${id}.toString`, () => `map.${key}.rooms.${id}`);
       });
-    });
-
-    Object.entries(config.get('npc')).forEach(([key, npc]) => {
-      config.set(`npc.${key}.id`, key);
-      config.set(`npc.${key}.type`, 'npc');
-      config.set(`npc.${key}.toString`, () => `npc.${key}`);
     });
   }
 };

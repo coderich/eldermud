@@ -1,6 +1,8 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('spawn', async (_, { actor }) => {
+  actor.roomSearch = new Set();
+
   // STUB out non-player actors
   if (actor.type !== 'player') {
     actor.socket = new Proxy({}, {
@@ -20,16 +22,6 @@ Action.define('spawn', async (_, { actor }) => {
     } else if (type === 'post') {
       SYSTEM.emit(event, payload);
       SYSTEM.emit('*', event, payload);
-    }
-  });
-
-  // Add this actor to the realm
-  REDIS.mGet([`${actor}.map`, `${actor}.room`]).then(([map, room]) => {
-    CONFIG.get(`${room}.units`).add(actor);
-
-    if (actor.type === 'player') {
-      actor.perform('map');
-      actor.perform('room');
     }
   });
 });
