@@ -38,6 +38,12 @@ module.exports = class ConfigClient extends Config {
     });
 
     Object.entries(config.get('map')).forEach(([key, map], i) => {
+      Object.entries(map.doors).forEach(([id, door], j) => {
+        config.set(`map.${key}.doors.${id}.id`, id);
+        config.set(`map.${key}.doors.${id}.type`, 'door');
+        config.set(`map.${key}.doors.${id}.toString`, () => `map.${key}.doors.${id}`);
+      });
+
       Object.entries(map.rooms).forEach(([id, room], j) => {
         config.set(`map.${key}.rooms.${id}.id`, id);
         config.set(`map.${key}.rooms.${id}.mapId`, (i * 1000) + j + 1);

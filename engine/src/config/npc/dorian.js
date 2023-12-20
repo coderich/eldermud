@@ -1,24 +1,24 @@
-// SYSTEM.on('pre:enter', async ({ actor }) => {
-//   const npc = CONFIG.get('npc.dorian');
-//   const noop = ({ promise, data }) => (data.name !== 'stand' ? promise.abort() : null);
-//   const { emit } = actor.socket;
+SYSTEM.on('pre:enter', async ({ actor }) => {
+  const npc = CONFIG.get('npc.dorian');
 
-//   if (actor.type === 'player') {
-//     if (`${npc.room}` === await REDIS.get(`${actor}.room`)) {
-//       actor.on('pre:execute', noop);
-//       actor.socket.emit = (e, msg) => (e === 'dorian' ? emit.call(actor.socket, 'text', msg) : null);
-//       await actor.perform('rest');
-//       actor.socket.emit('dorian', APP.styleText('Stand you fool.', 'gesture'));
-//       actor.once('pre:stand', () => {
-//         actor.off('pre:execute', noop);
-//         actor.socket.emit = emit;
-//       });
-//       actor.once('post:stand', () => {
-//         actor.socket.emit('text', 'Good. Now to figure this shit out.');
-//       });
-//     }
-//   }
-// });
+  if (actor.type === 'player') {
+    if (`${npc.room}` === await REDIS.get(`${actor}.room`)) {
+      await actor.perform('quest.signup');
+      // actor.socket.emit('text', APP.styleText('Stand you fool.', 'gesture'));
+      // await actor.perform('task.stand');
+      // actor.socket.emit('text', 'Good. Now to figure this shit out.');
+      // await actor.perform('rest');
+      // actor.socket.emit('dorian', APP.styleText('Stand you fool.', 'gesture'));
+      // actor.once('pre:stand', () => {
+      //   actor.off('pre:execute', noop);
+      //   actor.socket.emit = emit;
+      // });
+      // actor.once('post:stand', () => {
+      //   actor.socket.emit('text', 'Good. Now to figure this shit out.');
+      // });
+    }
+  }
+});
 
 SYSTEM.on('greet:npc.dorian', async ({ actor }) => {
   await REDIS.incr(`${actor}.npc.dorian.greet`);

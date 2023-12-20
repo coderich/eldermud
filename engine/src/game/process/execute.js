@@ -5,16 +5,16 @@ module.exports = Action.define('execute', (command, { actor }) => {
 
   switch (scope) {
     case 'navigation': {
-      return actor.stream(actor.streams[scope], 'move', command);
+      return actor.stream(actor.streams.action, 'move', command);
     }
     case 'action': {
-      return actor.stream(actor.streams[scope], command.name, command);
+      return actor.stream(actor.streams.action, command.name, command);
     }
     case 'default': {
-      return actor.stream(actor.streams[scope], 'room', command);
+      return actor.stream(actor.streams.action, 'room', command);
     }
     case 'unknown': {
-      return actor.socket.emit('text', `You say "${command.input}"`);
+      return actor.stream(actor.streams.action, 'say', command);
     }
     default: {
       return null;

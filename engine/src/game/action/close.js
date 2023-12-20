@@ -4,8 +4,9 @@ Action.define('close', [
   async ({ args }, { abort, actor }) => {
     // Door check
     const [dir] = args;
-    const { doors } = CONFIG.get(await REDIS.get(`${actor}.room`));
-    const door = doors?.[dir];
+    const { paths } = CONFIG.get(await REDIS.get(`${actor}.room`));
+    const path = paths?.[dir];
+    const door = path?.type === 'door' ? path : null;
     return door ? { door, dir } : abort('There is no door in that direction!');
   },
   ({ door, dir }, { actor }) => {

@@ -37,25 +37,29 @@ local leftContainer = Geyser.VBox:new({
 }, leftRegion);
 
 local rightContainer = Geyser.Container:new({
-  name = 'consoleContainer',
+  name = 'rightContainer',
   x = 0, y = 0, width = '100%', height = '100%',
 }, rightRegion);
 
 -- UI
 eldermud.mapContainer = Geyser.Container:new({
-  x = 0, y = 0, width = '100%', height = '100%',
   name = 'mapContainer',
+  x = 0, y = 0, width = '100%', height = '100%',
 }, leftContainer);
 
 eldermud.playerContainer = Geyser.Container:new({
+  name = 'playerContainer',
   x = 0, y = 0, width = '100%', height = '100%',
-  name = 'roomContainer',
 }, leftContainer);
 
 eldermud.consoleContainer = Geyser.Container:new({
-  x = 0, y = 0, width = '100%', height = '100%',
   name = 'consoleContainer',
+  x = 0, y = 0, width = '100%', height = '100%',
 }, rightContainer);
+
+-- rightContainer:hide();
+-- eldermud.consoleContainer:hide();
+-- eldermud.mapContainer:hide();
 </script>
 				<eventHandlerList />
 			</Script>
@@ -131,7 +135,7 @@ end)
 				<packageName></packageName>
 				<script>Geyser.Mapper:new({
   name = "mapper",
-  x = 0, y = 0, width = "100%", height = "100%"
+  x = 0, y = 0, width = "100%", height = "100%",
 }, eldermud.mapContainer)
 
 -- deleteMap()
@@ -157,7 +161,7 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.map', 'gmcp.eldermud.m
   for i,room in ipairs(gmcp.eldermud.map.rooms) do
     for j,exit in ipairs(room.exits) do
       setRoomEnv(exit.id, 0);
-      if (room.doors[exit.dir] and room.doors[exit.dir] ~= 'open') then setExitStub(room.id, exit.dir, true);
+      if (room.paths[exit.dir] and room.paths[exit.dir] ~= 'open') then setExitStub(room.id, exit.dir, true);
       else setExit(room.id, exit.id, exit.dir); end;
       -- setExitStub(room.id, exit.dir, true);
       -- setDoor(i, 's', 1);

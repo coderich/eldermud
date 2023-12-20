@@ -7,8 +7,8 @@ Action.define('room', [
     if (room) {
       const $exits = Object.keys(room.exits).map((dir) => {
         let text = APP.direction[dir];
-        const door = room.doors?.[dir];
-        if (door) text = `${door.status === 'open' ? 'open' : 'closed'} door ${text}`;
+        const path = room.paths?.[dir];
+        if (path) text = `${path.label} ${text}`;
         return APP.styleText(text, 'room.exit');
       });
 

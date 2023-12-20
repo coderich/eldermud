@@ -5,6 +5,7 @@ styles:
   reset: '<reset>'
   keyword: '<SkyBlue>'
   gesture: '<wheat>'
+  senses: '<ivory>'
   room:
     name: '<cyan>'
     description: ''
