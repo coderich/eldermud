@@ -18,6 +18,7 @@
 
 clearWindow();
 disableScrollBar();
+-- raiseEvent('eldermud.hide');
 
 -- Regions
 local leftRegion = Geyser.VBox:new({
@@ -57,9 +58,12 @@ eldermud.consoleContainer = Geyser.Container:new({
   x = 0, y = 0, width = '100%', height = '100%',
 }, rightContainer);
 
--- rightContainer:hide();
--- eldermud.consoleContainer:hide();
--- eldermud.mapContainer:hide();
+registerNamedEventHandler('Eldermud', 'eldermud.component.login', 'gmcp.eldermud.login', function(e, text)
+  local res = db:fetch(eldermud.db.profile);
+  sendGMCP("eldermud.login" .. yajl.to_string{option = "guest"})
+  raiseEvent('eldermud.hide', true);
+end);
+
 </script>
 				<eventHandlerList />
 			</Script>
@@ -127,13 +131,16 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.console.cls', 'eldermu
   emco:clearAll();
 end)
 
+registerNamedEventHandler('Eldermud', 'eldermud.component.console.hide', 'eldermud.hide', function (event, show)
+  if (show) then emco:show(); else emco:hide(); end;
+end)
 </script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>map</name>
 				<packageName></packageName>
-				<script>Geyser.Mapper:new({
+				<script>local map = Geyser.Mapper:new({
   name = "mapper",
   x = 0, y = 0, width = "100%", height = "100%",
 }, eldermud.mapContainer)
@@ -142,6 +149,10 @@ end)
 setMapZoom(15)
 setCustomEnvColor(0, 0, 0, 0, 255)
 setCustomEnvColor(1, 255, 0, 0, 255)
+
+registerNamedEventHandler('Eldermud', 'eldermud.component.map.hide', 'eldermud.hide', function (event, show)
+  if (show) then map:show(); else map:hide(); end;
+end)
 
 registerNamedEventHandler('Eldermud', 'eldermud.component.map', 'gmcp.eldermud.map', function(e, text)
   local areaId = 1
@@ -189,6 +200,10 @@ end);
 
 player:clear();
 
+registerNamedEventHandler('Eldermud', 'eldermud.component.player.hide', 'eldermud.hide', function (event, show)
+  if (show) then player:show(); else player:hide(); end;
+end)
+
 -- registerNamedEventHandler('Eldermud', 'eldermud.component.room', 'gmcp.eldermud.room', function(ns, text)
   -- local name = string.sub(ns, 15);
   -- local data = gmcp.eldermud[name];
@@ -212,7 +227,7 @@ player:clear();
 				<name>commander</name>
 				<packageName></packageName>
 				<script>clearCmdLine()
-enableCommandLine()
+enableCommandLine();
 
 setCmdLineStyleSheet("main", [[
   QPlainTextEdit {
@@ -226,7 +241,10 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.commander', 'sysDataSe
   clearCmdLine();
   sendGMCP("eldermud.cmd" .. yajl.to_string{text = text});
 end);
-</script>
+
+registerNamedEventHandler('Eldermud', 'eldermud.component.commander.hide', 'eldermud.hide', function (event, show)
+  if (show) then enableCommandLine(); else disableCommandLine(); end;
+end)</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
@@ -239,16 +257,6 @@ eldermud.db = db:create("eldermud", {
     password = "",
   },
 });
-</script>
-				<eventHandlerList />
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>login</name>
-				<packageName></packageName>
-				<script>registerNamedEventHandler('Eldermud', 'eldermud.component.login', 'gmcp.eldermud.login', function(e, text)
-  local res = db:fetch(eldermud.db.profile);
-  sendGMCP("eldermud.login" .. yajl.to_string{option = "guest"})
-end);
 </script>
 				<eventHandlerList />
 			</Script>

@@ -20,7 +20,7 @@ module.exports = class ConfigClient extends Config {
       const stat = FS.statSync(filepath);
       const $paths = paths.concat(name);
       if (stat?.isDirectory()) this.mergeConfig(filepath, $paths);
-      else this.set($paths.join('.'), Config.parseFile(filepath));
+      else if (!name.startsWith('.')) this.set($paths.join('.'), Config.parseFile(filepath));
     });
   }
 

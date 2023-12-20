@@ -2,37 +2,57 @@ const { Action } = require('@coderich/gameflow');
 
 const startProfile = CONFIG.get('action.login');
 
-Action.define('login', (data, { actor }) => {
-  return actor.socket.query('login', data).then(({ username, password, option }) => {
-    switch (option) {
-      case 'guest': {
-        return REDIS.mSet(Object.entries(startProfile).reduce((prev, [key, value]) => {
-          return Object.assign(prev, { [`${actor}.${key}`]: `${value}` });
-        }, {})).then(() => Object.assign(actor, { name: actor.id }));
-      }
-      // case 'signup': {
-      //   return DB.get(username).then((profile) => {
-      //     if (profile) return actor.perform('login', 'username exists');
-      //     return DB.set(username, { ...newProfile, username, password }).then(() => Object.assign(actor, { username }));
-      //   });
-      // }
-      // case 'claim': {
-      //   return DB.get(username).then((profile) => {
-      //     if (profile) return actor.perform('login', 'username exists');
-      //     return DB.get(actor.username).then((transfer) => {
-      //       return Promise.all([
-      //         DB.del(actor.username),
-      //         DB.set(username, { ...transfer, username, password }),
-      //       ]).then(() => Object.assign(actor, { username }));
-      //     });
-      //   });
-      // }
-      default: {
-        return null;
-        // return DB.get(username).then((profile) => {
-        //   return profile?.password === password ? Object.assign(actor, { username }) : actor.perform('login', 'invalid password');
-        // });
-      }
+const resolveUsername = async (actor) => {
+  let { text: username } = await actor.socket.query('cmd', 'Please enter your username (otherwise type "new")');
+  const isNew = username.toLowerCase() === 'new';
+
+  if (isNew) {
+    ({ text: username } = await actor.socket.query('cmd', 'Please enter a username'));
+    if (!await REDIS.sAdd('users', username.toLowerCase())) {
+      actor.socket.emit('text', 'Sorry, that username already exists');
+      return resolveUsername(actor);
     }
-  });
+  } else if (!await REDIS.sIsMember('users', username.toLowerCase())) {
+    actor.socket.emit('text', 'Sorry, unable to find that username');
+    return resolveUsername(actor);
+  }
+
+  return { username, isNew };
+};
+
+const resolvePassword = async (actor, username, isNew) => {
+  const key = `${username.toLowerCase()}.password`;
+  const { text: password } = await actor.socket.query('cmd', 'Please enter password');
+
+  if (isNew) {
+    const { text: confirm } = await actor.socket.query('cmd', 'Please password confirm');
+    if (confirm !== password) {
+      actor.socket.emit('text', 'Oops, passwords do not match');
+      return resolvePassword(actor, username, isNew);
+    }
+    await REDIS.set(key, password);
+  } else if ((await REDIS.get(key)) !== password) {
+    actor.socket.emit('text', 'Oops, that password is not valid');
+    return resolvePassword(actor, username, isNew);
+  }
+
+  return password;
+};
+
+Action.define('login', async (_, { actor }) => {
+  // Welcome
+  actor.socket.emit('text', 'Welcome adventurer!');
+
+  // Resolve username + password
+  const { username, isNew } = await resolveUsername(actor);
+  await resolvePassword(actor, username, isNew);
+
+  // Setup profile
+  actor.name = username;
+
+  if (isNew) {
+    await REDIS.mSet(Object.entries(startProfile).reduce((prev, [key, value]) => {
+      return Object.assign(prev, { [`${actor}.${key}`]: `${value}` });
+    }, {}));
+  }
 });
