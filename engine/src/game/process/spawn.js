@@ -1,8 +1,9 @@
 const { Action } = require('@coderich/gameflow');
 
+/**
+ * Spawn an actor, bind system events and prepare them to enter the realm
+ */
 Action.define('spawn', async (_, { actor }) => {
-  actor.roomSearch = new Set();
-
   // STUB out non-player actors
   if (actor.type !== 'player') {
     actor.socket = new Proxy({}, {

@@ -11,7 +11,7 @@ module.exports = Action.define('execute', (command, { actor }) => {
       return actor.stream(actor.streams.action, command.name, command);
     }
     case 'default': {
-      return actor.stream(actor.streams.action, 'room', command);
+      return actor.stream(actor.streams.action, 'room');
     }
     case 'unknown': {
       return actor.stream(actor.streams.action, 'say', command);

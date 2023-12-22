@@ -48,11 +48,13 @@ Action.define('login', async (_, { actor }) => {
   await resolvePassword(actor, username, isNew);
 
   // Setup profile
-  actor.name = username;
+  actor.id = username.toLowerCase();
 
   if (isNew) {
     await REDIS.mSet(Object.entries(startProfile).reduce((prev, [key, value]) => {
       return Object.assign(prev, { [`${actor}.${key}`]: `${value}` });
-    }, {}));
+    }, { [`${actor}.name`]: username }));
   }
+
+  actor.name = await REDIS.get(`player.${actor.id}.name`);
 });

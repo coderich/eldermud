@@ -6,15 +6,12 @@ const $blockade = prop => $self(`blockade.${prop}`);
 SYSTEM.on('enter:map.town.rooms.supplies', async ({ actor }) => {
   // actor.socket.emit('text', 'You gone done fucked up');
   CONFIG.set('map.town.rooms.supplies.paths', { e: $blockade('rubble') });
-  // delete CONFIG.get('map.town.rooms.tunnel2.exits').w;
-
   actor.perform('map');
 });
 
 SYSTEM.on('search:map.town.rooms.supplies', async ({ actor }) => {
   const items = [CONFIG.get('item.rope'), CONFIG.get('item.canteen')];
   actor.roomSearch = new Set(items);
-  // const items = await APP.instantiate(['item.rope', 'item.canteen']);
   const descr = items.map(it => it.name).join(', ');
   return actor.socket.emit('text', `You notice ${descr} here.`);
 });
@@ -65,6 +62,9 @@ module.exports = {
     blockade: {
       name: 'Blockade',
       exits: { w: $room('tunnel2') },
+      spawns: [
+        { num: '1d2+1', units: ['${self:creature.ant}'] },
+      ],
     },
     supplies: {
       char: '$',

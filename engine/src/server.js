@@ -10,26 +10,15 @@ server.on('connect', async ({ socket }) => {
     socket,
     type: 'player',
     streams: ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
-    toString: () => `player.${actor.name || actor.id}`,
+    toString: () => `player.${actor.id}`, // REDIS key
   });
 
   actor.perform('login').then(async () => {
-    Actor[actor.id] = actor;
+    Actor[socket.id] = actor; // Add them to the list of Actors to respond to (server.on('cmd') below)
     await socket.emit('cls');
     await actor.perform('spawn');
     await actor.perform('enter');
   });
-
-  // Object.assign(Actor.define(socket.id), {
-  //   socket,
-  //   type: 'player',
-  //   streams: ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
-  //   toString: () => `player.${Actor[socket.id].name || Actor[socket.id].id}`,
-  // }).perform('login').then(async () => {
-  //   await socket.emit('cls');
-  //   await Actor[socket.id]?.perform('spawn');
-  //   await Actor[socket.id]?.perform('enter');
-  // });
 });
 
 server.on('disconnect', ({ socket }) => {

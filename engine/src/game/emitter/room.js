@@ -1,19 +1,19 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('room', [
-  async (_, { actor }) => {
-    const room = CONFIG.get(await REDIS.get(`${actor}.room`));
+  async (room, { actor }) => {
+    room ??= CONFIG.get(await REDIS.get(`${actor}.room`));
 
     if (room) {
       const $exits = Object.keys(room.exits).map((dir) => {
         let text = APP.direction[dir];
-        const path = room.paths?.[dir];
+        const path = CONFIG.get(`${room}.paths.${dir}`);
         if (path) text = `${path.label} ${text}`;
         return APP.styleText(text, 'room.exit');
       });
 
       const $items = await REDIS.sMembers(`${room}.items`).then(items => items.map(item => CONFIG.get(`${item}`)?.name).filter(Boolean));
-      const $units = Array.from(room.units.values()).filter(unit => unit !== actor).map(unit => APP.styleText(unit.name, 'unit.name'));
+      const $units = Array.from(room.units.values()).filter(unit => unit !== actor).map(unit => APP.styleText(unit.name, unit.type));
 
       const $room = {
         name: APP.styleText(room.name, 'room.name'),

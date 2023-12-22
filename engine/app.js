@@ -16,19 +16,31 @@ const server = require('./src/server');
   // Load the game (Actions)
   Util.requireDir(`${__dirname}/src/game`);
 
-  // Setup our in-game Actors
+  // Setup our in-game NPCs
   Object.values(CONFIG.get('npc')).forEach((npc) => {
-    const actor = Object.assign(Actor.define(`${npc}`), {
-      ...npc,
-      toString: () => `${npc}`,
-    });
+    const actor = Object.assign(Actor.define(`${npc}`), { ...npc, toString: () => `${npc}` });
 
-    REDIS.mSetNX({
-      [`${actor}.room`]: `${npc.room}`,
-      [`${actor}.map`]: `${npc.map}`,
-    }).then(async () => {
+    REDIS.mSetNX({ [`${actor}.room`]: `${npc.room}`, [`${actor}.map`]: `${npc.map}` }).then(async () => {
       await actor.perform('spawn');
       await actor.perform('enter');
+    });
+  });
+
+  // Setup our in-game creatures
+  Object.values(CONFIG.get('map')).forEach((map) => {
+    Object.values(map.rooms).forEach((room) => {
+      room.spawns?.forEach(({ num, units }) => {
+        APP.instantiate(units).then((creatures) => {
+          creatures.forEach((creature) => {
+            const actor = Object.assign(Actor.define(`${creature}`), { ...creature, toString: () => `${creature}` });
+
+            REDIS.mSetNX({ [`${actor}.room`]: `${room}`, [`${actor}.map`]: `${map}` }).then(async () => {
+              await actor.perform('spawn');
+              await actor.perform('enter');
+            });
+          });
+        });
+      });
     });
   });
 

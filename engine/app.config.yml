@@ -6,15 +6,15 @@ styles:
   keyword: '<SkyBlue>'
   gesture: '<wheat>'
   senses: '<ivory>'
+  npc: '<DarkTurquoise>'
+  player: '<DarkTurquoise>'
+  creature: '<violet>'
   room:
     name: '<cyan>'
     description: ''
     exit: '<ansiGreen>'
-    unitsLabel: '<violet>'
+    unitsLabel: '<ansi_magenta>'
     exitsLabel: '<ForestGreen>'
-  unit:
-    name: '<DarkTurquoise>'
-    description: ''
 
 action:
   login:

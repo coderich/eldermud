@@ -13,7 +13,7 @@ const commands = [
     { east: { args: [0], code: 'e', scope: 'navigation' } },
     { get: { args: [1, 2, 3, 4, 5], code: 'get', scope: 'action' } },
     { inventory: { args: [0], code: 'i', scope: 'action' } },
-    // { look: { args: [0, 1], code: 'l', scope: 'action' } },
+    { look: { args: [0, 1], code: 'l', scope: 'action' } },
     { north: { args: [0], code: 'n', scope: 'navigation' } },
     { south: { args: [0], code: 's', scope: 'navigation' } },
     { up: { args: [0], code: 'u', scope: 'navigation' } },

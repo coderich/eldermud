@@ -28,9 +28,9 @@ exports.target = (list, args, by = 'name') => {
   return result;
 };
 
-exports.instantiate = (keys) => {
-  return Util.mapPromise(keys, (key) => {
-    return Promise.all([CONFIG.get(key), REDIS.incr(`counter.${key}`)]).then(([data, counter]) => {
+exports.instantiate = (...keys) => {
+  return Util.mapPromise(keys.flat(), (key) => {
+    return Promise.all([CONFIG.get(`${key}`), REDIS.incr(`counter.${key}`)]).then(([data, counter]) => {
       return { ...data, toString: () => `${key}.${counter}` };
     });
   });
