@@ -97,7 +97,7 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.console', 'gmcp.elderm
   local name = string.sub(ns, 15);
   local data = gmcp.eldermud[name];
   
-  if (name == 'console' or name == 'text') then
+  if (name == 'console' or name == 'text' or name == 'cmd') then
     emco:cecho(activeTab, data .. '\n')
   elseif (name == 'room') then
     emco:cecho(activeTab, data.name .. '\n');

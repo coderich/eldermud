@@ -14,6 +14,10 @@ SYSTEM.on('*', async (event, context) => {
   // Fanout
   if (type === 'post' && !promise.aborted) {
     switch (action) {
+      case 'enter': {
+        SYSTEM.emit(`enter:${result.room}`, context);
+        break;
+      }
       case 'move': {
         SYSTEM.emit(`enter:${result.exit}`, context);
         SYSTEM.emit(`leave:${result.room}`, context);

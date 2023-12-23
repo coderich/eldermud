@@ -4,8 +4,14 @@ const { Action } = require('@coderich/gameflow');
  * Spawn an actor, bind system events and prepare them to enter the realm
  */
 Action.define('spawn', async (_, { actor }) => {
-  // STUB out non-player actors
   if (actor.type !== 'player') {
+    // Save location if not already set
+    await REDIS.mSetNX({
+      [`${actor}.room`]: `${actor.room}`,
+      [`${actor}.map`]: `${actor.map}`,
+    });
+
+    // Stub out socket function (TODO: refactor)
     actor.socket = new Proxy({}, {
       get(target, method) {
         return () => null;

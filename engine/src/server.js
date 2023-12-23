@@ -1,23 +1,19 @@
-const { Actor, Stream } = require('@coderich/gameflow');
+const { Actor } = require('@coderich/gameflow');
 const { Server } = require('@coderich/gameserver');
+const Player = require('./model/Player');
 
 const server = new Server({
   telnet: { port: 23, namespace: 'eldermud' },
 });
 
 server.on('connect', async ({ socket }) => {
-  const actor = Object.assign(new Actor(socket.id), {
-    socket,
-    type: 'player',
-    streams: ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {}),
-    toString: () => `player.${actor.id}`, // REDIS key
-  });
+  const player = new Player({ socket });
 
-  actor.perform('login').then(async () => {
-    Actor[socket.id] = actor; // Add them to the list of Actors to respond to (server.on('cmd') below)
-    await socket.emit('cls');
-    await actor.perform('spawn');
-    await actor.perform('enter');
+  player.perform('login').then(async () => {
+    Actor[socket.id] = player; // Add them to the list of Actors to respond to (server.on('cmd') below)
+    await player.send('cls');
+    await player.perform('spawn');
+    await player.perform('enter');
   });
 });
 
