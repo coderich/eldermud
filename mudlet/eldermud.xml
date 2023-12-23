@@ -26,9 +26,14 @@ local leftRegion = Geyser.VBox:new({
   x = 0, y = 0, width = '25%', height = '100%',
 });
 
+local middleRegion = Geyser.VBox:new({
+  name = 'middleRegion',
+  x = "25%", y = 0, width = '50%', height = '100%',
+});
+
 local rightRegion = Geyser.VBox:new({
   name = 'rightRegion',
-  x = "25%", y = 0, width = '75%', height = '100%',
+  x = "75%", y = 0, width = '25%', height = '100%',
 });
 
 -- Containers
@@ -37,7 +42,12 @@ local leftContainer = Geyser.VBox:new({
   x = 0, y = 0, width = '100%', height = '100%',
 }, leftRegion);
 
-local rightContainer = Geyser.Container:new({
+local middleContainer = Geyser.Container:new({
+  name = 'middleContainer',
+  x = 0, y = 0, width = '100%', height = '100%',
+}, middleRegion);
+
+local rightContainer = Geyser.VBox:new({
   name = 'rightContainer',
   x = 0, y = 0, width = '100%', height = '100%',
 }, rightRegion);
@@ -56,7 +66,7 @@ eldermud.playerContainer = Geyser.Container:new({
 eldermud.consoleContainer = Geyser.Container:new({
   name = 'consoleContainer',
   x = 0, y = 0, width = '100%', height = '100%',
-}, rightContainer);
+}, middleContainer);
 
 registerNamedEventHandler('Eldermud', 'eldermud.component.login', 'gmcp.eldermud.login', function(e, text)
   local res = db:fetch(eldermud.db.profile);
@@ -101,7 +111,7 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.console', 'gmcp.elderm
     emco:cecho(activeTab, data .. '\n')
   elseif (name == 'room') then
     emco:cecho(activeTab, data.name .. '\n');
-    if (#data.description &gt; 0) then emco:cecho(activeTab, data.description .. '\n'); end;
+    -- if (#data.description &gt; 0) then emco:cecho(activeTab, data.description .. '\n'); end;
     if (#data.items &gt; 0) then emco:cecho(activeTab, data.itemsLabel .. table.concat(data.items, ', ') .. '\n'); end
     if (#data.units &gt; 0) then emco:cecho(activeTab, data.unitsLabel .. table.concat(data.units, ', ') .. '\n'); end
     emco:cecho(activeTab, data.exitsLabel .. table.concat(data.exits, ', ') .. '\n');

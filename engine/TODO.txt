@@ -1,0 +1,1 @@
+* Room needs to have units + items persisted (there needs to be a container to know whats there)

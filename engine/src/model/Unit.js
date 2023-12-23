@@ -4,6 +4,19 @@ module.exports = class Unit extends Actor {
   constructor(data) {
     super();
     Object.assign(this, data);
+
+    // Stub
+    this.socket = new Proxy({}, {
+      get(target, method) {
+        return () => null;
+      },
+    });
+
+    // Streams
     this.streams = ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {});
+  }
+
+  dispose() {
+    return this;
   }
 };

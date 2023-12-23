@@ -1,7 +1,5 @@
 const { Action } = require('@coderich/gameflow');
 
-const startProfile = CONFIG.get('action.login');
-
 const resolveUsername = async (actor) => {
   let { text: username } = await actor.socket.query('cmd', 'Please enter your username (otherwise type "new")');
   const isNew = username.toLowerCase() === 'new';
@@ -49,12 +47,6 @@ Action.define('login', async (_, { actor }) => {
 
   // Setup profile
   actor.id = username.toLowerCase();
-
-  if (isNew) {
-    await REDIS.mSet(Object.entries(startProfile).reduce((prev, [key, value]) => {
-      return Object.assign(prev, { [`${actor}.${key}`]: `${value}` });
-    }, { [`${actor}.name`]: username }));
-  }
-
-  actor.name = await REDIS.get(`player.${actor.id}.name`);
+  actor.name = username;
+  if (isNew) Object.assign(actor, CONFIG.get('player'));
 });

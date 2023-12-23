@@ -16,7 +16,7 @@ Action.define('room', [
 
     const $room = {
       name: APP.styleText(room.name, 'room.name'),
-      description: APP.styleText(room.description, 'room.description'),
+      description: APP.styleText(`    ${room.description}`, 'room.description'),
       exitsLabel: APP.styleText('Obvious exits:', 'room.exitsLabel'),
       unitsLabel: APP.styleText('Also here:', 'room.unitsLabel'),
       itemsLabel: APP.styleText('You notice:', 'room.unitsLabel'),
@@ -28,12 +28,13 @@ Action.define('room', [
     actor.socket.emit('text', $room.name);
     actor.socket.emit('text', $room.description);
     if ($room.units.length) {
-      $room.units.push('[Random -- Zilo, Bane]');
-      $room.units.push('[Paul - Alfred - Crimp]');
-      $room.units.push('[Tom, Jerry - Henry]');
+      $room.units.push('[Random >> Zilo, Bane]');
+      $room.units.push('[Paul > Alfred > Crimp]');
+      $room.units.push('[Tom, Jerry > Henry]');
       actor.socket.emit('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
     }
     actor.socket.emit('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
+    actor.socket.emit('text', '[HP=30/MA=10]');
 
     // actor.socket.emit('room', $room);
   },
