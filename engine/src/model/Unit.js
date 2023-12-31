@@ -1,4 +1,4 @@
-const { Actor, Stream } = require('@coderich/gameflow');
+const { Actor, Stream, Action } = require('@coderich/gameflow');
 
 module.exports = class Unit extends Actor {
   constructor(data) {
@@ -13,10 +13,35 @@ module.exports = class Unit extends Actor {
     });
 
     // Streams
-    this.streams = ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {});
+    this.streams = {
+      info: new Stream(),
+      voice: new Stream(),
+      sight: new Stream(),
+      sound: new Stream(),
+      scent: new Stream(),
+      touch: new Stream(),
+      action: new Stream(),
+      attack: new Stream(),
+      telepath: new Stream(),
+    };
   }
 
   dispose() {
     return this;
+  }
+
+  stream(stream, ...args) {
+    if (!(stream instanceof Stream)) stream = this.streams[stream];
+    return super.stream(stream, ...args);
+  }
+
+  perform(action, data, context = {}) {
+    if (!(action instanceof Action)) action = Action[action];
+
+    if (context.stream === this.streams.action) {
+      this.streams.attack.abort();
+    }
+
+    return super.perform(action, data, context);
   }
 };

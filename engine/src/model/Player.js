@@ -1,12 +1,11 @@
-const { Actor, Stream } = require('@coderich/gameflow');
+const Unit = require('./Unit');
 
-module.exports = class Player extends Actor {
-  constructor({ socket }) {
-    super(socket.id);
+module.exports = class Player extends Unit {
+  constructor(data) {
+    super(data);
     this.type = 'player';
-    this.socket = socket;
+    this.socket = data.socket;
     this.toString = () => `player.${this.id}`; // REDIS key
-    this.streams = ['navigation', 'action', 'default'].reduce((prev, curr) => Object.assign(prev, { [curr]: new Stream(curr) }), {});
   }
 
   send(...args) {

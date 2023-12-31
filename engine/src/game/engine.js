@@ -1,6 +1,19 @@
 SYSTEM.on('*', async (event, context) => {
-  const { promise, actor, result } = context;
+  const { promise, actor, data, result, translate } = context;
   const [type, action] = event.split(':');
+
+  // Normalize input for actions
+  if (type === 'pre' && translate) {
+    switch (action) {
+      case 'greet': case 'ask': case 'attack': {
+        const { args } = data;
+        const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+        Object.assign(data, APP.target(units, args));
+        break;
+      }
+      default: break;
+    }
+  }
 
   // Posture check...
   if (['pre:move', 'pre:open', 'pre:close'].includes(event)) {
@@ -14,7 +27,7 @@ SYSTEM.on('*', async (event, context) => {
   // Fanout
   if (type === 'post' && !promise.aborted) {
     switch (action) {
-      case 'enter': {
+      case 'enter': { // Enter the realm
         SYSTEM.emit(`enter:${result.room}`, context);
         break;
       }

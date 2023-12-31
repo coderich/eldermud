@@ -4,9 +4,10 @@ module.exports = class Creature extends Unit {
   constructor(data) {
     super(data);
 
-    SYSTEM.on(`enter:${data.room}`, (context) => {
-      if (context.actor !== this) {
-
+    SYSTEM.on(`enter:${data.room}`, ({ actor }) => {
+      if (actor !== this) {
+        actor.once('post:move', () => this.streams.attack.abort());
+        this.stream('action', 'attack', { target: actor });
       }
     });
   }

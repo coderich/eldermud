@@ -27,7 +27,7 @@ module.exports = class ConfigClient extends Config {
   static #decorate(config) {
     //
     Object.entries(config.get()).forEach(([type, models]) => {
-      if (!['redis', 'styles', 'action'].includes(type)) {
+      if (!['redis', 'styles', 'action', 'player'].includes(type)) {
         Object.entries(models).forEach(([key, value]) => {
           const ns = `${type}.${key}`;
           config.set(`${ns}.id`, key);

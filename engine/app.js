@@ -3,8 +3,8 @@ const EventEmitter = require('./src/service/EventEmitter');
 const ConfigClient = require('./src/service/ConfigClient');
 const RedisClient = require('./src/service/RedisClient');
 const AppService = require('./src/service/AppService');
-const NPC = require('./src/model/NPC');
 const Creature = require('./src/model/Creature');
+const NPC = require('./src/model/NPC');
 const server = require('./src/server');
 
 (() => {

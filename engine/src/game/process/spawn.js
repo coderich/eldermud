@@ -12,16 +12,15 @@ Action.define('spawn', async (_, { actor }) => {
   }, {}));
 
   // Bind system events to this actor
-  actor.on('*', (event, data) => {
+  actor.on('*', (event, context) => {
     const [type] = event.split(':');
-    const payload = { actor, ...data };
 
     if (type === 'pre') {
       // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
-      data.promise.listen(i => i || Promise.all([SYSTEM.emit(event, payload), SYSTEM.emit('*', event, payload)]));
+      context.promise.listen(i => i || Promise.all([SYSTEM.emit(event, context), SYSTEM.emit('*', event, context)]));
     } else if (type === 'post') {
-      SYSTEM.emit(event, payload);
-      SYSTEM.emit('*', event, payload);
+      SYSTEM.emit(event, context);
+      SYSTEM.emit('*', event, context);
     }
   });
 });
