@@ -1,2 +1,5 @@
 * Only after login should you create new Player() - before then, in server they are still just a socket
 * Room needs to have units + items persisted (there needs to be a container to know whats there)
+
+**
+  -
