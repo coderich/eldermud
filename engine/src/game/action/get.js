@@ -10,6 +10,6 @@ Action.define('get', [
     actor.roomSearch.delete(target);
     const $target = await APP.instantiate(`${target}`);
     await REDIS.sAdd(`${actor}.inventory`, `${$target}`);
-    actor.socket.emit('text', `You take the ${target.name}`);
+    actor.send('text', `You take the ${target.name}`);
   },
 ]);

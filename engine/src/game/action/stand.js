@@ -10,6 +10,6 @@ Action.define('stand', [
   () => Util.timeout(250),
 
   (_, { actor }) => {
-    actor.socket.emit('text', 'You hop to your feet.');
+    actor.send('text', 'You hop to your feet.');
   },
 ]);

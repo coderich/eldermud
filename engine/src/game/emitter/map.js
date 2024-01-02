@@ -33,5 +33,5 @@ Action.define('map', async (_, { actor }) => {
   });
 
   // Emit
-  actor.socket.emit('map', { name: configMap.name, room: configRoom.mapId, rooms });
+  actor.send('map', { name: configMap.name, room: configRoom.mapId, rooms });
 });

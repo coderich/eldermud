@@ -13,9 +13,9 @@ Action.define('open', [
     if (door.status !== 'open') {
       CONFIG.set(`${door}.status`, 'open');
       actor.perform('map');
-      actor.socket.emit('text', `You open the door ${APP.direction[dir]}.`);
+      actor.send('text', `You open the door ${APP.direction[dir]}.`);
     } else {
-      actor.socket.emit('text', 'The door is already open!');
+      actor.send('text', 'The door is already open!');
     }
   },
 ]);

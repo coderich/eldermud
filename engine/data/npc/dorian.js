@@ -11,7 +11,7 @@
 SYSTEM.on('greet:npc.dorian', async ({ actor }) => {
   await REDIS.incr(`${actor}.npc.dorian.greet`);
 
-  actor.socket.emit('text', APP.styleBlockText(`
+  actor.send('text', APP.styleBlockText(`
     Hello traveler.
     What brings you here?
     I always wondered what would happen here if I said here many times...

@@ -10,7 +10,7 @@ Action.define('attack', [
     if (!target) return abort('You dont see that here!', true);
 
     // Engage in combat...
-    actor.socket.emit('text', `*combat engaged (${target.name})*`);
+    actor.send('text', `*combat engaged (${target.name})*`);
     if (actor.streams.action.length() > 0) return disengage();
     actor.streams.action.once('add', disengage);
 
@@ -22,9 +22,9 @@ Action.define('attack', [
     return undefined;
   },
   ({ target }, { actor, abort, promise }) => {
-    let force = false;
+    let force = true;
     const disengage = () => abort('*combat off*', force);
-    actor.streams.action.once('add', () => disengage());
+    actor.streams.action.once('add', disengage);
 
     const swing = async () => {
       force = true;
@@ -35,7 +35,6 @@ Action.define('attack', [
         const dmg = APP.roll('1d3+1');
         await actor.perform('damage', { target, dmg });
         await Util.timeout(2000);
-        actor.socket.emit('text', 'attack timeout over');
       }
 
       return promise.aborted ? null : swing();

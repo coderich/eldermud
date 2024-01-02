@@ -30,6 +30,7 @@ module.exports = class ConfigClient extends Config {
       if (!['redis', 'styles', 'action', 'player'].includes(type)) {
         Object.entries(models).forEach(([key, value]) => {
           const ns = `${type}.${key}`;
+          config.set(`${ns}.ns`, ns);
           config.set(`${ns}.id`, key);
           config.set(`${ns}.type`, type);
           config.set(`${ns}.toString`, () => ns);

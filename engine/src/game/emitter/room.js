@@ -25,17 +25,15 @@ Action.define('room', [
       items: $items,
     };
 
-    actor.socket.emit('text', $room.name);
-    actor.socket.emit('text', $room.description);
+    actor.send('text', $room.name);
+    actor.send('text', $room.description);
     if ($room.units.length) {
       $room.units.push('[Random >> Zilo, Bane]');
       $room.units.push('[Paul > Alfred > Crimp]');
       $room.units.push('[Tom, Jerry > Henry]');
-      actor.socket.emit('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
+      actor.send('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
     }
-    actor.socket.emit('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
-    actor.socket.emit('text', '[HP=30/MA=10]');
-
-    // actor.socket.emit('room', $room);
+    actor.send('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
+    actor.send('text', '[HP=30/MA=10]');
   },
 ]);

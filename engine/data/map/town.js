@@ -4,7 +4,6 @@ const $door = prop => $self(`doors.${prop}`);
 const $blockade = prop => $self(`blockade.${prop}`);
 
 SYSTEM.on('enter:map.town.rooms.supplies', async ({ actor }) => {
-  // actor.socket.emit('text', 'You gone done fucked up');
   CONFIG.set('map.town.rooms.supplies.paths', { e: $blockade('rubble') });
   actor.perform('map');
 });
@@ -13,7 +12,7 @@ SYSTEM.on('search:map.town.rooms.supplies', async ({ actor }) => {
   const items = [CONFIG.get('item.rope'), CONFIG.get('item.canteen')];
   actor.roomSearch = new Set(items);
   const descr = items.map(it => it.name).join(', ');
-  return actor.socket.emit('text', `You notice ${descr} here.`);
+  return actor.send('text', `You notice ${descr} here.`);
 });
 
 module.exports = {
@@ -39,7 +38,7 @@ module.exports = {
       check: async ({ actor, abort }) => {
         const inv = await REDIS.sMembers(`${actor}.inventory`).then(items => items.map(item => item.substring(0, item.lastIndexOf('.'))));
         if (!inv.includes('item.rope')) abort('You are unable to scale the rubble!');
-        else actor.socket.emit('text', 'You scale the rubble with your rope & grapple.');
+        else actor.send('text', 'You scale the rubble with your rope & grapple.');
       },
     },
   },
@@ -62,6 +61,7 @@ module.exports = {
     blockade: {
       name: 'Blockade',
       exits: { w: $room('tunnel2') },
+      respawn: '1d5000+1000',
       spawns: [
         { num: '1d2+1', units: ['${self:creature.ant}'] },
       ],

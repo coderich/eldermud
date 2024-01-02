@@ -3,6 +3,7 @@ const Unit = require('./Unit');
 module.exports = class Creature extends Unit {
   constructor(data) {
     super(data);
+    this.type = 'creature';
 
     // SYSTEM.on(`enter:${data.room}`, ({ actor }) => {
     //   if (actor !== this) {

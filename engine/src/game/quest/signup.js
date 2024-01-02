@@ -7,17 +7,17 @@ Action.define('quest.signup', [
     const noop = ({ promise }) => promise.abort();
     actor.on('pre:execute', noop);
 
-    actor.socket.emit('text', '...');
+    actor.send('text', '...');
     await Util.timeout(1000);
-    actor.socket.emit('text', '... you have trouble opening your eyes');
+    actor.send('text', '... you have trouble opening your eyes');
     await Util.timeout(1000);
-    actor.socket.emit('text', '... an unfamiliar voice');
-    actor.socket.emit('text', `
+    actor.send('text', '... an unfamiliar voice');
+    actor.send('text', `
       hey... are you ok?
     `);
 
     actor.off('pre:execute', noop);
     await actor.perform('task.stand');
-    actor.socket.emit('text', 'Good. Now to figure this shit out.');
+    actor.send('text', 'Good. Now to figure this shit out.');
   },
 ]);

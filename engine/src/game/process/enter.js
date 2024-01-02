@@ -10,7 +10,7 @@ Action.define('enter', async (_, { actor }) => {
 
   if (actor.type === 'player') {
     actor.perform('map');
-    actor.perform('room');
+    actor.perform('room', CONFIG.get(room));
     actor.roomSearch = new Set();
   }
 

@@ -22,10 +22,17 @@ module.exports = class Unit extends Actor {
       scent: new Stream(),
       touch: new Stream(),
       action: new Stream(),
-      attack: new Stream(),
       telepath: new Stream(),
     };
   }
+
+  send(...args) {
+    return this.socket.emit(...args);
+  }
+
+  // async broadcast() {
+
+  // }
 
   dispose() {
     return this;

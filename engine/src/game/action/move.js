@@ -39,6 +39,6 @@ Action.define('move', [
     CONFIG.get(`${exit}.units`).add(actor);
     actor.roomSearch.clear();
     await actor.perform('map');
-    await actor.perform('room');
+    await actor.perform('room', exit);
   },
 ]);

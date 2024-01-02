@@ -22,7 +22,7 @@ SYSTEM.on('*', async (event, context) => {
   }
 
   // Catch-all abort
-  if (type === 'post' && promise.aborted) actor.socket.emit('text', promise.reason);
+  if (type === 'post' && promise.aborted) actor.send('text', promise.reason);
 
   // Fanout
   if (type === 'post' && !promise.aborted) {

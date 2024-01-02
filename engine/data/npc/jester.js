@@ -3,7 +3,7 @@ SYSTEM.on('post:move', async ({ actor, promise }) => {
 
   if (promise.aborted) {
     if (`${jester.room}` === await REDIS.get(`${actor}.room`)) {
-      actor.socket.emit('text', APP.styleText('Jester laughs at you!', 'gesture'));
+      actor.send('text', APP.styleText('Jester laughs at you!', 'gesture'));
     }
   }
 });

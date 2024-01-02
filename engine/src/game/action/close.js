@@ -13,9 +13,9 @@ Action.define('close', [
     if (door.status !== 'closed') {
       CONFIG.set(`${door}.status`, 'closed');
       actor.perform('map');
-      actor.socket.emit('text', `You close the door ${APP.direction[dir]}.`);
+      actor.send('text', `You close the door ${APP.direction[dir]}.`);
     } else {
-      actor.socket.emit('text', 'The door is already closed!');
+      actor.send('text', 'The door is already closed!');
     }
   },
 ]);
