@@ -1,5 +1,8 @@
 const { Action } = require('@coderich/gameflow');
 
+/**
+ * Delegates the command to the appropriate stream/action
+ */
 module.exports = Action.define('execute', async (command, { actor, abort }) => {
   const context = { translate: true };
   const { name, code, input, stream } = command;
@@ -14,6 +17,10 @@ module.exports = Action.define('execute', async (command, { actor, abort }) => {
     case 'none': {
       return actor.stream('info', 'room', null, context);
     }
+    // case 'break': {
+    //   // return actor.streams.action.abort();
+    //   return actor.perform('break');
+    // }
     default: {
       return actor.stream(stream, name, command, context);
     }

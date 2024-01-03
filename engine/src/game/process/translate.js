@@ -5,28 +5,29 @@ const { Action } = require('@coderich/gameflow');
  * The "args" attribute indicates the number of args that the input must have specified in order to be a match.
  * The "code" is a short-hand normalized code used in the game logic.
  * The "stream" indicates the Actor's stream to perform this command in.
+ * The "tags" are used in-game to help categorize the command.
  */
 const commands = [
   [
     { attack: { args: [1, 2, 3], code: 'a', stream: 'action' } },
-    { down: { args: [0], code: 'd', stream: 'action' } },
-    { east: { args: [0], code: 'e', stream: 'action' } },
+    { down: { args: [0], code: 'd', stream: 'action', tags: ['direction'] } },
+    { east: { args: [0], code: 'e', stream: 'action', tags: ['direction'] } },
     { get: { args: [1, 2, 3, 4, 5], code: 'get', stream: 'action' } },
     { inventory: { args: [0], code: 'i', stream: 'info' } },
     { look: { args: [0, 1], code: 'l', stream: 'sight' } },
-    { north: { args: [0], code: 'n', stream: 'action' } },
-    { south: { args: [0], code: 's', stream: 'action' } },
-    { up: { args: [0], code: 'u', stream: 'action' } },
-    { west: { args: [0], code: 'w', stream: 'action' } },
-    // { x: { args: [0], code: 'x', alias: 'exit', stream: '' } },
-    { '?': { args: [0, 1, 2], code: 'help', alias: 'help', stream: 'info' } },
+    { north: { args: [0], code: 'n', stream: 'action', tags: ['direction'] } },
+    { south: { args: [0], code: 's', stream: 'action', tags: ['direction'] } },
+    { up: { args: [0], code: 'u', stream: 'action', tags: ['direction'] } },
+    { west: { args: [0], code: 'w', stream: 'action', tags: ['direction'] } },
+    // { x: { args: [0], code: 'x', name: 'exit', stream: '' } },
+    { '?': { args: [0, 1, 2], code: 'help', name: 'help', stream: 'info' } },
   ],
   [
-    { ne: { args: [0], code: 'ne', alias: 'northeast', stream: 'action' } },
-    { nw: { args: [0], code: 'nw', alias: 'northwest', stream: 'action' } },
-    { se: { args: [0], code: 'se', alias: 'southeast', stream: 'action' } },
-    { sw: { args: [0], code: 'sw', alias: 'southwest', stream: 'action' } },
-    { ul: { args: [1], code: 'unlock', alias: 'unlock', stream: 'action' } },
+    { ne: { args: [0], code: 'ne', name: 'northeast', stream: 'action', tags: ['direction'] } },
+    { nw: { args: [0], code: 'nw', name: 'northwest', stream: 'action', tags: ['direction'] } },
+    { se: { args: [0], code: 'se', name: 'southeast', stream: 'action', tags: ['direction'] } },
+    { sw: { args: [0], code: 'sw', name: 'southwest', stream: 'action' } },
+    { ul: { args: [1], code: 'unlock', name: 'unlock', stream: 'action' } },
     // { equip: { args: [1, 2, 3, 4, 5], code: 'equip', stream: 'action' } },
     { open: { args: [1], code: 'open', stream: 'action' } },
     { close: { args: [1], code: 'close', stream: 'action' } },
@@ -86,11 +87,10 @@ const translateArray = (arr, input, cmd, args) => {
 
         if (key.indexOf(cmd) === 0 && data.args.includes(args.length)) {
           return {
-            name: data.alias || key,
+            ...data,
+            name: data.name || key,
             input,
             args,
-            stream: data.stream,
-            code: data.code,
           };
         }
       }
@@ -101,7 +101,7 @@ const translateArray = (arr, input, cmd, args) => {
 };
 
 Action.define('translate', (input, { actor }) => {
-  input = input.text.trim().toLowerCase();
+  input = input.trim().toLowerCase();
   const [cmd, ...args] = input.match(/\S+/g) || [];
   return cmd ? translateArray(commands, input, cmd, args) : { name: 'none', input, args, code: null };
 });

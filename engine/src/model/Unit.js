@@ -15,6 +15,7 @@ module.exports = class Unit extends Actor {
 
     // Streams
     this.streams = {
+      input: new Stream(),
       info: new Stream(),
       voice: new Stream(),
       sight: new Stream(),

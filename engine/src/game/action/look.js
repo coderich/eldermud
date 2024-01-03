@@ -1,11 +1,12 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('look', [
-  async ({ args }, { actor, abort }) => {
-    const [dir] = args;
-    const { exits } = CONFIG.get(await REDIS.get(`${actor}.room`));
-    const room = exits?.[dir];
-    if (!room) return abort('There is no exit in that direction!');
-    return actor.perform('room', room);
+  async ({ target }, { actor, abort }) => {
+    if (!target) return abort('There is nothing to see there!');
+
+    switch (target.type) {
+      case 'room': return actor.perform('room', target);
+      default: return actor.send('text', 'You have no idea what this is...');
+    }
   },
 ]);

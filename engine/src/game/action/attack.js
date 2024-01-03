@@ -13,17 +13,21 @@ Action.define('attack', [
     actor.send('text', `*combat engaged (${target.name})*`);
     if (actor.streams.action.length() > 0) return disengage();
     actor.streams.action.once('add', disengage);
+    // actor.once('pre:break', disengage);
 
     // (re) engaging takes time;
     await Util.timeout(1000);
 
     // You can no longer forcefully disengage
     actor.streams.action.off('add', disengage);
+    // actor.off('pre:break', disengage);
     return undefined;
   },
   ({ target }, { actor, abort, promise }) => {
     let force = true;
+    actor.send('text', 'too late to abort');
     const disengage = () => abort('*combat off*', force);
+    // actor.once('pre:break', () => disengage);
     actor.streams.action.once('add', disengage);
 
     const swing = async () => {

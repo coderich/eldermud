@@ -1,6 +1,8 @@
 const Creature = require('../../model/Creature');
 
-// Spawn check...
+/**
+ * Responsible for spawning creatures
+ */
 SYSTEM.on('pre:room', async (context) => {
   const { data: room } = context;
 
