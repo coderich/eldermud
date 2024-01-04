@@ -3,13 +3,14 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('stand', [
   async (command, { abort, actor }) => {
-    const posture = await REDIS.set(`${actor}.posture`, 'stand', { GET: true });
+    const posture = await REDIS.get(`${actor}.posture`);
     return posture === 'stand' ? abort('You are already standing!') : posture;
   },
 
-  () => Util.timeout(250),
+  () => Util.timeout(2500),
 
-  (_, { actor }) => {
+  async (_, { actor }) => {
+    await REDIS.set(`${actor}.posture`, 'stand');
     actor.send('text', 'You hop to your feet.');
   },
 ]);

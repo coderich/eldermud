@@ -25,7 +25,7 @@ server.on('disconnect', ({ socket }) => {
 
 server.on('cmd', ({ socket, data }) => {
   return Actor[socket.id]?.perform('translate', data.text).then((command) => {
-    return Actor[socket.id]?.stream('input', 'execute', command);
+    return Actor[socket.id]?.stream(command.channel, 'execute', command);
   });
 });
 

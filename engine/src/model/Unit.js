@@ -1,4 +1,4 @@
-const { Actor, Stream, Action } = require('@coderich/gameflow');
+const { Actor, Stream } = require('@coderich/gameflow');
 
 // Socket Stub
 const socket = new Proxy({}, {
@@ -15,14 +15,15 @@ module.exports = class Unit extends Actor {
 
     // Streams
     this.streams = {
-      input: new Stream(),
       info: new Stream(),
+      realm: new Stream(),
       voice: new Stream(),
       sight: new Stream(),
       sound: new Stream(),
       scent: new Stream(),
       touch: new Stream(),
       action: new Stream(),
+      preAction: new Stream(),
       telepath: new Stream(),
     };
   }
@@ -43,20 +44,4 @@ module.exports = class Unit extends Actor {
     if (!(stream instanceof Stream)) stream = this.streams[stream];
     return super.stream(stream, ...args);
   }
-
-  // perform(action, data, context = {}) {
-  //   if (!(action instanceof Action)) action = Action[action];
-
-  //   if (context.stream === this.streams.action) {
-  //     if (this.target) {
-  //       console.log('aborting target');
-  //       this.target.abort();
-  //       delete this.target;
-  //     }
-  //   }
-
-  //   const promise = super.perform(action, data, context);
-  //   if (promise.id === 'attack') this.target = promise;
-  //   return promise;
-  // }
 };

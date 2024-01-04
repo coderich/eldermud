@@ -9,40 +9,40 @@ const { Action } = require('@coderich/gameflow');
  */
 const commands = [
   [
-    { attack: { args: [1, 2, 3], code: 'a', stream: 'action' } },
-    { down: { args: [0], code: 'd', stream: 'action', tags: ['direction'] } },
-    { east: { args: [0], code: 'e', stream: 'action', tags: ['direction'] } },
-    { get: { args: [1, 2, 3, 4, 5], code: 'get', stream: 'action' } },
-    { inventory: { args: [0], code: 'i', stream: 'info' } },
-    { look: { args: [0, 1], code: 'l', stream: 'sight' } },
-    { north: { args: [0], code: 'n', stream: 'action', tags: ['direction'] } },
-    { south: { args: [0], code: 's', stream: 'action', tags: ['direction'] } },
-    { up: { args: [0], code: 'u', stream: 'action', tags: ['direction'] } },
-    { west: { args: [0], code: 'w', stream: 'action', tags: ['direction'] } },
+    { attack: { args: [1, 2, 3], code: 'a', channel: 'realm', stream: 'action' } },
+    { down: { args: [0], code: 'd', channel: 'realm', stream: 'action', tags: ['direction'] } },
+    { east: { args: [0], code: 'e', channel: 'realm', stream: 'action', tags: ['direction'] } },
+    { get: { args: [1, 2, 3, 4, 5], code: 'get', channel: 'realm', stream: 'action' } },
+    { inventory: { args: [0], code: 'i', channel: 'realm', stream: 'info' } },
+    { look: { args: [0, 1], code: 'l', channel: 'realm', stream: 'sight' } },
+    { north: { args: [0], code: 'n', channel: 'realm', stream: 'action', tags: ['direction'] } },
+    { south: { args: [0], code: 's', channel: 'realm', stream: 'action', tags: ['direction'] } },
+    { up: { args: [0], code: 'u', channel: 'realm', stream: 'action', tags: ['direction'] } },
+    { west: { args: [0], code: 'w', channel: 'realm', stream: 'action', tags: ['direction'] } },
     // { x: { args: [0], code: 'x', name: 'exit', stream: '' } },
-    { '?': { args: [0, 1, 2], code: 'help', name: 'help', stream: 'info' } },
+    { '?': { args: [0, 1, 2], code: 'help', name: 'help', channel: 'realm', stream: 'info' } },
   ],
   [
-    { ne: { args: [0], code: 'ne', name: 'northeast', stream: 'action', tags: ['direction'] } },
-    { nw: { args: [0], code: 'nw', name: 'northwest', stream: 'action', tags: ['direction'] } },
-    { se: { args: [0], code: 'se', name: 'southeast', stream: 'action', tags: ['direction'] } },
-    { sw: { args: [0], code: 'sw', name: 'southwest', stream: 'action' } },
-    { ul: { args: [1], code: 'unlock', name: 'unlock', stream: 'action' } },
+    { ne: { args: [0], code: 'ne', name: 'northeast', channel: 'realm', stream: 'action', tags: ['direction'] } },
+    { nw: { args: [0], code: 'nw', name: 'northwest', channel: 'realm', stream: 'action', tags: ['direction'] } },
+    { se: { args: [0], code: 'se', name: 'southeast', channel: 'realm', stream: 'action', tags: ['direction'] } },
+    { sw: { args: [0], code: 'sw', name: 'southwest', channel: 'realm', stream: 'action' } },
+    { ul: { args: [1], code: 'unlock', name: 'unlock', channel: 'realm', stream: 'action' } },
     // { equip: { args: [1, 2, 3, 4, 5], code: 'equip', stream: 'action' } },
-    { open: { args: [1], code: 'open', stream: 'action' } },
-    { close: { args: [1], code: 'close', stream: 'action' } },
+    { open: { args: [1], code: 'open', channel: 'realm', stream: 'action' } },
+    { close: { args: [1], code: 'close', channel: 'realm', stream: 'action' } },
     // { drop: { args: [1, 2, 3, 4, 5], code: 'drop', stream: 'action' } },
     // { repeat: { args: [0], code: 're', stream: '' } },
     // { exit: { args: [0], code: 'x', stream: '' } },
   ],
   [
-    { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', stream: 'voice' } },
+    { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', channel: 'realm', stream: 'voice' } },
     // { exp: { args: [0], code: 'exp', stream: 'action' } },
     // { use: { args: [1, 2, 3, 4, 5], code: 'use', stream: 'action' } },
     // { buy: { args: [1, 2, 3, 4, 5], code: 'buy', stream: 'action' } },
     // { sell: { args: [1, 2, 3, 4, 5], code: 'sell', stream: 'action' } },
-    { break: { args: [0], code: 'break', stream: 'info' } },
-    { search: { args: [0], code: 'search', stream: 'action' } },
+    { break: { args: [0], code: 'break', channel: 'info', stream: 'info' } },
+    { search: { args: [0], code: 'search', channel: 'realm', stream: 'action' } },
     // { lock: { args: [1], code: 'lock', stream: 'action' } },
     // { unlock: { args: [1], code: 'unlock', stream: 'action' } },
     // { remove: { args: [1, 2, 3], code: 'remove', stream: 'action' } },
@@ -51,9 +51,9 @@ const commands = [
     // { push: { args: [1, 2, 3, 4, 5], code: 'push', stream: 'action' } },
     // { lock: { args: [1], code: 'lock', stream: 'action' } },
     // { list: { args: [0], code: 'list', stream: 'action' } },
-    { rest: { args: [0], code: 'rest', stream: 'action' } },
-    { stand: { args: [0], code: 'stand', stream: 'action' } },
-    { help: { args: [0], code: 'help', stream: 'info' } },
+    { rest: { args: [0], code: 'rest', channel: 'realm', stream: 'action' } },
+    { stand: { args: [0], code: 'stand', channel: 'realm', stream: 'action' } },
+    { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },
 
     // // Talents
     // { dble: { args: [1], code: 'talent.dble', stream: 'talent' } },
@@ -71,7 +71,7 @@ const commands = [
     // { '/his': { args: [0], code: 'his', stream: 'channel' } },
   ],
   [
-    { greet: { args: [0, 1, 2, 3, 4, 5], code: 'greet', stream: 'voice' } },
+    { greet: { args: [0, 1, 2, 3, 4, 5], code: 'greet', channel: 'realm', stream: 'voice' } },
     // { train: { args: [1], code: 'train', stream: 'action' } },
     // { learn: { args: [1], code: 'learn', stream: 'action' } },
   ],
@@ -97,11 +97,11 @@ const translateArray = (arr, input, cmd, args) => {
     }
   }
 
-  return { name: 'unknown', input, args, code: 'unk' };
+  return { name: 'unknown', input, args, code: 'unk', channel: 'realm' };
 };
 
 Action.define('translate', (input, { actor }) => {
   input = input.trim().toLowerCase();
   const [cmd, ...args] = input.match(/\S+/g) || [];
-  return cmd ? translateArray(commands, input, cmd, args) : { name: 'none', input, args, code: null };
+  return cmd ? translateArray(commands, input, cmd, args) : { name: 'none', input, args, code: null, channel: 'realm' };
 });

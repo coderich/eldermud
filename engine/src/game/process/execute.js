@@ -17,10 +17,9 @@ module.exports = Action.define('execute', async (command, { actor, abort }) => {
     case 'none': {
       return actor.stream('info', 'room', null, context);
     }
-    // case 'break': {
-    //   // return actor.streams.action.abort();
-    //   return actor.perform('break');
-    // }
+    case 'break': {
+      return actor.perform('break');
+    }
     default: {
       return actor.stream(stream, name, command, context);
     }
