@@ -1,0 +1,59 @@
+Human:
+  - Standard humanoid race, cursed with the Undead status in Dark Souls.
+
+Elf:
+  - Graceful and long-lived humanoid race with a connection to nature and magic.
+
+Dwarf:
+  - Short and stout humanoid race, known for their craftsmanship and resilience.
+
+Halfling:
+  - Small and nimble humanoid race, often associated with luck and stealth.
+
+Tiefling:
+  - Humanoids with infernal ancestry, often possessing demonic features.
+
+Orc:
+  - Savage humanoid race known for strength and aggression.
+
+Gnome:
+  - Small and inventive humanoid race, skilled in technology and magic.
+
+Aasimar:
+  - Humanoids with celestial ancestry, often possessing angelic features.
+
+Dragonborn:
+  - Humanoids with dragon-like features, known for their strength and breath weapons.
+
+Half-Orc:
+  - Humanoids with mixed orc and human heritage, combining strength and resilience.
+
+Aarakocra:
+  - Avian humanoid race with bird-like features, associated with flight and agility.
+
+Genasi:
+  - Humanoids with elemental ancestry, often possessing elemental powers.
+
+Warforged:
+  - Constructs created for war, often made of metal and imbued with sentience.
+
+Kenku:
+  - Bird-like humanoid race, known for mimicry and stealth.
+
+Tabaxi:
+  - Cat-like humanoid race, agile and known for their feline features.
+
+Goliath:
+  - Giant humanoid race known for strength and resilience.
+
+Changeling:
+  - Shape-shifting humanoid race, able to alter their appearance.
+
+Abyssal Changeling:
+  - A Changeling touched by the Abyss, blending shape-shifting with demonic features.
+
+Wraithkin:
+  - Kin or descendants of wraiths or spirits, often associated with the ethereal.
+
+Ghoulkin:
+  - Kin or descendants of ghouls, known for their connection to the undead.

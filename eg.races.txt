@@ -1,0 +1,60 @@
+Hollowed Human
+  - Humans cursed with the Undead status, gaining unique abilities and facing the challenge of managing their own humanity.
+
+Revenant Elf
+  - Elves with a connection to the afterlife, possessing heightened spiritual awareness and an affinity for soul-based magic
+
+Boneforged Dwarf
+  - Dwarves skilled in crafting powerful armor and weapons from the bones of ancient creatures, enhancing their durability in battle.
+
+Spectral Halfling
+  - Halflings with an inherent connection to the spirit world, capable of moving stealthily and manipulating the shadows.
+
+Abyssal Tiefling
+  - Tieflings touched by the Abyss, gaining dark powers from their infernal heritage and a natural affinity for necromancy.
+
+Graveborn Orc
+  - Orcs born from the graves of fallen warriors, possessing physical strength and a natural resistance to necrotic energy.
+
+Soulbound Gnome
+  - Gnomes with a talent for crafting intricate gadgets and devices powered by captured souls, providing unique technological advantages
+
+Wraithkin Aasimar
+  - Aasimar touched by celestial forces but with an inherent connection to the shadow realm, wielding both light and darkness in their abilities.
+
+Spiritforged Dragonborn
+  - Dragonborn with scales infused with spiritual energy, able to breathe spectral flames and resist necrotic effects
+
+Ghoulkin Half-Orc
+  - Half-Orcs with a bloodline tainted by ghoul ancestors, possessing heightened senses and the ability to absorb life energy from enemies.
+
+Lichborn Elf
+  - Elves who willingly embraced undeath, gaining immortality and dark powers but at the cost of their humanity.
+
+Spectral Goliath
+  - Goliaths with a connection to the spirit world, possessing immense strength and the ability to channel ethereal energy into devastating attacks.
+
+Bonebound Tiefling
+  - Tieflings with skeletal features, able to manipulate bones and summon spectral allies.
+
+Cursed Halfling
+  - Halflings cursed by a malevolent force, gaining a mischievous affinity for dark magic and trickery.
+
+Wraithborn Aarakocra
+  - Aarakocra with ethereal wings, able to phase through obstacles and soar through both the material and spirit realms.
+
+Abyssal Changeling
+  - Changelings touched by the Abyss, able to alter their form to take on more nightmarish and demonic appearances
+
+Soulforged Warforged
+  - Warforged infused with soul essence, gaining a connection to the spiritual plane and unique enhancements.
+
+Reaper Genasi
+  - Genasi touched by the essence of death, able to manipulate necrotic energy and resist its harmful effects.
+
+Hauntborn Tabaxi
+  - Tabaxi with the ability to briefly phase out of reality, becoming ghostly and gaining increased speed.
+
+Specterborn Kenku
+  - Kenku spirits that have returned from the afterlife, able to mimic haunting sounds and harness the power of shadows.
+

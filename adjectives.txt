@@ -1,0 +1,53 @@
+Hollowed:
+  - Implies a state of emptiness or lacking humanity, often associated with the undead in Dark Souls.
+
+Revenant:
+  - Refers to someone who has returned, typically from the dead, often seeking vengeance or redemption.
+
+Boneforged:
+  - Suggests the creation or enhancement of items using bones, indicating a connection to skeletal or necrotic themes.
+
+Spectral:
+  - Pertaining to or resembling a ghost or apparition, indicating a connection to the spirit realm.
+
+Abyssal:
+  - Relating to the Abyss, a dark and chaotic plane, suggesting a connection to demonic or otherworldly forces.
+
+Temporal:
+  - Refers to anything related to time, indicating manipulation or control over temporal aspects.
+
+Ghoulkin:
+  - Implies a kinship or connection to ghouls, undead creatures associated with consuming flesh.
+
+Soulbound:
+  - Connected or tied to the essence of souls, suggesting a deep spiritual connection.
+
+Occult:
+  - Pertaining to supernatural or mystical practices, often associated with forbidden or hidden knowledge.
+
+Graveborn:
+  - Born from the grave, indicating a connection to death and the undead.
+
+Penumbral:
+  - Relating to or resembling shadows, indicating an affinity for darkness or stealth.
+
+Lichborn:
+  - Implies a connection to liches, powerful undead spellcasters who achieved immortality.
+
+Cursed:
+  - Under a curse, indicating a character touched by dark or malevolent forces.
+
+Voidstalker:
+  - Implies the ability to stalk or move within the void or darkness, suggesting a stealthy or elusive nature.
+
+Wraithborn:
+  - Born from wraiths or spirits, indicating a connection to ethereal entities.
+
+Hauntborn:
+  - Born from haunts or supernatural disturbances, indicating a connection to the haunted or cursed.
+
+Soulforged:
+  - Forged or created through the essence of souls, suggesting a connection to spiritual energy.
+
+Reaper:
+  - Associated with death or the harvesting of souls, often depicted as a grim and skeletal figure.

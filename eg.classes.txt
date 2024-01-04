@@ -1,0 +1,60 @@
+Necromancer
+  - Specializes in manipulating the dead, raising undead minions, and harnessing the power of souls for dark magic.
+
+Soul Warden
+  - Protectors of the ethereal realms, they can commune with spirits, perform rituals on corpses, and channel the power of souls for defense.
+
+Cursed Alchemist
+  - Masters of dark alchemy, extracting potent substances from corpses to create powerful potions, poisons, and enhancements.
+
+Deathblade Warrior
+  - Melee combatants skilled in using weapons forged from the remains of fallen creatures, gaining unique abilities through their connection to the dead.
+
+Spiritual Bard
+  - Utilizes haunting melodies and necrotic harmonies to influence the behavior of both the living and the dead, providing buffs or debuffs.
+
+Undying Sentinel
+  - Wielders of cursed armor and shields crafted from the bones of powerful beings, able to absorb and redirect damage.
+
+Temporal Revenant
+  - Manipulates time and space, using the remnants of corpses to unlock temporal abilities and alter the flow of events.
+
+Soulbound Archer
+  - Expert marksmen who infuse their arrows with the essence of souls, dealing both physical and metaphysical damage.
+
+Occult Inquisitor
+  - Specialized in investigating and purging dark forces, gaining knowledge from studying corpses and using it to combat the supernatural.
+
+Gravecaller Shaman
+  - Connects with the spirits of the deceased to unleash curses, blessings, and shape the battlefield to their advantage.
+
+Abyssal Scholar
+  - Scholars who delve into the mysteries of the Abyss, gaining forbidden knowledge to enhance their magical abilities.
+
+Soul Eater
+  - Characters who can consume the souls of fallen enemies to temporarily boost their own attributes and abilities.
+
+Phantom Duelist
+  - Skilled in the art of dueling, these warriors can temporarily phase out of reality, becoming elusive and harder to hit.
+
+Corruptor Warlock
+  - Warlocks who forge pacts with dark entities, corrupting the very essence of the souls they encounter.
+
+Cryptic Oracle
+  - Seers and prophets who can glimpse into the future by communing with the spirits, providing strategic insights to their allies.
+
+Grave Robber
+  - Masters of scavenging and looting, adept at finding valuable items and hidden treasures in the remains of the deceased.
+
+Bladebound Executioner
+  - Executioners wielding cursed blades, gaining strength and abilities by executing foes with their dark weapons.
+
+Penumbral Infiltrator
+  - Masters of shadow manipulation, able to blend with darkness, move swiftly, and strike from unseen angles.
+
+Soul Weaver
+  - Characters who can weave the souls of the departed into powerful constructs or armor, enhancing their combat capabilities.
+
+Voidstalker Assassin
+  - Assassins who harness the power of the Void, able to momentarily disappear and reappear behind their targets.
+

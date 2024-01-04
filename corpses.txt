@@ -1,0 +1,125 @@
+Loot Corpse
+  - Collect items, equipment, or currency from the corpse.
+
+Study Corpse
+  - Gain information about the creature or player who died. This could reveal weaknesses, resistances, or lore.
+
+Sacrifice Corpse
+  - Offer the corpse to a deity or shrine for unique bonuses or blessings.
+
+Animate Corpse
+  - Depending on the game lore, allow necromancer characters to animate corpses as temporary minions.
+
+Bury Corpse
+  - Show respect by burying the corpse, potentially gaining favor with certain factions or NPCs.
+
+Crafting Materials
+  - Harvest materials from the corpse for crafting potions, poisons, or other items.
+
+Scavenge
+  - Search the corpse for useful items or resources that were not immediately visible.
+
+Consume Corpse
+  - Depending on the creature, consuming the corpse might grant temporary buffs or debuffs.
+
+Summon Spirit
+  - Invoke a spirit or ghost related to the deceased for guidance, information, or assistance.
+
+Display Trophy
+  - Take a part of the corpse as a trophy, which may serve as a status symbol or have specific effects.
+
+Revive
+  - In a fantasy setting, introduce a spell or ability that allows players to bring certain corpses back to life.
+
+Alchemical Experiment
+  - Use the corpse in alchemical experiments, potentially discovering new potions or concoctions.
+
+Corpse Desecration
+  - Perform dark rituals on the corpse to gain forbidden powers or curses
+
+Soul Link
+  - Use a deceased creature's soul to establish a temporary link, gaining insight into the surrounding area or receiving assistance.
+
+Spiritual Cleansing
+  - Purify a corpse to release trapped souls, providing benefits such as experience points, buffs, or currency.
+
+Corpse Artifacts
+  - Certain corpses may contain unique artifacts or relics with special powers when collected and used
+
+Resurrection Ritual
+  - Allow advanced characters or classes to perform a resurrection ritual on specific corpses, bringing the deceased back to life.
+
+Necrotic Harvesting
+  - Extract rare components from the corpse for crafting powerful necromantic spells or items.
+
+Corpse Racing
+  - Create a timed event where players race to reach and interact with a freshly deceased creature to gain special rewards.
+
+Corpse Messenger
+  - Send a message to the spirit realm through a corpse, gaining information or hints about upcoming challenges.
+
+Soul Absorption
+  - Develop abilities that allow players to absorb the residual souls from a corpse, gaining temporary enhancements.
+
+Cursed Remains
+  - Some corpses may be cursed, requiring careful handling or specific rituals to avoid negative consequences.
+
+Corpse Explosives
+  - Use certain types of corpses as explosive devices in combat, dealing damage to enemies in the vicinity
+
+Summon Undead Ally
+  - Invoke an undead ally based on the type of creature from which the corpse originates.
+
+Corpse Sculpture
+  - Skilled characters might have the ability to create intricate sculptures or art installations from corpses.
+
+Soul Transfer
+  - Transfer a portion of your own soul into a corpse, creating a temporary ally that fights alongside you.
+
+Dimensional Rift
+  - Use the corpse to open a temporary dimensional rift, providing access to unique challenges, rewards, or shortcuts
+
+Ghostly Echoes
+  - Commune with the ghostly echoes of the deceased, gaining insights into hidden passages or secrets in the surrounding area.
+
+Soul Forge
+  - Combine the souls from multiple corpses to forge a powerful weapon or piece of equipment.
+
+Soul Beacon
+  - Convert a corpse into a soul beacon that attracts wandering spirits, providing information or assistance.
+
+Spectral Beacon
+  - Transform the corpse into a spectral beacon that attracts otherworldly beings, potentially leading to rare encounters or events.
+
+Life Essence Transfusion
+  - Extract the life essence from a corpse to temporarily enhance your own attributes or skills.
+
+Curse Reversal
+  - Use specific rituals to reverse curses that may have afflicted the corpse, granting benefits to the player.
+
+Soul-Infused Artillery
+  - Craft projectiles infused with the captured souls of creatures, creating potent ammunition for ranged combat.
+
+Corpse Puppetry
+  - Control the movements of a corpse remotely for a limited time, allowing for strategic distractions or reconnaissance.
+
+Spectral Guide
+  - Temporarily summon a spectral guide associated with the deceased, providing guidance or hints on upcoming challenges.
+
+Soul Tether
+  - Establish a soul tether between a corpse and a specific location, allowing for a quick return to that spot when needed.
+
+Cadaverous Minions:
+  - Raise a limited number of cadaverous minions from the remains of fallen creatures to assist in combat or exploration.
+
+Haunted Illusions
+  - Use the residual energy from a corpse to create illusions that confuse or distract enemies during combat.
+
+Necro-Bardic Resonance
+  - Play a haunting melody using the bones of a corpse to temporarily influence the behavior of nearby creatures.
+
+Soul Reflection
+  -Commune with the soul of the deceased to gain insights into your own strengths and weaknesses, providing temporary buffs or debuffs.
+
+Corpse Pyre
+  - Perform a ritual to cremate a corpse, releasing a burst of energy that affects the game environment or nearby enemies.
