@@ -5,11 +5,11 @@ const { Action } = require('@coderich/gameflow');
  */
 Action.define('spawn', async (_, { actor }) => {
   // Save attributes if not exists
-  await REDIS.mSetNX(CONFIG.get('app.unitDBAttrs').reduce((prev, attr) => {
+  await Promise.all(CONFIG.get('app.unitDBAttrs').map((attr) => {
     const key = `${actor}.${attr}`;
     const value = actor[attr]?.toString();
-    return value ? Object.assign(prev, { [key]: value }) : prev;
-  }, {}));
+    return value === undefined ? Promise.resolve() : REDIS.set(key, value, { NX: true });
+  }));
 
   // Bind system events to this actor
   actor.on('*', (event, context) => {

@@ -48,5 +48,5 @@ Action.define('login', async (_, { actor }) => {
   // Setup profile
   actor.id = username.toLowerCase();
   actor.name = username;
-  if (isNew) Object.assign(actor, CONFIG.get('player'));
+  Object.assign(actor, CONFIG.get('player'));
 });

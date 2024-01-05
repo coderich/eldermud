@@ -10,7 +10,7 @@ const server = require('./src/server');
 (async () => {
   // Yep, globals
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
-  global.CONFIG = new ConfigClient(`${__dirname}/data`);
+  global.CONFIG = new ConfigClient(`${__dirname}/src/data`);
   global.REDIS = new RedisClient(CONFIG.get('app.redis'));
   global.APP = AppService;
 

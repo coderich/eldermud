@@ -11,7 +11,7 @@ SYSTEM.on('*', async (event, context) => {
       case 'greet': case 'ask': case 'attack': {
         const { args } = data;
         const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
-        return Object.assign(data, APP.target(units, args));
+        return Object.assign(data, APP.target([...units].filter(u => u !== actor), args));
       }
       case 'look': {
         const { args } = data;

@@ -4,6 +4,14 @@ Action.define('room', [
   async (room, { actor }) => {
     room ??= CONFIG.get(await REDIS.get(`${actor}.room`));
 
+    // Query for stats
+    const [hp, mhp, ma, mma] = await REDIS.mGet([
+      `${actor}.hp`,
+      `${actor}.mhp`,
+      `${actor}.ma`,
+      `${actor}.mma`,
+    ]);
+
     const $exits = Object.keys(room.exits).map((dir) => {
       let text = APP.direction[dir];
       const path = CONFIG.get(`${room}.paths.${dir}`);
@@ -34,6 +42,6 @@ Action.define('room', [
       actor.send('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
     }
     actor.send('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
-    actor.send('text', '[HP=30/MA=10]');
+    actor.send('text', `[HP=${hp}/MA=${ma}]`);
   },
 ]);

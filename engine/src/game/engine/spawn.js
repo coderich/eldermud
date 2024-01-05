@@ -37,6 +37,8 @@ SYSTEM.on('pre:room', async (context) => {
             await Promise.all(creatures.map(async (creature) => {
               creature.tier = APP.roll(creature.tier);
               creature.name = [APP.randomElement(creature.adjectives), creature.tiers[creature.tier], creature.name].filter(Boolean).join(' ');
+              creature.hp += Math.ceil(creature.hp * (creature.tier * 0.10));
+              creature.mhp = creature.hp;
               const spawn = new Creature({ ...creature, room });
               await spawn.perform('spawn');
               await spawn.perform('enter');

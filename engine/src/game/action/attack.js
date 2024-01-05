@@ -5,25 +5,27 @@ const { Action } = require('@coderich/gameflow');
  * Perform a basic attack with whatever weapon is in hand
  */
 Action.define('attack', [
-  ({ target }, { actor, abort, stream, promise }) => {
-    if (!target) return abort('You dont see that here!');
-
+  ({ target }, { abort }) => {
+    if (!target) abort('You dont see that here!');
+  },
+  ({ target, attack }, { actor, abort, stream, promise }) => {
     // Engage
     actor.send('text', `*combat engaged (${target.name})*`);
     stream.close('You cannot do that while attacking; BREAK first!');
 
-    const credit = () => {
+    // On Victory
+    const victory = () => {
       target.killers ??= new Set();
       target.killers.add(actor);
       actor.perform('break');
     };
 
-    target.once('pre:death', credit);
+    target.once('pre:death', victory);
 
     actor.once('post:break', () => {
       abort();
       stream.open();
-      target.off('post:death', credit);
+      target.off('post:death', victory);
       actor.send('text', '*combat off*');
     });
 
@@ -45,7 +47,5 @@ Action.define('attack', [
 
       if (!promise.aborted) swing();
     });
-
-    return target;
   },
 ]);

@@ -12,6 +12,13 @@ SYSTEM.on('post:death', ({ actor }) => {
     }
     default: {
       actor.dispose();
+      const exp = Math.ceil((actor.mhp * actor.exp) / actor.killers.size);
+
+      actor.killers.forEach((killer) => {
+        REDIS.incrBy(`${killer}.exp`, exp);
+        killer.send('text', `You gain ${exp} experience.`);
+      });
+
       break;
     }
   }

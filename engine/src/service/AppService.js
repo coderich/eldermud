@@ -23,12 +23,12 @@ exports.styleBlockText = (blocktext, styles = []) => {
 exports.target = (list, args, by = 'name') => {
   const arr = list instanceof Set ? Array.from(list.values()) : list; // Ensure array
   const $args = [...args]; // Shallow copy
-  const fn = typeof by === 'function' ? by : ((el, text) => el[by].toLowerCase().indexOf(text) === 0);
+  const fn = typeof by === 'function' ? by : ((el, text) => el[by].toLowerCase().split(' ').some(tok => tok.startsWith(text)));
   const result = { rest: [] };
 
   args.forEach(() => {
     result.target = arr.find(el => fn(el, $args.join(' ')));
-    if (result.target) return;
+    if (result.target) return; // break
     result.rest.unshift($args.pop());
   });
 
