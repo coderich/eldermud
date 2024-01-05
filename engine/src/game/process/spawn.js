@@ -5,7 +5,7 @@ const { Action } = require('@coderich/gameflow');
  */
 Action.define('spawn', async (_, { actor }) => {
   // Save attributes if not exists
-  await REDIS.mSetNX(['map', 'room', 'name', 'hp', 'ma', 'posture'].reduce((prev, attr) => {
+  await REDIS.mSetNX(CONFIG.get('app.unitDBAttrs').reduce((prev, attr) => {
     const key = `${actor}.${attr}`;
     const value = actor[attr]?.toString();
     return value ? Object.assign(prev, { [key]: value }) : prev;

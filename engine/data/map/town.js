@@ -63,7 +63,7 @@ module.exports = {
       exits: { w: $room('tunnel2') },
       respawn: '1d5000+1000',
       spawns: [
-        { num: '1d2+1', units: ['${self:creature.ant}'] },
+        { num: '1d2+1', units: ['${self:creature.rat}'] },
       ],
     },
     supplies: {

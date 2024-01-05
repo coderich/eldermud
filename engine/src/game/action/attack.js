@@ -11,13 +11,23 @@ Action.define('attack', [
     // Engage
     actor.send('text', `*combat engaged (${target.name})*`);
     stream.close('You cannot do that while attacking; BREAK first!');
+
+    const credit = () => {
+      target.killers ??= new Set();
+      target.killers.add(actor);
+      actor.perform('break');
+    };
+
+    target.once('pre:death', credit);
+
     actor.once('post:break', () => {
-      stream.open();
       abort();
+      stream.open();
+      target.off('post:death', credit);
       actor.send('text', '*combat off*');
     });
 
-    Util.timeout(5000).then(() => {
+    Util.timeout(2000).then(() => {
       const swing = async () => {
         await Util.timeout(2000);
         if (promise.aborted) return stream.resume();
@@ -26,7 +36,7 @@ Action.define('attack', [
          * Here we perform the swing. Recovery time cannot be averted so we pause the stream
          */
         stream.pause();
-        const dmg = APP.roll('1d3+1');
+        const dmg = APP.roll('3d10');
         await actor.perform('damage', { target, dmg });
         await Util.timeout(2000);
 

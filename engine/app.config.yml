@@ -1,17 +1,20 @@
-redis:
-  url: 'redis://localhost:6379'
+app:
+  redis:
+    url: 'redis://localhost:6379'
 
-styles:
-  reset: '<reset>'
-  keyword: '<SkyBlue>'
-  gesture: '<wheat>'
-  senses: '<ivory>'
-  npc: '<DarkTurquoise>'
-  player: '<DarkTurquoise>'
-  creature: '<violet>'
-  room:
-    name: '<cyan>'
-    description: ''
-    exit: '<ansiGreen>'
-    unitsLabel: '<ansi_magenta>'
-    exitsLabel: '<ForestGreen>'
+  unitDBAttrs: ['map', 'room', 'name', 'tier', 'hp', 'mhp', 'ma', 'mma', 'posture']
+
+  styles:
+    reset: '<reset>'
+    keyword: '<SkyBlue>'
+    gesture: '<wheat>'
+    senses: '<ivory>'
+    npc: '<DarkTurquoise>'
+    player: '<DarkTurquoise>'
+    creature: '<violet>'
+    room:
+      name: '<cyan>'
+      description: ''
+      exit: '<ansiGreen>'
+      unitsLabel: '<ansi_magenta>'
+      exitsLabel: '<ForestGreen>'

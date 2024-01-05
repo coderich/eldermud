@@ -21,6 +21,7 @@
     "@coderich/gameserver": "^1.1.2",
     "@coderich/util": "^0.1.6",
     "chance": "1.1.11",
+    "pluralize": "8.0.0",
     "redis": "4.6.11"
   },
   "devDependencies": {

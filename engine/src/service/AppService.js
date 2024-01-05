@@ -1,14 +1,15 @@
 const Chance = require('chance');
 const Util = require('@coderich/util');
+const Pluralize = require('pluralize');
 
 const chance = new Chance();
 
+exports.chance = chance;
+exports.pluralize = Pluralize;
 exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northeast', nw: 'northwest', se: 'southeast', sw: 'southwest', u: 'up', d: 'down' };
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };
-
 exports.randomElement = arr => arr[Math.floor(Math.random() * arr.length)];
-
-exports.styleText = (text, style) => `${CONFIG.get(`styles.${style}`)}${text}${CONFIG.get('styles.reset')}`;
+exports.styleText = (text, style) => `${CONFIG.get(`app.styles.${style}`)}${text}${CONFIG.get('app.styles.reset')}`;
 
 exports.styleBlockText = (blocktext, styles = []) => {
   return styles.reduce((prev, { text, style, limit = Infinity }) => {
@@ -46,13 +47,25 @@ exports.roll = (dice) => {
   if (typeof dice !== 'string') return dice;
 
   const input = dice.match(/\S+/g).join('');
-  const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+|-|\\*|\\/]?)(\d*)/);
+  const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+-\\*\\/]?)(\d*)/);
 
+  // Dice roll value
   const value = Array.from(Array(Number.parseInt(rolls, 10))).reduce((prev, curr) => {
     return prev + chance.integer({ min: 1, max: sides });
   }, 0);
 
-  return eval(`${value} ${op} ${mod}`); // eslint-disable-line
+  // Modifier value (need to parse possible string to integer)
+  const val = parseInt(mod, 10);
+
+  switch (op) {
+    case '+': return value + val;
+    case '-': return value - val;
+    case '*': return value * val;
+    case '/': return value / val;
+    case '%': return value % val;
+    case '**': return value ** val; // Power of
+    default: return value;
+  }
 };
 
 exports.table = (rows, options = {}) => {

@@ -11,7 +11,7 @@ const server = require('./src/server');
   // Yep, globals
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
   global.CONFIG = new ConfigClient(`${__dirname}/data`);
-  global.REDIS = new RedisClient(CONFIG.get('redis'));
+  global.REDIS = new RedisClient(CONFIG.get('app.redis'));
   global.APP = AppService;
 
   // Load the game (Actions)
@@ -33,6 +33,7 @@ const server = require('./src/server');
         const ns = `${root}.${id}`;
         prev[path] ??= CONFIG.get(ns);
         prev[path][attr] = values[i];
+        prev[path].toString = () => path;
         return prev;
       }, {});
     }) : [];

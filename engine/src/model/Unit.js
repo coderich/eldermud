@@ -15,16 +15,16 @@ module.exports = class Unit extends Actor {
 
     // Streams
     this.streams = {
-      info: new Stream(),
-      realm: new Stream(),
-      voice: new Stream(),
-      sight: new Stream(),
-      sound: new Stream(),
-      scent: new Stream(),
-      touch: new Stream(),
-      action: new Stream(),
-      preAction: new Stream(),
-      telepath: new Stream(),
+      info: new Stream('info'),
+      realm: new Stream('realm'),
+      voice: new Stream('voice'),
+      sight: new Stream('sight'),
+      sound: new Stream('sound'),
+      scent: new Stream('scent'),
+      touch: new Stream('touch'),
+      action: new Stream('action'),
+      preAction: new Stream('preAction'),
+      telepath: new Stream('telepath'),
     };
   }
 
@@ -33,11 +33,15 @@ module.exports = class Unit extends Actor {
   }
 
   // async broadcast() {
-
   // }
 
-  dispose() {
-    return this;
+  async dispose() {
+    this.removeAllListeners();
+    Object.values(this.streams).forEach(stream => stream.removeAllListeners());
+    CONFIG.get(await REDIS.get(`${this}.room`)).units.delete(this);
+    const keys = await REDIS.keys(`${this}.*`);
+    await REDIS.del(keys);
+    delete this;
   }
 
   stream(stream, ...args) {

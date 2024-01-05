@@ -7,7 +7,7 @@ Action.define('stand', [
     return posture === 'stand' ? abort('You are already standing!') : posture;
   },
 
-  () => Util.timeout(2500),
+  () => Util.timeout(250),
 
   async (_, { actor }) => {
     await REDIS.set(`${actor}.posture`, 'stand');

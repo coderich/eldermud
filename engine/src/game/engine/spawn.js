@@ -15,16 +15,18 @@ SYSTEM.on('pre:room', async (context) => {
 
       // Current creatures by namespace and count
       const current = Array.from(room.units.values()).filter(unit => unit.type === 'creature').reduce((prev, creature) => {
-        prev[creature.ns] ??= 0;
-        prev[creature.ns]--;
+        const ns = `${creature.type}.${creature.id}`;
+        prev[ns] ??= 0;
+        prev[ns]--;
         return prev;
       }, {});
 
       await Promise.all(room.spawns.map(({ num, units }) => {
         // Roll to see if we create new spawns
         const roll = Array.from(new Array(APP.roll(num))).map(() => APP.randomElement(units)).reduce((prev, creature) => {
-          prev[creature.ns] ??= 0;
-          prev[creature.ns]++;
+          const ns = `${creature.type}.${creature.id}`;
+          prev[ns] ??= 0;
+          prev[ns]++;
           return prev;
         }, { ...current });
 
@@ -33,6 +35,8 @@ SYSTEM.on('pre:room', async (context) => {
             const args = Array.from(new Array(count)).fill(ns);
             const creatures = await APP.instantiate(...args);
             await Promise.all(creatures.map(async (creature) => {
+              creature.tier = APP.roll(creature.tier);
+              creature.name = [APP.randomElement(creature.adjectives), creature.tiers[creature.tier], creature.name].filter(Boolean).join(' ');
               const spawn = new Creature({ ...creature, room });
               await spawn.perform('spawn');
               await spawn.perform('enter');
