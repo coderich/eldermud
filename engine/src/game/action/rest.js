@@ -12,6 +12,7 @@ Action.define('rest', [
       const [hp, mhp] = await REDIS.mGet([`${actor}.hp`, `${actor}.mhp`]).then(values => values.map(v => parseInt(v, 10)));
       const newHP = Math.min(hp + 5, mhp);
       await REDIS.set(`${actor}.hp`, newHP);
+      actor.perform('status');
     }, 2000);
 
     actor.once('post:stand', () => clearInterval(interval));

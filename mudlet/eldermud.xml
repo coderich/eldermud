@@ -7,6 +7,56 @@
 	<ActionPackage />
 	<ScriptPackage>
 		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>function</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>Style Gauge</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {}
+
+function eldermud:styleGauge(gauge, color)
+  local colors = {
+    green = {
+      front = { "#98f041", "#8cf029", "#66cc00", "#52a300", "#66cc00" },
+      back = { "#78bd33", "#6ebd20", "#4c9900", "#387000", "#4c9900" },
+    },
+    red = {
+      front = { "#f04141", "#ef2929", "#cc0000", "#a40000", "#cc0000" },
+      back = { "#bd3333", "#bd2020", "#990000", "#700000", "#990000" },
+    },
+    blue = {
+      front = { "#4141f0", "#2929ef", "#0000cc", "#0000a4", "#0000cc" },
+      back = { "#3333bd", "#2020bd", "#000099", "#000070", "#000099" },
+    },
+  }
+  
+  local stops = colors[color]
+    
+  gauge.front:setStyleSheet([[
+    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ]].. stops.front[1] ..[[, stop: 0.1 ]].. stops.front[2] ..[[, stop: 0.49 ]].. stops.front[3] ..[[, stop: 0.5 ]].. stops.front[4] ..[[, stop: 1 ]].. stops.front[5] ..[[);
+    border-top: 1px black solid;
+    border-left: 1px black solid;
+    border-bottom: 1px black solid;
+    border-radius: 7;
+    padding: 3px;
+  ]])
+
+  gauge.back:setStyleSheet([[
+    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ]].. stops.back[1] ..[[, stop: 0.1 ]].. stops.back[2] ..[[, stop: 0.49 ]].. stops.back[3] ..[[, stop: 0.5 ]].. stops.back[4] ..[[, stop: 1 ]].. stops.back[5] ..[[);
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 7;
+    padding: 3px;
+  ]])
+end
+</script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>component</name>
 			<packageName></packageName>
 			<script></script>
@@ -18,7 +68,7 @@
 
 clearWindow();
 disableScrollBar();
--- raiseEvent('eldermud.hide');
+raiseEvent('eldermud.hide');
 
 -- Regions
 local leftRegion = Geyser.VBox:new({
@@ -65,7 +115,12 @@ eldermud.playerContainer = Geyser.Container:new({
 
 eldermud.consoleContainer = Geyser.Container:new({
   name = 'consoleContainer',
-  x = 0, y = 0, width = '100%', height = '100%',
+  x = 0, y = 0, width = '100%', height = '-40px',
+}, middleContainer);
+
+eldermud.statusContainer = Geyser.Container:new({
+  name = 'statusContainer',
+  x = 0, y = '-40px', width = '100%', height = '20px',
 }, middleContainer);
 
 registerNamedEventHandler('Eldermud', 'eldermud.component.login', 'gmcp.eldermud.login', function(e, text)
@@ -86,9 +141,9 @@ local activeTab = 'Realm';
 
 local emco = EMCO:new({
   name = "console",
-  x = 0, y = "10px", width = '100%', height = '100%',
-  color = "grey",
-  consoles = { 'Realm', "Jester", "Guard" },
+  -- x = 0, y = "10px",
+  width = '100%', height = '100%',
+  consoles = { 'Realm', 'Guard' },
   activeTabCSS = [[background-color: black; border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
   inactiveTabCSS = [[background-color: rgb(60,60,60,255); border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
 }, eldermud.consoleContainer);
@@ -210,6 +265,11 @@ end);
 
 player:clear();
 
+registerNamedEventHandler('Eldermud', 'eldermud.component.player', 'gmcp.eldermud.player', function (event)
+  player:clear();
+  player:cecho(gmcp.eldermud.player);
+end)
+
 registerNamedEventHandler('Eldermud', 'eldermud.component.player.hide', 'eldermud.hide', function (event, show)
   if (show) then player:show(); else player:hide(); end;
 end)
@@ -267,6 +327,30 @@ eldermud.db = db:create("eldermud", {
     password = "",
   },
 });
+</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>status</name>
+				<packageName></packageName>
+				<script>local hpBar = Geyser.Gauge:new({
+  name = 'hpBar',
+  width = '30%', height = '100%',
+}, eldermud.statusContainer);
+
+local maBar = Geyser.Gauge:new({
+  name = 'maBar',
+  x = '33%', width = '30%', height = '100%',
+}, eldermud.statusContainer);
+
+eldermud:styleGauge(hpBar, 'green');
+eldermud:styleGauge(maBar, 'blue');
+
+registerNamedEventHandler('Eldermud', 'eldermud.component.status', 'gmcp.eldermud.status', function (event)
+  local data = gmcp.eldermud.status;
+  hpBar:setValue(tonumber(data.hp), tonumber(data.mhp));
+  maBar:setValue(tonumber(data.ma), tonumber(data.mma));
+end)
 </script>
 				<eventHandlerList />
 			</Script>

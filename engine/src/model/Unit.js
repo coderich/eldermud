@@ -28,8 +28,16 @@ module.exports = class Unit extends Actor {
     };
   }
 
-  send(...args) {
-    return this.socket.emit(...args);
+  mGet(...keys) {
+    keys = keys.flat();
+    return REDIS.mGet(keys.map(key => `${this}.${key}`)).then((values) => {
+      return values.reduce((prev, value, i) => Object.assign(prev, { [keys[i]]: value }), {});
+    });
+  }
+
+  send(event, message, ...rest) {
+    if (rest.length) message = message.concat(rest.flat().join(''));
+    return this.socket.emit(event, message);
   }
 
   // async broadcast() {

@@ -11,7 +11,13 @@ SYSTEM.on('*', async (event, context) => {
       case 'greet': case 'ask': case 'attack': {
         const { args } = data;
         const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
-        return Object.assign(data, APP.target([...units].filter(u => u !== actor), args));
+        Object.assign(data, APP.target([...units].filter(u => u !== actor), args));
+        break;
+      }
+      case 'list': {
+        const { shop } = CONFIG.get(await REDIS.get(`${actor}.room`));
+        Object.assign(data, { shop });
+        break;
       }
       case 'look': {
         const { args } = data;

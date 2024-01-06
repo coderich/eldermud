@@ -8,7 +8,7 @@ Action.define('attack', [
   ({ target }, { abort }) => {
     if (!target) abort('You dont see that here!');
   },
-  ({ target, attack }, { actor, abort, stream, promise }) => {
+  ({ target }, { actor, abort, stream, promise }) => {
     // Engage
     actor.send('text', `*combat engaged (${target.name})*`);
     stream.close('You cannot do that while attacking; BREAK first!');
@@ -29,6 +29,7 @@ Action.define('attack', [
       actor.send('text', '*combat off*');
     });
 
+    // Time to engage
     Util.timeout(2000).then(() => {
       const swing = async () => {
         await Util.timeout(2000);
@@ -38,7 +39,8 @@ Action.define('attack', [
          * Here we perform the swing. Recovery time cannot be averted so we pause the stream
          */
         stream.pause();
-        const dmg = APP.roll('3d10');
+        const attack = APP.randomElement(actor.attacks);
+        const dmg = APP.roll(attack.dmg);
         await actor.perform('damage', { target, dmg });
         await Util.timeout(2000);
 

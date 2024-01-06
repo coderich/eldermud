@@ -43,6 +43,12 @@ module.exports = {
     },
   },
 
+  shops: {
+    general: {
+      items: ['${self:item.rope}', '${self:item.canteen}'],
+    },
+  },
+
   rooms: {
     start: {
       name: 'Cave, Start',
@@ -69,6 +75,7 @@ module.exports = {
     supplies: {
       char: '$',
       name: 'Supplies',
+      shop: $self('shops.general'),
       exits: { e: $room('tunnel2') },
     },
   },

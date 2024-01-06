@@ -29,8 +29,10 @@ const commands = [
     { sw: { args: [0], code: 'sw', name: 'southwest', channel: 'realm', stream: 'action' } },
     { ul: { args: [1], code: 'unlock', name: 'unlock', channel: 'realm', stream: 'action' } },
     // { equip: { args: [1, 2, 3, 4, 5], code: 'equip', stream: 'action' } },
+    { list: { args: [0], code: 'list', channel: 'realm', stream: 'action' } },
     { open: { args: [1], code: 'open', channel: 'realm', stream: 'action' } },
     { close: { args: [1], code: 'close', channel: 'realm', stream: 'action' } },
+    { stats: { args: [0], code: 'stats', channel: 'realm', stream: 'info' } },
     // { drop: { args: [1, 2, 3, 4, 5], code: 'drop', stream: 'action' } },
     // { repeat: { args: [0], code: 're', stream: '' } },
     // { exit: { args: [0], code: 'x', stream: '' } },
@@ -50,7 +52,6 @@ const commands = [
   [
     // { push: { args: [1, 2, 3, 4, 5], code: 'push', stream: 'action' } },
     // { lock: { args: [1], code: 'lock', stream: 'action' } },
-    // { list: { args: [0], code: 'list', stream: 'action' } },
     { rest: { args: [0], code: 'rest', channel: 'realm', stream: 'action' } },
     { stand: { args: [0], code: 'stand', channel: 'realm', stream: 'action' } },
     { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },

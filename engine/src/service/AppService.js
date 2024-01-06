@@ -70,6 +70,7 @@ exports.roll = (dice) => {
 
 exports.table = (rows, options = {}) => {
   let table = '', startIndex = 0;
+  const sep = options.sep ?? '| ';
 
   // Determine the maximum width for each column
   const colWidths = rows[0].map((_, i) => Math.max(...rows.map(row => String(row[i]).length)));
@@ -79,13 +80,13 @@ exports.table = (rows, options = {}) => {
     startIndex = 1;
     const headers = rows[0];
     table = table.concat(headers.reduce((prev, header, i) => {
-      return prev.concat(`${header.padEnd(colWidths[i])} | `);
+      return prev.concat(`${header.toString().padEnd(colWidths[i])} | `);
     }, '| '), '\n').concat('|', headers.map((_, i) => `${'-'.repeat(colWidths[i] + 2)}|`).join(''), '\n');
   }
 
   // Generate data
   table = table.concat(rows.slice(startIndex).reduce((prev, row) => {
-    return prev.concat('| ', row.map((data, i) => `${data.padEnd(colWidths[i])} | `).join(''), '\n');
+    return prev.concat(sep, row.map((data, i) => `${data.toString().padEnd(colWidths[i])} ${sep}`).join(''), '\n');
   }, ''));
 
   return table.trimEnd('\n');
