@@ -1,8 +1,12 @@
 const Chance = require('chance');
 const Util = require('@coderich/util');
 const Pluralize = require('pluralize');
+const NPC = require('../model/NPC');
+const Item = require('../model/Item');
+const Creature = require('../model/Creature');
 
 const chance = new Chance();
+const models = { npc: NPC, item: Item, creature: Creature };
 
 exports.chance = chance;
 exports.pluralize = Pluralize;
@@ -11,6 +15,7 @@ exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northea
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };
 exports.randomElement = arr => arr[Math.floor(Math.random() * arr.length)];
 exports.styleText = (style, ...text) => `${CONFIG.get(`app.styles.${style}`)}${text.flat().join(' ')}${CONFIG.get('app.styles.reset')}`;
+exports.isNumeric = str => !Number.isNaN(Number(str));
 
 exports.styleBlockText = (styles = [], blocktext) => {
   return styles.reduce((prev, { text, style, limit = Infinity }) => {
@@ -36,11 +41,26 @@ exports.target = (list, args, by = 'name') => {
   return result;
 };
 
-exports.instantiate = (...keys) => {
-  return Util.mapPromise(keys.flat(), (key) => {
-    return Promise.all([CONFIG.get(`${key}`), REDIS.incr(`counter.${key}`)]).then(([data, counter]) => {
-      return { ...data, toString: () => `${key}.${counter}` };
+/**
+ * Given a provided set of configuration keys; will instantiate a new config instance
+ */
+exports.instantiate = (keys, data = {}) => {
+  return Util.mapPromise(keys, (key) => {
+    return Promise.all([CONFIG.get(`${key}`), REDIS.incr(`counter.${key}`)]).then(([config, counter]) => {
+      return new models[config.type]({ ...config, toString: () => `${key}.${counter}`, ...data });
     });
+  });
+};
+
+/**
+ * Given a set of configuration keys; will return a configuration object
+ */
+exports.hydrate = (keys) => {
+  return Util.map(keys, (key) => {
+    const arr = `${key}`.split('.');
+    const toString = () => `${key}`;
+    const $key = exports.isNumeric(arr.pop()) ? arr.join('.') : key;
+    return { ...CONFIG.get(`${$key}`), toString };
   });
 };
 

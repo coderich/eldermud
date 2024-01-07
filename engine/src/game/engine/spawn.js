@@ -1,5 +1,3 @@
-const Creature = require('../../model/Creature');
-
 /**
  * Responsible for spawning creatures
  */
@@ -32,15 +30,12 @@ SYSTEM.on('pre:room', async (context) => {
 
         return Promise.all(Object.entries(roll).map(async ([ns, count]) => {
           if (count > 0) {
-            const args = Array.from(new Array(count)).fill(ns);
-            const creatures = await APP.instantiate(...args);
-            await Promise.all(creatures.map(async (creature) => {
-              creature.tier = APP.roll(creature.tier);
-              creature.name = [APP.randomElement(creature.adjectives), creature.tiers[creature.tier], creature.name].filter(Boolean).join(' ');
-              creature.hp += Math.ceil(creature.hp * (creature.tier * 0.10));
-              creature.mhp = creature.hp;
-              const spawn = new Creature({ ...creature, room });
-              await spawn.perform('spawn');
+            const keys = Array.from(new Array(count)).fill(ns);
+            await Promise.all(APP.hydrate(keys).map((config) => {
+              const tier = APP.roll(config.tier);
+              const name = [APP.randomElement(config.adjectives), config.tiers[tier], config.name].filter(Boolean).join(' ');
+              const hp = config.hp + Math.ceil(config.hp * (tier * 0.10));
+              return APP.instantiate(config, { room, tier, name, hp, mhp: hp }).then(actor => actor.perform('spawn'));
             }));
           }
         }));

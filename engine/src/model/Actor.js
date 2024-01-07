@@ -51,7 +51,7 @@ module.exports = class ActorWrapper extends Actor {
 
   async dispose() {
     this.removeAllListeners();
-    Object.values(this.streams).forEach(stream => stream.removeAllListeners());
+    Object.values(this.streams).forEach(stream => stream.abort() && stream.removeAllListeners());
     CONFIG.get(await REDIS.get(`${this}.room`)).units.delete(this);
     const keys = await REDIS.keys(`${this}.*`);
     await REDIS.del(keys);

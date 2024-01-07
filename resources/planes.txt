@@ -1,0 +1,23 @@
+Material Plane:
+  - The primary plane where the game world and physical reality exist
+  - Human, Elf, Dwarf, Gnome, Orc, Halfling, Tiefling, Dragonborn, Half-Orc
+
+Celestial Realm:
+  - A divine plane inhabited by gods, angels, and celestial beings.
+  - Aasimar, 
+
+Elemental Plane:
+  - Four planes corresponding to classical elements (Fire, Water, Air, Earth), each with unique landscapes and challenges
+  - Genasi, 
+
+Ethereal Plane:
+  - A misty and translucent plane that overlaps with the Material Plane, often inhabited by spirits and ethereal beings.
+  - Wraithkin, 
+
+Underworld
+  - A dark and shadowy realm inhabited by spirits, ghosts, and other entities from the afterlife.
+
+Aarakocra, Kenku, Tabaxi
+Warforged
+Goliath
+Changeling

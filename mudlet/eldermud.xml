@@ -69,8 +69,8 @@ end
 clearWindow();
 disableScrollBar();
 setBorderTop(10);
-setBorderLeft(10);
-setBorderRight(10);
+setBorderLeft(0);
+setBorderRight(0);
 setBorderBottom(35);
 -- setFont('Courier New');
 setFont('Bitstream Vera Sans Mon');
@@ -142,9 +142,8 @@ enableCommandLine();
 
 setCmdLineStyleSheet("main", [[
   QPlainTextEdit {
-    padding-left: 10px;
     color: white;
-    font: Courier New;
+    font: Arial;
   }
 ]])
 

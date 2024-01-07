@@ -20,7 +20,7 @@ SYSTEM.on('*', async (event, context) => {
         Object.assign(data, APP.target(items, args));
         break;
       }
-      case 'list': {
+      case 'list': case 'buy': case 'sell': {
         const { shop } = CONFIG.get(await REDIS.get(`${actor}.room`));
         Object.assign(data, { shop });
         break;

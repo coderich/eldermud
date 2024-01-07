@@ -4,7 +4,7 @@
 SYSTEM.on('*', async (event, context) => {
   const { actor } = context;
 
-  if (['pre:move', 'pre:open', 'pre:close'].includes(event)) {
+  if (['pre:move', 'pre:open', 'pre:close', 'pre:attack'].includes(event)) {
     const posture = await REDIS.get(`${actor}.posture`);
     if (posture !== 'stand') await actor.stream('preAction', 'stand');
   }

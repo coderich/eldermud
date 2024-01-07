@@ -49,9 +49,6 @@ Goliath:
 Changeling:
   - Shape-shifting humanoid race, able to alter their appearance.
 
-Abyssal Changeling:
-  - A Changeling touched by the Abyss, blending shape-shifting with demonic features.
-
 Wraithkin:
   - Kin or descendants of wraiths or spirits, often associated with the ethereal.
 

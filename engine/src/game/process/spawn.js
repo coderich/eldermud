@@ -26,8 +26,13 @@ Action.define('spawn', async (_, { actor }) => {
 
   const [map, room] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
 
-  if (['item'].includes(actor.type)) CONFIG.get(`${room}.items`).add(actor);
-  if (['player', 'creature', 'npc'].includes(actor.type)) CONFIG.get(`${room}.units`).add(actor);
+  if (['item'].includes(actor.type)) {
+    if (room) CONFIG.get(`${room}.items`).add(actor);
+  }
+
+  if (['player', 'creature', 'npc'].includes(actor.type)) {
+    CONFIG.get(`${room}.units`).add(actor);
+  }
 
   if (actor.type === 'player') {
     actor.perform('map');

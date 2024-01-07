@@ -21,6 +21,9 @@ app:
     player: '<DarkTurquoise>'
     creature: '<violet>'
     boss: '<yellow>'
+    # hit: '<red>'
+    hit: '<firebrick>'
+    miss: '<LightSeaGreen>'
     # item: '<ansiCyan>'
     item: '<LightSeaGreen>'
     room:

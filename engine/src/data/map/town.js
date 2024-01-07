@@ -1,5 +1,3 @@
-const Item = require('../../model/Item');
-
 const $self = prop => '${self:map.town.'.concat(prop, '}');
 const $room = prop => $self(`rooms.${prop}`);
 const $door = prop => $self(`doors.${prop}`);
@@ -16,10 +14,8 @@ SYSTEM.on('post:spawn', async ({ actor }) => {
     const isNew = await REDIS.sAdd(`${room}.players`, `${actor}`);
 
     if (isNew) {
-      await APP.instantiate(CONFIG.get('item.rope'), CONFIG.get('item.canteen')).then((items) => {
-        return Promise.all(items.map((item) => {
-          return new Item({ ...item, room, hidden: true, owner: `${actor}` }).perform('spawn');
-        }));
+      await APP.instantiate([CONFIG.get('item.rope'), CONFIG.get('item.canteen')], { room, hidden: true, owner: `${actor}` }).then((items) => {
+        return Promise.all(items.map(item => item.perform('spawn')));
       });
     }
   }
