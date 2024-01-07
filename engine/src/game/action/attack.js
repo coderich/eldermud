@@ -41,7 +41,7 @@ Action.define('attack', [
         stream.pause();
         const attack = APP.randomElement(actor.attacks);
         const dmg = APP.roll(attack.dmg);
-        await actor.perform('damage', { target, dmg });
+        await actor.perform('strike', { target, dmg });
         await Util.timeout(2000);
 
         return promise.aborted ? stream.resume() : swing();

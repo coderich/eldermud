@@ -1,6 +1,5 @@
 * The ROOM has to have a fallback for what you are looking at
 * Talk vs Greet <NPC>
-* Pray
 * Scan? and if so, then look should only be for direction
 
 ! Creatures are not attacking when they spawn (only when you enter room) (scan?)

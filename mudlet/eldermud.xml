@@ -71,7 +71,7 @@ disableScrollBar();
 setBorderTop(10);
 setBorderLeft(10);
 setBorderRight(10);
-setBorderBottom(15);
+setBorderBottom(35);
 -- setFont('Courier New');
 setFont('Bitstream Vera Sans Mon');
 -- display(getAvailableFonts());
@@ -143,10 +143,8 @@ enableCommandLine();
 setCmdLineStyleSheet("main", [[
   QPlainTextEdit {
     padding-left: 10px;
-    color: black;
-    font: Bitstream Vera Sans Mon;
-    -- font: ariel;
-    -- background-color: lightgrey;
+    color: white;
+    font: Courier New;
   }
 ]])
 
@@ -175,16 +173,29 @@ end);
 			<Script isActive="yes" isFolder="no">
 				<name>status</name>
 				<packageName></packageName>
-				<script>local statusLabel = Geyser.Label:new({
+				<script>local status = Geyser.Label:new({
   name = 'statusContainer',
-  fontSize = 15,
-  borderLeft = 10,
-  x = 0, y = '-35px', width = '100%', height = '30px',
+  x = 0, y = '-35px', width = '60%', height = '30px',
 });
+
+status:setStyleSheet([[
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+]]);
+
+status:setFontSize(16);
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.status', 'gmcp.eldermud.status', function()
   local data = gmcp.eldermud.status;
-  statusLabel:echo('HP=' .. data.hp .. '/MA=' .. data.ma .. '/EXP=' .. data.exp);
+  status:echo(
+    'Health: [ &lt;span style="background-color:green"&gt;' .. data.hp .. '/' .. data.mhp .. '&lt;/span&gt; ]'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. 'Mana: [ &lt;span style="background-color:blue"&gt;' .. data.ma .. '/' .. data.mma .. '&lt;/span&gt; ]'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. 'Souls: &lt;span style="color:cyan"&gt;' .. data.exp .. '&lt;/span&gt;'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. 'Posture: &lt;span style="color:magenta"&gt;' .. data.posture .. '&lt;/span&gt;'
+  );
 end);
 
 -- local hpBar = Geyser.Gauge:new({
