@@ -8,25 +8,25 @@ Action.define('room', [
       let text = APP.direction[dir];
       const path = CONFIG.get(`${room}.paths.${dir}`);
       if (path) text = `${path.label} ${text}`;
-      return APP.styleText(text, 'room.exit');
+      return APP.styleText('room.exit', text);
     });
 
-    const $units = Array.from(room.units.values()).filter(unit => unit !== actor).map(unit => APP.styleText(unit.name, unit.type));
+    const $units = Array.from(room.units.values()).filter(unit => unit !== actor).map(unit => APP.styleText(unit.type, unit.name));
     const $items = Array.from(room.items.values()).filter(item => !item.hidden).map(item => item.name);
 
     const $room = {
-      name: APP.styleText(room.name, 'room.name'),
-      description: APP.styleText(`    ${room.description}`, 'room.description'),
-      exitsLabel: APP.styleText('Obvious exits:', 'room.exitsLabel'),
-      unitsLabel: APP.styleText('Also here:', 'room.unitsLabel'),
-      exits: $exits.length ? $exits : [APP.styleText('none!', 'room.exit')],
+      name: APP.styleText('room.name', room.name),
+      description: APP.styleText('room.description', `    ${room.description}`),
+      exitsLabel: APP.styleText('room.exitsLabel', 'Obvious exits:'),
+      unitsLabel: APP.styleText('room.unitsLabel', 'Also here:'),
+      exits: $exits.length ? $exits : [APP.styleText('room.exit', 'none!')],
       units: $units,
       items: $items,
     };
 
     actor.send('text', $room.name);
     actor.send('text', $room.description);
-    if ($room.items.length) actor.send('text', APP.styleText(`You notice ${$room.items.join(', ')} here.`, 'item'));
+    if ($room.items.length) actor.send('text', APP.styleText('item', `You notice ${$room.items.join(', ')} here.`));
     if ($room.units.length) {
       // $room.units.push('[Random >> Zilo, Bane]');
       // $room.units.push('[Paul > Alfred > Crimp]');

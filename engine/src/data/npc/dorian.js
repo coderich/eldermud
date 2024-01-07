@@ -11,14 +11,14 @@
 SYSTEM.on('greet:npc.dorian', async ({ actor }) => {
   await REDIS.incr(`${actor}.npc.dorian.greet`);
 
-  actor.send('text', APP.styleBlockText(`
+  actor.send('text', APP.styleBlockText([
+    { text: 'traveler', style: 'keyword', limit: 1 },
+    { text: 'here', style: 'keyword', limit: 1 },
+  ], `
     Hello traveler.
     What brings you here?
     I always wondered what would happen here if I said here many times...
-  `, [
-    { text: 'traveler', style: 'keyword', limit: 1 },
-    { text: 'here', style: 'keyword', limit: 1 },
-  ]));
+  `));
 });
 
 module.exports = {

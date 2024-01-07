@@ -10,13 +10,13 @@ exports.timeout = Util.timeout;
 exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northeast', nw: 'northwest', se: 'southeast', sw: 'southwest', u: 'up', d: 'down' };
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };
 exports.randomElement = arr => arr[Math.floor(Math.random() * arr.length)];
-exports.styleText = (text, style) => `${CONFIG.get(`app.styles.${style}`)}${text}${CONFIG.get('app.styles.reset')}`;
+exports.styleText = (style, ...text) => `${CONFIG.get(`app.styles.${style}`)}${text.flat().join(' ')}${CONFIG.get('app.styles.reset')}`;
 
-exports.styleBlockText = (blocktext, styles = []) => {
+exports.styleBlockText = (styles = [], blocktext) => {
   return styles.reduce((prev, { text, style, limit = Infinity }) => {
     const re = new RegExp(`\\b${text}(?=$|\\W)`, 'g');
     return prev.replace(re, (match) => {
-      return limit-- > 0 ? exports.styleText(text, style) : match;
+      return limit-- > 0 ? exports.styleText(style, text) : match;
     });
   }, blocktext);
 };
