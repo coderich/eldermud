@@ -14,12 +14,19 @@ SYSTEM.on('*', async (event, context) => {
         Object.assign(data, APP.target([...units].filter(u => u !== actor), args));
         break;
       }
+      case 'get': {
+        const { args } = data;
+        const items = Array.from(actor.roomSearch.values());
+        console.log(items);
+        Object.assign(data, APP.target(items, args));
+        break;
+      }
       case 'list': {
         const { shop } = CONFIG.get(await REDIS.get(`${actor}.room`));
         Object.assign(data, { shop });
         break;
       }
-      case 'look': {
+      case 'look': case 'search': {
         const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
 

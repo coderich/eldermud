@@ -1,4 +1,7 @@
-const { Action } = require('@coderich/gameflow');
+const { Action, Stream } = require('@coderich/gameflow');
+
+const channel = new Stream(); // Global Stream (no need for one per Unit)
+const channelArgs = Array.from(new Array(100)).map((el, i) => i);
 
 /**
  * Each set of commands is ordered by "tier"; the first tier can match cmds with 1 letter, tier 2 letters, etc.
@@ -19,7 +22,7 @@ const commands = [
     { south: { args: [0], code: 's', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { up: { args: [0], code: 'u', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { west: { args: [0], code: 'w', channel: 'realm', stream: 'action', tags: ['direction'] } },
-    // { x: { args: [0], code: 'x', name: 'exit', stream: '' } },
+    { x: { args: [0], code: 'x', name: 'exit', channel: 'realm', stream: 'action' } },
     { '?': { args: [0, 1, 2], code: 'help', name: 'help', channel: 'realm', stream: 'info' } },
   ],
   [
@@ -35,7 +38,7 @@ const commands = [
     { stats: { args: [0], code: 'stats', channel: 'realm', stream: 'info' } },
     // { drop: { args: [1, 2, 3, 4, 5], code: 'drop', stream: 'action' } },
     // { repeat: { args: [0], code: 're', stream: '' } },
-    // { exit: { args: [0], code: 'x', stream: '' } },
+    { exit: { args: [0], code: 'x', channel: 'realm', stream: 'action' } },
   ],
   [
     { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', channel: 'realm', stream: 'voice' } },
@@ -65,9 +68,9 @@ const commands = [
     // { tote: { args: [1], code: 'talent.tote', stream: 'talent' } },
     // { vamp: { args: [1], code: 'talent.vamp', stream: 'talent' } },
 
-    // // Channels
-    // { '/gos': { args: [0], code: 'gos', stream: 'channel' } },
-    // { '/auc': { args: [0], code: 'auc', stream: 'channel' } },
+    // Channels
+    { '/gos': { args: channelArgs, name: 'gos', code: 'gos', channel, stream: 'info' } },
+    { '/auc': { args: channelArgs, name: 'auc', code: 'auc', channel, stream: 'info' } },
     // { '/log': { args: [0], code: 'log', stream: 'channel' } },
     // { '/his': { args: [0], code: 'his', stream: 'channel' } },
   ],

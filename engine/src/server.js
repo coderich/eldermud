@@ -13,7 +13,6 @@ server.on('connect', async ({ socket }) => {
     Actor[socket.id] = player; // Add them to the list of Actors to respond to (server.on('cmd') below)
     await player.send('cls');
     await player.perform('spawn');
-    await player.perform('enter');
   });
 });
 

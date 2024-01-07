@@ -1,3 +1,5 @@
+const Item = require('../../model/Item');
+
 const $self = prop => '${self:map.town.'.concat(prop, '}');
 const $room = prop => $self(`rooms.${prop}`);
 const $door = prop => $self(`doors.${prop}`);
@@ -8,11 +10,19 @@ SYSTEM.on('enter:map.town.rooms.supplies', async ({ actor }) => {
   actor.perform('map');
 });
 
-SYSTEM.on('search:map.town.rooms.supplies', async ({ actor }) => {
-  const items = [CONFIG.get('item.rope'), CONFIG.get('item.canteen')];
-  actor.roomSearch = new Set(items);
-  const descr = items.map(it => it.name).join(', ');
-  return actor.send('text', `You notice ${descr} here.`);
+SYSTEM.on('post:spawn', async ({ actor }) => {
+  if (actor.type === 'player') {
+    const room = 'map.town.rooms.supplies';
+    const isNew = await REDIS.sAdd(`${room}.players`, `${actor}`);
+
+    if (isNew) {
+      await APP.instantiate(CONFIG.get('item.rope'), CONFIG.get('item.canteen')).then((items) => {
+        return Promise.all(items.map((item) => {
+          return new Item({ ...item, room, hidden: true, owner: `${actor}` }).perform('spawn');
+        }));
+      });
+    }
+  }
 });
 
 module.exports = {

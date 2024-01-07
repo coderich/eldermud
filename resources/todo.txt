@@ -1,7 +1,5 @@
 * The ROOM has to have a fallback for what you are looking at
 * Talk vs Greet <NPC>
-* Quit or Logout to disconnect
-* Sit vs Rest vs Sleep?
 * Pray
 * Scan? and if so, then look should only be for direction
 

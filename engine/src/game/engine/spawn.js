@@ -41,7 +41,6 @@ SYSTEM.on('pre:room', async (context) => {
               creature.mhp = creature.hp;
               const spawn = new Creature({ ...creature, room });
               await spawn.perform('spawn');
-              await spawn.perform('enter');
             }));
           }
         }));

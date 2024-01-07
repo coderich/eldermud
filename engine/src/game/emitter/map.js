@@ -8,30 +8,32 @@ const coords = {
 };
 
 Action.define('map', async (_, { actor }) => {
-  const [dbMap, dbRoom] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
-  const [configMap, configRoom] = [CONFIG.get(dbMap), CONFIG.get(dbRoom)];
+  if (actor.type === 'player') {
+    const [dbMap, dbRoom] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
+    const [configMap, configRoom] = [CONFIG.get(dbMap), CONFIG.get(dbRoom)];
 
-  // Convert to array of rooms
-  const rooms = Object.values(configMap.rooms).map(({ mapId, name, char = '' }) => ({ id: mapId, name, char, x: 0, y: 0, z: 0 }));
+    // Convert to array of rooms
+    const rooms = Object.values(configMap.rooms).map(({ mapId, name, char = '' }) => ({ id: mapId, name, char, x: 0, y: 0, z: 0 }));
 
-  // Append exits (with x,y,x coordinates) to rooms
-  Object.values(configMap.rooms).forEach((room) => {
-    const $room = rooms.find(el => el.id === room.mapId);
-    $room.paths = Object.entries(room.paths || {}).reduce((prev, [key, value]) => Object.assign(prev, { [key]: value.status || 'closed' }), {});
-    $room.exits = Object.entries(room.exits).map(([dir, exit]) => {
-      const $exit = rooms.find(el => el.id === exit.mapId);
+    // Append exits (with x,y,x coordinates) to rooms
+    Object.values(configMap.rooms).forEach((room) => {
+      const $room = rooms.find(el => el.id === room.mapId);
+      $room.paths = Object.entries(room.paths || {}).reduce((prev, [key, value]) => Object.assign(prev, { [key]: value.status || 'closed' }), {});
+      $room.exits = Object.entries(room.exits).map(([dir, exit]) => {
+        const $exit = rooms.find(el => el.id === exit.mapId);
 
-      if ($exit.id > $room.id) {
-        const [x, y, z] = coords[dir];
-        $exit.x = $room.x + x;
-        $exit.y = $room.y + y;
-        $exit.z = $room.z + z;
-      }
+        if ($exit.id > $room.id) {
+          const [x, y, z] = coords[dir];
+          $exit.x = $room.x + x;
+          $exit.y = $room.y + y;
+          $exit.z = $room.z + z;
+        }
 
-      return { id: $exit.id, dir };
+        return { id: $exit.id, dir };
+      });
     });
-  });
 
-  // Emit
-  actor.send('map', { name: configMap.name, room: configRoom.mapId, rooms });
+    // Emit
+    actor.send('map', { name: configMap.name, room: configRoom.mapId, rooms });
+  }
 });

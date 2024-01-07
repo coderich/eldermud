@@ -7,7 +7,7 @@ SYSTEM.on('*', async (event, context) => {
 
   if (type === 'post' && !promise.aborted) {
     switch (action) {
-      case 'enter': { // Enter the realm
+      case 'spawn': { // Enter the realm
         SYSTEM.emit(`enter:${result.room}`, context);
         break;
       }

@@ -6,4 +6,5 @@ module.exports = {
   mhp: 20,
   ma: 10,
   mma: 10,
+  exp: 0,
 };

@@ -4,6 +4,7 @@ const ConfigClient = require('./src/service/ConfigClient');
 const RedisClient = require('./src/service/RedisClient');
 const AppService = require('./src/service/AppService');
 const Creature = require('./src/model/Creature');
+const Item = require('./src/model/Item');
 const NPC = require('./src/model/NPC');
 const server = require('./src/server');
 
@@ -21,7 +22,6 @@ const server = require('./src/server');
   Object.values(CONFIG.get('npc')).forEach(async (npc) => {
     const actor = new NPC(npc);
     await actor.perform('spawn');
-    await actor.perform('enter');
   });
 
   // Setup our creatures (Actors)
@@ -41,7 +41,26 @@ const server = require('./src/server');
     return Promise.all(Object.values(creatures).map(async (creature) => {
       const actor = new Creature(creature);
       await actor.perform('spawn');
-      await actor.perform('enter');
+    }));
+  });
+
+  // Setup our items (also Actors);
+  await REDIS.keys('item.*').then((keys) => {
+    return keys.length ? REDIS.mGet(keys).then((values) => {
+      return keys.reduce((prev, key, i) => {
+        const [root, id, counter, attr] = key.split('.');
+        const path = `${root}.${id}.${counter}`;
+        const ns = `${root}.${id}`;
+        prev[path] ??= CONFIG.get(ns);
+        prev[path][attr] = values[i];
+        prev[path].toString = () => path;
+        return prev;
+      }, {});
+    }) : [];
+  }).then((items) => {
+    return Promise.all(Object.values(items).map(async (item) => {
+      const actor = new Item(item);
+      await actor.perform('spawn');
     }));
   });
 

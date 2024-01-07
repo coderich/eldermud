@@ -1,9 +1,8 @@
-const Unit = require('./Unit');
+const Actor = require('./Actor');
 
-module.exports = class Creature extends Unit {
+module.exports = class Creature extends Actor {
   constructor(data) {
     super(data);
-    this.type = 'creature';
 
     SYSTEM.on(`enter:${data.room}`, ({ actor }) => {
       if (actor.type === 'player') {

@@ -6,6 +6,7 @@ const chance = new Chance();
 
 exports.chance = chance;
 exports.pluralize = Pluralize;
+exports.timeout = Util.timeout;
 exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northeast', nw: 'northwest', se: 'southeast', sw: 'southwest', u: 'up', d: 'down' };
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };
 exports.randomElement = arr => arr[Math.floor(Math.random() * arr.length)];

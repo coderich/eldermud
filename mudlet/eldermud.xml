@@ -55,178 +55,23 @@ end
 </script>
 				<eventHandlerList />
 			</Script>
-		</ScriptGroup>
-		<ScriptGroup isActive="yes" isFolder="yes">
-			<name>component</name>
-			<packageName></packageName>
-			<script></script>
-			<eventHandlerList />
 			<Script isActive="yes" isFolder="no">
-				<name>layout</name>
+				<name>Render Map</name>
 				<packageName></packageName>
 				<script>eldermud = eldermud or {};
 
-clearWindow();
-disableScrollBar();
-raiseEvent('eldermud.hide');
+setMapZoom(12);
+setCustomEnvColor(0, 0, 0, 0, 255);
+setCustomEnvColor(1, 255, 0, 0, 255);
 
--- Regions
-local leftRegion = Geyser.VBox:new({
-  name = 'leftRegion',
-  x = 0, y = 0, width = '25%', height = '100%',
-});
-
-local middleRegion = Geyser.VBox:new({
-  name = 'middleRegion',
-  x = "25%", y = 0, width = '50%', height = '100%',
-});
-
-local rightRegion = Geyser.VBox:new({
-  name = 'rightRegion',
-  x = "75%", y = 0, width = '25%', height = '100%',
-});
-
--- Containers
-local leftContainer = Geyser.VBox:new({
-  name = 'leftContainer',
-  x = 0, y = 0, width = '100%', height = '100%',
-}, leftRegion);
-
-local middleContainer = Geyser.Container:new({
-  name = 'middleContainer',
-  x = 0, y = 0, width = '100%', height = '100%',
-}, middleRegion);
-
-local rightContainer = Geyser.VBox:new({
-  name = 'rightContainer',
-  x = 0, y = 0, width = '100%', height = '100%',
-}, rightRegion);
-
--- UI
-eldermud.mapContainer = Geyser.Container:new({
-  name = 'mapContainer',
-  x = 0, y = 0, width = '100%', height = '100%',
-}, leftContainer);
-
-eldermud.playerContainer = Geyser.Container:new({
-  name = 'playerContainer',
-  x = 0, y = 0, width = '100%', height = '100%',
-}, leftContainer);
-
-eldermud.consoleContainer = Geyser.Container:new({
-  name = 'consoleContainer',
-  x = 0, y = 0, width = '100%', height = '-40px',
-}, middleContainer);
-
-eldermud.statusContainer = Geyser.Container:new({
-  name = 'statusContainer',
-  x = 0, y = '-40px', width = '100%', height = '20px',
-}, middleContainer);
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.login', 'gmcp.eldermud.login', function(e, text)
-  local res = db:fetch(eldermud.db.profile);
-  sendGMCP("eldermud.login" .. yajl.to_string{option = "guest"})
-  raiseEvent('eldermud.hide', true);
-end);
-
-</script>
-				<eventHandlerList />
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>console</name>
-				<packageName></packageName>
-				<script>local EMCO = require("MDK.emco");
-local TableMaker = require("MDK.ftext").TableMaker;
-local activeTab = 'Realm';
-
-local emco = EMCO:new({
-  name = "console",
-  -- x = 0, y = "10px",
-  width = '100%', height = '100%',
-  consoles = { 'Realm', 'Guard' },
-  activeTabCSS = [[background-color: black; border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
-  inactiveTabCSS = [[background-color: rgb(60,60,60,255); border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
-}, eldermud.consoleContainer);
-
-emco:clearAll();
-emco:enableBlink();
--- emco:disableBlink();
-emco:setFontSize(14);
-emco:setGap(10);
-emco:setConsoleColor('black');
--- emco:enableCmdLine('Jester');
--- emco:enableAllCmdLines();
--- emco:setCmdAction('Guard');
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.console', 'gmcp.eldermud', function (event, ns)
-  local name = string.sub(ns, 15);
-  local data = gmcp.eldermud[name];
-  
-  if (name == 'console' or name == 'text' or name == 'cmd') then
-    emco:cecho(activeTab, data .. '\n')
-  elseif (name == 'room') then
-    emco:cecho(activeTab, data.name .. '\n');
-    -- if (#data.description &gt; 0) then emco:cecho(activeTab, data.description .. '\n'); end;
-    if (#data.items &gt; 0) then emco:cecho(activeTab, data.itemsLabel .. table.concat(data.items, ', ') .. '\n'); end
-    if (#data.units &gt; 0) then emco:cecho(activeTab, data.unitsLabel .. table.concat(data.units, ', ') .. '\n'); end
-    emco:cecho(activeTab, data.exitsLabel .. table.concat(data.exits, ', ') .. '\n');
-  elseif (name == 'table') then
-    local table = TableMaker:new({
-      title = data.name,
-      -- printTitle = true,
-      -- titleColor = "&lt;red&gt;",
-      printHeaders = true,
-      separateRows = true,
-    });
-    
-    -- Data
-    for i,col in ipairs(data.columns) do table:addColumn(col) end;
-    for i,row in ipairs(data.rows) do table:addRow(row); end;
-    emco:cecho(activeTab, '\n' .. table:assemble() .. '\n')
-  elseif (name == 'cls') then
-    emco:clearAll();
-  end;
-end);
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.console.tab', 'eldermud.tab', function (event, reverse)
-  emco:cycleTab(reverse);
-end)
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.console.cls', 'eldermud.cls', function (event, reverse)
-  emco:clearAll();
-end)
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.console.hide', 'eldermud.hide', function (event, show)
-  if (show) then emco:show(); else emco:hide(); end;
-end)
-</script>
-				<eventHandlerList />
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>map</name>
-				<packageName></packageName>
-				<script>local map = Geyser.Mapper:new({
-  name = "mapper",
-  x = 0, y = 0, width = "100%", height = "100%",
-}, eldermud.mapContainer)
-
--- deleteMap()
-setMapZoom(15)
-setCustomEnvColor(0, 0, 0, 0, 255)
-setCustomEnvColor(1, 255, 0, 0, 255)
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.map.hide', 'eldermud.hide', function (event, show)
-  if (show) then map:show(); else map:hide(); end;
-end)
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.map', 'gmcp.eldermud.map', function(e, text)
+function eldermud:renderMap(map, data) 
   local areaId = 1
   deleteArea(areaId)
   clearAreaUserData(areaId)
-  setAreaName(areaId, gmcp.eldermud.map.name)
+  setAreaName(areaId, data.name)
 
   -- First create all rooms
-  for i,room in ipairs(gmcp.eldermud.map.rooms) do
+  for i,room in ipairs(data.rooms) do
     addRoom(room.id);
     setRoomArea(room.id, areaId);
     setRoomCoordinates(room.id, room.x, room.y, room.z);
@@ -234,7 +79,7 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.map', 'gmcp.eldermud.m
   end
 
   -- Then go back and create the exits
-  for i,room in ipairs(gmcp.eldermud.map.rooms) do
+  for i,room in ipairs(data.rooms) do
     for j,exit in ipairs(room.exits) do
       setRoomEnv(exit.id, 0);
       if (room.paths[exit.dir] and room.paths[exit.dir] ~= 'open') then setExitStub(room.id, exit.dir, true);
@@ -246,7 +91,126 @@ registerNamedEventHandler('Eldermud', 'eldermud.component.map', 'gmcp.eldermud.m
     end
   end
 
-  centerview(gmcp.eldermud.map.room)
+  centerview(data.room)
+end;</script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>component</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>layout</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {};
+
+local EMCO = require('MDK.emco');
+local activeTab = 'Realm';
+
+clearWindow();
+disableScrollBar();
+setBorderTop(10);
+setBorderLeft(10);
+setBorderRight(10);
+setBorderBottom(15);
+-- setFont('Monaco');
+setFont('main', 'Times');
+
+local rightContainer = Geyser.Container:new({
+  name = 'rightContainer',
+  x = '60%', y = 0, width = '40%', height = '100%',
+});
+
+local statusLabel = Geyser.Label:new({
+  name = 'statusContainer',
+  fontSize = 15,
+  borderLeft = 10,
+  x = 0, y = '-35px', width = '100%', height = '30px',
+});
+
+local map = Geyser.Mapper:new({
+  name = "mapper",
+  x = 0, y = 0, width = '100%', height = '40%',
+}, rightContainer)
+
+local menu = EMCO:new({
+  name = 'menu',
+  x = 0, y = '40%', width = '100%', height = '60%',
+  consoles = { 'GOSSIP', 'AUCTION', 'HELP' },
+  activeTabCSS = [[background-color: black; border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
+  inactiveTabCSS = [[background-color: rgb(60,60,60,255); border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
+}, rightContainer);
+
+menu:clearAll();
+menu:enableBlink();
+menu:setGap(10);
+menu:setFontSize(14);
+-- emco:disableBlink();
+menu:setConsoleColor('black');
+-- emco:enableCmdLine('Jester');
+-- emco:enableAllCmdLines();
+-- emco:setCmdAction('Guard');
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.status', 'gmcp.eldermud.status', function()
+  local data = gmcp.eldermud.status;
+  statusLabel:echo('HP=' .. data.hp .. '/MA=' .. data.ma .. '/EXP=' .. data.exp);
+end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.map', 'gmcp.eldermud.map', function()
+  eldermud:renderMap(map, gmcp.eldermud.map);
+end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.gos', 'gmcp.eldermud.gos', function()
+  menu:cecho('GOSSIP', gmcp.eldermud.gos .. '\n');
+end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.auc', 'gmcp.eldermud.auc', function()
+  menu:cecho('AUCTION', gmcp.eldermud.auc .. '\n');
+end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.cls', 'eldermud.cls', function (event, reverse)
+  clearWindow();
+end);</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>console</name>
+				<packageName></packageName>
+				<script>clearCmdLine()
+enableCommandLine();
+display(getAvailableFonts());
+
+setCmdLineStyleSheet("main", [[
+  QPlainTextEdit {
+    padding-left: 10px;
+    color: black;
+    font: Arial;
+    -- font: ariel;
+    -- background-color: lightgrey;
+  }
+]])
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.req', 'sysDataSendRequest', function(e, text)
+  clearCmdLine();
+  sendGMCP("eldermud.cmd" .. yajl.to_string{text = text});
+end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.console', 'gmcp.eldermud', function (event, ns)
+  local name = string.sub(ns, 15);
+  local data = gmcp.eldermud[name];
+  
+  if (name == 'console' or name == 'text' or name == 'cmd') then
+    cecho(data .. '\n')
+  elseif (name == 'room') then
+    cecho(data.name .. '\n');
+    if (#data.items &gt; 0) then cecho(data.itemsLabel .. table.concat(data.items, ', ') .. '\n'); end
+    if (#data.units &gt; 0) then cecho(data.unitsLabel .. table.concat(data.units, ', ') .. '\n'); end
+    cecho(data.exitsLabel .. table.concat(data.exits, ', ') .. '\n');
+  elseif (name == 'cls') then
+    clearWindow();
+  end;
 end);
 </script>
 				<eventHandlerList />
@@ -254,103 +218,49 @@ end);
 			<Script isActive="yes" isFolder="no">
 				<name>player</name>
 				<packageName></packageName>
-				<script>local player = Geyser.MiniConsole:new({
-  name = "player",
-  x = 0, y = 0, width = "100%", height = "100%",
-  -- color = "navyblue",
-  fontSize = 14,
-  scrollBar = false,
-  autoWrap = true,
-}, eldermud.playerContainer)
-
-player:clear();
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.player', 'gmcp.eldermud.player', function (event)
-  player:clear();
-  player:cecho(gmcp.eldermud.player);
-end)
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.player.hide', 'eldermud.hide', function (event, show)
-  if (show) then player:show(); else player:hide(); end;
-end)
-
--- registerNamedEventHandler('Eldermud', 'eldermud.component.room', 'gmcp.eldermud.room', function(ns, text)
-  -- local name = string.sub(ns, 15);
-  -- local data = gmcp.eldermud[name];
-  -- 
-  -- room:clear();
-  -- room:cecho('\n' .. data.name .. '\n');
-  -- room:cecho('\n  ' .. data.description .. '\n');
-  -- if (#data.exits &gt; 0) then
-    -- room:cecho('\nObvious exits: ');
-    -- for i,v in ipairs(data.exits) do room:echo(v); end;
-  -- end
-  -- if (#data.units &gt; 0) then
-    -- room:echo('\nAlso here: ');
-    -- for i,v in ipairs(data.units) do room:echo(v.name); end;
-  -- end
--- end);
-</script>
-				<eventHandlerList />
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>commander</name>
-				<packageName></packageName>
-				<script>clearCmdLine()
-enableCommandLine();
-
-setCmdLineStyleSheet("main", [[
-  QPlainTextEdit {
-    padding-left: 10px;
-    color: black;
-    background-color: lightgrey;
-  }
-]])
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.commander', 'sysDataSendRequest', function(e, text)
-  clearCmdLine();
-  sendGMCP("eldermud.cmd" .. yajl.to_string{text = text});
-end);
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.commander.hide', 'eldermud.hide', function (event, show)
-  if (show) then enableCommandLine(); else disableCommandLine(); end;
-end)</script>
-				<eventHandlerList />
-			</Script>
-			<Script isActive="yes" isFolder="no">
-				<name>database</name>
-				<packageName></packageName>
-				<script>-- Database
-eldermud.db = db:create("eldermud", {
-  profile = {
-    username = "",
-    password = "",
-  },
-});
+				<script>-- local player = Geyser.MiniConsole:new({
+  -- name = "player",
+  -- x = 0, y = 0, width = "100%", height = "100%",
+  -- -- color = "navyblue",
+  -- fontSize = 14,
+  -- scrollBar = false,
+  -- autoWrap = true,
+-- }, eldermud.playerContainer)
+-- 
+-- player:clear();
+-- 
+-- registerNamedEventHandler('Eldermud', 'eldermud.component.player', 'gmcp.eldermud.player', function (event)
+  -- player:clear();
+  -- player:cecho(gmcp.eldermud.player);
+-- end)
+-- 
+-- registerNamedEventHandler('Eldermud', 'eldermud.component.player.hide', 'eldermud.hide', function (event, show)
+  -- if (show) then player:show(); else player:hide(); end;
+-- end)
 </script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
 				<name>status</name>
 				<packageName></packageName>
-				<script>local hpBar = Geyser.Gauge:new({
-  name = 'hpBar',
-  width = '30%', height = '100%',
-}, eldermud.statusContainer);
-
-local maBar = Geyser.Gauge:new({
-  name = 'maBar',
-  x = '33%', width = '30%', height = '100%',
-}, eldermud.statusContainer);
-
-eldermud:styleGauge(hpBar, 'green');
-eldermud:styleGauge(maBar, 'blue');
-
-registerNamedEventHandler('Eldermud', 'eldermud.component.status', 'gmcp.eldermud.status', function (event)
-  local data = gmcp.eldermud.status;
-  hpBar:setValue(tonumber(data.hp), tonumber(data.mhp));
-  maBar:setValue(tonumber(data.ma), tonumber(data.mma));
-end)
+				<script>-- local hpBar = Geyser.Gauge:new({
+  -- name = 'hpBar',
+  -- width = '30%', height = '100%',
+-- }, eldermud.statusContainer);
+-- 
+-- local maBar = Geyser.Gauge:new({
+  -- name = 'maBar',
+  -- x = '33%', width = '30%', height = '100%',
+-- }, eldermud.statusContainer);
+-- 
+-- eldermud:styleGauge(hpBar, 'green');
+-- eldermud:styleGauge(maBar, 'blue');
+-- 
+-- registerNamedEventHandler('Eldermud', 'eldermud.component.status', 'gmcp.eldermud.status', function (event)
+  -- local data = gmcp.eldermud.status;
+  -- hpBar:setValue(tonumber(data.hp), tonumber(data.mhp));
+  -- maBar:setValue(tonumber(data.ma), tonumber(data.mma));
+-- end)
 </script>
 				<eventHandlerList />
 			</Script>

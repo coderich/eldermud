@@ -7,7 +7,7 @@ const socket = new Proxy({}, {
   },
 });
 
-module.exports = class Unit extends Actor {
+module.exports = class ActorWrapper extends Actor {
   constructor(data) {
     super();
     Object.assign(this, data);
@@ -36,12 +36,18 @@ module.exports = class Unit extends Actor {
   }
 
   send(event, message, ...rest) {
-    if (rest.length) message = message.concat(rest.flat().join(''));
+    if (rest.length) message = message.concat(' ', rest.flat().join(' '));
     return this.socket.emit(event, message);
   }
 
-  // async broadcast() {
-  // }
+  async broadcast(...args) {
+    const room = CONFIG.get(await REDIS.get(`${this}.room`));
+    room.units?.forEach(unit => unit !== this && unit.send(...args));
+  }
+
+  disconnect(...args) {
+    this.socket.disconnect(...args);
+  }
 
   async dispose() {
     this.removeAllListeners();

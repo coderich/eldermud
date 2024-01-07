@@ -2,7 +2,13 @@ app:
   redis:
     url: 'redis://localhost:6379'
 
-  unitDBAttrs: ['map', 'room', 'name', 'tier', 'hp', 'mhp', 'ma', 'mma', 'posture']
+  # Attrs to persist to DB
+  spawn:
+    item: ['map', 'room', 'hidden', 'durability', 'owner']
+    unit: ['map', 'room', 'name', 'tier', 'hp', 'mhp', 'ma', 'mma', 'exp', 'posture']
+    npc: ${self:app.spawn.unit}
+    player: ${self:app.spawn.unit}
+    creature: ${self:app.spawn.unit}
 
   styles:
     reset: '<reset>'
@@ -12,6 +18,9 @@ app:
     npc: '<DarkTurquoise>'
     player: '<DarkTurquoise>'
     creature: '<violet>'
+    boss: '<yellow>'
+    # item: '<ansiCyan>'
+    item: '<LightSeaGreen>'
     room:
       name: '<cyan>'
       description: ''

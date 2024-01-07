@@ -6,10 +6,7 @@ Action.define('inventory', [
       return ids.map(id => CONFIG.get(id.split('.').slice(0, -1).join('.'))).filter(Boolean);
     });
 
-    actor.send('table', {
-      name: 'inventory',
-      columns: [{ name: 'NAME', width: 20 }, { name: 'QTY', width: 10 }],
-      rows: items.map(item => [item.name, '1']),
-    });
+    const description = items.length ? items.map(item => item.name).join(', ') : 'nothing!';
+    actor.send('text', 'You are carrying:', description);
   },
 ]);
