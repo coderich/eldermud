@@ -60,7 +60,7 @@ end
 				<packageName></packageName>
 				<script>eldermud = eldermud or {};
 
-setMapZoom(12);
+setMapZoom(13);
 setCustomEnvColor(0, 0, 0, 0, 255);
 setCustomEnvColor(1, 255, 0, 0, 255);
 
@@ -95,6 +95,36 @@ function eldermud:renderMap(map, data)
 end;</script>
 				<eventHandlerList />
 			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>Style</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {}
+
+function eldermud:style(menu)
+  -- Global Styles
+  clearWindow();
+  disableScrollBar();
+  setBorderTop(10);
+  setBorderLeft(10);
+  setBorderRight(10);
+  setBorderBottom(15);
+  -- setFont('Courier New');
+  setFont('Bitstream Vera Sans Mon');
+  -- display(getAvailableFonts());
+  
+  -- Menu Styles
+  menu:clearAll();
+  menu:enableBlink();
+  menu:setGap(10);
+  menu:setFontSize(14);
+  menu:setConsoleColor('black');
+  -- menu:setFont('Bitstream Vera Sans Mon');
+  -- menu:setTabFont('Bitstream Vera Sans Mon');
+  menu:setActiveTabFGColor('LightSeaGreen');
+end;
+</script>
+				<eventHandlerList />
+			</Script>
 		</ScriptGroup>
 		<ScriptGroup isActive="yes" isFolder="yes">
 			<name>component</name>
@@ -107,16 +137,6 @@ end;</script>
 				<script>eldermud = eldermud or {};
 
 local EMCO = require('MDK.emco');
-local activeTab = 'Realm';
-
-clearWindow();
-disableScrollBar();
-setBorderTop(10);
-setBorderLeft(10);
-setBorderRight(10);
-setBorderBottom(15);
--- setFont('Monaco');
-setFont('main', 'Times');
 
 local rightContainer = Geyser.Container:new({
   name = 'rightContainer',
@@ -143,16 +163,6 @@ local menu = EMCO:new({
   inactiveTabCSS = [[background-color: rgb(60,60,60,255); border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
 }, rightContainer);
 
-menu:clearAll();
-menu:enableBlink();
-menu:setGap(10);
-menu:setFontSize(14);
--- emco:disableBlink();
-menu:setConsoleColor('black');
--- emco:enableCmdLine('Jester');
--- emco:enableAllCmdLines();
--- emco:setCmdAction('Guard');
-
 registerNamedEventHandler('Eldermud', 'eldermud.event.status', 'gmcp.eldermud.status', function()
   local data = gmcp.eldermud.status;
   statusLabel:echo('HP=' .. data.hp .. '/MA=' .. data.ma .. '/EXP=' .. data.exp);
@@ -172,7 +182,10 @@ end);
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.cls', 'eldermud.cls', function (event, reverse)
   clearWindow();
-end);</script>
+end);
+
+eldermud:style(menu);
+</script>
 				<eventHandlerList />
 			</Script>
 			<Script isActive="yes" isFolder="no">
@@ -180,13 +193,12 @@ end);</script>
 				<packageName></packageName>
 				<script>clearCmdLine()
 enableCommandLine();
-display(getAvailableFonts());
 
 setCmdLineStyleSheet("main", [[
   QPlainTextEdit {
     padding-left: 10px;
     color: black;
-    font: Arial;
+    font: Bitstream Vera Sans Mon;
     -- font: ariel;
     -- background-color: lightgrey;
   }

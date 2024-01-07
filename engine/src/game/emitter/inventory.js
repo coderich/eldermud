@@ -7,6 +7,6 @@ Action.define('inventory', [
     });
 
     const description = items.length ? items.map(item => item.name).join(', ') : 'nothing!';
-    actor.send('text', 'You are carrying:', description);
+    actor.send('text', 'You are carrying', description);
   },
 ]);

@@ -12,10 +12,12 @@ app:
 
   styles:
     reset: '<reset>'
-    keyword: '<SkyBlue>'
+    # keyword: '<SkyBlue>'
+    keyword: '<LightSeaGreen>'
     gesture: '<wheat>'
     senses: '<ivory>'
-    npc: '<DarkTurquoise>'
+    # npc: '<DarkTurquoise>'
+    npc: ''
     player: '<DarkTurquoise>'
     creature: '<violet>'
     boss: '<yellow>'
@@ -26,4 +28,5 @@ app:
       description: ''
       exit: '<ansiGreen>'
       unitsLabel: '<ansi_magenta>'
-      exitsLabel: '<ForestGreen>'
+      # exitsLabel: '<ForestGreen>'
+      exitsLabel: '<ansiGreen>'

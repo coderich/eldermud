@@ -25,4 +25,5 @@ module.exports = {
   name: 'Dorian',
   map: '${self:map.town}',
   room: '${self:map.town.rooms.start}',
+  description: 'This is Dorian.',
 };

@@ -17,7 +17,6 @@ SYSTEM.on('*', async (event, context) => {
       case 'get': {
         const { args } = data;
         const items = Array.from(actor.roomSearch.values());
-        console.log(items);
         Object.assign(data, APP.target(items, args));
         break;
       }
@@ -41,8 +40,10 @@ SYSTEM.on('*', async (event, context) => {
         const { target } = APP.target(room.units, args);
         if (target) return Object.assign(data, { target });
 
-        // Item (TODO!)
-        break;
+        // Item
+        const inventory = await REDIS.sMembers(`${actor}.inventory`).then(keys => keys.map(key => CONFIG.get(key.split('.').slice(0, -1).join('.'))));
+        const roomItems = Array.from(room.items.values());
+        return Object.assign(data, APP.target(inventory.concat(roomItems), args));
       }
       default: {
         break;

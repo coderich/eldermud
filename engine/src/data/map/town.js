@@ -70,7 +70,8 @@ module.exports = {
       paths: { s: $door('wood') },
     },
     tunnel2: {
-      name: 'Tunnel',
+      name: 'Silver Street',
+      description: 'This is a cobblestoned street. It is dimly lit by guttering lanterns hung from tall posts. To the north, a dimly lit shop stands, the sign over the door reading "Curious Goods" in a spidery script. A large, gaily decorated shop to the south sports a yellow awning. Its brightly painted sign reads "General Store". Quite a few people mill about here, entering the shops or heading west toward the town square. Silver streets heads off to the east and west here',
       exits: { n: $room('tunnel1'), e: $room('blockade'), w: $room('supplies') },
       paths: { n: $door('wood') },
     },
