@@ -41,8 +41,8 @@ Action.define('spawn', async (_, { actor }) => {
     actor.roomSearch = new Set();
   }
 
-  // Attach behaviors
-  actor.behaviors?.forEach(behavior => actor.perform(behavior));
+  // Attach traits
+  actor.traits?.forEach(trait => actor.stream('trait', trait));
 
   return { map, room };
 });

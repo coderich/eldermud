@@ -5,6 +5,5 @@ module.exports = class Player extends Actor {
     super(data);
     this.type = 'player';
     this.toString = () => `player.${this.id}`; // REDIS key
-    this.attacks = [{ dmg: '2d10' }];
   }
 };

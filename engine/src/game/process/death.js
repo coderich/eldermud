@@ -6,7 +6,9 @@ const { Action } = require('@coderich/gameflow');
 Action.define('death', () => null);
 
 SYSTEM.on('post:death', async ({ actor }) => {
-  actor.perform('break');
+  await actor.perform('break'); // Allow listeners to cleanup
+  actor.removeAllListeners();
+  Object.values(actor.streams).forEach(stream => stream.abort() && stream.removeAllListeners());
   CONFIG.get(await REDIS.get(`${actor}.room`)).units.delete(actor);
 
   switch (actor.type) {
@@ -21,9 +23,7 @@ SYSTEM.on('post:death', async ({ actor }) => {
       });
 
       actor.send('text', 'You have died.');
-      actor.perform('map');
-      actor.perform('room');
-      actor.perform('status');
+      actor.perform('spawn');
       break;
     }
     default: {
@@ -35,8 +35,6 @@ SYSTEM.on('post:death', async ({ actor }) => {
       });
 
       // Redis cleanup
-      actor.removeAllListeners();
-      Object.values(actor.streams).forEach(stream => stream.removeAllListeners());
       const keys = await REDIS.keys(`${actor}.*`);
       await REDIS.del(keys);
 

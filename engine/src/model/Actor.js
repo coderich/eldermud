@@ -22,7 +22,8 @@ module.exports = class ActorWrapper extends Actor {
       sound: new Stream('sound'),
       scent: new Stream('scent'),
       touch: new Stream('touch'),
-      action: new Stream('action'),
+      trait: new Stream('trait'), // Passive traits
+      action: new Stream('action'), // Active actions
       preAction: new Stream('preAction'),
       telepath: new Stream('telepath'),
     };

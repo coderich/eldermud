@@ -5,6 +5,10 @@ SYSTEM.on('*', async (event, context) => {
   const { promise, result } = context;
   const [type, action] = event.split(':');
 
+  if (type === 'post' && promise.aborted) {
+    SYSTEM.emit(`abort:${action}`, context);
+  }
+
   if (type === 'post' && !promise.aborted) {
     switch (action) {
       case 'spawn': { // Enter the realm
