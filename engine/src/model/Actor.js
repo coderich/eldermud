@@ -49,15 +49,6 @@ module.exports = class ActorWrapper extends Actor {
     this.socket.disconnect(...args);
   }
 
-  async dispose() {
-    this.removeAllListeners();
-    Object.values(this.streams).forEach(stream => stream.abort() && stream.removeAllListeners());
-    CONFIG.get(await REDIS.get(`${this}.room`)).units.delete(this);
-    const keys = await REDIS.keys(`${this}.*`);
-    await REDIS.del(keys);
-    delete this;
-  }
-
   stream(stream, ...args) {
     if (!(stream instanceof Stream)) stream = this.streams[stream];
     return super.stream(stream, ...args);

@@ -5,7 +5,7 @@ app:
   # Attrs to persist to DB
   spawn:
     item: ['map', 'room', 'hidden', 'durability', 'owner']
-    unit: ['map', 'room', 'name', 'tier', 'hp', 'mhp', 'ma', 'mma', 'exp', 'posture']
+    unit: ['map', 'room', 'name', 'tier', 'hp', 'mhp', 'ma', 'mma', 'exp', 'posture', 'checkpoint']
     npc: ${self:app.spawn.unit}
     player: ${self:app.spawn.unit}
     creature: ${self:app.spawn.unit}

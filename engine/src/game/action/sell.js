@@ -11,8 +11,6 @@ Action.define('sell', [
     return target;
   },
   async (item, { actor, abort }) => {
-    // item.destroy();
-    console.log(`${item}`);
     await REDIS.sRem(`${actor}.inventory`, `${item}`);
     await actor.perform('affect', { exp: item.value });
     return actor.send('text', 'You sell', item.name);

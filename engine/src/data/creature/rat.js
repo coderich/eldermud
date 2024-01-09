@@ -8,6 +8,7 @@ module.exports = {
   tiers: ['baby', '', 'adult'],
   adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
   moves: ['creep', 'scuttle', 'wobble'],
+  behaviors: ['territorial'],
   attacks: [
     {
       dmg: '1d3',

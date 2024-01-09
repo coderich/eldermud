@@ -24,6 +24,7 @@ Action.define('spawn', async (_, { actor }) => {
     }
   });
 
+  // Assign unit to world
   const [map, room] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
 
   if (['item'].includes(actor.type)) {
@@ -39,6 +40,9 @@ Action.define('spawn', async (_, { actor }) => {
     actor.perform('room', CONFIG.get(room));
     actor.roomSearch = new Set();
   }
+
+  // Attach behaviors
+  actor.behaviors?.forEach(behavior => actor.perform(behavior));
 
   return { map, room };
 });
