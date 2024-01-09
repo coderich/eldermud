@@ -6,10 +6,10 @@ const { Action } = require('@coderich/gameflow');
 Action.define('death', () => null);
 
 SYSTEM.on('post:death', async ({ actor }) => {
-  await actor.perform('break'); // Allow listeners to cleanup
-  actor.removeAllListeners();
+  actor.perform('break');
   Object.values(actor.streams).forEach(stream => stream.abort() && stream.removeAllListeners());
   CONFIG.get(await REDIS.get(`${actor}.room`)).units.delete(actor);
+  actor.removeAllListeners();
 
   switch (actor.type) {
     case 'player': {

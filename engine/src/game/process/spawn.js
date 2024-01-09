@@ -17,8 +17,8 @@ Action.define('spawn', async (_, { actor }) => {
 
     if (type === 'pre') {
       // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
-      context.promise.listen(i => i || Promise.all([SYSTEM.emit(event, context), SYSTEM.emit('*', event, context)]));
-    } else if (type === 'post') {
+      context.promise.listen(step => step > 1 || Promise.all([SYSTEM.emit(event, context), SYSTEM.emit('*', event, context)]));
+    } else {
       SYSTEM.emit(event, context);
       SYSTEM.emit('*', event, context);
     }

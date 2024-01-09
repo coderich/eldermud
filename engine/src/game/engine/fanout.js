@@ -2,14 +2,10 @@
  * Responsible for creating new/specialized/specific game events
  */
 SYSTEM.on('*', async (event, context) => {
-  const { promise, result } = context;
+  const { result } = context;
   const [type, action] = event.split(':');
 
-  if (type === 'post' && promise.aborted) {
-    SYSTEM.emit(`abort:${action}`, context);
-  }
-
-  if (type === 'post' && !promise.aborted) {
+  if (type === 'post') {
     switch (action) {
       case 'spawn': { // Enter the realm
         SYSTEM.emit(`enter:${result.room}`, context);
