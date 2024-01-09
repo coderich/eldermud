@@ -35,11 +35,13 @@ module.exports = class ConfigClient extends Config {
           config.set(`${ns}.toString`, () => ns);
         });
       }
-    });
 
-    Object.entries(config.get('creature')).forEach(([key, creature]) => {
-      config.set(`${creature}.ma`, 0);
-      config.set(`${creature}.mma`, 0);
+      if (['npc', 'creature'].includes(type)) {
+        Object.values(models).forEach((model) => {
+          config.set(`${model}.ma`, 0);
+          config.set(`${model}.mma`, 0);
+        });
+      }
     });
 
     Object.entries(config.get('map')).forEach(([key, map], i) => {

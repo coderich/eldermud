@@ -4,7 +4,7 @@ module.exports = {
   checkpoint: '${self:map.town.rooms.start}',
   posture: 'stand',
   attacks: [{ dmg: '2d10' }],
-  traits: ['heartbeat'],
+  traits: ['heartbeat', 'heartstop'],
   hp: 20,
   mhp: 20,
   ma: 10,

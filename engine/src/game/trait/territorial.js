@@ -1,7 +1,7 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('territorial', [
-  async (_, { actor }) => {
+  (_, { actor }) => {
     const attack = ({ actor: target }) => {
       if (target.type === 'player') {
         target.once('post:move', () => actor.perform('break'));
