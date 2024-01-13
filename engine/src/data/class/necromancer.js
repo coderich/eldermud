@@ -1,5 +1,6 @@
 module.exports = {
   name: 'Necromancer',
+  pri: 'int',
   str: 6,
   dex: 8,
   int: 12,

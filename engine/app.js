@@ -16,7 +16,8 @@ const server = require('./src/server');
   global.APP = AppService;
 
   // Load the game (Actions)
-  Util.requireDir(`${__dirname}/src/game`);
+  // Util.requireDir(`${__dirname}/src/game`);
+  Util.requireDir(`${__dirname}/src/module`);
 
   // Setup our NPCs (Actors)
   Object.values(CONFIG.get('npc')).forEach(async (npc) => {

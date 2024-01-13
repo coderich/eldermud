@@ -69,7 +69,7 @@ end
 clearWindow();
 disableScrollBar();
 setBorderTop(10);
-setBorderLeft(100);
+setBorderLeft(0);
 setBorderRight(0);
 setBorderBottom(35);
 -- setFont('Courier New');

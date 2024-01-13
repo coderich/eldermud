@@ -11,13 +11,15 @@ const models = { npc: NPC, item: Item, creature: Creature };
 exports.chance = chance;
 exports.pluralize = Pluralize;
 exports.timeout = Util.timeout;
+exports.ucFirst = Util.ucFirst;
 exports.fib = [3, 5, 8, 13, 21, 34, 55, 89];
 exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northeast', nw: 'northwest', se: 'southeast', sw: 'southwest', u: 'up', d: 'down' };
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };
 exports.randomElement = arr => arr[Math.floor(Math.random() * arr.length)];
 exports.styleText = (style, ...text) => `${CONFIG.get(`app.styles.${style}`)}${text.flat().join(' ')}${CONFIG.get('app.styles.reset')}`;
-exports.isNumeric = str => !Number.isNaN(Number(str));
-exports.fibStat = (val = 0, every = 10) => Array.from(new Array(parseInt(val, 10))).reduce((prev, el, i) => prev + exports.fib[Math.floor(i / every)], 0);
+exports.isNumeric = str => !Number.isNaN(Number(`${str}`));
+exports.isBoolean = str => ['true', 'false'].includes(`${str}`.toLowerCase());
+exports.fibStat = (val, every = 10) => Array.from(new Array(parseInt(val ?? 0, 10))).reduce((prev, el, i) => prev + exports.fib[Math.floor(i / every)], 0);
 
 exports.styleBlockText = (styles = [], blocktext) => {
   return styles.reduce((prev, { text, style, limit = Infinity }) => {

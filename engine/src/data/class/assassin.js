@@ -1,5 +1,6 @@
 module.exports = {
   name: 'Assassin',
+  pri: 'dex',
   str: 8,
   dex: 12,
   int: 6,

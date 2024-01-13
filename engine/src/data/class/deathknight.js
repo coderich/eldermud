@@ -1,5 +1,6 @@
 module.exports = {
   name: 'Death Knight',
+  pri: 'str',
   str: 12,
   dex: 10,
   int: 4,

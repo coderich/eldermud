@@ -72,12 +72,10 @@ const commands = [
     // Channels
     { '/gos': { args: channelArgs, name: 'gos', code: 'gos', channel, stream: 'info' } },
     { '/auc': { args: channelArgs, name: 'auc', code: 'auc', channel, stream: 'info' } },
-    // { '/log': { args: [0], code: 'log', stream: 'channel' } },
-    // { '/his': { args: [0], code: 'his', stream: 'channel' } },
   ],
   [
     { greet: { args: [0, 1, 2, 3, 4, 5], code: 'greet', channel: 'realm', stream: 'voice' } },
-    // { train: { args: [1], code: 'train', stream: 'action' } },
+    { train: { args: [1], code: 'train', channel: 'realm', stream: 'action' } },
     // { learn: { args: [1], code: 'learn', stream: 'action' } },
   ],
 ];
