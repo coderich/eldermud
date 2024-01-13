@@ -1,6 +1,6 @@
-const Actor = require('./Actor');
+const Unit = require('./Unit');
 
-module.exports = class Player extends Actor {
+module.exports = class Player extends Unit {
   constructor(data) {
     super(data);
     this.type = 'player';

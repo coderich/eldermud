@@ -1,4 +1,4 @@
-const Actor = require('./Actor');
+const Unit = require('./Unit');
 
-module.exports = class NPC extends Actor {
+module.exports = class NPC extends Unit {
 };

@@ -36,20 +36,27 @@ module.exports = class ConfigClient extends Config {
         });
       }
 
-      if (['npc', 'creature'].includes(type)) {
-        Object.values(models).forEach((model) => {
-          config.set(`${model}.ma`, 0);
-          config.set(`${model}.mma`, 0);
-        });
-      }
+      // if (['npc', 'creature', 'player'].includes(type)) {
+      //   Object.values(models).forEach((model) => {
+      //     if (!model.ac) config.set(`${model}.ac`, 0);
+      //     if (!model.dr) config.set(`${model}.dr`, 0);
+      //     if (!model.acc) config.set(`${model}.acc`, 0);
+      //     if (!model.crit) config.set(`${model}.crit`, 0);
+      //     if (!model.dodge) config.set(`${model}.dodge`, 0);
+      //     if (!model.ma) config.set(`${model}.ma`, 0);
+      //     if (!model.maa) config.set(`${model}.mma`, 0);
+      //   });
+      // }
     });
 
     Object.entries(config.get('map')).forEach(([key, map], i) => {
-      Object.entries(map.doors).forEach(([id, door], j) => {
-        config.set(`map.${key}.doors.${id}.id`, id);
-        config.set(`map.${key}.doors.${id}.type`, 'door');
-        config.set(`map.${key}.doors.${id}.toString`, () => `map.${key}.doors.${id}`);
-      });
+      if (map.doors) {
+        Object.entries(map.doors).forEach(([id, door], j) => {
+          config.set(`map.${key}.doors.${id}.id`, id);
+          config.set(`map.${key}.doors.${id}.type`, 'door');
+          config.set(`map.${key}.doors.${id}.toString`, () => `map.${key}.doors.${id}`);
+        });
+      }
 
       Object.entries(map.rooms).forEach(([id, room], j) => {
         config.set(`map.${key}.rooms.${id}.id`, id);

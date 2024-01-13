@@ -3,7 +3,6 @@
 * Scan? and if so, then look should only be for direction
 * The killer blow, if item(s) drop, they are "owner" for a short while? (only owner can pick up off ground)
 
-! Creatures are not attacking when they spawn (only when you enter room) (scan?)
 ! If you kill a creature does it still hit you? (it should be possible to trade blows...)
 
 * Combat Mechanics

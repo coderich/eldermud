@@ -13,11 +13,12 @@ SYSTEM.on('post:death', async ({ actor }) => {
 
   switch (actor.type) {
     case 'player': {
-      const { mhp, mma, checkpoint } = await actor.mGet(['mhp', 'mma', 'checkpoint']);
+      const { checkpoint, str, dex, int, wis } = await actor.mGet(['checkpoint', 'str', 'dex', 'int', 'wis']);
+      Object.assign(actor, { str, dex, int, wis }).calcStats();
 
       await REDIS.mSet({
-        [`${actor}.hp`]: mhp,
-        [`${actor}.ma`]: mma,
+        [`${actor}.hp`]: actor.mhp,
+        [`${actor}.ma`]: actor.mma,
         [`${actor}.room`]: checkpoint,
         [`${actor}.exp`]: '0',
       });

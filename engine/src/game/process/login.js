@@ -1,4 +1,5 @@
 const { Action } = require('@coderich/gameflow');
+const Player = require('../../model/Player');
 
 const resolveUsername = async (actor) => {
   let { text: username } = await actor.socket.query('cmd', 'Please enter your username (otherwise type "new")');
@@ -7,11 +8,11 @@ const resolveUsername = async (actor) => {
   if (isNew) {
     ({ text: username } = await actor.socket.query('cmd', 'Please enter a username'));
     if (!await REDIS.sAdd('users', username.toLowerCase())) {
-      actor.send('text', 'Sorry, that username already exists');
+      actor.socket.emit('text', 'Sorry, that username already exists');
       return resolveUsername(actor);
     }
   } else if (!await REDIS.sIsMember('users', username.toLowerCase())) {
-    actor.send('text', 'Sorry, unable to find that username');
+    actor.socket.emit('text', 'Sorry, unable to find that username');
     return resolveUsername(actor);
   }
 
@@ -25,12 +26,12 @@ const resolvePassword = async (actor, username, isNew) => {
   if (isNew) {
     const { text: confirm } = await actor.socket.query('cmd', 'Please password confirm');
     if (confirm !== password) {
-      actor.send('text', 'Oops, passwords do not match');
+      actor.socket.emit('text', 'Oops, passwords do not match');
       return resolvePassword(actor, username, isNew);
     }
     await REDIS.set(key, password);
   } else if ((await REDIS.get(key)) !== password) {
-    actor.send('text', 'Oops, that password is not valid');
+    actor.socket.emit('text', 'Oops, that password is not valid');
     return resolvePassword(actor, username, isNew);
   }
 
@@ -39,7 +40,7 @@ const resolvePassword = async (actor, username, isNew) => {
 
 Action.define('login', async (_, { actor }) => {
   // Welcome
-  actor.send('text', 'Welcome adventurer!');
+  actor.socket.emit('text', 'Welcome adventurer!');
 
   // Resolve username + password
   const { username, isNew } = await resolveUsername(actor);
@@ -48,7 +49,5 @@ Action.define('login', async (_, { actor }) => {
   // Setup profile
   actor.id = username.toLowerCase();
   actor.name = username;
-  Object.assign(actor, CONFIG.get('player'));
-
-  return { username, isNew };
+  return new Player(Object.assign(actor, CONFIG.get('player')));
 });

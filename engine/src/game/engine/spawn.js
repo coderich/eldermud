@@ -32,10 +32,9 @@ SYSTEM.on('pre:room', async (context) => {
           if (count > 0) {
             const keys = Array.from(new Array(count)).fill(ns);
             await Promise.all(APP.hydrate(keys).map((config) => {
-              const tier = APP.roll(config.tier);
-              const name = [APP.randomElement(config.adjectives), config.tiers[tier], config.name].filter(Boolean).join(' ');
-              const hp = config.hp + Math.ceil(config.hp * (tier * 0.10));
-              return APP.instantiate(config, { room, tier, name, hp, mhp: hp }).then(actor => actor.perform('spawn'));
+              const lvl = APP.roll(config.lvl);
+              const name = [APP.randomElement(config.adjectives), config.tiers[lvl], config.name].filter(Boolean).join(' ');
+              return APP.instantiate(config, { name, room, lvl }).then(actor => actor.perform('spawn'));
             }));
           }
         }));

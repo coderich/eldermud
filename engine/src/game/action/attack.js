@@ -1,4 +1,3 @@
-const Util = require('@coderich/util');
 const { Action } = require('@coderich/gameflow');
 
 /**
@@ -30,9 +29,9 @@ Action.define('attack', [
     });
 
     // Time to engage
-    Util.timeout(2000).then(() => {
+    APP.timeout(2000).then(() => {
       const swing = async () => {
-        await Util.timeout(2000);
+        await APP.timeout(2000);
         if (promise.aborted) return stream.resume();
 
         /**
@@ -40,9 +39,8 @@ Action.define('attack', [
          */
         stream.pause();
         const attack = APP.randomElement(actor.attacks);
-        const dmg = APP.roll(attack.dmg);
-        await actor.perform('strike', { target, dmg });
-        await Util.timeout(2000);
+        await actor.perform('swing', { attack, target });
+        await APP.timeout(2000);
 
         return promise.aborted ? stream.resume() : swing();
       };

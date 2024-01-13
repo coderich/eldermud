@@ -3,11 +3,11 @@ const { Action } = require('@coderich/gameflow');
 /**
  * Delegates the command to the appropriate stream/action
  */
-module.exports = Action.define('execute', async (command, { actor, abort }) => {
+module.exports = Action.define('execute', async (command, { actor, abort, promise }) => {
   const context = { translate: true };
   const { name, code, input, stream } = command;
 
-  // // Echo back actions...
+  // Echo back actions...
   // if (stream === 'action') actor.stream(stream, new Action(null, () => actor.send('text', input)));
 
   switch (name) {

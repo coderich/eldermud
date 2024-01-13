@@ -69,7 +69,7 @@ end
 clearWindow();
 disableScrollBar();
 setBorderTop(10);
-setBorderLeft(0);
+setBorderLeft(100);
 setBorderRight(0);
 setBorderBottom(35);
 -- setFont('Courier New');
@@ -188,11 +188,13 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.status', 'gmcp.eldermud.st
   local data = gmcp.eldermud.status;
   status:echo(
     'Health: [ &lt;span style="background-color:green"&gt;' .. data.hp .. '/' .. data.mhp .. '&lt;/span&gt; ]'
-    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
     .. 'Mana: [ &lt;span style="background-color:blue"&gt;' .. data.ma .. '/' .. data.mma .. '&lt;/span&gt; ]'
-    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
-    .. 'Souls: &lt;span style="color:cyan"&gt;' .. data.exp .. '&lt;/span&gt;'
-    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    -- .. 'Carry: [ &lt;span style="background-color:orange"&gt;' .. 100 .. '/' .. 1000 .. '&lt;/span&gt; ]'
+    -- .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. 'Soul: &lt;span style="color:LightSeaGreen"&gt;' .. data.exp .. '&lt;/span&gt;'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
     .. 'Posture: &lt;span style="color:magenta"&gt;' .. data.posture .. '&lt;/span&gt;'
   );
 end);

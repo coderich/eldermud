@@ -1,15 +1,14 @@
 const { Actor } = require('@coderich/gameflow');
 const { Server } = require('@coderich/gameserver');
-const Player = require('./model/Player');
 
 const server = new Server({
   telnet: { port: 23, namespace: 'eldermud' },
 });
 
 server.on('connect', async ({ socket }) => {
-  const player = new Player({ socket });
+  // Object.assign(Actor.define(socket.id), { socket });
 
-  player.perform('login').then(async () => {
+  Object.assign(new Actor(socket.id), { socket }).perform('login').then(async (player) => {
     Actor[socket.id] = player; // Add them to the list of Actors to respond to (server.on('cmd') below)
     await player.send('cls');
     await player.perform('spawn');
