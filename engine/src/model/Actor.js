@@ -27,30 +27,47 @@ module.exports = class ActorWrapper extends Actor {
       preAction: new Stream('preAction'),
       telepath: new Stream('telepath'),
     };
-
-    // Bind system events to this actor
-    this.on('*', (event, context) => {
-      const [type] = event.split(':');
-
-      if (type === 'pre') {
-        // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
-        context.promise.listen(step => step > 1 || Promise.all([SYSTEM.emit(event, context), SYSTEM.emit('*', event, context)]));
-      } else {
-        SYSTEM.emit(event, context);
-        SYSTEM.emit('*', event, context);
-      }
-    });
   }
 
   mGet(...keys) {
     keys = keys.flat();
     return REDIS.mGet(keys.map(key => `${this}.${key}`)).then((values) => {
       return values.reduce((prev, value, i) => {
-        if (APP.isNumeric(value)) value = parseInt(value, 10);
-        else if (APP.isBoolean(value)) value = Boolean(`${value.toLowerCase()}` === 'true');
-        return Object.assign(prev, { [keys[i]]: value });
+        return Object.assign(prev, { [keys[i]]: APP.castValue(value) });
       }, {});
     });
+  }
+
+  save(data = {}, NX = false) {
+    return Promise.all(Object.entries(data).map(async ([key, value]) => {
+      let currentValue = this[key];
+
+      if (CONFIG.get(`app.spawn.${this.type}`).includes(key)) {
+        currentValue = await REDIS.set(`${this}.${key}`, value.toString(), { NX, GET: true });
+        this[key] = CONFIG.get(`${value}`) ?? value;
+      } else {
+        this[key] = value;
+      }
+
+      return { [key]: currentValue };
+    })).then((values) => {
+      return Object.assign(...values);
+    });
+
+    // // Assign
+    // Object.assign(this, data);
+
+    // return result;
+
+    // return Promise.all(CONFIG.get(`app.spawn.${this.type}`).map((attr) => {
+    //   const key = `${this}.${attr}`;
+    //   const value = this[attr]?.toString();
+    //   return value === undefined ? Promise.resolve() : REDIS.set(key, value, { NX, GET: true });
+    // })).then((values) => {
+    //   return values.reduce((prev, value, i) => {
+
+    //   }, {});
+    // });
   }
 
   send(event, message, ...rest) {

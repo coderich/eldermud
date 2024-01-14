@@ -17,8 +17,8 @@ SYSTEM.on('post:death', async ({ actor }) => {
       await actor.calcStats();
 
       await REDIS.mSet({
-        [`${actor}.hp`]: actor.mhp,
-        [`${actor}.ma`]: actor.mma,
+        [`${actor}.hp`]: `${actor.mhp}`,
+        [`${actor}.ma`]: `${actor.mma}`,
         [`${actor}.room`]: checkpoint,
         [`${actor}.exp`]: '0',
       });

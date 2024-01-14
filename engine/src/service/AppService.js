@@ -21,6 +21,12 @@ exports.isNumeric = str => !Number.isNaN(Number(`${str}`));
 exports.isBoolean = str => ['true', 'false'].includes(`${str}`.toLowerCase());
 exports.fibStat = (val, every = 10) => Array.from(new Array(parseInt(val ?? 0, 10))).reduce((prev, el, i) => prev + exports.fib[Math.floor(i / every)], 0);
 
+exports.castValue = (value) => {
+  if (APP.isNumeric(value)) return parseInt(value, 10);
+  if (APP.isBoolean(value)) return Boolean(`${value.toLowerCase()}` === 'true');
+  return value;
+};
+
 exports.styleBlockText = (styles = [], blocktext) => {
   return styles.reduce((prev, { text, style, limit = Infinity }) => {
     const re = new RegExp(`\\b${text}(?=$|\\W)`, 'g');

@@ -12,8 +12,8 @@ Action.define('selectClass', async (_, { actor }) => {
   });
 
   actor.send('text', `${line}\n`);
-  const { text: classname } = await actor.query(APP.styleText('query', 'Welcome', APP.styleText('keyword', actor.name), APP.styleText('query', '- enter a class name you\'d like to play')));
+  const { text: classname } = await actor.query(APP.styleText('query', 'Welcome', APP.styleText('keyword', actor.name), APP.styleText('query', '- enter a class name you\'d like to play!')));
   const { target } = APP.target(Object.values(classes), [classname]);
   if (!target) return actor.perform('selectClass');
-  return Object.assign(actor, Object.assign(target, CONFIG.get('player'), actor, { class: `${target}` }));
+  return REDIS.set(`${actor}.class`, `${target}`);
 });

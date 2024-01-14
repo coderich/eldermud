@@ -12,7 +12,7 @@ Action.define('search', [
     switch (target.type) {
       case 'room': {
         const items = Array.from(target.items.values()).filter(item => item.hidden && item.owner === `${actor}`);
-        actor.roomSearch = new Set(items);
+        actor.$search = new Set(items);
         return items.length ? actor.send('text', 'You notice', items.map(item => item.name).join(', '), 'here.') : actor.send('text', 'Your search reveals nothing.');
       }
       default: {

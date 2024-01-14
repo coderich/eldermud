@@ -9,7 +9,7 @@ Action.define('attack', [
   },
   ({ target }, { actor, abort, stream, promise }) => {
     // Engage
-    actor.send('text', `*combat engaged (${target.name})*`);
+    actor.send('text', APP.styleText('engaged', `*combat engaged (${target.name})*`));
     stream.close('You cannot do that while attacking; BREAK first!');
 
     // On Victory

@@ -8,7 +8,7 @@ SYSTEM.on('*', async (event, context) => {
   // Normalize input for actions
   if (type === 'pre' && translate) {
     switch (action) {
-      case 'greet': case 'ask': case 'attack': case 'follow': {
+      case 'greet': case 'ask': case 'attack': case 'follow': case 'invite': {
         const { args } = data;
         const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
         Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
@@ -16,7 +16,7 @@ SYSTEM.on('*', async (event, context) => {
       }
       case 'get': {
         const { args } = data;
-        const items = Array.from(actor.roomSearch.values());
+        const items = Array.from(actor.$search.values());
         Object.assign(data, APP.target(items, args));
         break;
       }

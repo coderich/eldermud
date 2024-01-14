@@ -34,10 +34,10 @@ Action.define('move', [
 
   async ({ room, exit }, context) => {
     const { actor } = context;
-    await REDIS.set(`${actor}.room`, `${exit}`);
-    CONFIG.get(`${room}.units`).delete(actor);
-    CONFIG.get(`${exit}.units`).add(actor);
-    actor.roomSearch.clear();
+    await actor.save({ room: exit });
+    room.units.delete(actor);
+    exit.units.add(actor);
+    actor.$search.clear();
     await actor.perform('map');
     await actor.perform('room', exit);
   },

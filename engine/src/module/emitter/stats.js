@@ -7,7 +7,7 @@ Action.define('stats', [
     const table1 = APP.table([
       ['Name:', actor.name, 'Level:', `${stats.lvl}`],
       ['Race:', 'N/A', 'Class:', `${CONFIG.get(stats.class).name}`],
-      ['Health:', `${stats.hp}/${actor.mhp}`, 'Mana:', `${stats.ma}/${actor.mma}`, 'Souls:', stats.exp],
+      ['Health:', `${stats.hp}/${actor.mhp}`, 'Mana:', `${stats.ma}/${actor.mma}`, 'Soul:', stats.exp],
       [],
       ['Strength:', `${stats.str}`],
       ['Dexterity:', `${stats.dex}`],
