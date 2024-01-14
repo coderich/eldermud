@@ -39,7 +39,7 @@ exports.styleBlockText = (styles = [], blocktext) => {
 exports.target = (list, args, by = 'name') => {
   const arr = list instanceof Set ? Array.from(list.values()) : list; // Ensure array
   const $args = [...args]; // Shallow copy
-  const fn = typeof by === 'function' ? by : ((el, text) => el[by].toLowerCase().split(' ').some(tok => tok.startsWith(text)));
+  const fn = typeof by === 'function' ? by : ((el, text) => el[by]?.toLowerCase()?.split(' ')?.some(tok => tok.startsWith(text)));
   const result = { rest: [] };
 
   args.forEach(() => {

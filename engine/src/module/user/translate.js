@@ -60,7 +60,7 @@ const commands = [
     // { lock: { args: [1], code: 'lock', stream: 'action' } },
     { rest: { args: [0], code: 'rest', channel: 'realm', stream: 'action' } },
     { stand: { args: [0], code: 'stand', channel: 'realm', stream: 'action' } },
-    { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },
+    // { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },
     { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'action' } },
 
     // // Talents

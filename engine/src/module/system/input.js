@@ -45,6 +45,13 @@ SYSTEM.on('*', async (event, context) => {
         const roomItems = Array.from(room.items.values());
         return Object.assign(data, APP.target(inventory.concat(roomItems), args));
       }
+      case 'help': {
+        const { args } = data;
+        const config = CONFIG.get();
+        const things = Object.values(config).map(el => Object.values(el));
+        Object.assign(data, APP.target(things.flat(), args));
+        break;
+      }
       default: {
         break;
       }

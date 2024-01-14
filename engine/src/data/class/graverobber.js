@@ -7,8 +7,8 @@ module.exports = {
   wis: 6,
   crit: 0,
   dodge: 5,
-  traits: ['heartbeat'],
-  skills: ['loot'],
+  skills: ['Loot Corpse'],
+  traits: ['lifeforce', 'manaforce'],
   attacks: ['${self:weapon.dagger}'],
   description: 'Grave Robbers are agile scavengers, adept at finding valuable items and hidden treasures in the remains of the deceased.',
 };

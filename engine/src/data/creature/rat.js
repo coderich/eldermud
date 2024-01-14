@@ -10,7 +10,7 @@ module.exports = {
   tiers: ['baby', '', 'adult'],
   adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
   moves: ['creep', 'scuttle', 'wobble'],
-  traits: ['heartbeat', 'territorial'],
+  traits: ['lifeforce', 'territorial'],
   attacks: ['${self:weapon.claw}', '${self:weapon.teeth}'],
   roams: true,
   follows: false,

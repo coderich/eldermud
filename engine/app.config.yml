@@ -12,6 +12,7 @@ app:
 
   styles:
     reset: '<reset>'
+    stat: '<ansiGreen>'
     query: '<SeaGreen>'
     # keyword: '<SkyBlue>'
     keyword: '<LightSeaGreen>'
@@ -40,3 +41,23 @@ app:
       unitsLabel: '<ansi_magenta>'
       # exitsLabel: '<ForestGreen>'
       exitsLabel: '<ansiGreen>'
+
+help:
+  health:
+    name: Health
+    description: The measure of your character's physical well-being and resilience. It reflects overall health and the ability to endure physical challenges. As your vitality increases, so does your capacity to withstand damage and recover from injuries. Keeping a keen eye on your vitality is crucial for surviving the perils of the world.
+  mana:
+    name: Mana
+    description: The arcane reservoir of mystical energy at your character's command. Mana is essential for casting spells, invoking magical abilities, and channeling supernatural powers. Monitoring your mana levels is vital for spellcasters, as it dictates the scope and potency of your magical endeavors. As you traverse the realms, harness the flow of mana to unleash the full potential of your magical prowess.
+  str:
+    name: Strength
+    description: The embodiment of your character's physical might and power. Strength influences your ability to wield heavy weapons, deal formidable blows in combat, and carry burdensome equipment. A high strength attribute empowers your character to face adversaries head-on, unleashing devastating attacks and withstanding the challenges of the world. Strengthen your character to become a formidable force on the battlefield.
+  dex:
+    name: Dexterity
+    description: A reflection of your character's agility, precision, and finesse. Dexterity influences your ability to dodge attacks, land critical strikes, and perform intricate maneuvers. A high dexterity attribute grants nimbleness and grace, allowing your character to navigate combat with ease and excel in activities requiring hand-eye coordination. Sharpen your dexterity for unparalleled finesse on the battlefield and beyond.
+  int:
+    name: Intellect
+    description: The measure of your character's mental acuity, knowledge, and magical aptitude. Intellect influences your capacity to learn and cast spells, solve complex puzzles, and outwit adversaries through cunning strategies. A high intellect attribute enhances your magical prowess and intellectual prowess, opening doors to arcane mysteries and strategic advantages. Cultivate your intellect to unravel the secrets of the world and wield formidable magical abilities.
+  wis:
+    name: Wisdom
+    description: The embodiment of your character's insight, perception, and spiritual awareness. Wisdom influences your ability to resist mental influences, make sound judgments, and connect with the mystical aspects of the world. A high wisdom attribute bestows keen intuition and spiritual depth, enabling your character to navigate moral dilemmas and perceive hidden truths. Cultivate wisdom to gain profound insights and navigate the intricate tapestry of your journey with clarity.

@@ -1,11 +1,23 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('help', [
-  async (_, { actor }) => {
-    actor.send('table', {
-      name: 'help',
-      columns: [{ name: 'NAME', width: 20 }, { name: 'DESCRIPTION', width: 75 }, { name: 'QTY', width: 10 }],
-      rows: [['data1', 'data2', 'data3']],
-    });
+  async ({ target }, { actor, abort }) => {
+    if (!target) abort('Unable to find any help for that.');
+  },
+  ({ target }, { actor }) => {
+    switch (target.type) {
+      case 'class': {
+        actor.send('text', APP.styleText('highlight', target.name));
+        actor.send('text', `${target.description}`);
+        actor.send('text', APP.styleText('stat', 'Skills:'), APP.styleText('keyword', target.skills.join(', ')));
+        actor.send('text', APP.styleText('stat', 'Traits:'), APP.styleText('keyword', target.traits.join(', ')), '\n');
+        break;
+      }
+      default: {
+        actor.send('text', APP.styleText('highlight', target.name));
+        actor.send('text', `${target.description}\n`);
+        break;
+      }
+    }
   },
 ]);

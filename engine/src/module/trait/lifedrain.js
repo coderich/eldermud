@@ -1,6 +1,6 @@
 const { Action } = require('@coderich/gameflow');
 
-Action.define('malaise', [
+Action.define('lifedrain', [
   (_, { actor }) => {
   },
 ]);
