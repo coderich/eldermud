@@ -7,10 +7,13 @@ Action.define('selectClass', async (_, { actor }) => {
   actor.send('text', `\n${line}\n`);
 
   Object.values(classes).forEach((hero, i) => {
-    actor.send('text', APP.styleText('highlight', hero.name));
-    actor.send('text', `${hero.description}`);
-    actor.send('text', APP.styleText('stat', 'Skills:'), APP.styleText('keyword', hero.skills.join(', ')));
-    actor.send('text', APP.styleText('stat', 'Traits:'), APP.styleText('keyword', hero.traits.join(', ')), '\n');
+    const { name, str, dex, int, wis, description, skills, traits } = hero;
+    const stats = Object.entries({ str, dex, int, wis }).map(([key, value]) => APP.styleText('stat', `${key}:`).concat(' ', APP.styleText('keyword', value)));
+    actor.send('text', APP.styleText('highlight', name), '(', stats.join(', '), ')');
+    actor.send('text', `${description}`);
+    actor.send('text', APP.styleText('stat', 'Begin with:'), '[', APP.styleText('keyword', skills.concat(traits).join(', ')), ']\n');
+    // actor.send('text', APP.styleText('stat', 'skills:'), APP.styleText('keyword', skills.join(', ')));
+    // actor.send('text', APP.styleText('stat', 'traits:'), APP.styleText('keyword', traits.join(', ')), '\n');
   });
 
   actor.send('text', `${line}\n`);

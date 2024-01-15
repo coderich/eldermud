@@ -61,3 +61,7 @@ help:
   wis:
     name: Wisdom
     description: The embodiment of your character's insight, perception, and spiritual awareness. Wisdom influences your ability to resist mental influences, make sound judgments, and connect with the mystical aspects of the world. A high wisdom attribute bestows keen intuition and spiritual depth, enabling your character to navigate moral dilemmas and perceive hidden truths. Cultivate wisdom to gain profound insights and navigate the intricate tapestry of your journey with clarity.
+  tst:
+    name: Strength of Poop
+    description: Poop Strength
+

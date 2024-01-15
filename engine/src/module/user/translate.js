@@ -23,7 +23,7 @@ const commands = [
     { west: { args: [0], code: 'w', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { i: { args: [0], code: 'i', name: 'inventory', channel: 'realm', stream: 'info' } },
     { x: { args: [0], code: 'x', name: 'exit', channel: 'realm', stream: 'action' } },
-    { '?': { args: [0, 1, 2], code: 'help', name: 'help', channel: 'realm', stream: 'info' } },
+    { '?': { args: [0, 1, 2, 3, 4, 5], code: 'help', name: 'help', channel: 'realm', stream: 'info' } },
   ],
   [
     { ne: { args: [0], code: 'ne', name: 'northeast', channel: 'realm', stream: 'action', tags: ['direction'] } },
@@ -36,7 +36,7 @@ const commands = [
     { open: { args: [1], code: 'open', channel: 'realm', stream: 'action' } },
     { close: { args: [1], code: 'close', channel: 'realm', stream: 'action' } },
     { stats: { args: [0], code: 'stats', channel: 'realm', stream: 'info' } },
-    // { drop: { args: [1, 2, 3, 4, 5], code: 'drop', stream: 'action' } },
+    { drop: { args: [1, 2, 3, 4, 5], code: 'drop', channel: 'realm', stream: 'action' } },
     // { repeat: { args: [0], code: 're', stream: '' } },
     { exit: { args: [0], code: 'x', channel: 'realm', stream: 'action' } },
   ],

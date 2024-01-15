@@ -16,9 +16,16 @@ SYSTEM.on('*', async (event, context) => {
       }
       case 'get': {
         const { args } = data;
-        const items = Array.from(actor.$search.values());
-        Object.assign(data, APP.target(items, args));
+        const room = CONFIG.get(await REDIS.get(`${actor}.room`));
+        const roomItems = Array.from(room.items.values());
+        const searchItems = Array.from(actor.$search.values());
+        Object.assign(data, APP.target(roomItems.concat(searchItems), args));
         break;
+      }
+      case 'drop': {
+        const { args } = data;
+        const inventory = APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
+        return Object.assign(data, APP.target(inventory, args));
       }
       case 'list': case 'buy': case 'sell': {
         const { shop } = CONFIG.get(await REDIS.get(`${actor}.room`));

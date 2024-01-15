@@ -37,10 +37,13 @@ exports.styleBlockText = (styles = [], blocktext) => {
 };
 
 exports.target = (list, args, by = 'name') => {
+  const result = { rest: [] };
   const arr = list instanceof Set ? Array.from(list.values()) : list; // Ensure array
   const $args = [...args]; // Shallow copy
-  const fn = typeof by === 'function' ? by : ((el, text) => el[by]?.toLowerCase()?.split(' ')?.some(tok => tok.startsWith(text)));
-  const result = { rest: [] };
+  const fn = (el, text) => {
+    text = text.replace(/[^a-zA-Z]/g, ''); // Sanitize match to be alpha only
+    return text.length && el[by]?.match(new RegExp(`\\b${text}`, 'gi'));
+  };
 
   args.forEach(() => {
     result.target = arr.find(el => fn(el, $args.join(' ')));

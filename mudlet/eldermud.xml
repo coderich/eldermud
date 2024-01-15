@@ -73,6 +73,7 @@ setBorderLeft(0);
 setBorderRight(0);
 setBorderBottom(35);
 -- setFont('Courier New');
+setFontSize(15);
 setFont('Bitstream Vera Sans Mon');
 -- display(getAvailableFonts());
 
@@ -139,16 +140,17 @@ end);
 				<packageName></packageName>
 				<script>clearCmdLine()
 enableCommandLine();
-
 setCmdLineStyleSheet("main", [[
   QPlainTextEdit {
     color: white;
     font: Arial;
   }
-]])
+]]);
+
+local cmd = 'cmd';
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.cmd', 'sysDataSendRequest', function(e, text)
-  sendGMCP("eldermud.cmd" .. yajl.to_string{text = text});
+  sendGMCP('eldermud.' .. cmd .. yajl.to_string{text = text});
 end);
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.console', 'gmcp.eldermud', function (event, ns)
