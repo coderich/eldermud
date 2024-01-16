@@ -25,7 +25,7 @@ Action.define('room', [
     };
 
     actor.send('text', $room.name);
-    actor.send('text', $room.description);
+    // actor.send('text', $room.description);
     if ($room.items.length) actor.send('text', APP.styleText('item', `You notice ${$room.items.join(', ')} here.`));
     if ($room.units.length) {
       // $room.units.push('[Random >> Zilo, Bane]');

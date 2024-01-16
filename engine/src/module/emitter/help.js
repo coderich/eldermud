@@ -10,12 +10,12 @@ Action.define('help', [
         actor.send('text', APP.styleText('highlight', target.name));
         actor.send('text', `${target.description}`);
         actor.send('text', APP.styleText('stat', 'Skills:'), APP.styleText('keyword', target.skills.join(', ')));
-        actor.send('text', APP.styleText('stat', 'Traits:'), APP.styleText('keyword', target.traits.join(', ')), '\n');
+        actor.send('text', APP.styleText('stat', 'Traits:'), APP.styleText('keyword', target.traits.join(', ')));
         break;
       }
       default: {
         actor.send('text', APP.styleText('highlight', target.name));
-        actor.send('text', `${target.description}\n`);
+        actor.send('text', `${target.description}`);
         break;
       }
     }
