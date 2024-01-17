@@ -28,11 +28,12 @@ SYSTEM.on('post:death', async ({ actor }) => {
       break;
     }
     default: {
-      const exp = Math.ceil((actor.mhp * actor.exp) / actor.killers.size);
+      const exp = Math.ceil((actor.mhp * actor.exp) / actor.$killers.size);
 
-      actor.killers.forEach((killer) => {
+      actor.$killers.forEach((killer) => {
         killer.perform('affect', { exp });
         killer.send('text', `You gain ${APP.styleText('keyword', exp)} soul power.`);
+        killer.perform('room');
       });
 
       // Redis cleanup

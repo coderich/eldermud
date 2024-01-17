@@ -6,7 +6,7 @@ Action.define('lifeforce', [
     const abortFn = () => (aborted = true);
     stream.once('abort', abortFn);
 
-    APP.timeout(2500).then(async () => {
+    APP.timeout(10000).then(async () => {
       if (!promise.aborted) {
         const { hp } = await actor.mGet('hp');
         const incr = Math.min(actor.mhp - hp, 2);

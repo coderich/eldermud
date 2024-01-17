@@ -11,5 +11,5 @@ Action.define('hit', async ({ attack, target, dmg, crit }, { actor }) => {
   actor.send('text', APP.styleText('youHit', `You ${verb} ${target.name} with your ${attack.name} for ${dmg} damage!`));
   target.send('text', APP.styleText('hitYou', `${source} ${verbs} you with their ${attack.name} for ${dmg} damage!`));
   Array.from(actor.room.units.values()).filter(el => ![actor, target].includes(el)).forEach(el => el.send('text', APP.styleText('hit', `${source} ${verbs} at ${target.name} with their ${attack.name} for ${dmg} damage!`)));
-  return target.perform('affect', { hp: -dmg });
+  await target.perform('affect', { hp: -dmg });
 });

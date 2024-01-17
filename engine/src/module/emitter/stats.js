@@ -23,8 +23,8 @@ Action.define('stats', [
       Block: `${actor.dr}`,
       Stealth: '0',
       Crits: '0',
-      Skills: actor.skills.join(', '),
-      Traits: actor.traits.join(', '),
+      Talents: actor.talents.map(talent => talent.name).join(', '),
+      Traits: actor.traits.map(trait => trait.name).join(', '),
     }).reduce((prev, [key, value]) => {
       return Object.assign(prev, { [key]: [APP.styleText('stat', `${key}:`), APP.styleText('keyword', `${value}  `)] });
     }, {});
@@ -41,7 +41,7 @@ Action.define('stats', [
     ], { sep: '' });
 
     const table2 = APP.table([
-      [...data.Skills],
+      [...data.Talents],
       [...data.Traits],
     ], { sep: '' });
 

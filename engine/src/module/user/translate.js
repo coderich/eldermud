@@ -63,14 +63,14 @@ const commands = [
     // { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },
     { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'action' } },
 
-    // // Talents
+    // Talents
     // { dble: { args: [1], code: 'talent.dble', stream: 'talent' } },
     // { hail: { args: [0], code: 'talent.hail', stream: 'talent' } },
     // { mend: { args: [0, 1], code: 'talent.mend', stream: 'talent' } },
     // { rage: { args: [0], code: 'talent.rage', stream: 'talent' } },
     // { stab: { args: [1, 2, 3], code: 'talent.stab', stream: 'talent' } },
     // { tote: { args: [1], code: 'talent.tote', stream: 'talent' } },
-    // { vamp: { args: [1], code: 'talent.vamp', stream: 'talent' } },
+    { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action' } },
 
     // Channels
     { '/gos': { args: channelArgs, name: 'gos', code: 'gos', channel, stream: 'info' } },

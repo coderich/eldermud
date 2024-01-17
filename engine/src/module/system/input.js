@@ -8,7 +8,7 @@ SYSTEM.on('*', async (event, context) => {
   // Normalize input for actions
   if (type === 'pre' && translate) {
     switch (action) {
-      case 'greet': case 'ask': case 'attack': case 'follow': case 'invite': {
+      case 'greet': case 'ask': case 'attack': case 'follow': case 'invite': case 'vamp': {
         const { args } = data;
         const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
         Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));

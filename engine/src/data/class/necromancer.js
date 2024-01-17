@@ -7,8 +7,8 @@ module.exports = {
   wis: 4,
   crit: 0,
   dodge: 0,
-  skills: ['Vampiric Touch', 'Tether Life'],
-  traits: ['manaforce', 'terrifying'],
+  talents: ['${self:talent.vamp}', '${self:talent.tlif}'],
+  traits: ['${self:trait.manaforce}', '${self:trait.terrifying}'],
   attacks: ['${self:weapon.staff}'],
   description: 'Necromancers wield the dark arts, commanding the forces of death. Masters of necromancy, they summon undead minions, cast curses, and drain life to dominate their foes.',
 };

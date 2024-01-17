@@ -53,21 +53,6 @@ module.exports = class ActorWrapper extends Actor {
     })).then((values) => {
       return Object.assign(...values);
     });
-
-    // // Assign
-    // Object.assign(this, data);
-
-    // return result;
-
-    // return Promise.all(CONFIG.get(`app.spawn.${this.type}`).map((attr) => {
-    //   const key = `${this}.${attr}`;
-    //   const value = this[attr]?.toString();
-    //   return value === undefined ? Promise.resolve() : REDIS.set(key, value, { NX, GET: true });
-    // })).then((values) => {
-    //   return values.reduce((prev, value, i) => {
-
-    //   }, {});
-    // });
   }
 
   send(event, message, ...rest) {
