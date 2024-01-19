@@ -78,7 +78,7 @@ exports.hydrate = (keys) => {
 };
 
 exports.roll = (dice) => {
-  if (typeof dice !== 'string') return dice;
+  if (exports.isNumeric(dice)) return parseInt(dice, 10);
 
   const input = dice.match(/\S+/g).join('');
   const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+-\\*\\/]?)(\d*)/);

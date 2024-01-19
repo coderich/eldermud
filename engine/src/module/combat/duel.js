@@ -2,11 +2,12 @@ const { Action, Loop } = require('@coderich/gameflow');
 
 Action.define('duel', [
   // Setup
-  (data, { actor, stream, abort }) => {
+  (data, { actor, stream, abort, promise }) => {
     stream.once('add', () => abort());
+    data.target.once('post:move', () => abort());
     data.target.once('post:death', () => abort());
 
-    actor.once('abort:duel', () => {
+    promise.onAbort(() => {
       actor.send('text', APP.styleText('engaged', '*combat off*'));
       APP.timeout(100).then(() => data.target.$killers.delete(actor));
     });
@@ -21,8 +22,10 @@ Action.define('duel', [
     () => APP.timeout(2000),
 
     // Attack
-    async (data, { actor, stream }) => {
+    async (data, { actor, stream, promise }) => {
       const { attack, target, mods } = data;
+
+      if (promise.aborted) console.log(actor.toString(), 'is dueling');
 
       // Resource check
       if (attack.cost) {

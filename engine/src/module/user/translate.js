@@ -66,9 +66,9 @@ const commands = [
     // Talents
     // { dble: { args: [1], code: 'talent.dble', stream: 'talent' } },
     // { hail: { args: [0], code: 'talent.hail', stream: 'talent' } },
-    // { mend: { args: [0, 1], code: 'talent.mend', stream: 'talent' } },
+    { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action' } },
     // { rage: { args: [0], code: 'talent.rage', stream: 'talent' } },
-    // { stab: { args: [1, 2, 3], code: 'talent.stab', stream: 'talent' } },
+    { stab: { args: [0], code: 'stab', channel: 'realm', stream: 'tactic' } },
     // { tote: { args: [1], code: 'talent.tote', stream: 'talent' } },
     { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action' } },
 

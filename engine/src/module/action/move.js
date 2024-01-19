@@ -27,18 +27,31 @@ Action.define('move', [
       }
     }
 
-    return { room, exit };
+    return { dir, room, exit };
   },
 
   () => Util.timeout(1000),
 
-  async ({ room, exit }, context) => {
+  async ({ dir, room, exit }, context) => {
     const { actor } = context;
+
+    // Broadcast to room that you left
+    actor.broadcast('text', `${APP.styleText('highlight', actor.name)} just left to the ${APP.direction[dir]}.`);
+
+    // Leave
     await actor.save({ room: exit });
     room.units.delete(actor);
     exit.units.add(actor);
     actor.$search.clear();
-    await actor.perform('map');
-    await actor.perform('room', exit);
+    actor.perform('map');
+    actor.perform('room', exit);
+
+    // Broadcast to room that you have arrived
+    actor.broadcast('text', `${APP.styleText('highlight', actor.name)} moves into the room from the ${APP.rdirection[dir]}.`);
+
+    // Notify those around you...
+    Object.entries(exit.exits).forEach(([d, x]) => {
+      x.units?.forEach(unit => unit.send('text', APP.styleText('noise', `You hear movement to the ${APP.rdirection[d]}.`)));
+    });
   },
 ]);

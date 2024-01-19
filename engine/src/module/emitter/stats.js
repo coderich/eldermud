@@ -16,26 +16,30 @@ Action.define('stats', [
       Dexterity: `${stats.dex}`,
       Intellect: `${stats.int}`,
       Wisdom: `${stats.wis}`,
-      Armor: `${actor.ac}`,
+      Armor: `${actor.ac}/${actor.dr}`,
       Accuracy: `${actor.acc}`,
       Dodge: '0',
       Parry: '0',
       Block: `${actor.dr}`,
       Stealth: '0',
       Crits: '0',
+      Poise: '0',
+      Riposte: '0',
       Talents: actor.talents.map(talent => talent.name).join(', '),
       Traits: actor.traits.map(trait => trait.name).join(', '),
     }).reduce((prev, [key, value]) => {
       return Object.assign(prev, { [key]: [APP.styleText('stat', `${key}:`), APP.styleText('keyword', `${value}  `)] });
     }, {});
 
-    // const Empty = [APP.styleText('stat', ''), APP.styleText('keyword', '')];
+    const Empty = [APP.styleText('stat', ''), APP.styleText('keyword', '')];
 
     const table1 = APP.table([
       [...data.Name, ...data.Level, ...data.Accuracy],
       [...data.Race, ...data.Class, ...data.Dodge],
       [...data.Health, ...data.Mana, ...data.Parry],
       [...data.Soul, ...data.Armor, ...data.Block],
+      [...Empty, ...Empty, ...data.Poise],
+      [...Empty, ...Empty, ...data.Riposte],
       [...data.Strength, ...data.Dexterity, ...data.Stealth],
       [...data.Intellect, ...data.Wisdom, ...data.Crits],
     ], { sep: '' });

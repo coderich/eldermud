@@ -23,6 +23,7 @@ module.exports = class ActorWrapper extends Actor {
       scent: new Stream('scent'),
       touch: new Stream('touch'),
       trait: new Stream('trait'), // Passive traits
+      tactic: new Stream('tactic'), // Immediate combat tactics
       action: new Stream('action'), // Active actions
       preAction: new Stream('preAction'),
       telepath: new Stream('telepath'),
@@ -66,7 +67,14 @@ module.exports = class ActorWrapper extends Actor {
 
   async broadcast(...args) {
     const room = CONFIG.get(await REDIS.get(`${this}.room`));
-    room.units?.forEach(unit => unit !== this && unit.send(...args));
+    room.units.forEach(unit => unit !== this && unit.send(...args));
+  }
+
+  async perimeter(...args) {
+    const room = CONFIG.get(await REDIS.get(`${this}.room`));
+    room.exits.forEach((exit) => {
+      exit.units.forEach(unit => unit !== this && unit.send(...args));
+    });
   }
 
   disconnect(...args) {
