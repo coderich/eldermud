@@ -31,8 +31,10 @@ Action.define('spawn', async (_, { actor }) => {
       // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
       context.promise.listen(step => step > 1 || Promise.all([SYSTEM.emit(event, context), SYSTEM.emit('*', event, context)]));
     } else {
-      SYSTEM.emit(event, context);
-      SYSTEM.emit('*', event, context);
+      setImmediate(() => {
+        SYSTEM.emit(event, context);
+        SYSTEM.emit('*', event, context);
+      });
     }
   });
 
