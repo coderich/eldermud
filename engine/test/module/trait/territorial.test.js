@@ -36,7 +36,32 @@ describe('territorial', () => {
     expect(creature.$target).not.toBeDefined();
     expect(creature.$engaged).toBeFalsy();
     await player.perform('cmd', 's');
-    await Util.timeout(200);
+    await Util.timeout(50);
+    expect(creature.$target).toEqual(player);
+    expect(creature.$engaged).toBe(true);
+    await creature.perform('break');
+  });
+
+  test('creature attacks player (walking into their room)', async () => {
+    await creature.perform('cmd', 'n');
+    creature.stream('trait', 'territorial');
+    await Util.timeout(50);
+    expect(creature.$target).not.toBeDefined();
+    expect(creature.$engaged).toBeFalsy();
+    await creature.perform('cmd', 's');
+    await Util.timeout(50);
+    expect(creature.$target).toEqual(player);
+    expect(creature.$engaged).toBe(true);
+    await creature.perform('break');
+  });
+
+  test('creature attacks player (who enters realm)', async () => {
+    await player.perform('cmd', 'x');
+    creature.stream('trait', 'territorial');
+    expect(creature.$target).not.toBeDefined();
+    expect(creature.$engaged).toBeFalsy();
+    await player.perform('spawn');
+    await Util.timeout(50);
     expect(creature.$target).toEqual(player);
     expect(creature.$engaged).toBe(true);
     await creature.perform('break');

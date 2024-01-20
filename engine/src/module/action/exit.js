@@ -8,6 +8,7 @@ Action.define('exit', [
   () => APP.timeout(3000),
 
   (_, { actor }) => {
+    actor.room.units.delete(actor);
     actor.disconnect();
   },
 ]);

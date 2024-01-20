@@ -17,6 +17,7 @@ Action.define('engage', [
 
     stream.once('add', disengage);
     actor.once('post:move', disengage);
+    actor.once('post:break', disengage);
     target.once('post:move', disengage);
     target.once('post:death', disengage); // They may die before we get to duel
     actor.send('text', APP.styleText('engaged', `*combat engaged (${target.name})*`));

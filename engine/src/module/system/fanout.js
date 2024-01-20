@@ -11,6 +11,10 @@ SYSTEM.on('*', async (event, context) => {
         SYSTEM.emit(`enter:${result.room}`, context);
         break;
       }
+      case 'exit': {
+        SYSTEM.emit(`leave:${result.room}`, context);
+        break;
+      }
       case 'move': {
         SYSTEM.emit(`enter:${result.exit}`, context);
         SYSTEM.emit(`leave:${result.room}`, context);
