@@ -66,4 +66,16 @@ describe('territorial', () => {
     expect(creature.$engaged).toBe(true);
     await creature.perform('break');
   });
+
+  test('dead creatures do not attack', async () => {
+    await player.perform('cmd', 'n');
+    await creature.stream('trait', 'territorial');
+    await creature.perform('affect', { hp: -100 });
+    expect(creature.$target).not.toBeDefined();
+    expect(creature.$engaged).toBeFalsy();
+    await player.perform('cmd', 's');
+    await Util.timeout(50);
+    expect(creature.$target).not.toBeDefined();
+    expect(creature.$engaged).toBeFalsy();
+  });
 });

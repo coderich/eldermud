@@ -1,5 +1,8 @@
 const { Action } = require('@coderich/gameflow');
 
+/**
+ * Because manaforce is a pulse (that can be aborted) we have to manually perform a loop
+ */
 Action.define('manaforce', [
   (_, { actor, promise, stream }) => {
     let aborted = false;

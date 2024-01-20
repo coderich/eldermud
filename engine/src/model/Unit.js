@@ -4,6 +4,7 @@ module.exports = class Unit extends Actor {
   constructor(data) {
     super(data);
     this.calcStats();
+    this.$killers = new Set();
   }
 
   async calcStats() {

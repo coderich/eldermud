@@ -4,12 +4,11 @@ Action.define('engage', [
   async ({ target, attack }, { actor, abort }) => {
     if (!target) abort('You dont see that here!');
     actor.$target = target;
-    target.$killers ??= new Set();
   },
 
   // Engage with the target
   ({ target, attack, mods }, { actor, stream, abort, promise }) => {
-    const disengage = () => {
+    const disengage = ({ result }) => {
       delete actor.$target;
       delete actor.$engaged;
       abort();

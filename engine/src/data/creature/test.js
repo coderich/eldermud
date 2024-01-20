@@ -6,7 +6,7 @@ module.exports = {
   int: 1,
   wis: 0,
   exp: 1,
-  lvl: '1d3-1',
+  lvl: '1',
   tiers: ['baby', '', 'adult'],
   adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
   moves: ['creep', 'scuttle', 'wobble'],

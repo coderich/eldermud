@@ -48,8 +48,8 @@ Action.define('move', [
     // Broadcast to room that you have arrived
     actor.broadcast('text', `${APP.styleText('highlight', actor.name)} moves into the room from the ${APP.rdirection[dir]}.`);
 
-    // Notify those around you...
-    Object.entries(exit.exits).forEach(([d, x]) => {
+    // Notify those around you (except for room you just came from)
+    Object.entries(exit.exits).filter(([d, x]) => x !== room).forEach(([d, x]) => {
       x.units?.forEach(unit => unit.send('text', APP.styleText('noise', `You hear movement to the ${APP.rdirection[d]}.`)));
     });
   },

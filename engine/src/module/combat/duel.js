@@ -41,14 +41,14 @@ Action.define('duel', [
       const hitroll = (roll + mods.acc - mods.ac);
 
       if (hitroll <= toHit) {
-        actor.perform('miss', { attack, target });
+        await actor.perform('miss', { attack, target });
       } else if (hitroll - mods.dodge <= toHit) {
-        actor.perform('miss', { attack, target, dodge: true });
+        await actor.perform('miss', { attack, target, dodge: true });
       } else {
         data.crit = roll + mods.crit > 95;
         data.dmg = APP.roll(attack.dmg) + mods.dmg - mods.dr;
         if (data.crit) data.dmg = Math.ceil(data.dmg * 1.5);
-        actor.perform('hit', data);
+        await actor.perform('hit', data);
       }
 
       await APP.timeout(2000);

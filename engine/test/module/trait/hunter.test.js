@@ -5,7 +5,7 @@ describe('hunter', () => {
   let player, hunter;
 
   beforeAll(async () => {
-    player = new Player({ ...CONFIG.get('player'), name: 'player1' });
+    player = new Player({ ...CONFIG.get('player'), name: 'hunted' });
     await player.perform('spawn');
     hunter = new Player({ ...CONFIG.get('player'), name: 'hunter' });
     await hunter.perform('spawn');

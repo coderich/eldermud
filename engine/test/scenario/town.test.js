@@ -41,11 +41,11 @@ describe('town', () => {
     expect(`${player.room}`).toEqual('map.town.rooms.tunnel2');
   });
 
-  // test('look to spawn', async () => {
-  //   await player.perform('cmd', 'close n');
-  //   const room = CONFIG.get('map.town.rooms.blockade');
-  //   expect(Array.from(room.units)).toEqual([]);
-  //   await player.perform('cmd', 'l e');
-  //   expect(Array.from(room.units).length).toBeGreaterThan(0);
-  // });
+  test('look to spawn', async () => {
+    await player.perform('cmd', 'close n');
+    const room = CONFIG.get('map.town.rooms.blockade');
+    expect(Array.from(room.units)).toEqual([]);
+    // await player.perform('cmd', 'l e');
+    // expect(Array.from(room.units).length).toBeGreaterThan(0);
+  });
 });

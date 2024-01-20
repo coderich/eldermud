@@ -125,3 +125,6 @@ exports.table = (rows, options = {}) => {
 
   return table.trimEnd('\n');
 };
+
+exports.shutdown = () => {
+};

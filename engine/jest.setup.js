@@ -19,8 +19,8 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await timeout(100); // Allows for cleanup of all listeners
-  global.SYSTEM.removeAllListeners();
+  await timeout(100); // Give a chance for redis to flush it's queue?
+  await global.SYSTEM.removeAllListeners();
   await global.REDIS.quit();
   await redisServer.stop();
 });

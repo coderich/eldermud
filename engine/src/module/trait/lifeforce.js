@@ -1,5 +1,8 @@
 const { Action } = require('@coderich/gameflow');
 
+/**
+ * Because lifeforce is a pulse (that can be aborted) we have to manually perform a loop
+ */
 Action.define('lifeforce', [
   (_, { actor, promise, stream }) => {
     let aborted = false;
