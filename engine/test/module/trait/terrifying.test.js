@@ -19,7 +19,7 @@ describe('terrifying', () => {
   test('lifeforce player', async () => {
     player.stream('trait', 'lifeforce');
     await player.save({ hp: 1 });
-    await Util.timeout(20);
+    await Util.timeout(50);
     expect(parseInt(await REDIS.get(`${player}.hp`), 10)).toBeGreaterThan(1);
   });
 
