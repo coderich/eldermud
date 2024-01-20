@@ -22,4 +22,18 @@ describe('AppService', () => {
     expect(AppService.fibStat(20)).toBe(80);
     expect(AppService.fibStat(21)).toBe(88);
   });
+
+  test('instantiate', async () => {
+    const [rat, dorian, rope] = await AppService.instantiate(['creature.rat', 'npc.dorian', 'item.rope'], { test: 'test' });
+
+    // Data checks
+    expect(rat).toMatchObject({ name: 'rat', test: 'test' });
+    expect(dorian).toMatchObject({ name: 'Dorian', test: 'test' });
+    expect(rope).toMatchObject({ name: 'rope & grapple', test: 'test' });
+
+    // Redis keys
+    expect(`${rat}`).toEqual('creature.rat.1');
+    expect(`${dorian}`).toEqual('npc.dorian.1');
+    expect(`${rope}`).toEqual('item.rope.1');
+  });
 });

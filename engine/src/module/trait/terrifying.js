@@ -1,27 +1,33 @@
 const { Action } = require('@coderich/gameflow');
 
-const heartstop = ({ promise }) => promise.abort();
-const heartbeat = ({ actor }) => actor.off('start:lifeforce', heartstop);
-const heartattack = ({ actor }) => actor.on('start:lifeforce', heartstop);
-
 Action.define('terrifying', [
-  (_, { actor }) => {
-    actor.on('pre:rest', ({ abort }) => abort(`You are ${APP.styleText('keyword', 'undead')} and find no use in that!`));
+  (_, context) => {
+    // These functions must be defined in the context of the actor
+    const heartstop = ({ promise }) => promise.abort();
+    const heartbeat = ({ actor }) => actor.off('start:lifeforce', heartstop);
+    const heartattack = ({ actor }) => actor.on('start:lifeforce', heartstop);
 
-    REDIS.get(`${actor}.room`).then(room => CONFIG.get(`${room}`)).then((room) => {
+    // The abort-trait handler
+    context.stream.on('abort', () => {
+      SYSTEM.offFunction(heartbeat);
+      SYSTEM.offFunction(heartattack);
+      context.actor.room.units.forEach(target => target.offFunction(heartstop));
+    });
+
+    REDIS.get(`${context.actor}.room`).then(room => CONFIG.get(`${room}`)).then((room) => {
       SYSTEM.on(`enter:${room}`, heartattack);
       SYSTEM.on(`leave:${room}`, heartbeat);
-      Array.from(room.units.values()).filter(unit => unit !== actor).forEach((unit) => {
+      Array.from(room.units.values()).filter(unit => unit !== context.actor).forEach((unit) => {
         unit.on('start:lifeforce', heartstop);
       });
     });
 
-    actor.once('post:move', ({ result }) => {
+    context.actor.once('post:move', ({ result }) => {
       const { room } = result;
       SYSTEM.off(`enter:${room}`, heartattack);
       SYSTEM.off(`leave:${room}`, heartbeat);
       room.units.forEach(unit => unit.off('start:lifeforce', heartstop));
-      actor.stream('trait', 'terrifying');
+      context.actor.stream('trait', 'terrifying');
     });
   },
 ]);

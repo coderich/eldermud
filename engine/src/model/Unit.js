@@ -1,6 +1,11 @@
 const Actor = require('./Actor');
 
 module.exports = class Unit extends Actor {
+  constructor(data) {
+    super(data);
+    this.calcStats();
+  }
+
   async calcStats() {
     this.hp = this.mhp = APP.fibStat(this.str) + Math.ceil(APP.fibStat(this.lvl) / 5);
     this.ma = this.mma = APP.fibStat(this.int) + APP.fibStat(this.wis) + Math.ceil(APP.fibStat(this.lvl) / 5);

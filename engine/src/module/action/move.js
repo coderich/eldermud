@@ -1,4 +1,3 @@
-const Util = require('@coderich/util');
 const { Action } = require('@coderich/gameflow');
 
 Action.define('move', [
@@ -30,7 +29,7 @@ Action.define('move', [
     return { dir, room, exit };
   },
 
-  () => Util.timeout(1000),
+  () => APP.timeout(1000),
 
   async ({ dir, room, exit }, context) => {
     const { actor } = context;

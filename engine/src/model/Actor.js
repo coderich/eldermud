@@ -77,12 +77,18 @@ module.exports = class ActorWrapper extends Actor {
     });
   }
 
-  disconnect(...args) {
-    this.socket.disconnect(...args);
-  }
-
   stream(stream, ...args) {
     if (!(stream instanceof Stream)) stream = this.streams[stream];
     return super.stream(stream, ...args);
+  }
+
+  disconnect(...args) {
+    this.removeAllPossibleListeners();
+    this.socket.disconnect(...args);
+  }
+
+  removeAllPossibleListeners() {
+    this.removeAllListeners();
+    Object.values(this.streams).forEach(stream => stream.abort() && stream.removeAllListeners());
   }
 };

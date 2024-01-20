@@ -55,7 +55,7 @@ exports.target = (list, args, by = 'name') => {
 };
 
 /**
- * Given a provided set of configuration keys; will instantiate a new config instance
+ * Given a set of configuration keys; will instantiate a new model
  */
 exports.instantiate = (keys, data = {}) => {
   return Util.mapPromise(keys, (key) => {

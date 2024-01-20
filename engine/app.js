@@ -8,7 +8,7 @@ const Item = require('./src/model/Item');
 const NPC = require('./src/model/NPC');
 const server = require('./src/server');
 
-(async () => {
+exports.init = () => {
   // Yep, globals
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
   global.CONFIG = new ConfigClient(`${__dirname}/src/data`);
@@ -16,9 +16,10 @@ const server = require('./src/server');
   global.APP = AppService;
 
   // Load the game (Actions)
-  // Util.requireDir(`${__dirname}/src/game`);
   Util.requireDir(`${__dirname}/src/module`);
+};
 
+exports.setup = async () => {
   // Setup our NPCs (Actors)
   Object.values(CONFIG.get('npc')).forEach(async (npc) => {
     const actor = new NPC(npc);
@@ -64,8 +65,13 @@ const server = require('./src/server');
       await actor.perform('spawn');
     }));
   });
+};
 
-  // Start the server
-  server.start();
-  console.log('Server ready.');
+(async () => {
+  if (!module.parent) {
+    exports.init();
+    await exports.setup();
+    server.start();
+    console.log('Server ready.');
+  }
 })();

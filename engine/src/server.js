@@ -7,13 +7,13 @@ const server = new Server({
 });
 
 server.on('connect', ({ socket }) => {
-  const player = new Player({ socket });
+  const player = new Player({ ...CONFIG.get('player'), socket });
   player.send('text', APP.styleText('highlight', 'Welcome adventurer!'));
   player.perform('authenticate');
   player.once('post:authenticate', async () => {
     Actor[socket.id] = player; // Add them to the list of Actors to respond to (server.on('cmd') below)
     const hero = await REDIS.get(`${player}.class`);
-    await player.save({ ...CONFIG.get(hero), ...CONFIG.get('player'), ...player }, true);
+    await player.save({ ...CONFIG.get(hero), ...player }, true);
     player.send('cls');
     player.perform('spawn');
   });
@@ -25,10 +25,7 @@ server.on('disconnect', async ({ socket }) => {
 });
 
 server.on('cmd', ({ socket, data }) => {
-  return Actor[socket.id]?.perform('translate', data.text).then((command) => {
-    // return Actor[socket.id]?.perform('execute', command);
-    return Actor[socket.id]?.stream(command.channel, 'execute', command);
-  });
+  return Actor[socket.id]?.perform('cmd', data.text);
 });
 
 module.exports = server;

@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@coderich/config": "^1.0.4",
-    "@coderich/gameflow": "^1.1.16",
+    "@coderich/gameflow": "^1.1.17",
     "@coderich/gameserver": "^1.1.2",
     "@coderich/util": "^0.1.6",
     "chance": "1.1.11",
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@coderich/dev": "^0.1.1",
-    "nodemon": "3.0.2"
+    "nodemon": "3.0.2",
+    "redis-memory-server": "0.10.0"
   }
 }

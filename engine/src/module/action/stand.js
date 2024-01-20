@@ -1,4 +1,3 @@
-const Util = require('@coderich/util');
 const { Action } = require('@coderich/gameflow');
 
 Action.define('stand', [
@@ -7,7 +6,7 @@ Action.define('stand', [
     return posture === 'stand' ? abort('You are already standing!') : posture;
   },
 
-  () => Util.timeout(250),
+  () => APP.timeout(250),
 
   async (_, { actor }) => {
     await REDIS.set(`${actor}.posture`, 'stand');

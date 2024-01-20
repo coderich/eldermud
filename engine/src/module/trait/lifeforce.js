@@ -10,7 +10,7 @@ Action.define('lifeforce', [
       if (!promise.aborted) {
         const { hp } = await actor.mGet('hp');
         const incr = Math.min(actor.mhp - hp, 2);
-        actor.perform('affect', { hp: incr });
+        if (incr > 0) actor.perform('affect', { hp: incr });
       }
 
       if (!aborted) actor.stream(stream, 'lifeforce');

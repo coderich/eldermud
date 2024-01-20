@@ -8,8 +8,7 @@ module.exports = {
   crit: 10,
   dodge: 10,
   talents: ['${self:talent.stab}'],
-  traits: [],
-  // traits: ['${self:trait.lifeforce}', '${self:trait.manaforce}'],
+  traits: ['${self:trait.lifeforce}', '${self:trait.manaforce}'],
   attacks: ['${self:weapon.dagger}'],
   description: 'Assassins are stealthy killers, specializing in swift, silent takedowns. Armed with concealed weapons and agile movement, they excel at eliminating targets discreetly.',
 };

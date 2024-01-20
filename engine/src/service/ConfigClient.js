@@ -10,6 +10,7 @@ module.exports = class ConfigClient extends Config {
     super();
     this.mergeConfig(dir);
     this.merge(Config.parseFile(`${appRootPath}/app.config.yml`));
+    this.merge(Config.parseEnv({ pick: ['app__redis__url'] }));
     ConfigClient.#decorate(this);
   }
 

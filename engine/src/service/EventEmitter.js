@@ -7,4 +7,10 @@ module.exports = class Emitter extends EventEmitter {
       return Promise.resolve(listener(...args));
     }));
   }
+
+  offFunction(fn) {
+    return this.eventNames().filter((eventName) => {
+      return this.listeners(eventName).includes(fn);
+    }).map(eventName => this.off(eventName, fn));
+  }
 };
