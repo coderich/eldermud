@@ -8,6 +8,9 @@ Action.define('leave', [
     actor.$following.off('pre:move', actor.$follow);
     actor.send('text', APP.styleText('engaged', `*You are no longer following ${actor.$following.name}*`));
     actor.$following.send('text', `${actor.name} has left the party.`);
+    actor.$following.$party.delete(actor);
+    actor.$party = new Set();
+    actor.$partyRank = 1;
     delete actor.$follow;
     delete actor.$following;
   },

@@ -35,21 +35,19 @@ Action.define('move', [
     const { actor } = context;
 
     // Broadcast to room that you left
-    actor.broadcast('text', `${APP.styleText('highlight', actor.name)} just left to the ${APP.direction[dir]}.`);
+    actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} just left to the ${APP.direction[dir]}.`);
 
     // Leave
     await actor.save({ room: exit });
     room.units.delete(actor);
     exit.units.add(actor);
     actor.$search.clear();
-    actor.perform('map');
-    actor.perform('room', exit);
 
     // Broadcast to room that you have arrived
-    actor.broadcast('text', `${APP.styleText('highlight', actor.name)} moves into the room from the ${APP.rdirection[dir]}.`);
+    actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} moves into the room from the ${APP.rdirection[dir]}.`);
 
     // Notify those around you (except for room you just came from)
-    Object.entries(exit.exits).filter(([d, x]) => x !== room).forEach(([d, x]) => {
+    Object.entries(exit.exits).filter(([d, x]) => `${x}` !== `${room}`).forEach(([d, x]) => {
       x.units?.forEach(unit => unit.send('text', APP.styleText('noise', `You hear movement to the ${APP.rdirection[d]}.`)));
     });
   },

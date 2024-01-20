@@ -70,7 +70,7 @@ describe('territorial', () => {
   test('dead creatures do not attack', async () => {
     await player.perform('cmd', 'n');
     await creature.stream('trait', 'territorial');
-    await creature.perform('affect', { hp: -100 });
+    await creature.perform('death');
     expect(creature.$target).not.toBeDefined();
     expect(creature.$engaged).toBeFalsy();
     await player.perform('cmd', 's');

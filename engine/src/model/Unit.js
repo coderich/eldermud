@@ -4,7 +4,11 @@ module.exports = class Unit extends Actor {
   constructor(data) {
     super(data);
     this.calcStats();
+    this.$party = new Set();
+    this.$search = new Set();
     this.$killers = new Set();
+    this.$invited = new Set();
+    this.$partyRank = 1;
   }
 
   async calcStats() {

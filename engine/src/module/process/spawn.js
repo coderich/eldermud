@@ -37,8 +37,6 @@ Action.define('spawn', async (_, { actor }) => {
   });
 
   if (['player', 'npc', 'creature'].includes(actor.type)) {
-    actor.$search = new Set();
-    actor.$invited = new Set();
     actor.perform('map');
     actor.perform('room', CONFIG.get(room));
   }

@@ -3,9 +3,17 @@ const { Action } = require('@coderich/gameflow');
 Action.define('follow', [
   async ({ target }, { actor, abort }) => {
     if (!target) abort('You dont see that here!');
+    if (actor.$party.size) abort('You are already in a party!');
     if (!target.$invited.has(actor)) abort('You must first be invited!');
   },
   ({ target }, { actor }) => {
+    // Manage party
+    target.$party.add(actor);
+    actor.$party.add(target);
+    target.$invited.delete(actor);
+    actor.$invited.delete(target);
+    actor.$partyRank = 2;
+
     // Notifications
     actor.send('text', APP.styleText('engaged', `*Following ${target.name}*`));
     target.send('text', `${actor.name} is now following you.`);
@@ -19,14 +27,14 @@ Action.define('follow', [
     const unable = ({ promise }) => promise.$follow && promise.reason !== '$source' && leave();
     const notice = ({ data }) => actor.send('text', `Following ${target.name} ${APP.direction[data]}...`);
 
-    actor.on('post:move', stray); // Did you stray off on your own?
     actor.on('abort:move', unable); // Are you personally unable to follow?
-    target.once('post:death', leave);
-    target.once('post:logout', leave);
+    actor.prependListener('post:move', stray); // Did you stray off on your own?
+    target.prependOnceListener('post:death', leave);
+    target.prependOnceListener('post:logout', leave);
 
     // Follow
     target.on('pre:move', actor.$follow);
-    target.on('post:move', notice);
+    target.prependListener('post:move', notice);
 
     // Unfollow
     actor.once('post:leave', () => {

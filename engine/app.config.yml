@@ -20,7 +20,9 @@ app:
     senses: '<ivory>'
     engaged: '<goldenrod>'
     npc: ''
-    player: '<DarkTurquoise>'
+    # player: '<DarkTurquoise>'
+    # player: '<violet>'
+    player: '<CadetBlue>'
     creature: '<violet>'
     boss: '<yellow>'
     hit: '<red>'
@@ -37,6 +39,7 @@ app:
       description: ''
       exit: '<ansiGreen>'
       unitsLabel: '<ansi_magenta>'
+      partyLabel: '<PaleGoldenrod>'
       # exitsLabel: '<ForestGreen>'
       exitsLabel: '<ansiGreen>'
 
