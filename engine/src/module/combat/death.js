@@ -18,10 +18,8 @@ Action.define('death', () => null);
 SYSTEM.on('post:death', async ({ actor }) => {
   if (!actor.$dead) {
     actor.$dead = true;
-    actor.perform('break');
-    Object.values(actor.streams).forEach(stream => stream.abort() && stream.removeAllListeners());
     CONFIG.get(await REDIS.get(`${actor}.room`)).units.delete(actor);
-    actor.removeAllListeners();
+    actor.removeAllPossibleListeners();
 
     switch (actor.type) {
       case 'player': {

@@ -1,7 +1,7 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('territorial', [
-  (_, { actor }) => {
+  (_, { actor, stream }) => {
     const scan = async () => {
       if (!actor.$target) {
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
@@ -10,15 +10,18 @@ Action.define('territorial', [
       }
     };
 
+    stream.on('abort', () => {
+      SYSTEM.offFunction(scan);
+    });
+
     scan();
 
-    actor.on('post:move', ({ room, exit }) => {
-      scan();
+    actor.on('post:move', ({ result }) => {
+      const { room, exit } = result;
       SYSTEM.on(`enter:${exit}`, scan);
       SYSTEM.off(`enter:${room}`, scan);
     });
 
     SYSTEM.on(`enter:${actor.room}`, scan);
-    actor.once('pre:death', () => SYSTEM.off(`enter:${actor.room}`, scan));
   },
 ]);

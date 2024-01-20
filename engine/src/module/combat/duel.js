@@ -25,8 +25,6 @@ Action.define('duel', [
     async (data, { actor, stream, promise }) => {
       const { attack, target, mods } = data;
 
-      if (promise.aborted) console.log(actor.toString(), 'is dueling');
-
       // Resource check
       if (attack.cost) {
         const resources = await actor.mGet(Object.keys(attack.cost));

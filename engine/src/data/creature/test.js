@@ -1,0 +1,15 @@
+module.exports = {
+  name: 'test',
+  pri: 'str',
+  str: 3,
+  dex: 2,
+  int: 1,
+  wis: 0,
+  exp: 1,
+  lvl: '1d3-1',
+  tiers: ['baby', '', 'adult'],
+  adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
+  moves: ['creep', 'scuttle', 'wobble'],
+  traits: [],
+  attacks: ['${self:weapon.air}'],
+};
