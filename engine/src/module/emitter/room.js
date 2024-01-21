@@ -15,7 +15,7 @@ Action.define('room', [
 
     const $units = Array.from(room.units.values()).filter(unit => unit !== actor && !actor.$party.has(unit)).map(unit => APP.styleText(unit.type, unit.name));
     const $items = Array.from(room.items.values()).filter(item => !item.hidden).map(item => item.name);
-    const $party = [actor].concat(Array.from(actor.$party.values()));
+    const $party = Array.from(actor.$party.values());
     const $2dParty = [
       $party.filter(unit => unit.$partyRank === 1).map(unit => APP.styleText(unit.type, unit.name)).join(', '),
       $party.filter(unit => unit.$partyRank === 2).map(unit => APP.styleText(unit.type, unit.name)).join(', '),

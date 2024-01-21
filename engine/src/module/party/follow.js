@@ -3,13 +3,13 @@ const { Action } = require('@coderich/gameflow');
 Action.define('follow', [
   async ({ target }, { actor, abort }) => {
     if (!target) abort('You dont see that here!');
-    if (actor.$party.size) abort('You are already in a party!');
+    if (actor.$party.size > 1) abort('You are already in a party!');
     if (!target.$invited.has(actor)) abort('You must first be invited!');
   },
   ({ target }, { actor }) => {
     // Manage party
+    actor.$party = target.$party;
     target.$party.add(actor);
-    actor.$party.add(target);
     target.$invited.delete(actor);
     actor.$invited.delete(target);
     actor.$partyRank = 2;

@@ -4,7 +4,7 @@ module.exports = class Unit extends Actor {
   constructor(data) {
     super(data);
     this.calcStats();
-    this.$party = new Set();
+    this.$party = new Set([this]);
     this.$search = new Set();
     this.$killers = new Set();
     this.$invited = new Set();
