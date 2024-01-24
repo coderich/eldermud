@@ -1,10 +1,8 @@
 const $self = prop => '${self:map.town.'.concat(prop, '}');
 const $room = prop => $self(`rooms.${prop}`);
-const $door = prop => $self(`doors.${prop}`);
-const $blockade = prop => $self(`blockade.${prop}`);
 
 SYSTEM.on('enter:map.town.rooms.supplies', async ({ actor }) => {
-  CONFIG.set('map.town.rooms.supplies.paths', { e: $blockade('rubble') });
+  CONFIG.set('map.town.rooms.supplies.paths', { e: '${self:blockade.rubble}' });
   actor.perform('map');
 });
 
@@ -23,38 +21,7 @@ SYSTEM.on('post:spawn', async ({ actor }) => {
 
 module.exports = {
   name: 'Town',
-
-  doors: {
-    wood: {
-      name: 'Wooden Door',
-      label: `${$door('wood.status')} door`,
-      description: 'A door made of wood.',
-      status: 'closed',
-      durability: 100,
-      picklock: 100,
-      key: '${self:item.key.key1}',
-    },
-  },
-
-  blockade: {
-    rubble: {
-      name: 'Rubble',
-      label: 'pile of rubble',
-      description: 'A pile of rubble.',
-      check: async ({ actor, abort }) => {
-        const inv = await REDIS.sMembers(`${actor}.inventory`).then(items => items.map(item => item.substring(0, item.lastIndexOf('.'))));
-        if (!inv.includes('item.rope')) abort('You are unable to scale the rubble!');
-        else actor.send('text', 'You scale the rubble with your rope & grapple.');
-      },
-    },
-  },
-
-  shops: {
-    general: {
-      items: ['${self:item.rope}', '${self:item.canteen}'],
-    },
-  },
-
+  description: 'A small town used for internal game-play walkthrough',
   rooms: {
     start: {
       name: 'Cave, Start',
@@ -63,13 +30,13 @@ module.exports = {
     tunnel1: {
       name: 'Tunnel',
       exits: { n: $room('start'), s: $room('tunnel2') },
-      paths: { s: $door('wood') },
+      paths: { s: '${self:door.wood}' },
     },
     tunnel2: {
       name: 'Silver Street',
       description: 'This is a cobblestoned street. It is dimly lit by guttering lanterns hung from tall posts. To the north, a dimly lit shop stands, the sign over the door reading "Curious Goods" in a spidery script. A large, gaily decorated shop to the south sports a yellow awning. Its brightly painted sign reads "General Store". Quite a few people mill about here, entering the shops or heading west toward the town square. Silver streets heads off to the east and west here',
       exits: { n: $room('tunnel1'), e: $room('blockade'), w: $room('supplies') },
-      paths: { n: $door('wood') },
+      paths: { n: '${self:door.wood}' },
     },
     blockade: {
       name: 'Blockade',
@@ -82,7 +49,7 @@ module.exports = {
     supplies: {
       char: '$',
       name: 'Supplies',
-      shop: $self('shops.general'),
+      shop: '${self:shop.general}',
       exits: { e: $room('tunnel2') },
     },
   },

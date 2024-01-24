@@ -1,0 +1,18 @@
+{
+  "map.forest.name": "Whispering Pines",
+  "map.forest.description": "A dense and mysterious woodland that echoes with the rustling whispers of ancient pine trees and the distant calls of unseen creatures.",
+  "map.forest.rooms.entrance.name": "Forest's Edge",
+  "map.forest.rooms.entrance.char": "E",
+  "map.forest.rooms.entrance.description": "Tall pines mark the boundary of the forest, casting long shadows over the undergrowth. A beaten path leads deeper into the woods.",
+  "map.forest.rooms.deeper.name": "Deeper Woods",
+  "map.forest.rooms.deeper.char": "D",
+  "map.forest.rooms.deeper.description": "The canopy thickens here, allowing only fragments of sunlight to touch the mossy floor. The air is cool and filled with the scent of pine.",
+  "map.forest.rooms.clearing.name": "Mystic Clearing",
+  "map.forest.rooms.clearing.char": "C",
+  "map.forest.rooms.clearing.description": "A hidden clearing surrounded by ancient trees, rumored to be a place of druidic rituals. The earth here vibrates with a faint magic.",
+  "map.forest.rooms.entrance.exits.n": "${self:map.forest.rooms.deeper.name}",
+  "map.forest.rooms.deeper.exits.s": "${self:map.forest.rooms.entrance.name}",
+  "map.forest.rooms.deeper.exits.w": "${self:map.forest.rooms.clearing.name}",
+  "map.forest.rooms.clearing.exits.e": "${self:map.forest.rooms.deeper.name}",
+  "map.smalltown.rooms.townsquare.exits.ne": "${self:map.forest.rooms.entrance.name}"
+}

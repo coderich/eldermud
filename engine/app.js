@@ -15,6 +15,8 @@ exports.init = () => {
   global.REDIS = new RedisClient(CONFIG.get('app.redis'));
   global.APP = AppService;
 
+  // CONFIG.merge(Util.unflatten(data)).decorate();
+
   // Load the game (Actions)
   Util.requireDir(`${__dirname}/src/module`);
 };

@@ -3,6 +3,7 @@ const $room = prop => $self(`rooms.${prop}`);
 
 module.exports = {
   name: 'Test',
+  description: 'Used only for testing and should be ignored as content',
 
   rooms: {
     start: {
