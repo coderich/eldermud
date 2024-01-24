@@ -10,8 +10,8 @@ module.exports = class ConfigClient extends Config {
     super();
     this.mergeConfig(dir);
     this.merge(Config.parseFile(`${appRootPath}/app.config.yml`));
+    this.merge(Config.parseFile(`${appRootPath}/app.secrets.yml`));
     this.merge(Config.parseEnv({ pick: ['app__redis__url'] }));
-    ConfigClient.#decorate(this);
   }
 
   mergeConfig(dir, paths = []) {
@@ -25,7 +25,9 @@ module.exports = class ConfigClient extends Config {
     });
   }
 
-  static #decorate(config) {
+  decorate() {
+    const config = this;
+
     //
     Object.entries(config.get()).forEach(([type, models]) => {
       if (!['app', 'help', 'player'].includes(type)) {
@@ -69,5 +71,7 @@ module.exports = class ConfigClient extends Config {
         config.set(`map.${key}.rooms.${id}.toString`, () => `map.${key}.rooms.${id}`);
       });
     });
+
+    return this;
   }
 };

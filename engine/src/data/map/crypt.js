@@ -1,0 +1,32 @@
+const Util = require('@coderich/Util');
+
+module.exports = Util.unflatten({
+  "name": "The Sunken Crypt",
+  "description": "A long-forgotten chamber veiled in shadows, where every step echoes and the damp air whispers with secrets of the past.",
+  "rooms.entrance.name": "Foyer of Echoes",
+  "rooms.entrance.description": "The archaic stone foyer, where ivy claims the walls and every sound is returned by haunting echoes. A heavy air of mystery envelops the area.",
+  "rooms.entrance.exits.n": "${self:map.crypt.rooms.hall_of_guardians}",
+  "rooms.hall_of_guardians.name": "Hall of Guardians",
+  "rooms.hall_of_guardians.description": "Statues of ancient warriors line the hall, their weapons crossed and eyes seemingly following intruders' every move.",
+  "rooms.hall_of_guardians.exits.s": "${self:map.crypt.rooms.entrance}",
+  "rooms.hall_of_guardians.exits.e": "${self:map.crypt.rooms.tomb_of_whispers}",
+  "rooms.hall_of_guardians.exits.w": "${self:map.crypt.rooms.reflection_pool}",
+  "rooms.tomb_of_whispers.name": "Tomb of Whispers",
+  "rooms.tomb_of_whispers.description": "This is where the voices of the departed seem to linger, murmuring tales of old as the wind caresses through cracked walls.",
+  "rooms.tomb_of_whispers.exits.w": "${self:map.crypt.rooms.hall_of_guardians}",
+  "rooms.reflection_pool.name": "Reflection Pool",
+  "rooms.reflection_pool.description": "A still water basin that perfectly reflects the eerie light, hiding beneath its surface a mosaic of cryptic lore.",
+  "rooms.reflection_pool.exits.e": "${self:map.crypt.rooms.hall_of_guardians}",
+  "rooms.reflection_pool.exits.s": "${self:map.crypt.rooms.shrine_of_secrets}",
+  "rooms.shrine_of_secrets.name": "Shrine of Secrets",
+  "rooms.shrine_of_secrets.description": "Carved runes glow faintly in this intimate space, surrounded by offerings and relics of enigmatic power.",
+  "rooms.shrine_of_secrets.exits.n": "${self:map.crypt.rooms.reflection_pool}",
+  "rooms.shrine_of_secrets.exits.e": "${self:map.crypt.rooms.vault_of_shadows}",
+  "rooms.vault_of_shadows.name": "Vault of Shadows",
+  "rooms.vault_of_shadows.description": "The heart of the crypt, a vault enclosed in darkness, where shadows shift and ancient treasures await the bold.",
+  "rooms.vault_of_shadows.exits.w": "${self:map.crypt.rooms.shrine_of_secrets}",
+  "rooms.vault_of_shadows.exits.n": "${self:map.crypt.rooms.catacombs_end}",
+  "rooms.catacombs_end.name": "Catacombs End",
+  "rooms.catacombs_end.description": "A cul-de-sac within the crypt, the final resting place of a long-forgotten hero, where the air holds a solemn peace.",
+  "rooms.catacombs_end.exits.s": "${self:map.crypt.rooms.vault_of_shadows}"
+});

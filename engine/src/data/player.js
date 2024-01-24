@@ -1,7 +1,7 @@
 module.exports = {
-  map: '${self:map.town}',
-  room: '${self:map.town.rooms.start}',
-  checkpoint: '${self:map.town.rooms.start}',
+  map: '${self:map.crypt}',
+  room: '${self:map.crypt.rooms.entrance}',
+  checkpoint: '${self:map.crypt.rooms.entrance}',
   lvl: 1,
   str: 8,
   dex: 8,

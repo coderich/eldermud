@@ -5,6 +5,8 @@ const coords = {
   s: [0, -2, 0],
   e: [2, 0, 0],
   w: [-2, 0, 0],
+  u: [0, 0, 0],
+  d: [0, 0, 0],
 };
 
 Action.define('map', async (_, { actor }) => {

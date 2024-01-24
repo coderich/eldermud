@@ -35,7 +35,7 @@ Action.define('room', [
     };
 
     actor.send('text', $room.name);
-    // actor.send('text', $room.description);
+    actor.send('text', $room.description);
     if ($room.items.length) actor.send('text', APP.styleText('item', `You notice ${$room.items.join(', ')} here.`));
     if (includeParty && $party.length > 1) actor.send('text', $room.partyLabel, `[${$room.party}]`);
     if ($room.units.length) actor.send('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
