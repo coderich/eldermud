@@ -21,7 +21,7 @@ describe('hunter', () => {
     expect(`${hunter.room}`).toEqual('map.town.rooms.start');
     hunter.once('post:move', spy);
     expect(spy).toHaveBeenCalledTimes(0);
-    hunter.stream('trait', 'hunter');
+    hunter.stream('trait', 'vagabond');
   });
 
   test('hunter not moving while engaged', (done) => {
@@ -29,7 +29,7 @@ describe('hunter', () => {
     hunter.once('post:move', spy);
     expect(spy).toHaveBeenCalledTimes(0);
     hunter.$target = player;
-    hunter.stream('trait', 'hunter');
+    hunter.stream('trait', 'vagabond');
     Util.timeout(200).then(() => {
       expect(spy).toHaveBeenCalledTimes(0);
       delete hunter.$target;

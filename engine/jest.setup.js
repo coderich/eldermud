@@ -15,7 +15,9 @@ beforeAll(async () => {
   process.env.app__redis__url = url;
 
   // Initialize app
-  init();
+  init(`${__dirname}/src/data`);
+  CONFIG.mergeConfig(`${__dirname}/test/data`);
+  CONFIG.decorate();
 });
 
 afterAll(async () => {

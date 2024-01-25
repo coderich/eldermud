@@ -42,6 +42,7 @@ SYSTEM.on('post:death', async ({ actor }) => {
 
         actor.$killers.forEach((killer) => {
           killer.perform('affect', { exp });
+          killer.send('text', actor.slain);
           killer.send('text', `You gain ${APP.styleText('keyword', exp)} soul power.`);
           killer.perform('room');
         });

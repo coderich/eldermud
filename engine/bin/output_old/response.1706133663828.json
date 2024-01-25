@@ -1,0 +1,50 @@
+{
+  "creature.wyrm.name": "cavern wyrm",
+  "creature.wyrm.visual": "A massive serpentine creature, with shimmering scales and razor-sharp teeth.",
+  "creature.wyrm.description": "The cavern wyrm is a terror in the depths, slithering through the shadows with a menacing grace. It's said that their scales can deflect even the mightiest of blows and that their bite can crush the strongest of armors.",
+  "creature.wyrm.str": "4d10+12",
+  "creature.wyrm.dex": "2d8+5",
+  "creature.wyrm.int": "2d6",
+  "creature.wyrm.wis": "2d6",
+  "creature.wyrm.pri": "str",
+  "creature.wyrm.lvl": "20",
+  "creature.wyrm.exp": "5d6+20",
+  "creature.wyrm.slain": "With a final roar that echoes through the cavern, the wyrm collapses, its body slowly dissolving into the shadows from whence it came.",
+  "creature.wyrm.tiers": [
+    "enormous",
+    "monstrous",
+    "terrifying"
+  ],
+  "creature.wyrm.adjectives": [
+    "slithering",
+    "ferocious",
+    "brooding"
+  ],
+  "creature.wyrm.moves": [
+    "coil",
+    "slither",
+    "strike"
+  ],
+  "creature.wyrm.attacks": [
+    "${self:attacks.crushing_bite}",
+    "${self:attacks.deathly_coil}"
+  ],
+  "creature.wyrm.traits": [
+    "${self:traits.reflexive_scales}",
+    "${self:traits.venomous_fangs}"
+  ],
+  "trait.reflexive_scales.name": "Reflexive Scales",
+  "trait.reflexive_scales.description": "The wyrm's scales reflexively harden in response to attacks, granting it a chance to negate damage completely.",
+  "trait.reflexive_scales.mechanics": [
+    "${self:mechanics.damage_negation}"
+  ],
+  "trait.venomous_fangs.name": "Venomous Fangs",
+  "trait.venomous_fangs.description": "The wyrm's fangs are filled with a deadly venom, capable of weakening its prey and causing ongoing damage.",
+  "trait.venomous_fangs.mechanics": [
+    "${self:mechanics.poison_effect}"
+  ],
+  "mechanic.damage_negation.name": "Damage Negation",
+  "mechanic.damage_negation.description": "A chance to reduce incoming damage to zero, based on the creature's level and defenses.",
+  "mechanic.poison_effect.name": "Poison Effect",
+  "mechanic.poison_effect.description": "Inflicts a poison status on the target, causing damage over time and reducing their ability to fight effectively."
+}

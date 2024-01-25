@@ -32,8 +32,11 @@ SYSTEM.on('pre:room', async (context) => {
           if (count > 0) {
             const keys = Array.from(new Array(count)).fill(ns);
             await Promise.all(APP.hydrate(keys).map((config) => {
+              config.ranks ??= [];
+              config.adjectives ??= [];
               const lvl = APP.roll(config.lvl);
-              const name = [APP.randomElement(config.adjectives), config.tiers[lvl], config.name].filter(Boolean).join(' ');
+              const rank = APP.roll(config.rank ?? 0);
+              const name = [APP.randomElement(['', ...config.adjectives]), config.ranks[rank], config.name].filter(Boolean).join(' ');
               return APP.instantiate(config, { name, room, lvl }).then(actor => actor.perform('spawn'));
             }));
           }

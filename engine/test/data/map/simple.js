@@ -1,4 +1,4 @@
-const $self = prop => '${self:map.test.'.concat(prop, '}');
+const $self = prop => '${self:map.simple.'.concat(prop, '}');
 const $room = prop => $self(`rooms.${prop}`);
 
 module.exports = {

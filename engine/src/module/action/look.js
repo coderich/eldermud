@@ -6,7 +6,7 @@ Action.define('look', [
 
     switch (target.type) {
       case 'room': return actor.perform('room', target);
-      default: return actor.send('text', target.description);
+      default: return actor.send('text', target.visual);
     }
   },
 ]);

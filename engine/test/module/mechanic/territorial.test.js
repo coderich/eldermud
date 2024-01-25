@@ -7,7 +7,7 @@ describe('territorial', () => {
   beforeAll(async () => {
     player = new Player({ ...CONFIG.get('player'), name: 'player1' });
     await player.perform('spawn');
-    creature = await APP.instantiate('creature.test', { room: player.room });
+    creature = await APP.instantiate('creature.simple', { room: player.room });
     await creature.perform('spawn');
   });
 

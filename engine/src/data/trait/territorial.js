@@ -1,5 +1,5 @@
 module.exports = {
   name: 'Territorial',
-  description: 'This is territorial',
-  mechanics: ['territorial'],
+  description: '${self:mechanic.territorial.description}',
+  mechanics: ['${self:mechanic.territorial}'],
 };

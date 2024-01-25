@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'Mana Force',
-  description: 'This is manaforce',
-  mechanics: ['manaforce'],
+  name: 'ManaForce',
+  description: '${self:mechanic.manaforce.description}',
+  mechanics: ['${self:mechanic.manaforce}'],
 };

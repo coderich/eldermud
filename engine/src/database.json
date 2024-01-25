@@ -1,0 +1,427 @@
+{
+  "map.new_player_landing.name": "Enchanted Forest Entryway",
+  "map.new_player_landing.description": "A tranquil forest filled with the chirping of birds, rustling leaves, and a seemingly magical essence in the air, welcoming new adventurers into a world of mystical wonders and perilous quests.",
+  "map.new_player_landing.rooms.welcome_glade.name": "Welcome Glade",
+  "map.new_player_landing.rooms.welcome_glade.char": "W",
+  "map.new_player_landing.rooms.welcome_glade.description": "Surrounded by towering ancient trees that seem to shimmer with a light of their own, this open glade is where all adventurers find their start. A soft glow emanates from the stones underfoot, guiding new players along the path ahead.",
+  "map.new_player_landing.rooms.welcome_glade.exits.e": "${self:map.new_player_landing.rooms.trail_of_whispers}",
+  "map.new_player_landing.rooms.welcome_glade.exits.s": "${self:map.new_player_landing.rooms.crystal_pond}",
+  "map.new_player_landing.rooms.trail_of_whispers.name": "Trail of Whispers",
+  "map.new_player_landing.rooms.trail_of_whispers.char": "T",
+  "map.new_player_landing.rooms.trail_of_whispers.description": "This narrow path is lined with trees that seem to lean in, whispering secrets of the forest to those who pass. Delicate flowers emit a soft luminescence, lighting the way further into the heart of the woods.",
+  "map.new_player_landing.rooms.trail_of_whispers.exits.w": "${self:map.new_player_landing.rooms.welcome_glade}",
+  "map.new_player_landing.rooms.trail_of_whispers.exits.e": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.crystal_pond.name": "Crystal Pond",
+  "map.new_player_landing.rooms.crystal_pond.char": "P",
+  "map.new_player_landing.rooms.crystal_pond.description": "Mirroring the sky, this pond's water is as clear as crystal, undisturbed and serene. It is said that those who gaze into its depths may see glimpses of their destiny. A guardian willow stands by, its branches hanging low, swaying gently over the water.",
+  "map.new_player_landing.rooms.crystal_pond.exits.n": "${self:map.new_player_landing.rooms.welcome_glade}",
+  "map.new_player_landing.rooms.forest_crossroads.name": "Forest Crossroads",
+  "map.new_player_landing.rooms.forest_crossroads.char": "C",
+  "map.new_player_landing.rooms.forest_crossroads.description": "At the hub of the Enchanted Forest, pathways stretch out in every direction. A weathered stone obelisk stands at the center, covered in ancient runes. This is the starting point for many journeys, with each path promising its own adventure.",
+  "map.new_player_landing.rooms.forest_crossroads.exits.w": "${self:map.new_player_landing.rooms.trail_of_whispers}",
+  "map.new_player_landing.rooms.forest_crossroads.exits.nw": "${self:map.new_player_landing.rooms.wisdom_grove}",
+  "map.new_player_landing.rooms.forest_crossroads.exits.ne": "${self:map.new_player_landing.rooms.arena_of_trials}",
+  "map.new_player_landing.rooms.forest_crossroads.exits.sw": "${self:map.new_player_landing.rooms.enchanted_meadow}",
+  "map.new_player_landing.rooms.forest_crossroads.exits.se": "${self:map.new_player_landing.rooms.tranquility_trail}",
+  "map.new_player_landing.rooms.wisdom_grove.name": "Wisdom Grove",
+  "map.new_player_landing.rooms.wisdom_grove.char": "G",
+  "map.new_player_landing.rooms.wisdom_grove.description": "In this sacred grove, it is said the trees themselves are scholars of old, sharing their knowledge with those who show respect. Ancient carvings of mysterious symbols decorate the bark, captivating any who lay eyes on them.",
+  "map.new_player_landing.rooms.wisdom_grove.exits.se": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.forest_heart.name": "Forest Heart",
+  "map.new_player_landing.rooms.forest_heart.char": "F",
+  "map.new_player_landing.rooms.forest_heart.description": "The heart of the Enchanted Forest pulsates with life. Rich, fragrant blossoms and a choir of melodic bird calls create an atmosphere of wonder. It is a place to reflect, to find one's courage, and to prepare for the challenges ahead.",
+  "map.new_player_landing.rooms.forest_heart.exits.sw": "${self:map.new_player_landing.rooms.enchanted_meadow}",
+  "map.new_player_landing.rooms.thicket_of_thoughts.name": "Thicket of Thoughts",
+  "map.new_player_landing.rooms.thicket_of_thoughts.char": "T",
+  "map.new_player_landing.rooms.thicket_of_thoughts.description": "A dense patch of trees where the borders between reality and imagination blur. Whispers float on the wind, while fireflies dance in strange patterns, leading travelers to ponder mysteries of the mind.",
+  "map.new_player_landing.rooms.thicket_of_thoughts.exits.ne": "${self:map.new_player_landing.rooms.forest_heart}",
+  "map.new_player_landing.rooms.tranquility_trail.name": "Tranquility Trail",
+  "map.new_player_landing.rooms.tranquility_trail.char": "T",
+  "map.new_player_landing.rooms.tranquility_trail.description": "This peaceful path is enveloped in a soft, tranquil mist that calms the spirits of all who tread here. A gentle stream runs alongside the trail, its soothing babble complementing the quietude of the surrounding thicket.",
+  "map.new_player_landing.rooms.tranquility_trail.exits.nw": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "race.human.name": "Human",
+  "race.human.description": "Humans are a versatile and adaptive people, known for their resilience and ambition. They excel in various crafts and have the drive to shape the world around them.",
+  "race.human.str": "1d4",
+  "race.human.dex": "1d4",
+  "race.human.int": "1d4",
+  "race.human.wis": "1d4",
+  "race.human.traits": [
+    "${self:trait.adaptive}"
+  ],
+  "class.warrior.name": "Warrior",
+  "class.warrior.description": "Warriors are masters of combat, excelling in physical confrontations. They are strong and courageous, often the first to march into battle and the last to leave.",
+  "class.warrior.str": "2d6",
+  "class.warrior.dex": "1d6",
+  "class.warrior.int": "1",
+  "class.warrior.wis": "1d4",
+  "class.warrior.pri": "str",
+  "class.warrior.traits": [
+    "${self:trait.bravery}"
+  ],
+  "class.warrior.talents": [
+    "${self:talent.sword_mastery}"
+  ],
+  "trait.adaptive.name": "Adaptive",
+  "trait.adaptive.description": "Humans quickly learn and adapt to new situations, granting them increased experience gain.",
+  "trait.adaptive.mechanics": [
+    "${self:mechanic.experience_boost}"
+  ],
+  "trait.bravery.name": "Bravery",
+  "trait.bravery.description": "Warriors possess a stalwart courage that allows them to face fearsome foes without flinching, granting them resistance to fear effects.",
+  "trait.bravery.mechanics": [
+    "${self:mechanic.fear_resistance}"
+  ],
+  "talent.sword_mastery.name": "Sword Mastery",
+  "talent.sword_mastery.description": "Warriors with this talent have honed their skills, dealing increased damage with swords and having a higher chance to parry attacks.",
+  "mechanic.experience_boost.name": "Experience Boost",
+  "mechanic.experience_boost.description": "This mechanic grants the unit an accelerated rate of experience gain.",
+  "mechanic.fear_resistance.name": "Fear Resistance",
+  "mechanic.fear_resistance.description": "Units with this mechanic have increased resistance against fear, making them less likely to flee or be controlled by terror.",
+  "map.new_player_landing.rooms.welcome_glade.exits.w": "${self:map.new_player_landing.rooms.character_creation_hall}",
+  "map.new_player_landing.rooms.character_creation_hall.name": "Character Creation Hall",
+  "map.new_player_landing.rooms.character_creation_hall.char": "H",
+  "map.new_player_landing.rooms.character_creation_hall.description": "An ornate hall filled with mirrors reflecting numerous possibilities of what an adventurer might become. Statues of different races and classes line the walls, inspiring new players to select their path.",
+  "map.new_player_landing.rooms.character_creation_hall.exits.e": "${self:map.new_player_landing.rooms.welcome_glade}",
+  "npc.mentor.name": "Mentor",
+  "npc.mentor.visual": "A venerable figure clad in robes adorned with mystical sigils.",
+  "npc.mentor.description": "An experienced guide who offers wisdom and advice to new adventurers, aiding them in choosing their race and class.",
+  "npc.mentor.map": "${self:map.new_player_landing}",
+  "npc.mentor.room": "${self:map.new_player_landing.rooms.character_creation_hall}",
+  "npc.mentor.traits": [
+    "${self:trait.adviser}"
+  ],
+  "trait.adviser.name": "Adviser",
+  "trait.adviser.description": "This NPC offers valuable insights and guidance, assisting players in making crucial decisions.",
+  "trait.adviser.mechanics": [
+    "${self:mechanic.guidance}"
+  ],
+  "mechanic.guidance.name": "Guidance",
+  "mechanic.guidance.description": "NPCs with the Guidance mechanic can interact with players to offer advice and help tailor their adventuring style by providing suggestions on race and class combinations.",
+  "map.new_player_landing.rooms.arena_of_trials.name": "Arena of Trials",
+  "map.new_player_landing.rooms.arena_of_trials.char": "A",
+  "map.new_player_landing.rooms.arena_of_trials.description": "A mystical arena where adventurers can test their combat skills against summoned illusions. It serves as a rite of passage for those who wish to prove their readiness for the outside world.",
+  "map.new_player_landing.rooms.arena_of_trials.exits.sw": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.arena_of_trials.spawns": [
+    {
+      "num": 1,
+      "units": [
+        "${self:creature.mocking_mirage}"
+      ]
+    }
+  ],
+  "map.new_player_landing.rooms.arena_of_trials.respawn": "600",
+  "creature.mocking_mirage.name": "mocking mirage",
+  "creature.mocking_mirage.visual": "A shimmering figure that shifts between various fearsome forms before battle.",
+  "creature.mocking_mirage.description": "These illusions are conjured to challenge aspiring champions, adapting to their opponent's strategies to provide a worthy test.",
+  "creature.mocking_mirage.str": "3d4",
+  "creature.mocking_mirage.dex": "3d4",
+  "creature.mocking_mirage.int": "3d4",
+  "creature.mocking_mirage.wis": "3d4",
+  "creature.mocking_mirage.lvl": "1d4",
+  "creature.mocking_mirage.exp": "10",
+  "creature.mocking_mirage.slain": "The mirage dissolves into motes of light as it is defeated, leaving behind a sense of accomplishment and the echoes of its last taunt.",
+  "map.new_player_landing.rooms.ancient_library.name": "Ancient Library",
+  "map.new_player_landing.rooms.ancient_library.char": "L",
+  "map.new_player_landing.rooms.ancient_library.description": "This timeworn library houses rows upon rows of dusty tomes, containing knowledge from civilizations long past. The silence is almost tangible, broken only by the occasional creak of a wooden floorboard beneath the weight of history.",
+  "map.new_player_landing.rooms.ancient_library.exits.w": "${self:map.new_player_landing.rooms.tranquility_trail}",
+  "map.new_player_landing.rooms.misty_grotto.name": "Misty Grotto",
+  "map.new_player_landing.rooms.misty_grotto.char": "M",
+  "map.new_player_landing.rooms.misty_grotto.description": "A veiled grotto embraced by a gentle fog that rolls over its damp stone walls. Sunlight filters through cracks above, creating an ethereal atmosphere. The echoing drip of water is a serene reminder of the grotto's timeless existence.",
+  "map.new_player_landing.rooms.misty_grotto.exits.n": "${self:map.new_player_landing.rooms.tranquility_trail}",
+  "map.new_player_landing.rooms.serpentine_path.name": "Serpentine Path",
+  "map.new_player_landing.rooms.serpentine_path.char": "S",
+  "map.new_player_landing.rooms.serpentine_path.description": "A twisting path that snakes through the forest, with dense underbrush threatening to overtake the way. It challenges those who walk it to stay alert; the unknown looms with every turn.",
+  "map.new_player_landing.rooms.serpentine_path.exits.n": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.enchanted_meadow.name": "Enchanted Meadow",
+  "map.new_player_landing.rooms.enchanted_meadow.char": "E",
+  "map.new_player_landing.rooms.enchanted_meadow.description": "This meadow is bathed in a perpetual golden light, regardless of the time of day. Flowers of every hue bloom in abundance, and the air is always fresh with the scent of spring.",
+  "class.warrior.attacks": [
+    "${self:weapon.sword_and_shield}",
+    "${self:weapon.battleaxe}",
+    "${self:weapon.warhammer}"
+  ],
+  "weapon.sword_and_shield.name": "sword and shield",
+  "weapon.sword_and_shield.visual": "A sturdy steel sword accompanied by a solid round shield adorned with the emblem of a lion.",
+  "weapon.sword_and_shield.description": "The sword and shield offer an ideal balance of offense and defense, allowing warriors to strike with precision while guarding against incoming attacks.",
+  "weapon.sword_and_shield.dmg": "1d8",
+  "weapon.sword_and_shield.range": "1",
+  "weapon.sword_and_shield.speed": 3,
+  "weapon.sword_and_shield.hits": [
+    "slash",
+    "pierce",
+    "bash"
+  ],
+  "weapon.sword_and_shield.misses": [
+    "swing",
+    "thrust",
+    "parry"
+  ],
+  "weapon.sword_and_shield.scales.str": 0.9,
+  "weapon.sword_and_shield.scales.dex": 0.4,
+  "weapon.battleaxe.name": "battleaxe",
+  "weapon.battleaxe.visual": "A massive two-handed axe, its blade etched with runes and capable of cleaving through armor with raw power.",
+  "weapon.battleaxe.description": "The battleaxe demands strength to wield effectively but delivers devastating blows that can overwhelm foes with sheer force.",
+  "weapon.battleaxe.dmg": "1d10",
+  "weapon.battleaxe.range": "1",
+  "weapon.battleaxe.speed": 4,
+  "weapon.battleaxe.hits": [
+    "cleave",
+    "rend",
+    "hack"
+  ],
+  "weapon.battleaxe.misses": [
+    "chop",
+    "maul",
+    "slam"
+  ],
+  "weapon.battleaxe.scales.str": 1.2,
+  "weapon.battleaxe.scales.dex": 0.2,
+  "weapon.warhammer.name": "warhammer",
+  "weapon.warhammer.visual": "A heavy warhammer with a spiked head on one side and a flat crushing surface on the other, built for breaking bones and battering bulwarks.",
+  "weapon.warhammer.description": "Though unwieldy and slow, the warhammer can smash through defenses and deal crippling damage to armored opponents.",
+  "weapon.warhammer.dmg": "2d6",
+  "weapon.warhammer.range": "1",
+  "weapon.warhammer.speed": 5,
+  "weapon.warhammer.hits": [
+    "crush",
+    "demolish",
+    "slam"
+  ],
+  "weapon.warhammer.misses": [
+    "pound",
+    "hammer",
+    "swing"
+  ],
+  "weapon.warhammer.scales.str": 1.5,
+  "weapon.warhammer.scales.dex": 0.1,
+  "map.new_player_landing.rooms.tranquility_trail.exits.s": "${self:map.new_player_landing.rooms.misty_grotto}",
+  "map.new_player_landing.rooms.forest_crossroads.exits.s": "${self:map.new_player_landing.rooms.serpentine_path}",
+  "map.new_player_landing.rooms.ancient_oak.name": "Ancient Oak",
+  "map.new_player_landing.rooms.ancient_oak.char": "A",
+  "map.new_player_landing.rooms.ancient_oak.description": "The mighty Ancient Oak stands tall, its limbs reaching high into the sky and its roots delving deep into the earth. The air is thick with the whispers of leaves, and the spirit of the forest feels most alive here.",
+  "map.new_player_landing.rooms.ancient_oak.exits.u": "${self:map.new_player_landing.rooms.oak_treetops}",
+  "map.new_player_landing.rooms.ancient_oak.exits.s": "${self:map.new_player_landing.rooms.misty_grotto}",
+  "map.new_player_landing.rooms.oak_treetops.name": "Oak Treetops",
+  "map.new_player_landing.rooms.oak_treetops.char": "T",
+  "map.new_player_landing.rooms.oak_treetops.description": "Above the forest floor, the Oak Treetops are a network of sturdy branches that create pathways in the sky, replete with the calls of birds and rustlings of small creatures.",
+  "map.new_player_landing.rooms.oak_treetops.exits.d": "${self:map.new_player_landing.rooms.ancient_oak}",
+  "map.new_player_landing.rooms.hallowed_halls.name": "Hallowed Halls",
+  "map.new_player_landing.rooms.hallowed_halls.char": "H",
+  "map.new_player_landing.rooms.hallowed_halls.description": "These underground chambers echo with the history of a long-forgotten civilization. Ghostly lights dance along the walls, revealing intricate carvings and forgotten artifacts.",
+  "map.new_player_landing.rooms.hallowed_halls.exits.u": "${self:map.new_player_landing.rooms.misty_grotto}",
+  "map.new_player_landing.rooms.twisting_caverns.name": "Twisting Caverns",
+  "map.new_player_landing.rooms.twisting_caverns.char": "C",
+  "map.new_player_landing.rooms.twisting_caverns.description": "The caverns twist and turn in darkness, with stalactites and stalagmites creating a jagged landscape. Echos of drips and distant howls suggest that one is never truly alone down here.",
+  "map.new_player_landing.rooms.twisting_caverns.exits.u": "${self:map.new_player_landing.rooms.hallowed_halls}",
+  "creature.drifting_wraith.name": "drifting wraith",
+  "creature.drifting_wraith.visual": "A translucent figure that drifts aimlessly, its form flickering in and out of sight.",
+  "creature.drifting_wraith.description": "These wraiths are the lost souls that linger in the realm of the living, eternally searching for resolution. They are often found near places of great sorrow or tragedy.",
+  "creature.drifting_wraith.str": 1,
+  "creature.drifting_wraith.dex": 4,
+  "creature.drifting_wraith.int": 2,
+  "creature.drifting_wraith.wis": 3,
+  "creature.drifting_wraith.lvl": "2",
+  "creature.drifting_wraith.exp": 3,
+  "creature.drifting_wraith.rank": 0,
+  "creature.drifting_wraith.ranks": [
+    "forlorn"
+  ],
+  "creature.drifting_wraith.adjectives": [
+    "sorrowful",
+    "flickering",
+    "cold"
+  ],
+  "creature.drifting_wraith.moves": [
+    "glide",
+    "drift",
+    "hover"
+  ],
+  "creature.drifting_wraith.attacks": [
+    "${self:weapon.chill_touch}"
+  ],
+  "creature.drifting_wraith.traits": [
+    "${self:trait.terrifying}"
+  ],
+  "weapon.chill_touch.name": "chill touch",
+  "weapon.chill_touch.visual": "A spectral hand that reaches out to suck the warmth from your bones.",
+  "weapon.chill_touch.description": "This ghostly touch chills to the core, sapping the strength and vitality of its victim.",
+  "weapon.chill_touch.dmg": "1d4",
+  "weapon.chill_touch.range": "1",
+  "weapon.chill_touch.speed": 3,
+  "weapon.chill_touch.hits": [
+    "freeze",
+    "grasp",
+    "wither"
+  ],
+  "weapon.chill_touch.misses": [
+    "phase",
+    "whiff",
+    "brush"
+  ],
+  "weapon.chill_touch.scales.str": 0.1,
+  "weapon.chill_touch.scales.dex": 1,
+  "weapon.chill_touch.scales.int": 0.5,
+  "weapon.chill_touch.scales.wis": 0.4,
+  "map.new_player_landing.rooms.enchanted_clearing.name": "Enchanted Clearing",
+  "map.new_player_landing.rooms.enchanted_clearing.description": "Surrounded by ancient trees, this clearing shimmers with magic. Runes etched into the ground pulse with a strange energy, and the air is thick with the buzz of potential.",
+  "map.new_player_landing.rooms.enchanted_clearing.exits.w": "${self:map.new_player_landing.rooms.serpentine_path}",
+  "map.new_player_landing.rooms.enchanted_clearing.exits.d": "${self:map.new_player_landing.rooms.cavern_of_whispers}",
+  "map.new_player_landing.rooms.cavern_of_whispers.name": "Cavern of Whispers",
+  "map.new_player_landing.rooms.cavern_of_whispers.description": "The walls of this subterranean expanse seem to murmur secrets. Glowing fungi cast an eerie light over the damp stone, and shadows flit just beyond the edge of vision.",
+  "map.new_player_landing.rooms.cavern_of_whispers.exits.u": "${self:map.new_player_landing.rooms.enchanted_clearing}",
+  "creature.moss_guardian.name": "moss guardian",
+  "creature.moss_guardian.visual": "An enigmatic figure covered in vibrant moss and wielding branches as limbs.",
+  "creature.moss_guardian.description": "Guardians of the mystical groves, these entities are born from the earth's magic to protect sacred sites from those who would desecrate them.",
+  "creature.moss_guardian.str": "3d6",
+  "creature.moss_guardian.dex": "2d6",
+  "creature.moss_guardian.int": "1d6",
+  "creature.moss_guardian.wis": "1d6",
+  "creature.moss_guardian.lvl": "2",
+  "creature.moss_guardian.exp": "5",
+  "creature.moss_guardian.rank": "0",
+  "creature.moss_guardian.ranks": [
+    "warden"
+  ],
+  "creature.moss_guardian.adjectives": [
+    "ancient",
+    "sprightly",
+    "majestic"
+  ],
+  "creature.moss_guardian.moves": [
+    "trudge",
+    "amble",
+    "loom"
+  ],
+  "creature.moss_guardian.attacks": [
+    "${self:weapon.vine_whip}"
+  ],
+  "creature.moss_guardian.traits": [
+    "${self:trait.lifeforce}",
+    "${self:trait.territorial}"
+  ],
+  "weapon.vine_whip.name": "vine whip",
+  "weapon.vine_whip.visual": "A sinuous vine that lashes out with thorny precision.",
+  "weapon.vine_whip.description": "This living weapon ensnares and thrashes its targets, each strike leaving behind welts and cuts.",
+  "weapon.vine_whip.dmg": "1d6+1",
+  "weapon.vine_whip.range": "2",
+  "weapon.vine_whip.speed": "3",
+  "weapon.vine_whip.hits": [
+    "entangle",
+    "whip",
+    "lash"
+  ],
+  "weapon.vine_whip.misses": [
+    "coil",
+    "twitch",
+    "flick"
+  ],
+  "weapon.vine_whip.scales.str": "0.7",
+  "weapon.vine_whip.scales.dex": "1",
+  "weapon.vine_whip.scales.int": "0.3",
+  "weapon.vine_whip.scales.wis": "0.3",
+  "map.new_player_landing.rooms.forest_crossroads.exits.e": "${self:map.new_player_landing.rooms.pixie_grove}",
+  "map.new_player_landing.rooms.pixie_grove.name": "Pixie Grove",
+  "map.new_player_landing.rooms.pixie_grove.description": "This small grove is alive with the twinkling lights of pixies. The air hums with their laughter, and petals float gently down from the blossoming boughs above.",
+  "map.new_player_landing.rooms.pixie_grove.exits.w": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.pixie_grove.exits.d": "${self:map.new_player_landing.rooms.cavern_of_echoes}",
+  "map.new_player_landing.rooms.cavern_of_echoes.name": "Cavern of Echoes",
+  "map.new_player_landing.rooms.cavern_of_echoes.description": "Every sound in this cave reverberates and multiplies, creating a cacophony of echoes. Crystals jut from the ground and ceiling, their facets catching light and throwing colorful reflections.",
+  "map.new_player_landing.rooms.cavern_of_echoes.exits.u": "${self:map.new_player_landing.rooms.pixie_grove}",
+  "creature.nightbloom_wisp.name": "nightbloom wisp",
+  "creature.nightbloom_wisp.visual": "A luminous entity that leaves a faint glow in its wake, resembling a blooming flower.",
+  "creature.nightbloom_wisp.description": "These gentle spirits commune with the night, drawn to the beauty of moonlit blooms and bask in their ethereal light.",
+  "creature.nightbloom_wisp.str": "1",
+  "creature.nightbloom_wisp.dex": "3d4",
+  "creature.nightbloom_wisp.int": "2d4",
+  "creature.nightbloom_wisp.wis": "1d6",
+  "creature.nightbloom_wisp.lvl": "1",
+  "creature.nightbloom_wisp.exp": "2",
+  "creature.nightbloom_wisp.rank": "0",
+  "creature.nightbloom_wisp.ranks": [
+    "fledgling"
+  ],
+  "creature.nightbloom_wisp.adjectives": [
+    "shimmering",
+    "pulse"
+  ],
+  "creature.nightbloom_wisp.moves": [
+    "float",
+    "bob",
+    "dance"
+  ],
+  "creature.nightbloom_wisp.attacks": [
+    "${self:weapon.gleam}"
+  ],
+  "creature.nightbloom_wisp.traits": [
+    "${self:trait.manaforce}"
+  ],
+  "weapon.gleam.name": "gleam",
+  "weapon.gleam.visual": "A soft glow that intensifies rapidly, blinding those who gaze upon it.",
+  "weapon.gleam.description": "More disorienting than harmful, the gleam of the wisp can distract enemies and make them vulnerable to attack.",
+  "weapon.gleam.dmg": "1d4",
+  "weapon.gleam.range": "2",
+  "weapon.gleam.speed": "4",
+  "weapon.gleam.hits": [
+    "dazzle",
+    "flash",
+    "radiate"
+  ],
+  "weapon.gleam.misses": [
+    "dim",
+    "flicker",
+    "fade"
+  ],
+  "weapon.gleam.scales.str": "0.1",
+  "weapon.gleam.scales.dex": "0.9",
+  "weapon.gleam.scales.int": "0.6",
+  "weapon.gleam.scales.wis": "0.4",
+  "map.new_player_landing.rooms.forest_crossroads.spawns": [
+    {
+      "num": "2",
+      "units": [
+        "${self:creature.drifting_wraith}",
+        "${self:creature.moss_guardian}"
+      ]
+    },
+    {
+      "num": "1d4",
+      "units": [
+        "${self:creature.nightbloom_wisp}"
+      ]
+    }
+  ],
+  "map.new_player_landing.rooms.forest_crossroads.respawn": "300",
+  "map.new_player_landing.rooms.pixie_grove.spawns": [
+    {
+      "num": "1d2+1",
+      "units": [
+        "${self:creature.nightbloom_wisp}"
+      ]
+    }
+  ],
+  "map.new_player_landing.rooms.pixie_grove.respawn": "200",
+  "map.new_player_landing.rooms.serpentine_path.spawns": [
+    {
+      "num": "1d4-1",
+      "units": [
+        "${self:creature.drifting_wraith}"
+      ]
+    }
+  ],
+  "map.new_player_landing.rooms.serpentine_path.respawn": "400",
+  "map.new_player_landing.rooms.ancient_oak.spawns": [
+    {
+      "num": "1",
+      "units": [
+        "${self:creature.moss_guardian}"
+      ]
+    }
+  ],
+  "map.new_player_landing.rooms.ancient_oak.respawn": "500",
+  "map.new_player_landing.rooms.forest_heart.exits.ne": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.thicket_of_thoughts.exits.sw": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.arena_of_trials.exits.ne": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.pixie_grove.exits.n": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.enchanted_meadow.exits.e": "${self:map.new_player_landing.rooms.forest_crossroads}",
+  "map.new_player_landing.rooms.enchanted_meadow.exits.s": "${self:map.new_player_landing.rooms.thicket_of_thoughts}"
+}

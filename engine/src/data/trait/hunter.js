@@ -1,5 +1,5 @@
 module.exports = {
   name: 'Hunter',
-  description: 'An entity with this trait will hunt for food.',
-  mechanics: ['hunter'],
+  description: 'Units with Hunter will wander about aimlessly looking for food',
+  mechanics: ['${self:mechanic.vagabond}'],
 };

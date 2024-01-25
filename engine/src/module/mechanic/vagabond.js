@@ -1,6 +1,6 @@
 const { Action, Loop } = require('@coderich/gameflow');
 
-Action.define('hunter', [
+Action.define('vagabond', [
   (_, context) => {
     context.stream.on('abort', context.abort);
 

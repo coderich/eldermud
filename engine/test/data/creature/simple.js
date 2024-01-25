@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'test',
+  name: 'simple',
   pri: 'str',
   str: 3,
   dex: 2,

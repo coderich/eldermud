@@ -48,6 +48,7 @@ module.exports = class ConfigClient extends Config {
       //     if (!model.dodge) config.set(`${model}.dodge`, 0);
       //     if (!model.ma) config.set(`${model}.ma`, 0);
       //     if (!model.maa) config.set(`${model}.mma`, 0);
+      //     if (!model.adjectives) config.set(`${model}.adjectives`, []);
       //   });
       // }
     });

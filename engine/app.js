@@ -8,14 +8,12 @@ const Item = require('./src/model/Item');
 const NPC = require('./src/model/NPC');
 const server = require('./src/server');
 
-exports.init = () => {
+exports.init = (datadir) => {
   // Yep, globals
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
-  global.CONFIG = new ConfigClient(`${__dirname}/src/data`).decorate();
+  global.CONFIG = new ConfigClient(datadir);
   global.REDIS = new RedisClient(CONFIG.get('app.redis'));
   global.APP = AppService;
-
-  // CONFIG.merge(Util.unflatten(data)).decorate();
 
   // Load the game (Actions)
   Util.requireDir(`${__dirname}/src/module`);
@@ -23,7 +21,7 @@ exports.init = () => {
 
 exports.setup = async () => {
   // Setup our NPCs (Actors)
-  Object.values(CONFIG.get('npc')).forEach(async (npc) => {
+  Object.values(CONFIG.get('npc', {})).forEach(async (npc) => {
     const actor = new NPC(npc);
     await actor.perform('spawn');
   });
@@ -71,7 +69,11 @@ exports.setup = async () => {
 
 (async () => {
   if (!module.parent) {
-    exports.init();
+    exports.init(`${__dirname}/src/data`);
+    CONFIG.merge(ConfigClient.parseFile(`${__dirname}/src/database.json`));
+    // exports.init(`${__dirname}/test/data`);
+    // CONFIG.mergeConfig(`${__dirname}/test/data`);
+    CONFIG.decorate();
     await exports.setup();
     server.start();
     console.log('Server ready.');

@@ -29,7 +29,7 @@ const commands = [
     { ne: { args: [0], code: 'ne', name: 'northeast', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { nw: { args: [0], code: 'nw', name: 'northwest', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { se: { args: [0], code: 'se', name: 'southeast', channel: 'realm', stream: 'action', tags: ['direction'] } },
-    { sw: { args: [0], code: 'sw', name: 'southwest', channel: 'realm', stream: 'action' } },
+    { sw: { args: [0], code: 'sw', name: 'southwest', channel: 'realm', stream: 'action', tags: ['direction'] } },
     // { ul: { args: [1], code: 'unlock', name: 'unlock', channel: 'realm', stream: 'action' } },
     // { equip: { args: [1, 2, 3, 4, 5], code: 'equip', stream: 'action' } },
     { list: { args: [0], code: 'list', channel: 'realm', stream: 'action' } },
