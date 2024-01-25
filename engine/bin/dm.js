@@ -10,7 +10,7 @@ const AppService = require('../src/service/AppService');
 
 const program = new Command();
 
-program.name('DM').description('Eldermud Dungeon Master');
+program.name('DM').description('Dungeon Master');
 
 // Setup
 program.hook('preAction', (thisCommand, actionCommand) => {
@@ -29,23 +29,19 @@ program.command('train').action(async (thisCommand, actionCommand) => {
 
   // Grab all the game content
   const { config } = CONFIG.toObject();
-  const { map, creature, weapon, trait, mechanic } = config;
-  const content = Util.flatten({ map, creature, weapon, trait, mechanic }, { safe: true });
+  delete config.app;
+  delete config.help;
+  delete config.secrets;
+
+  const content = Util.flatten(config, { safe: true });
 
   // Convert to JSONL format
   const training = [
     JSON.stringify({
       messages: [
-        { role: 'system', content: 'You are the Dungeon Master' },
-        { role: 'user', content: 'Examine the current game content' },
-        {
-          role: 'assistant',
-          content: `
-            You must always examine the current game content carefully to decide what should be reused, created, or updated
-            Study and understand existing traits and mechanics because they need to be reused as much as possible
-            ${JSON.stringify(content)}
-          `,
-        },
+        { role: 'system', content: 'You are the Dungeon Master for a MUD' },
+        { role: 'user', content: 'Study the current game content' },
+        { role: 'assistant', content: JSON.stringify(content) }
       ],
     }),
   ].join('\n');
@@ -76,21 +72,33 @@ program.command('train').action(async (thisCommand, actionCommand) => {
       {
         type: 'function',
         function: {
-          name: 'crudContent',
+          name: 'manageContent',
           description: `
-            CRUD Game Content
-            The payload sent will be deep merged into existing game content
-            To delete content, send a null value for a given property
+            Manage Game Content
+
+            Always refer to the current game content when making a decision
+            You must carefully consider when to reuse, create, update, or delete content
+
             Content should be as atomic and sharable as possible
-            You must carefully examine the current game content to decide what should be reused, created, updated, or deleted
             To reuse content, create a self-reference to it (eg: "\${self:path.to.content}")
-            All self-references must exist (no placeholders); you are free to create ancillary content in order to fully complete a specific task
+
+            You must recursively traverse all self-references to ensure data integrity and completeness
+            If any data needs to be created, modified, or deleted due to data integrity you are required to do so
+            If any data needs to be created, modified, or deleted due to need for a fk-reference
+
+            You are free to recursively modify all self-referenced data to complete a task
+            All self-references must exist (no placeholder references)
+
             Any property containing $key must be replaced with a unique keyname that identifies the word that comes before it
-            Any data type "number" must be passed in as a string; it may also be represented as a dice-roll (eg: "2d10+3", "4d10-1")
-            Rooms (and their exits) must be organized on a 2d grid and cannot overlap (unless the exit is "u" or "d")
-            Rooms are conceptually any size; utilize room name, description, and map layout to portray dimension to the player
-            Ensure that all rooms are interconnected (no inaccessible islands)
-            Use room.spawns to strategically place creatures on the map; otherwise creatures will never make it into the game
+            Any data type "number" will also accept a dice-roll string (eg: "2d10+3", "4d10-1")
+            Use room.spawns to place creatures on the map; otherwise creatures will never make it into the game
+            Use traits and mechanics to bring things to life otherwise they will remain motionless statues
+            All rooms must be evenly positioned in 3D space via x,y,z coordinates; you must keep these coordinates in memory when positining rooms
+            When connecting rooms (via exits) you must always ensure that their 3D coordinates align correctly
+            Every room must be accesible to the player (no islands allowed)
+            The payload you send will be deep merged with the current game content
+            To delete content, send a null value for a given property
+            Always strive to keep the data clean and of the highest integrity
           `,
           parameters: {
             type: 'object',
@@ -134,7 +142,7 @@ program.command('train').action(async (thisCommand, actionCommand) => {
               'class.$key.pri': { type: 'string', enum: ['str', 'dex', 'int', 'wis'], description: 'The class primary stat' },
               'class.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this class' },
               'class.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this class' },
-              'class.$key.attacks': { type: 'array', items: { type: 'string' }, description: '${self:references} to weapons this class attacks with' },
+              'class.$key.attacks': { type: 'array', items: { type: 'string' }, description: '${self:references} to weapons this class attacks with. Cannot be empty.' },
               'race.$key.name': { type: 'string', description: 'The race name' },
               // 'race.$key.visual': { type: 'string', description: 'Visually describe this race' },
               'race.$key.description': { type: 'string', description: 'A character description of this race' },
@@ -193,7 +201,7 @@ program.command('train').action(async (thisCommand, actionCommand) => {
 
               'shop.$key.name': { type: 'string', description: 'The shop name' },
               'shop.$key.description': { type: 'string', description: 'The shop description' },
-              'shop.$key.items': { type: 'array', items: { type: 'string' }, description: '${self:references} to items sold' },
+              'shop.$key.items': { type: 'array', items: { type: 'string' }, description: '${self:references} to items sold. Cannot be empty.' },
               'item.$key.name': { type: 'string', description: 'The item name' },
               'item.$key.visual': { type: 'string', description: 'Visually describe this item' },
               'item.$key.description': { type: 'string', description: 'The item description' },
@@ -215,8 +223,9 @@ program.command('train').action(async (thisCommand, actionCommand) => {
       },
     ],
     instructions: `
-      You are the Dungeon Master for an interactive MUD.
+      You are the Dungeon Master for a MUD.
       Your task is to generate creative content designed to drive player interest, interaction, conflict, setback, and progression throughout the game.
+      You must always enforce data integrity; if any data needs updating, you must update it.
     `,
   });
 });
@@ -224,10 +233,12 @@ program.command('train').action(async (thisCommand, actionCommand) => {
 program.command('prompt')
   .argument('<prompt...>')
   .option('-f, --file <name>', 'filename', 'response')
+  .option('-n, --nostudy <bool>', 'nostudy', 'false')
   .action(async (prompt, opts, command) => {
     const { file } = opts;
     const { openai, dungeonMaster } = command;
-    const content = `Examine the current game content. ${prompt.flat().join(' ')}`;
+    // const content = prompt.flat().join(' ');
+    const content = `Study the current game content. ${prompt.flat().join(' ')}`;
     const filename = `${file}.${new Date().getTime()}.json`;
     const filepath = Path.join(__dirname, 'output', filename);
 
@@ -285,13 +296,13 @@ program.command('commit').action(() => {
   });
 
   // Write database
-  FS.writeFileSync(destination, JSON.stringify(database, (key, value) => {
+  FS.writeFileSync(destination, JSON.stringify(Util.unflatten(database), (key, value) => {
     if (value != null) return value;
     return undefined;
   }, 2));
 
   // Cleanup files
-  // files.forEach(file => FS.unlinkSync(file));
+  files.forEach(file => FS.unlinkSync(file));
 });
 
 //

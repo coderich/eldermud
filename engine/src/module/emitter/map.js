@@ -25,7 +25,7 @@ Action.define('map', async (_, { actor }) => {
     Object.values(configMap.rooms).forEach((room) => {
       const $room = rooms.find(el => el.id === room.mapId);
       $room.paths = Object.entries(room.paths || {}).reduce((prev, [key, value]) => Object.assign(prev, { [key]: value.status || 'closed' }), {});
-      $room.exits = Object.entries(room.exits).map(([dir, exit]) => {
+      $room.exits = Object.entries(room.exits || {}).map(([dir, exit]) => {
         const $exit = rooms.find(el => el.id === exit.mapId);
 
         if ($exit.id > $room.id) {

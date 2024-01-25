@@ -1,7 +1,7 @@
 module.exports = {
-  map: '${self:map.new_player_landing}',
-  room: '${self:map.new_player_landing.rooms.welcome_glade}',
-  checkpoint: '${self:map.new_player_landing.rooms.welcome_glade}',
+  map: '${self:map.starting_village}',
+  room: '${self:map.starting_village.rooms.village_square}',
+  checkpoint: '${self:map.starting_village.rooms.village_square}',
   posture: 'stand',
   lvl: 1,
   exp: 0,
