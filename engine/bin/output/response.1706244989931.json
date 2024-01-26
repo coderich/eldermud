@@ -1,0 +1,71 @@
+{
+  "map.city_of_tall_towers": {
+    "name": "City of Tall Towers",
+    "description": "A sprawling metropolis known for its soaring spires and bustling marketplace. The city's layout is a testament to the architectural prowess of its builders, with a grand courtyard at its heart. Hidden beneath the city streets lie ancient dungeons, holding secrets and dangers alike."
+  },
+  "map.city_of_tall_towers.rooms.marketplace": {
+    "name": "Marketplace",
+    "description": "The center of commerce in the City of Tall Towers. Stalls and shops of all kinds line the cobblestone streets, with merchants peddling goods from distant lands amid the lively chatter of bargain hunters.",
+    "exits": {
+      "n": "${self:map.city_of_tall_towers.rooms.northern_tower_entrance}",
+      "s": "${self:map.city_of_tall_towers.rooms.southern_tower_entrance}",
+      "e": "${self:map.city_of_tall_towers.rooms.eastern_tower_entrance}",
+      "w": "${self:map.city_of_tall_towers.rooms.western_tower_entrance}",
+      "u": "${self:map.city_of_tall_towers.rooms.grand_courtyard}"
+    }
+  },
+  "map.city_of_tall_towers.rooms.grand_courtyard": {
+    "name": "Grand Courtyard",
+    "description": "An expansive open space surrounded by the city's tallest towers. Marble statues of historical figures and fountains with crystal-clear water accentuate the area's grandeur. It serves as a common gathering place for celebrations and events.",
+    "exits": {
+      "d": "${self:map.city_of_tall_towers.rooms.marketplace}",
+      "u": "${self:map.city_of_tall_towers.rooms.sky_view_platform}"
+    }
+  },
+  "map.city_of_tall_towers.rooms.northern_tower_entrance": {
+    "name": "Northern Tower Entrance",
+    "description": "The gateway to the North Tower, which is rumored to hold the city's archives and secret knowledge. The stone edifice of the tower looms overhead, while the door is adorned with intricate carvings of scholarly motifs.",
+    "exits": {
+      "s": "${self:map.city_of_tall_towers.rooms.marketplace}",
+      "u": "${self:map.city_of_tall_towers.rooms.northern_tower_interior}"
+    }
+  },
+  "map.city_of_tall_towers.rooms.southern_tower_entrance": {
+    "name": "Southern Tower Entrance",
+    "description": "The entrance to the South Tower, recognized for its role as a bastion of the city's defense. The sturdy doors bear marks of battles long past, and the tower's height offers an unparalleled view for sentries watching the horizon.",
+    "exits": {
+      "n": "${self:map.city_of_tall_towers.rooms.marketplace}",
+      "u": "${self:map.city_of_tall_towers.rooms.southern_tower_interior}"
+    }
+  },
+  "map.city_of_tall_towers.rooms.eastern_tower_entrance": {
+    "name": "Eastern Tower Entrance",
+    "description": "This entryway gives access to the East Tower, home to the city's magical guild and its enchanters. Mystic runes etched into the tower's stone façade emit a faint, otherworldly glow.",
+    "exits": {
+      "w": "${self:map.city_of_tall_towers.rooms.marketplace}",
+      "u": "${self:map.city_of_tall_towers.rooms.eastern_tower_interior}"
+    }
+  },
+  "map.city_of_tall_towers.rooms.western_tower_entrance": {
+    "name": "Western Tower Entrance",
+    "description": "Serving as the threshold to the West Tower, this passageway is frequented by artisans and inventors. The door is a mechanical marvel in itself, with gears and levers that hint at the ingenuity contained within.",
+    "exits": {
+      "e": "${self:map.city_of_tall_towers.rooms.marketplace}",
+      "u": "${self:map.city_of_tall_towers.rooms.western_tower_interior}"
+    }
+  },
+  "map.city_of_tall_towers.rooms.dungeons": {
+    "name": "Mysterious Dungeons",
+    "description": "Dark and damp, the dungeons beneath the city are a maze of ancient hallways and forgotten cells. Echoes of footsteps and distant dripping water fill the air, and the flicker of torchlight casts ominous shadows along the cold stone walls.",
+    "exits": {
+      "u": "${self:map.city_of_tall_towers.rooms.marketplace}"
+    }
+  },
+  "map.city_of_tall_towers.rooms.sky_view_platform": {
+    "name": "Sky View Platform",
+    "description": "At the pinnacle of the city, this platform offers a breathtaking panoramic view. The horizon stretches far into the distance, showcasing the surrounding landscape and the city in all its glory.",
+    "exits": {
+      "d": "${self:map.city_of_tall_towers.rooms.grand_courtyard}"
+    }
+  }
+}

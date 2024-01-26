@@ -1,7 +1,7 @@
 module.exports = {
-  map: '${self:map.dungeon}',
-  room: '${self:map.dungeon.rooms.room1}',
-  checkpoint: '${self:map.dungeon.rooms.room1}',
+  map: '${self:map.city_of_tall_towers}',
+  room: '${self:map.city_of_tall_towers.rooms.marketplace}',
+  checkpoint: '${self:map.city_of_tall_towers.rooms.marketplace}',
   posture: 'stand',
   lvl: 1,
   exp: 0,

@@ -275,6 +275,81 @@
       "traits": [
         "${self:trait.domestic}"
       ]
+    },
+    "new_creature": {
+      "name": "Gloomwing",
+      "visual": "A shadowy, moth-like creature with tattered wings that exude a chilling mist.",
+      "description": "The Gloomwing hails from the shadowy depths of the Ethereal Plane. Its presence is heralded by the eerie quiet of its flight and the unsettling sense of unease that permeates the air around it. This creature feeds on the fears of the living, often appearing in places shrouded in darkness and sorrow.",
+      "str": 15,
+      "dex": 18,
+      "int": 7,
+      "wis": 12,
+      "pri": "dex",
+      "lvl": "4d4+4",
+      "exp": 240,
+      "slain": "",
+      "adjectives": [
+        "shadowy",
+        "eerie",
+        "silent"
+      ],
+      "moves": [
+        "flit",
+        "swoop",
+        "hover"
+      ],
+      "attacks": [
+        "${self:weapon.talon_strike}",
+        "${self:weapon.chilling_touch}"
+      ]
+    },
+    "$new": {
+      "name": "Thornback Wyrm",
+      "visual": "A sinuous dragon covered in thorny spines",
+      "description": "This formidable dragon is covered in sharp, thorny spines that bristle in warning to any who draw near. The Thornback Wyrm is known for its ferocious territorial instincts and its ability to expel scorching breath upon its foes. Its scales glisten with a metallic sheen, and its eyes glint with a cunning intelligence.",
+      "str": 18,
+      "dex": 14,
+      "int": 16,
+      "wis": 15,
+      "pri": "str",
+      "lvl": 10,
+      "exp": 1200,
+      "adjectives": [
+        "ferocious",
+        "terrifying",
+        "spiny"
+      ],
+      "moves": [
+        "soar",
+        "charge",
+        "snap"
+      ],
+      "attacks": [
+        "${self:weapon.claws}",
+        "${self:weapon.flamebreath}"
+      ]
+    },
+    "forest_critters": {
+      "name": "Forest Critters",
+      "visual": "Small animals like squirrels, rabbits, and birds.",
+      "description": "Harmless creatures that inhabit the Peaceful Forest, offering an easy challenge for beginners.",
+      "leadership": 0,
+      "str": 1,
+      "dex": 3,
+      "int": 1,
+      "wis": 1,
+      "pri": "dex",
+      "lvl": 1,
+      "exp": 10,
+      "slain": "${self:item.small_fur}",
+      "moves": [
+        "dart",
+        "flee",
+        "hide"
+      ],
+      "attacks": [
+        "${self:weapon.tiny_claws}"
+      ]
     }
   },
   "weapon": {
@@ -451,16 +526,121 @@
         "flail",
         "falter"
       ]
+    },
+    "talon_strike": {
+      "name": "Talon Strike",
+      "visual": "Razor-sharp talons that glint with an otherworldly sheen.",
+      "description": "The Gloomwing's primary method of attack is to swoop silently upon its prey and slash with its talons, leaving behind wounds that chill the soul as well as the flesh.",
+      "dmg": "1d8+3",
+      "range": "1",
+      "speed": 5,
+      "hits": [
+        "rend",
+        "gash",
+        "lacerate"
+      ],
+      "misses": [
+        "swipe",
+        "swoop",
+        "flit"
+      ],
+      "scales": {
+        "dex": 0.3
+      }
+    },
+    "chilling_touch": {
+      "name": "Chilling Touch",
+      "visual": "A spectral frost emanates from the Gloomwing's appendages.",
+      "description": "With a touch colder than the coldest night, the Gloomwing can drain the warmth from its victims, often leaving them frozen in fear as well as in body.",
+      "dmg": "2d6",
+      "range": "1",
+      "speed": 7,
+      "hits": [
+        "numb",
+        "freeze",
+        "stun"
+      ],
+      "misses": [
+        "graze",
+        "miss",
+        "falter"
+      ],
+      "scales": {
+        "wis": 0.2
+      }
+    },
+    "tiny_claws": {
+      "name": "Tiny Claws",
+      "visual": "Tiny, sharp claws suitable for a small creature.",
+      "description": "These claws aren't much of a threat to an adventurer, but they can still scratch.",
+      "dmg": "1d2",
+      "range": "1",
+      "speed": 2,
+      "value": 1,
+      "weight": 0,
+      "hits": [
+        "scratch",
+        "nip"
+      ],
+      "misses": [
+        "misses"
+      ],
+      "scales": {
+        "dex": 0.1
+      }
+    },
+    "short_sword": {
+      "name": "Short Sword",
+      "visual": "a sturdy blade with a leather-wrapped hilt",
+      "description": "A versatile weapon favored by many adventurers.",
+      "dmg": "1d6",
+      "range": "1",
+      "speed": 3,
+      "value": 100,
+      "weight": 2,
+      "hits": [
+        "pierce",
+        "slash"
+      ],
+      "misses": [
+        "swipe",
+        "jab"
+      ]
+    },
+    "wooden_shield": {
+      "name": "Wooden Shield",
+      "visual": "a round shield made from sturdy oak",
+      "description": "Provides basic protection in combat.",
+      "dmg": "1d2",
+      "range": "1",
+      "speed": 2,
+      "value": 50,
+      "weight": 5
+    },
+    "dagger": {
+      "name": "Dagger",
+      "visual": "a small but sharp blade with an ornate handle",
+      "description": "A quick and lethal weapon for close combat.",
+      "dmg": "1d4",
+      "range": "1",
+      "speed": 4,
+      "value": 25,
+      "weight": 1
     }
   },
   "shop": {
     "general_store": {
-      "name": "General Store",
-      "description": "Run by an enterprising couple, this store offers a plethora of useful items for adventurers, from ropes and lanterns to healing potions and simple charms.",
+      "name": "Baldric's Goods",
+      "description": "A general store stocked with a variety of essentials for travelers and locals alike.",
       "items": [
         "${self:item.basic_potion}",
         "${self:item.torch}",
         "${self:item.rope}"
+      ],
+      "inventory": [
+        "${self:item.healing_potion}",
+        "${self:item.rope}",
+        "${self:item.torch}"
       ]
     },
     "specialty_goods": {
@@ -551,6 +731,34 @@
         "${self:item.mug_of_cider}",
         "${self:item.bowl_of_stew}"
       ]
+    },
+    "general_store_inventory": {
+      "name": "General Store Inventory",
+      "description": "A variety of items for the beginning adventurer, from rope to healing potions.",
+      "inventory": [
+        "${self:item.rope}",
+        "${self:item.healing_potion}",
+        "${self:item.torch}",
+        "${self:item.bread}"
+      ]
+    },
+    "blacksmith": {
+      "name": "Ironhand Smithy",
+      "description": "Run by the dwarf Tordek Ironhand, this smithy crafts some of the finest arms and armor in the region.",
+      "inventory": [
+        "${self:weapon.short_sword}",
+        "${self:weapon.wooden_shield}",
+        "${self:weapon.dagger}"
+      ]
+    },
+    "potion_shop": {
+      "name": "Elixirs & Essences",
+      "description": "An assortment of bottles and concoctions line the shelves, tended by the cleric Althea.",
+      "inventory": [
+        "${self:item.healing_potion}",
+        "${self:item.mana_potion}",
+        "${self:item.antitoxin}"
+      ]
     }
   },
   "item": {
@@ -570,9 +778,11 @@
       "description": "These ingots are made from metals not commonly found in the region, making them highly sought after for crafting powerful equipment."
     },
     "healing_potion": {
-      "name": "healing potion",
-      "visual": "A red, bubbly liquid in a small glass vial.",
-      "description": "Drink this to mend wounds and restore a measure of health instantaneously."
+      "name": "Healing Potion",
+      "visual": "a small red vial with a glowing liquid",
+      "description": "A potion that heals minor wounds.",
+      "value": 50,
+      "weight": 1
     },
     "invisibility_elixir": {
       "name": "invisibility elixir",
@@ -583,6 +793,48 @@
       "name": "strength potion",
       "visual": "A thick, golden fluid that glows faintly in the bottle.",
       "description": "Imbibe this potion for increased physical strength, enabling the lifter of heavy objects and the deliverer of more powerful blows."
+    },
+    "rope": {
+      "name": "Rope",
+      "visual": "a coil of sturdy hemp rope",
+      "description": "A 50-foot length of rope useful for climbing or binding.",
+      "value": 10,
+      "weight": 10
+    },
+    "torch": {
+      "name": "Torch",
+      "visual": "a wooden stick wrapped at one end with a cloth soaked in pitch",
+      "description": "Provides light in dark places when lit.",
+      "value": 1,
+      "weight": 2
+    },
+    "bread": {
+      "name": "Loaf of Bread",
+      "visual": "A freshly baked loaf of bread, still warm.",
+      "description": "A basic food item that restores a small amount of health and staves off hunger.",
+      "value": 2,
+      "weight": 1
+    },
+    "small_fur": {
+      "name": "Small Fur",
+      "visual": "A patch of soft fur from a small forest creature.",
+      "description": "Can be sold or used in crafting. A reminder of a novice adventurer's first forays into battle.",
+      "value": 3,
+      "weight": 1
+    },
+    "mana_potion": {
+      "name": "Mana Potion",
+      "visual": "a small blue vial with a shimmering liquid",
+      "description": "A potion that restores a small amount of magical energy.",
+      "value": 60,
+      "weight": 1
+    },
+    "antitoxin": {
+      "name": "Antitoxin",
+      "visual": "a greenish flask sealed with wax",
+      "description": "A liquid solution that provides resistance to poisons.",
+      "value": 75,
+      "weight": 1
     }
   },
   "map": {
@@ -716,6 +968,276 @@
       },
       "name": "Labyrinth of Echoes",
       "description": "A mysterious underground complex filled with echoes of forgotten times. It features 15 interconnected rooms allowing movement in all directions."
+    },
+    "starting_village": {
+      "name": "Littlestone",
+      "description": "A quaint village known for its hearty folk and picturesque scenery, surrounded by verdant woods and serene streams.",
+      "rooms": {
+        "village_square": {
+          "name": "Village Square",
+          "char": "S",
+          "description": "The bustling heart of Littlestone where villagers gather to trade, gossip, and celebrate. A weathered stone well stands proudly at the center.",
+          "exits": {
+            "n": "${self:map.starting_village.rooms.almira's_inn}",
+            "e": "${self:map.starting_village.rooms.blacksmith_shop}",
+            "s": "${self:map.starting_village.rooms.southern_road}",
+            "w": "${self:map.starting_village.rooms.western_woods}"
+          }
+        },
+        "almira's_inn": {
+          "name": "Almira's Inn",
+          "char": "I",
+          "description": "A cozy inn with the aroma of freshly baked bread wafting through the air. A perfect place for travelers to rest their weary bones.",
+          "exits": {
+            "s": "${self:map.starting_village.rooms.village_square}"
+          }
+        },
+        "blacksmith_shop": {
+          "name": "Blacksmith Shop",
+          "char": "B",
+          "description": "The clang of hammer on anvil resounds from this sooty structure. Weapons and armor of all kinds line the walls, showcasing the blacksmith's skill.",
+          "exits": {
+            "w": "${self:map.starting_village.rooms.village_square}"
+          }
+        },
+        "southern_road": {
+          "name": "Southern Road",
+          "char": "R",
+          "description": "A well-worn path leading south out of the village, with the occasional merchant cart traveling to and from distant lands.",
+          "exits": {
+            "n": "${self:map.starting_village.rooms.village_square}",
+            "s": "${self:map.starting_village.rooms.crossroads}"
+          }
+        },
+        "western_woods": {
+          "name": "Western Woods",
+          "char": "W",
+          "description": "An ancient forest with towering trees and the sounds of mysterious creatures echoing through the underbrush.",
+          "spawns": [
+            {
+              "num": 2,
+              "units": [
+                "${self:creature.forest_spider}",
+                "${self:creature.boar}"
+              ]
+            }
+          ],
+          "exits": {
+            "e": "${self:map.starting_village.rooms.village_square}"
+          }
+        },
+        "crossroads": {
+          "name": "Crossroads",
+          "char": "X",
+          "description": "An open area with multiple diverging paths indicating directions to various destinations unknown to newcomers."
+        }
+      }
+    },
+    "beginners_land": {
+      "name": "Beginner's Land",
+      "description": "A starting area for new adventurers, with gentle rolling hills, a peaceful forest, and a welcoming village.",
+      "rooms": {
+        "village_square": {
+          "name": "Village Square",
+          "description": "The central hub of the village, surrounded by small shops and the town hall.",
+          "char": "S",
+          "exits": {
+            "n": "${self:map.beginners_land.rooms.guard_post}",
+            "e": "${self:map.beginners_land.rooms.inn}",
+            "s": "${self:map.beginners_land.rooms.town_hall}",
+            "w": "${self:map.beginners_land.rooms.peaceful_forest}"
+          }
+        },
+        "town_hall": {
+          "name": "Town Hall",
+          "description": "Where the village's issues are discussed and resolved. A helpful place for new adventurers to learn about the region.",
+          "exits": {
+            "s": "${self:map.beginners_land.rooms.village_square}",
+            "n": "${self:map.beginners_land.rooms.village_square}"
+          }
+        },
+        "inn": {
+          "name": "The Weary Traveler",
+          "description": "A cozy inn with warm beds and good food, offering rest for weary adventurers.",
+          "exits": {
+            "e": "${self:map.beginners_land.rooms.village_square}",
+            "w": "${self:map.beginners_land.rooms.village_square}"
+          }
+        },
+        "general_store": {
+          "name": "General Store",
+          "description": "A store selling various goods and supplies necessary for adventurers.",
+          "exits": {
+            "w": "${self:map.beginners_land.rooms.village_square}"
+          },
+          "shop": "${self:shop.general_store_inventory}"
+        },
+        "guard_post": {
+          "name": "Guard Post",
+          "description": "The local militia's post, safeguarding the village. Warriors can often be found here.",
+          "exits": {
+            "n": "${self:map.beginners_land.rooms.village_square}",
+            "s": "${self:map.beginners_land.rooms.village_square}"
+          }
+        },
+        "peaceful_forest": {
+          "name": "Peaceful Forest",
+          "description": "A serene forest with well-trodden paths, home to harmless wildlife.",
+          "exits": {
+            "w": "${self:map.beginners_land.rooms.village_square}",
+            "e": "${self:map.beginners_land.rooms.village_square}"
+          },
+          "spawns": [
+            {
+              "num": "1d4",
+              "units": [
+                "${self:creature.forest_critters}"
+              ]
+            }
+          ],
+          "respawn": 60
+        },
+        "training_grounds": {
+          "name": "Training Grounds",
+          "description": "An open field with targets and dummies for adventurers to practice their skills.",
+          "exits": {
+            "e": "${self:map.beginners_land.rooms.village_square}",
+            "w": "${self:map.beginners_land.rooms.village_square}"
+          }
+        }
+      }
+    },
+    "starter_town": {
+      "name": "Havenbrook",
+      "description": "A bustling small town surrounded by verdant forests and a winding river. The town is known for its friendly inhabitants and acts as a starting point for many adventurers.",
+      "rooms": {
+        "tavern": {
+          "name": "The Drunken Dragon",
+          "char": "T",
+          "description": "The smell of roasted meat and the sound of lively music welcome you into the warm embrace of the town's favorite gathering spot.",
+          "exits": {
+            "e": "${self:map.starter_town.rooms.town_square}"
+          }
+        },
+        "town_square": {
+          "name": "Town Square",
+          "char": "S",
+          "description": "The open area in the center of town is bustling with merchants, travelers, and townsfolk going about their daily business.",
+          "exits": {
+            "w": "${self:map.starter_town.rooms.tavern}",
+            "n": "${self:map.starter_town.rooms.market}",
+            "s": "${self:map.starter_town.rooms.main_gate}",
+            "ne": "${self:map.starter_town.rooms.temple}"
+          }
+        },
+        "market": {
+          "name": "Marketplace",
+          "char": "M",
+          "description": "Stalls with colorful awnings display an array of goods from exotic spices to fine silks.",
+          "shop": "${self:shop.general_store}",
+          "exits": {
+            "s": "${self:map.starter_town.rooms.town_square}",
+            "w": "${self:map.starter_town.rooms.smithy}"
+          }
+        },
+        "smithy": {
+          "name": "Blacksmith's Forge",
+          "char": "F",
+          "description": "The steady rhythm of a hammer striking anvil rings out from this forge where weapons and armor are made.",
+          "exits": {
+            "e": "${self:map.starter_town.rooms.market}"
+          },
+          "shop": "${self:shop.blacksmith}"
+        },
+        "main_gate": {
+          "name": "Main Gate",
+          "char": "G",
+          "description": "The towering gate serves as the primary entrance and exit for the town, with guards monitoring the comings and goings.",
+          "exits": {
+            "n": "${self:map.starter_town.rooms.town_square}"
+          }
+        },
+        "temple": {
+          "name": "Temple of the Divines",
+          "char": "D",
+          "description": "Stained glass windows and the scent of incense signify this place of worship and peace.",
+          "exits": {
+            "sw": "${self:map.starter_town.rooms.town_square}"
+          },
+          "shop": "${self:shop.potion_shop}"
+        }
+      }
+    },
+    "city_of_tall_towers": {
+      "name": "City of Tall Towers",
+      "description": "A sprawling metropolis known for its soaring spires and bustling marketplace. The city's layout is a testament to the architectural prowess of its builders, with a grand courtyard at its heart. Hidden beneath the city streets lie ancient dungeons, holding secrets and dangers alike.",
+      "rooms": {
+        "marketplace": {
+          "name": "Marketplace",
+          "description": "The center of commerce in the City of Tall Towers. Stalls and shops of all kinds line the cobblestone streets, with merchants peddling goods from distant lands amid the lively chatter of bargain hunters.",
+          "exits": {
+            "n": "${self:map.city_of_tall_towers.rooms.northern_tower_entrance}",
+            "s": "${self:map.city_of_tall_towers.rooms.southern_tower_entrance}",
+            "e": "${self:map.city_of_tall_towers.rooms.eastern_tower_entrance}",
+            "w": "${self:map.city_of_tall_towers.rooms.western_tower_entrance}",
+            "u": "${self:map.city_of_tall_towers.rooms.grand_courtyard}"
+          }
+        },
+        "grand_courtyard": {
+          "name": "Grand Courtyard",
+          "description": "An expansive open space surrounded by the city's tallest towers. Marble statues of historical figures and fountains with crystal-clear water accentuate the area's grandeur. It serves as a common gathering place for celebrations and events.",
+          "exits": {
+            "d": "${self:map.city_of_tall_towers.rooms.marketplace}",
+            "u": "${self:map.city_of_tall_towers.rooms.sky_view_platform}"
+          }
+        },
+        "northern_tower_entrance": {
+          "name": "Northern Tower Entrance",
+          "description": "The gateway to the North Tower, which is rumored to hold the city's archives and secret knowledge. The stone edifice of the tower looms overhead, while the door is adorned with intricate carvings of scholarly motifs.",
+          "exits": {
+            "s": "${self:map.city_of_tall_towers.rooms.marketplace}",
+            "u": "${self:map.city_of_tall_towers.rooms.northern_tower_interior}"
+          }
+        },
+        "southern_tower_entrance": {
+          "name": "Southern Tower Entrance",
+          "description": "The entrance to the South Tower, recognized for its role as a bastion of the city's defense. The sturdy doors bear marks of battles long past, and the tower's height offers an unparalleled view for sentries watching the horizon.",
+          "exits": {
+            "n": "${self:map.city_of_tall_towers.rooms.marketplace}",
+            "u": "${self:map.city_of_tall_towers.rooms.southern_tower_interior}"
+          }
+        },
+        "eastern_tower_entrance": {
+          "name": "Eastern Tower Entrance",
+          "description": "This entryway gives access to the East Tower, home to the city's magical guild and its enchanters. Mystic runes etched into the tower's stone façade emit a faint, otherworldly glow.",
+          "exits": {
+            "w": "${self:map.city_of_tall_towers.rooms.marketplace}",
+            "u": "${self:map.city_of_tall_towers.rooms.eastern_tower_interior}"
+          }
+        },
+        "western_tower_entrance": {
+          "name": "Western Tower Entrance",
+          "description": "Serving as the threshold to the West Tower, this passageway is frequented by artisans and inventors. The door is a mechanical marvel in itself, with gears and levers that hint at the ingenuity contained within.",
+          "exits": {
+            "e": "${self:map.city_of_tall_towers.rooms.marketplace}",
+            "u": "${self:map.city_of_tall_towers.rooms.western_tower_interior}"
+          }
+        },
+        "dungeons": {
+          "name": "Mysterious Dungeons",
+          "description": "Dark and damp, the dungeons beneath the city are a maze of ancient hallways and forgotten cells. Echoes of footsteps and distant dripping water fill the air, and the flicker of torchlight casts ominous shadows along the cold stone walls.",
+          "exits": {
+            "u": "${self:map.city_of_tall_towers.rooms.marketplace}"
+          }
+        },
+        "sky_view_platform": {
+          "name": "Sky View Platform",
+          "description": "At the pinnacle of the city, this platform offers a breathtaking panoramic view. The horizon stretches far into the distance, showcasing the surrounding landscape and the city in all its glory.",
+          "exits": {
+            "d": "${self:map.city_of_tall_towers.rooms.grand_courtyard}"
+          }
+        }
+      }
     }
   }
 }
