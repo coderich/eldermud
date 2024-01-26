@@ -93,7 +93,7 @@ end);
 				<packageName></packageName>
 				<script>eldermud = eldermud or {};
 
-setMapZoom(13);
+setMapZoom(14);
 setCustomEnvColor(0, 0, 0, 0, 255);
 setCustomEnvColor(1, 255, 0, 0, 255);
 
@@ -108,7 +108,8 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.map', 'gmcp.eldermud.map',
   deleteArea(areaId)
   clearAreaUserData(areaId)
   setAreaName(areaId, data.name)
-
+  display(data.room);
+  
   -- First create all rooms
   for i,room in ipairs(data.rooms) do
     addRoom(room.id);

@@ -1,0 +1,28 @@
+{
+  "creature.new_creature": {
+    "name": "Araquanid",
+    "visual": "a large, spider-like creature with a glistening blue carapace and eight long legs, each tipped with a razor-sharp claw",
+    "description": "Araquanid prowls the dimly lit caverns, its eight eyes shimmering in the dark as it watches for prey. Water beads on its iridescent carapace, and it moves with a quiet, menacing grace.",
+    "str": 16,
+    "dex": 14,
+    "int": 6,
+    "wis": 9,
+    "pri": "str",
+    "lvl": 5,
+    "exp": 250,
+    "slain": "The Araquanid's many eyes close for the last time as it collapses, twitching, onto the ground.",
+    "adjectives": [
+      "menacing",
+      "silent",
+      "iridescent"
+    ],
+    "moves": [
+      "scuttle",
+      "climb",
+      "pounce"
+    ],
+    "attacks": [
+      "creature_attack_claw"
+    ]
+  }
+}

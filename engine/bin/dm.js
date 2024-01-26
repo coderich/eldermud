@@ -27,97 +27,60 @@ program.hook('preAction', (thisCommand, actionCommand) => {
 program.command('train').action(async (thisCommand, actionCommand) => {
   const { openai, dungeonMaster } = actionCommand;
 
-  // Grab all the game content
-  const { config } = CONFIG.toObject();
-  delete config.app;
-  delete config.help;
-  delete config.secrets;
+  // // Convert to JSONL format
+  // const training = [
+  //   JSON.stringify({
+  //     messages: [
+  //       { role: 'system', content: 'You are the Dungeon Master' },
+  //       { role: 'user', content: 'Study the current game content' },
+  //       { role: 'assistant', content: JSON.stringify(content) },
+  //     ],
+  //   }),
+  // ].join('\n');
 
-  const content = Util.flatten(config, { safe: true });
-
-  // Convert to JSONL format
-  const training = [
-    JSON.stringify({
-      messages: [
-        { role: 'system', content: 'You are the Dungeon Master for a MUD' },
-        { role: 'user', content: 'Study the current game content' },
-        { role: 'assistant', content: JSON.stringify(content) }
-      ],
-    }),
-  ].join('\n');
-
-  // Create training file
-  const file = await openai.files.create({
-    file: await OpenAI.toFile(Buffer.from(training)),
-    purpose: 'assistants',
-  });
+  // // Create training file
+  // const file = await openai.files.create({
+  //   file: await OpenAI.toFile(Buffer.from(training)),
+  // });
+  //   purpose: 'assistants',
 
   // Update DM
   await openai.beta.assistants.update(dungeonMaster, {
     name: 'Dungeon Master',
-    file_ids: [file.id], // Training file
+    file_ids: [],
     tools: [
       { type: 'retrieval' },
       // {
       //   type: 'function',
-      //   name: 'gameSuggestion',
-      //   description: `
-      //     You (the Dungeon Master) can communicate to me (the programmer of this MUD)
-      //     any new ideas, mechanics, or data model changes that would greatly increase your ability to generate a more deeply immersive experience for players
-      //   `,
-      //   parameters: {
-      //     sugggestion: { type: 'string', description: 'The Dungeon Masters suggestion to make the game better' },
+      //   function: {
+      //     name: 'query',
+      //     description: `
+      //       Query Game Content.
+      //     `,
       //   },
       // },
       {
         type: 'function',
         function: {
-          name: 'manageContent',
+          name: 'mutate',
           description: `
-            Manage Game Content
-
-            Always refer to the current game content when making a decision
-            You must carefully consider when to reuse, create, update, or delete content
-
-            Content should be as atomic and sharable as possible
-            To reuse content, create a self-reference to it (eg: "\${self:path.to.content}")
-
-            You must recursively traverse all self-references to ensure data integrity and completeness
-            If any data needs to be created, modified, or deleted due to data integrity you are required to do so
-            If any data needs to be created, modified, or deleted due to need for a fk-reference
-
-            You are free to recursively modify all self-referenced data to complete a task
-            All self-references must exist (no placeholder references)
-
-            Any property containing $key must be replaced with a unique keyname that identifies the word that comes before it
-            Any data type "number" will also accept a dice-roll string (eg: "2d10+3", "4d10-1")
-            Use room.spawns to place creatures on the map; otherwise creatures will never make it into the game
-            Use traits and mechanics to bring things to life otherwise they will remain motionless statues
-            All rooms must be evenly positioned in 3D space via x,y,z coordinates; you must keep these coordinates in memory when positining rooms
-            When connecting rooms (via exits) you must always ensure that their 3D coordinates align correctly
-            Every room must be accesible to the player (no islands allowed)
-            The payload you send will be deep merged with the current game content
-            To delete content, send a null value for a given property
-            Always strive to keep the data clean and of the highest integrity
+            Mutate Game Data
+            Props that contain "$" must be replaced with a meaningful variable name
+            To self:reference data use syntax "\${self:path.to.data}"
+            All self:references must be filled in with data (no placeholder references)
+            Data type "number" can also accept a dice-roll string eg "2d6+4"
           `,
           parameters: {
             type: 'object',
             properties: {
-              'map.$key.name': { type: 'string', description: 'A unique name for this map' },
-              'map.$key.description': { type: 'string', description: 'Describe the tone/idea of this area' },
-              'map.$key.rooms.$key.name': { type: 'string', description: 'A unique name for this room (titlecase)' },
-              'map.$key.rooms.$key.char': { type: 'string', description: 'A single character (used sparingly) to visually mark a special room' },
-              'map.$key.rooms.$key.description': { type: 'string', description: 'The room description' },
-              'map.$key.rooms.$key.exits.n': { type: 'string', description: 'Define an obvious exit north to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.s': { type: 'string', description: 'Define an obvious exit south to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.e': { type: 'string', description: 'Define an obvious exit east to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.w': { type: 'string', description: 'Define an obvious exit west to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.ne': { type: 'string', description: 'Define an obvious exit northeast to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.nw': { type: 'string', description: 'Define an obvious exit northwest to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.se': { type: 'string', description: 'Define an obvious exit southeast to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.sw': { type: 'string', description: 'Define an obvious exit southwest to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.u': { type: 'string', description: 'Define an obvious exit up to another room via ${self:reference} to that room' },
-              'map.$key.rooms.$key.exits.d': { type: 'string', description: 'Define an obvious exit down to another room via ${self:reference} to that room' },
+              'map.$key.name': { type: 'string' },
+              'map.$key.description': { type: 'string' },
+              'map.$key.rooms.$key.name': { type: 'string' },
+              'map.$key.rooms.$key.char': { type: 'string', description: 'A character (used sparingly) to mark a special room' },
+              'map.$key.rooms.$key.description': { type: 'string' },
+              'map.$key.rooms.$key.exits.$direction': { type: 'string', description: 'Define an exit {n,s,e,w,ne,nw,se,sw,u,d} to another room via ${self:reference}' },
+              'map.$key.rooms.$key.shop': { type: 'string', description: '${self:reference} to a shop' },
+              // 'map.$key.rooms.$key.respawn': { type: 'number', description: 'Specifies the number of seconds creatures will respawn after the room has been cleared' },
               'map.$key.rooms.$key.spawns': {
                 type: 'array',
                 items: {
@@ -127,118 +90,104 @@ program.command('train').action(async (thisCommand, actionCommand) => {
                     units: { type: 'array', items: { type: 'string' }, description: '${self:references} to the creatures to spawn' },
                   },
                 },
-                description: 'Creatues will spawn in this room from time to time. The array lets you define multiple groups of creatures (eg. You can have a single boss always spawn along with 2d2+1 lesser creatures)',
+                description: 'Spawn creatures',
               },
-              'map.$key.rooms.$key.respawn': { type: 'number', description: 'Specifies the number of seconds creatures will respawn after the room has been cleared' },
-              'map.$key.rooms.$key.shop': { type: 'string', description: '${self:reference} to a shop' },
 
-              'class.$key.name': { type: 'string', description: 'The class name' },
-              // 'class.$key.visual': { type: 'string', description: 'Visually describe this class' },
-              'class.$key.description': { type: 'string', description: 'A character description of this class' },
-              'class.$key.str': { type: 'integer', description: 'Strength increases HP, carry weight, and damage' },
-              'class.$key.dex': { type: 'integer', description: 'Dexterity increases Armor, speed, and damage' },
-              'class.$key.int': { type: 'integer', description: 'Intellect increases Mana, and damage' },
-              'class.$key.wis': { type: 'integer', description: 'Wisdom increases Mana, and damage' },
-              'class.$key.pri': { type: 'string', enum: ['str', 'dex', 'int', 'wis'], description: 'The class primary stat' },
-              'class.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this class' },
-              'class.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this class' },
-              'class.$key.attacks': { type: 'array', items: { type: 'string' }, description: '${self:references} to weapons this class attacks with. Cannot be empty.' },
-              'race.$key.name': { type: 'string', description: 'The race name' },
-              // 'race.$key.visual': { type: 'string', description: 'Visually describe this race' },
-              'race.$key.description': { type: 'string', description: 'A character description of this race' },
-              'race.$key.str': { type: 'integer', description: 'Bonus to strength, if any' },
-              'race.$key.dex': { type: 'integer', description: 'Bonus to dexterity, if any' },
-              'race.$key.int': { type: 'integer', description: 'Bonus to intellect, if any' },
-              'race.$key.wis': { type: 'integer', description: 'Bonus to wisdom, if any' },
-              'race.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this race' },
-              'race.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this race' },
+              // 'class.$key.name': { type: 'string', description: 'The class name' },
+              // 'class.$key.description': { type: 'string', description: 'A character description of this class' },
+              // 'class.$key.str': { type: 'integer', description: 'Strength increases HP, carry weight, and damage' },
+              // 'class.$key.dex': { type: 'integer', description: 'Dexterity increases Armor, speed, and damage' },
+              // 'class.$key.int': { type: 'integer', description: 'Intellect increases Mana, and damage' },
+              // 'class.$key.wis': { type: 'integer', description: 'Wisdom increases Mana, and damage' },
+              // 'class.$key.pri': { type: 'string', enum: ['str', 'dex', 'int', 'wis'], description: 'The class primary stat' },
+              // 'class.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this class' },
+              // 'class.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this class' },
+              // 'class.$key.attacks': { type: 'array', items: { type: 'string' }, description: '${self:references} to weapons this class attacks with. Cannot be empty.' },
+              // 'race.$key.name': { type: 'string', description: 'The race name' },
+              // 'race.$key.description': { type: 'string', description: 'A character description of this race' },
+              // 'race.$key.str': { type: 'integer', description: 'Bonus to strength, if any' },
+              // 'race.$key.dex': { type: 'integer', description: 'Bonus to dexterity, if any' },
+              // 'race.$key.int': { type: 'integer', description: 'Bonus to intellect, if any' },
+              // 'race.$key.wis': { type: 'integer', description: 'Bonus to wisdom, if any' },
+              // 'race.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this race' },
+              // 'race.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this race' },
 
-              'npc.$key.name': { type: 'string', description: 'The npc name' },
-              'npc.$key.visual': { type: 'string', description: 'Visually describe this npc' },
-              'npc.$key.description': { type: 'string', description: 'A character description of this npc' },
-              'npc.$key.map': { type: 'string', description: '${self:reference} to the map this npc is in' },
-              'npc.$key.room': { type: 'string', description: '${self:reference} to the room this npc is in' },
-              'npc.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this npc' },
-              'npc.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this npc' },
-              'creature.$key.name': { type: 'string', description: 'The creature name (lowercase unless a boss)' },
-              'creature.$key.visual': { type: 'string', description: 'Visually describe this creature' },
-              'creature.$key.description': { type: 'string', description: 'A character description of this creature' },
-              'creature.$key.str': { type: 'integer', description: 'The creature strength' },
-              'creature.$key.dex': { type: 'integer', description: 'The creature dexterity' },
-              'creature.$key.int': { type: 'integer', description: 'The creature intellect' },
-              'creature.$key.wis': { type: 'integer', description: 'The creature wisdom' },
-              'creature.$key.pri': { type: 'string', enum: ['str', 'dex', 'int', 'wis'], description: 'The creature primary stat' },
-              'creature.$key.lvl': { type: 'number', description: 'The creature experience level' },
-              'creature.$key.exp': { type: 'integer', description: 'The amount of exp awarded when creature is slain' },
-              'creature.$key.slain': { type: 'string', description: 'A short description that depicts the creatures death' },
-              'creature.$key.rank': { type: 'number', description: 'Indicates this creatures rank. Higher rank will offer more stat bonus. The range of this value must match the length of "ranks" attribute' },
-              'creature.$key.ranks': { type: 'array', items: { type: 'string' }, description: 'Individual word (adjectives) that describe a hierarchical ranking among this type of creature. The length of this array must match the range of "rank" value.' },
-              'creature.$key.adjectives': { type: 'array', items: { type: 'string' }, description: 'Individual word (adjectives) that add randomness to a particular spawn of this creature (eg: [small, giant, huge, fat, skinny, angry])' },
-              'creature.$key.moves': { type: 'array', items: { type: 'string' }, description: 'Individual words that add randomness to how a creature may move (eg: [creep, scuttle, wobble])' },
-              'creature.$key.attacks': { type: 'array', items: { type: 'string' }, description: '${self:references} to weapons this creature is capable of attacking with' },
-              'creature.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this creature' },
-              'creature.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this creature' },
+              // 'npc.$key.name': { type: 'string', description: 'The npc name' },
+              // 'npc.$key.visual': { type: 'string', description: 'Visually describe this npc' },
+              // 'npc.$key.description': { type: 'string', description: 'A character description of this npc' },
+              // 'npc.$key.map': { type: 'string', description: '${self:reference} to the map this npc is in' },
+              // 'npc.$key.room': { type: 'string', description: '${self:reference} to the room this npc is in' },
+              // 'npc.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this npc' },
+              // 'npc.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this npc' },
+              'creature.$key.name': { type: 'string', description: 'lowercase unless special' },
+              'creature.$key.visual': { type: 'string' },
+              'creature.$key.description': { type: 'string' },
+              'creature.$key.str': { type: 'integer' },
+              'creature.$key.dex': { type: 'integer' },
+              'creature.$key.int': { type: 'integer' },
+              'creature.$key.wis': { type: 'integer' },
+              'creature.$key.pri': { type: 'string', enum: ['str', 'dex', 'int', 'wis'], description: 'Primary stat' },
+              'creature.$key.lvl': { type: 'number' },
+              'creature.$key.exp': { type: 'integer' },
+              'creature.$key.slain': { type: 'string' },
+              'creature.$key.ranks': { type: 'array', items: { type: 'string' }, description: 'Creature hierarchy, if any' },
+              'creature.$key.adjectives': { type: 'array', items: { type: 'string' }, description: 'eg: []' },
+              'creature.$key.moves': { type: 'array', items: { type: 'string' }, description: 'eg: [creep, scuttle, wobble]' },
+              'creature.$key.attacks': { type: 'array', items: { type: 'string' }, description: '${self:reference} to weapons this creature can attack with' },
+              // 'creature.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:references} to talents granted to this creature' },
+              // 'creature.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:references} to traits granted to this creature' },
 
-              'blockade.$key.name': { type: 'string', description: 'The blockade name' },
-              'blockade.$key.label': { type: 'string', description: 'A short label that will prefix the exit it blocks (lowercase)' },
-              'blockade.$key.visual': { type: 'string', description: 'Visually describe this blockade' },
-              'blockade.$key.requires': { type: 'array', items: { type: 'string' }, description: '${self:references} to all things required to overcome this blockade' },
-              'door.$key.name': { type: 'string', description: 'The door name' },
-              'door.$key.key': { type: 'string', description: '${self:reference} to the item that will unlock this door' },
-              'door.$key.label': { type: 'string', description: 'A short label that will prefix the exit it blocks (lowercase)' },
-              'door.$key.status': { type: 'string', enum: ['open', 'closed', 'locked'], description: 'The starting status of the door' },
-              'door.$key.durability': { type: 'integer', description: 'Indicates how difficult it would be to smash in' },
-              'door.$key.picklock': { type: 'string', description: 'Indicates how difficult it would be to pick the lock' },
-              'door.$key.description': { type: 'string', description: 'The door description' },
+              // 'blockade.$key.name': { type: 'string', description: 'The blockade name' },
+              // 'blockade.$key.label': { type: 'string', description: 'A short label that will prefix the exit it blocks (lowercase)' },
+              // 'blockade.$key.visual': { type: 'string', description: 'Visually describe this blockade' },
+              // 'blockade.$key.requires': { type: 'array', items: { type: 'string' }, description: '${self:references} to all things required to overcome this blockade' },
+              // 'door.$key.name': { type: 'string', description: 'The door name' },
+              // 'door.$key.key': { type: 'string', description: '${self:reference} to the item that will unlock this door' },
+              // 'door.$key.label': { type: 'string', description: 'A short label that will prefix the exit it blocks (lowercase)' },
+              // 'door.$key.status': { type: 'string', enum: ['open', 'closed', 'locked'], description: 'The starting status of the door' },
+              // 'door.$key.durability': { type: 'integer', description: 'Indicates how difficult it would be to smash in' },
+              // 'door.$key.picklock': { type: 'string', description: 'Indicates how difficult it would be to pick the lock' },
+              // 'door.$key.description': { type: 'string', description: 'The door description' },
 
-              'talent.$key.name': { type: 'string', description: 'The talent name' },
-              'talent.$key.description': { type: 'string', description: 'The talent description' },
-              'trait.$key.name': { type: 'string', description: 'The trait name' },
-              'trait.$key.description': { type: 'string', description: 'The trait description' },
-              'trait.$key.mechanics': { type: 'array', items: { type: 'string' }, description: '${self:references} to mechanics that define this passive' },
-              'mechanic.$key.name': { type: 'string', description: 'The mechanic name' },
-              'mechanic.$key.description': { type: 'string', description: 'The mechanic description' },
+              // 'talent.$key.name': { type: 'string', description: 'The talent name' },
+              // 'talent.$key.description': { type: 'string', description: 'The talent description' },
+              // 'trait.$key.name': { type: 'string', description: 'The trait name' },
+              // 'trait.$key.description': { type: 'string', description: 'The trait description' },
+              // 'trait.$key.mechanics': { type: 'array', items: { type: 'string' }, description: '${self:references} to mechanics that define this passive' },
+              // 'mechanic.$key.name': { type: 'string', description: 'The mechanic name' },
+              // 'mechanic.$key.description': { type: 'string', description: 'The mechanic description' },
 
-              'shop.$key.name': { type: 'string', description: 'The shop name' },
-              'shop.$key.description': { type: 'string', description: 'The shop description' },
-              'shop.$key.items': { type: 'array', items: { type: 'string' }, description: '${self:references} to items sold. Cannot be empty.' },
-              'item.$key.name': { type: 'string', description: 'The item name' },
-              'item.$key.visual': { type: 'string', description: 'Visually describe this item' },
-              'item.$key.description': { type: 'string', description: 'The item description' },
-              'weapon.$key.name': { type: 'string', description: 'The weapon name (lowercase unless special)' },
-              'weapon.$key.visual': { type: 'string', description: 'Visually describe this weapon' },
-              'weapon.$key.description': { type: 'string', description: 'The weapon description' },
-              'weapon.$key.dmg': { type: 'number', description: 'The weapon damage' },
-              'weapon.$key.range': { type: 'string', enum: ['1', '2', '3'], description: 'The weapon range [frontrank, midrank, backrank]' },
-              'weapon.$key.speed': { type: 'integer', description: 'The swing speed of this weapon; higher values are slower' },
-              'weapon.$key.hits': { type: 'array', items: { type: 'string' }, description: 'Individual words that add randomness to how this weapon may hit (eg: [scratch, rip, tear])' },
-              'weapon.$key.misses': { type: 'array', items: { type: 'string' }, description: 'Individual words that add randomness to how this weapon may miss (eg: [swipe, swing, paw])' },
-              'weapon.$key.scales.str': { type: 'number', description: 'Precision 1 number that reflects how this weapon scales with strength' },
-              'weapon.$key.scales.dex': { type: 'number', description: 'Precision 1 number that reflects how this weapon scales with dexterity' },
-              'weapon.$key.scales.int': { type: 'number', description: 'Precision 1 number that reflects how this weapon scales with intellect' },
-              'weapon.$key.scales.wis': { type: 'number', description: 'Precision 1 number that reflects how this weapon scales with wisdom' },
+              'shop.$key.name': { type: 'string' },
+              'shop.$key.description': { type: 'string' },
+              'shop.$key.items': { type: 'array', items: { type: 'string' }, description: '${self:reference} to items sold' },
+              'item.$key.name': { type: 'string' },
+              'item.$key.visual': { type: 'string' },
+              'item.$key.description': { type: 'string' },
+              'weapon.$key.name': { type: 'string', description: 'lowercase unless special' },
+              'weapon.$key.visual': { type: 'string' },
+              'weapon.$key.description': { type: 'string' },
+              'weapon.$key.dmg': { type: 'number' },
+              'weapon.$key.range': { type: 'string', enum: ['1', '2', '3'] },
+              'weapon.$key.speed': { type: 'integer' },
+              'weapon.$key.hits': { type: 'array', items: { type: 'string' }, description: 'eg: [scratch, rip, tear]' },
+              'weapon.$key.misses': { type: 'array', items: { type: 'string' }, description: 'eg: [swipe, swing, paw]' },
+              'weapon.$key.scales.$stat': { type: 'number', description: 'Precision 1 number. $stat {str,dex,int,wis}' },
             },
           },
         },
       },
     ],
-    instructions: `
-      You are the Dungeon Master for a MUD.
-      Your task is to generate creative content designed to drive player interest, interaction, conflict, setback, and progression throughout the game.
-      You must always enforce data integrity; if any data needs updating, you must update it.
-    `,
+    instructions: 'You are a creative Dungeon Master',
   });
 });
 
 program.command('prompt')
   .argument('<prompt...>')
   .option('-f, --file <name>', 'filename', 'response')
-  .option('-n, --nostudy <bool>', 'nostudy', 'false')
   .action(async (prompt, opts, command) => {
     const { file } = opts;
     const { openai, dungeonMaster } = command;
-    // const content = prompt.flat().join(' ');
-    const content = `Study the current game content. ${prompt.flat().join(' ')}`;
+    const content = prompt.flat().join(' ');
     const filename = `${file}.${new Date().getTime()}.json`;
     const filepath = Path.join(__dirname, 'output', filename);
 
@@ -268,7 +217,8 @@ program.command('prompt')
           break;
         }
         case 'completed': {
-          abort(data);
+          console.log(run);
+          abort();
           break;
         }
         default: {
@@ -302,7 +252,7 @@ program.command('commit').action(() => {
   }, 2));
 
   // Cleanup files
-  files.forEach(file => FS.unlinkSync(file));
+  // files.forEach(file => FS.unlinkSync(file));
 });
 
 //

@@ -453,153 +453,6 @@
       ]
     }
   },
-  "map": {
-    "starting_village": {
-      "name": "Greendale",
-      "description": "Greendale is a lively frontier village nestled in the rolling plains near the edge of the Feralwood Forest. This bustling settlement serves as a beacon of civilisation where new adventurers can hone their skills, equip themselves for the challenges ahead, and begin to carve their own path in the world.",
-      "rooms": {
-        "village_square": {
-          "name": "Village Square",
-          "description": "The heart of Greendale, the square bustles with villagers haggling with traders, children playing, and adventurers discussing their next quest. The air smells of fresh bread and the sounds of hammer on anvil echo from the nearby blacksmith.",
-          "char": "S",
-          "exits": {
-            "n": "${self:map.starting_village.rooms.traders_alley}",
-            "s": "${self:map.starting_village.rooms.gate_to_feralwood}",
-            "e": "${self:map.starting_village.rooms.adventurers_guild}",
-            "w": "${self:map.starting_village.rooms.blacksmiths_forge}",
-            "u": "${self:map.starting_village.rooms.tavern_second_floor}"
-          },
-          "shop": "${self:shop.general_store}"
-        },
-        "traders_alley": {
-          "name": "Trader's Alley",
-          "description": "A narrow corridor flanked by various stalls and shops. Exotic wares from distant lands tempt passing adventurers, while crafty traders call out to make a deal.",
-          "exits": {
-            "s": "${self:map.starting_village.rooms.village_square}"
-          },
-          "shop": "${self:shop.specialty_goods}"
-        },
-        "gate_to_feralwood": {
-          "name": "Gate to Feralwood",
-          "description": "The southern gate of Greendale, leading to the dark and mysterious Feralwood Forest. Carved inscriptions warn of the dangers that lurk beyond, urging caution to those who venture through.",
-          "exits": {
-            "n": "${self:map.starting_village.rooms.village_square}"
-          }
-        },
-        "adventurers_guild": {
-          "name": "Adventurer's Guild",
-          "description": "This sturdy building is a second home to many adventurers. Inside, the walls are adorned with maps and the guild's quest board is always full, promising glory and riches to those brave enough to accept the challenges.",
-          "exits": {
-            "w": "${self:map.starting_village.rooms.village_square}"
-          },
-          "shop": "${self:shop.quest_givers}"
-        },
-        "blacksmiths_forge": {
-          "name": "Blacksmith's Forge",
-          "description": "The heat from the forge and the clang of metal upon metal is a constant in this open-aired workshop. The burly blacksmiths work tirelessly crafting and repairing weapons and armor for the town's protectors.",
-          "exits": {
-            "e": "${self:map.starting_village.rooms.village_square}"
-          },
-          "shop": "${self:shop.weapon_and_armor}"
-        },
-        "tavern_second_floor": {
-          "name": "Tavern - Second Floor",
-          "description": "Creaky wooden floors and the low hum of secretive conversations define this space. Adventurers plot their next moves over a pint of ale, and rumors of hidden treasures and mystical lands float from table to table.",
-          "exits": {
-            "d": "${self:map.starting_village.rooms.tavern_common_room}"
-          },
-          "shop": "${self:shop.room_and_board}"
-        },
-        "blacksmiths_backroom": {
-          "name": "Blacksmith's Backroom",
-          "description": "A cluttered space behind the busy forge, filled with rare materials and customers' custom orders.",
-          "exits": {
-            "e": "${self:map.starting_village.rooms.blacksmiths_forge}"
-          },
-          "shop": "${self:shop.rare_metals_and_customs}"
-        },
-        "alchemists_lab": {
-          "name": "Alchemist's Lab",
-          "description": "Bubbling potions and mystical elixirs await in this room that hums with magical activity.",
-          "shop": "${self:shop.potions_and_elixirs}"
-        },
-        "butcher_shop": {
-          "name": "Butcher's Shop",
-          "description": "A small, pungent room filled with the aromas of smoked and cured meats. The walls are lined with various cuts of meat hanging from hooks, and a butcher works diligently at his block.",
-          "exits": {
-            "n": "${self:map.starting_village.rooms.village_square}"
-          },
-          "shop": "${self:shop.meat_and_provisions}",
-          "spawns": [
-            {
-              "num": "3d2",
-              "units": [
-                "${self:creature.farm_animal}"
-              ]
-            }
-          ],
-          "respawn": 300
-        },
-        "herbalist_hut": {
-          "name": "Herbalist's Hut",
-          "description": "Tucked away in a quaint corner of the village, this small hut is engulfed in the scent of fresh herbs and flowers, and shelves full of dried plants and potions can be found within.",
-          "exits": {
-            "e": "${self:map.starting_village.rooms.traders_alley}"
-          },
-          "shop": "${self:shop.herbs_and_remedies}",
-          "spawns": [
-            {
-              "num": "1d4",
-              "units": [
-                "${self:creature.farm_animal}"
-              ]
-            }
-          ],
-          "respawn": 600
-        },
-        "stables": {
-          "name": "Stables",
-          "description": "The stables house the mounts of adventurers and merchants alike. The sound of horses and the sight of aged stablehands tending to them is a common sight.",
-          "exits": {
-            "w": "${self:map.starting_village.rooms.traders_alley}"
-          },
-          "shop": "${self:shop.mounts_and_barding}",
-          "spawns": [
-            {
-              "num": "2d3",
-              "units": [
-                "${self:creature.farm_animal}"
-              ]
-            }
-          ],
-          "respawn": 300
-        },
-        "library": {
-          "name": "Village Library",
-          "description": "Filled to the brim with scrolls, tomes, and texts, the village library offers a wealth of knowledge to those who seek it, spanning topics from arcane research to local history.",
-          "exits": {
-            "w": "${self:map.starting_village.rooms.adventurers_guild}"
-          },
-          "shop": "${self:shop.books_and_maps}"
-        },
-        "tavern_common_room": {
-          "name": "Tavern - Common Room",
-          "description": "A bustling gathering place, the common room is filled with the roars of laughter, clinking glasses, and the occasional unsolicited bard performance.",
-          "exits": {
-            "n": "${self:map.starting_village.rooms.tavern_second_floor}"
-          },
-          "shop": "${self:shop.food_and_drink}"
-        },
-        "mayors_office": {
-          "name": "Mayor's Office",
-          "description": "A modest office where the mayor of Greendale conducts the village's business. The walls are adorned with maps and charts, reflecting the challenges and achievements of the community.",
-          "exits": {
-            "s": "${self:map.starting_village.rooms.village_square}"
-          }
-        }
-      }
-    }
-  },
   "shop": {
     "general_store": {
       "name": "General Store",
@@ -730,6 +583,139 @@
       "name": "strength potion",
       "visual": "A thick, golden fluid that glows faintly in the bottle.",
       "description": "Imbibe this potion for increased physical strength, enabling the lifter of heavy objects and the deliverer of more powerful blows."
+    }
+  },
+  "map": {
+    "dungeon": {
+      "rooms": {
+        "room1": {
+          "name": "Entrance Hall",
+          "description": "The grand entrance with faded murals on the walls and a large, rusty gate.",
+          "exits": {
+            "n": "${self:map.dungeon.rooms.room2}",
+            "e": "${self:map.dungeon.rooms.room3}",
+            "w": "${self:map.dungeon.rooms.room4}",
+            "s": "${self:map.dungeon.rooms.room2}"
+          }
+        },
+        "room2": {
+          "name": "Guardian's Foyer",
+          "description": "A room that once housed guardians, with armor stands and weapon racks.",
+          "exits": {
+            "s": "${self:map.dungeon.rooms.room1}",
+            "n": "${self:map.dungeon.rooms.room1}",
+            "e": "${self:map.dungeon.rooms.room3}"
+          }
+        },
+        "room3": {
+          "name": "Chamber of Whispers",
+          "description": "This chamber amplifies the faintest sounds, creating a cacophony of whispers.",
+          "exits": {
+            "w": "${self:map.dungeon.rooms.room2}",
+            "s": "${self:map.dungeon.rooms.room4}"
+          }
+        },
+        "room4": {
+          "name": "Hall of Mirrors",
+          "description": "Mirrors line every side of the hall, some magical and others merely reflective.",
+          "exits": {
+            "e": "${self:map.dungeon.rooms.room5}",
+            "n": "${self:map.dungeon.rooms.room3}"
+          }
+        },
+        "room5": {
+          "name": "Garden of Silence",
+          "description": "A serene garden overgrown with unusual, silent plants.",
+          "exits": {
+            "w": "${self:map.dungeon.rooms.room4}",
+            "s": "${self:map.dungeon.rooms.room6}"
+          }
+        },
+        "room6": {
+          "name": "Crypt of Echoes",
+          "description": "An eerie crypt where echos linger, resonating with the secrets of the past.",
+          "exits": {
+            "n": "${self:map.dungeon.rooms.room5}",
+            "e": "${self:map.dungeon.rooms.room7}",
+            "d": "${self:map.dungeon.rooms.room11}"
+          }
+        },
+        "room7": {
+          "name": "Lair of the Gorgon",
+          "description": "A fearsome lair filled with petrified statues, victims of the gorgon's gaze.",
+          "exits": {
+            "w": "${self:map.dungeon.rooms.room6}",
+            "e": "${self:map.dungeon.rooms.room8}"
+          }
+        },
+        "room8": {
+          "name": "Library of Riddles",
+          "description": "Ancient tomes fill the shelves, along with puzzles and riddles that protect the knowledge.",
+          "exits": {
+            "w": "${self:map.dungeon.rooms.room7}",
+            "s": "${self:map.dungeon.rooms.room9}"
+          }
+        },
+        "room9": {
+          "name": "Reflecting Pool",
+          "description": "A still pool of water that perfectly reflects the room, hiding secret depths below.",
+          "exits": {
+            "n": "${self:map.dungeon.rooms.room8}",
+            "e": "${self:map.dungeon.rooms.room10}"
+          }
+        },
+        "room10": {
+          "name": "Elemental Crossroads",
+          "description": "A room where the four elements meet in harmony, each occupying a quadrant.",
+          "exits": {
+            "w": "${self:map.dungeon.rooms.room9}",
+            "d": "${self:map.dungeon.rooms.room15}"
+          }
+        },
+        "room11": {
+          "name": "Chamber of the Fallen",
+          "description": "A memorial chamber honoring legendary heroes, with statues and plaques adorning the space.",
+          "exits": {
+            "u": "${self:map.dungeon.rooms.room6}",
+            "e": "${self:map.dungeon.rooms.room12}"
+          }
+        },
+        "room12": {
+          "name": "Goblin's Den",
+          "description": "A foul-smelling den crudely furnished, currently home to a tribe of tricky goblins.",
+          "exits": {
+            "w": "${self:map.dungeon.rooms.room11}",
+            "e": "${self:map.dungeon.rooms.room13}"
+          }
+        },
+        "room13": {
+          "name": "Trove of the Lost",
+          "description": "A treasure room filled with the loot of adventurers who never made it out.",
+          "exits": {
+            "w": "${self:map.dungeon.rooms.room12}",
+            "e": "${self:map.dungeon.rooms.room14}",
+            "d": "${self:map.dungeon.rooms.room15}"
+          }
+        },
+        "room14": {
+          "name": "Sanctuary of Shadows",
+          "description": "A solemn sanctuary where shadows dance, casting strange forms on the walls.",
+          "exits": {
+            "w": "${self:map.dungeon.rooms.room13}",
+            "s": "${self:map.dungeon.rooms.room15}"
+          }
+        },
+        "room15": {
+          "name": "Heart of the Labyrinth",
+          "description": "The deepest chamber of the dungeon, where the most secrets lie hidden, pulsating with an ancient power.",
+          "exits": {
+            "n": "${self:map.dungeon.rooms.room14}",
+            "u": "${self:map.dungeon.rooms.room13}"
+          }
+        }
+      },
+      "name": "Labyrinth of Echoes",
+      "description": "A mysterious underground complex filled with echoes of forgotten times. It features 15 interconnected rooms allowing movement in all directions."
     }
   }
 }

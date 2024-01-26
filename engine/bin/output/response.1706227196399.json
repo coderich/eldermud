@@ -1,0 +1,19 @@
+{
+  "creature.new_creature": {
+    "name": "Grimalkin",
+    "visual": "A shadowy feline creature with glowing green eyes, exuding an aura of mystique.",
+    "description": "The Grimalkin is a fearsome and sentient feline that walks the boundary between the spirit world and the mortal realm. Cloaked in shadows and silence, this mystical beast is said to possess knowledge far beyond any creature's understanding, often playing tricks on unwary travelers who venture too close to its lair.",
+    "str": 10,
+    "dex": 15,
+    "int": 18,
+    "wis": 17,
+    "pri": "int",
+    "lvl": 5,
+    "exp": 300,
+    "adjectives": [
+      "mystical",
+      "shadowy",
+      "sentient"
+    ]
+  }
+}
