@@ -1,6 +1,7 @@
 const FS = require('fs');
 const Path = require('path');
 const OpenAI = require('openai');
+const get = require('lodash.get');
 const { Command } = require('commander');
 const { Loop } = require('@coderich/gameflow');
 const Util = require('@coderich/util');
@@ -23,63 +24,77 @@ program.hook('preAction', (thisCommand, actionCommand) => {
   actionCommand.openai = new OpenAI({ apiKey });
 });
 
-// Programs
 program.command('train').action(async (thisCommand, actionCommand) => {
   const { openai, dungeonMaster } = actionCommand;
-
-  // // Convert to JSONL format
-  // const training = [
-  //   JSON.stringify({
-  //     messages: [
-  //       { role: 'system', content: 'You are the Dungeon Master' },
-  //       { role: 'user', content: 'Study the current game content' },
-  //       { role: 'assistant', content: JSON.stringify(content) },
-  //     ],
-  //   }),
-  // ].join('\n');
-
-  // // Create training file
-  // const file = await openai.files.create({
-  //   file: await OpenAI.toFile(Buffer.from(training)),
-  // });
-  //   purpose: 'assistants',
 
   // Update DM
   await openai.beta.assistants.update(dungeonMaster, {
     name: 'Dungeon Master',
     file_ids: [],
     tools: [
-      // { type: 'retrieval' },
-      // {
-      //   type: 'function',
-      //   function: {
-      //     name: 'query',
-      //     description: `
-      //       Query Game Content.
-      //     `,
-      //   },
-      // },
+      { type: 'retrieval' },
       {
         type: 'function',
         function: {
-          name: 'mutate',
+          name: 'manage',
           description: `
-            Mutate Game Data
-            Props that contain "$" must be replaced with a meaningful variable name
-            To self-reference data use syntax "\${self:path.to.data}"
-            You are required to create all the data neccessary to complete a task (including the self-referenced data)
-            Data type "number" can also accept a dice-roll string eg "2d6+4"
+            Manage Game Data
+            Follow AD&D 2E standards
+            All attributes are REQUIRED
+            You must always provide the data to all references
+            References must follow the syntax "\${self:path.to.reference}"
+            "$key" properties must be substituted with a meaningful varName
+            "$stat" properties must be repeated and substituted for every [str,dex,int,wis,con,cha,lvl,exp]
+            Type "number" can also accept a dice-roll string eg "2d6+4"
+            Every exit must have an entrance back from the opposite direction
+            Provide a null value to delete data
           `,
           parameters: {
             type: 'object',
             properties: {
+              'trait.$key.name': { type: 'string' },
+              'trait.$key.description': { type: 'string' },
+
+              'ability.$key.name': { type: 'string' },
+              'ability.$key.description': { type: 'string' },
+              'ability.$key.minRequired.$stat': { type: 'string' },
+
+              'race.$key.name': { type: 'string' },
+              'race.$key.depiction': { type: 'string' },
+              'race.$key.description': { type: 'string' },
+              'race.$key.bonus.$stat': { type: 'integer', description: 'Bonus values' },
+              'race.$key.traits': { type: 'array', items: { type: 'string', description: '${self:reference} to trait' } },
+
+              'class.$key.name': { type: 'string' },
+              'class.$key.depiction': { type: 'string' },
+              'class.$key.description': { type: 'string' },
+              'class.$key.$stat': { type: 'integer', description: 'Starting values' },
+              'class.$key.traits': { type: 'array', items: { type: 'string', description: '${self:reference} to trait' } },
+              'class.$key.abilities': { type: 'array', items: { type: 'string', description: '${self:reference} to ability' } },
+
+              'npc.$key.name': { type: 'string' },
+              'npc.$key.depiction': { type: 'string' },
+              'npc.$key.description': { type: 'string' },
+
+              'creature.$key.name': { type: 'string' },
+              'creature.$key.depiction': { type: 'string' },
+              'creature.$key.description': { type: 'string' },
+              'creature.$key.slain': { type: 'string', description: 'Depict when slain' },
+              'creature.$key.$stat': { type: 'integer' },
+              'creature.$key.random.ranks': { type: 'array', items: { type: 'string', description: 'Singular noun' } },
+              'creature.$key.random.impressions': { type: 'array', items: { type: 'string', description: 'Singular adjective' } },
+              'creature.$key.random.movements': { type: 'array', items: { type: 'string', description: 'Singular verb' } },
+              'creature.$key.attacks': { type: 'array', items: { type: 'string', description: '${self:reference} to weapon' } },
+              'creature.$key.traits': { type: 'array', items: { type: 'string', description: '${self:reference} to trait' } },
+              'creature.$key.abilities': { type: 'array', items: { type: 'string', description: '${self:reference} to ability' } },
+
               'map.$key.name': { type: 'string' },
               'map.$key.description': { type: 'string' },
               'map.$key.rooms.$key.name': { type: 'string' },
-              'map.$key.rooms.$key.char': { type: 'string', description: 'A character (used sparingly) to mark a special room' },
+              'map.$key.rooms.$key.char': { type: 'string', description: 'Denote a special room' },
               'map.$key.rooms.$key.description': { type: 'string' },
-              'map.$key.rooms.$key.exits.$direction': { type: 'string', description: 'Define an exit {n,s,e,w,ne,nw,se,sw,u,d} to another room via ${self:reference}' },
-              'map.$key.rooms.$key.shop': { type: 'string', description: '${self:reference} to a shop' },
+              'map.$key.rooms.$key.exits.$direction': { type: 'string', description: 'An exit {n,s,e,w,ne,nw,se,sw,u,d} to another ${self:reference} room' },
+              'map.$key.rooms.$key.shop': { type: 'string', description: '${self:reference} to shop' },
               'map.$key.rooms.$key.respawn': { type: 'number', description: 'If spawns, how long to respawn' },
               'map.$key.rooms.$key.spawns': {
                 type: 'array',
@@ -87,99 +102,45 @@ program.command('train').action(async (thisCommand, actionCommand) => {
                   type: 'object',
                   properties: {
                     num: { type: 'number' },
-                    // respawn: { type: 'number', description: 'Respawn counter after death' },
-                    units: { type: 'array', items: { type: 'string' }, description: '${self:reference} to creatures' },
+                    units: { type: 'array', items: { type: 'string', description: '${self:reference} creature' } },
                   },
                 },
                 description: 'Spawn creatures',
               },
 
-              'race.$key.name': { type: 'string' },
-              'race.$key.description': { type: 'string' },
-              'race.$key.str': { type: 'integer' },
-              'race.$key.dex': { type: 'integer' },
-              'race.$key.int': { type: 'integer' },
-              'race.$key.wis': { type: 'integer' },
-              'race.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:reference} to talents' },
-              'race.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:reference} to traits' },
+              // 'blockade.$key.name': { type: 'string' },
+              // 'blockade.$key.depiction': { type: 'string' },
+              // 'blockade.$key.description': { type: 'string' },
+              // 'blockade.$key.successMsg': { type: 'string' },
+              // 'blockade.$key.failureMsg': { type: 'string' },
+              // 'blockade.$key.requires': { type: 'array', items: { type: 'string' }, description: '${self:reference} to items required to pass' },
 
-              'class.$key.name': { type: 'string' },
-              'class.$key.description': { type: 'string' },
-              'class.$key.str': { type: 'integer' },
-              'class.$key.dex': { type: 'integer' },
-              'class.$key.int': { type: 'integer' },
-              'class.$key.wis': { type: 'integer' },
-              'class.$key.pri': { type: 'string', enum: ['str', 'dex', 'int', 'wis'], description: 'Primary' },
-              'class.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:reference} to talents' },
-              'class.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:reference} to traits' },
-              'class.$key.attacks': { type: 'array', items: { type: 'string' }, description: '${self:reference} to weapons' },
-
-              'npc.$key.name': { type: 'string' },
-              'npc.$key.visual': { type: 'string', description: 'Description when looked at' },
-              'npc.$key.description': { type: 'string' },
-              'npc.$key.map': { type: 'string', description: '${self:reference} to map' },
-              'npc.$key.room': { type: 'string', description: '${self:reference} to room' },
-              'npc.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:reference} to talents' },
-              'npc.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:reference} to traits' },
-
-              'creature.$key.name': { type: 'string' },
-              'creature.$key.visual': { type: 'string', description: 'Description when looked at' },
-              'creature.$key.description': { type: 'string' },
-              'creature.$key.leadership': { type: 'number' },
-              'creature.$key.str': { type: 'integer' },
-              'creature.$key.dex': { type: 'integer' },
-              'creature.$key.int': { type: 'integer' },
-              'creature.$key.wis': { type: 'integer' },
-              'creature.$key.pri': { type: 'string', enum: ['str', 'dex', 'int', 'wis'], description: 'Primary' },
-              'creature.$key.lvl': { type: 'number' },
-              'creature.$key.exp': { type: 'integer' },
-              'creature.$key.slain': { type: 'string', description: 'Description when slain' },
-              'creature.$key.ranks': { type: 'array', items: { type: 'string' }, description: 'Creature hierarchy, if any' },
-              'creature.$key.adjectives': { type: 'array', items: { type: 'string' }, description: 'eg: []' },
-              'creature.$key.moves': { type: 'array', items: { type: 'string' }, description: 'eg: [creep, scuttle, wobble]' },
-              'creature.$key.attacks': { type: 'array', items: { type: 'string' }, description: '${self:reference} to weapons this creature can attack with' },
-              'creature.$key.talents': { type: 'array', items: { type: 'string' }, description: '${self:reference} to talents' },
-              'creature.$key.traits': { type: 'array', items: { type: 'string' }, description: '${self:reference} to traits' },
-
-              // 'blockade.$key.name': { type: 'string', description: 'The blockade name' },
-              // 'blockade.$key.label': { type: 'string', description: 'A short label that will prefix the exit it blocks (lowercase)' },
-              // 'blockade.$key.visual': { type: 'string', description: 'Visually describe this blockade' },
-              // 'blockade.$key.requires': { type: 'array', items: { type: 'string' }, description: '${self:reference} to all things required to overcome this blockade' },
-              'door.$key.name': { type: 'string' },
-              'door.$key.visual': { type: 'string', description: 'Description when looked at' },
-              'door.$key.description': { type: 'string' },
-              'door.$key.key': { type: 'string', description: '${self:reference} to item if any' },
-              'door.$key.status': { type: 'string', enum: ['open', 'closed', 'locked'] },
-              'door.$key.durability': { type: 'integer' },
-              'door.$key.picklock': { type: 'integer' },
-
-              // 'talent.$key.name': { type: 'string' },
-              // 'talent.$key.description': { type: 'string' },
-              'trait.$key.name': { type: 'string' },
-              'trait.$key.description': { type: 'string' },
-              'trait.$key.mechanics': { type: 'array', items: { type: 'string' }, description: '${self:reference} to mechanics' },
-              'mechanic.$key.name': { type: 'string' },
-              'mechanic.$key.description': { type: 'string' },
+              // 'door.$key.name': { type: 'string' },
+              // 'door.$key.description': { type: 'string' },
+              // 'door.$key.key': { type: 'string', description: '${self:reference} to item if any' },
 
               'shop.$key.name': { type: 'string' },
               'shop.$key.description': { type: 'string' },
-              'shop.$key.inventory': { type: 'array', items: { type: 'string' }, description: '${self:reference} to {item,weapon}' },
+              'shop.$key.inventory': { type: 'array', items: { type: 'string', description: '${self:reference} to {item,weapon}' } },
+
               'item.$key.name': { type: 'string' },
-              'item.$key.visual': { type: 'string', description: 'Description when looked at' },
+              'item.$key.depiction': { type: 'string' },
               'item.$key.description': { type: 'string' },
               'item.$key.value': { type: 'integer' },
               'item.$key.weight': { type: 'integer' },
+
               'weapon.$key.name': { type: 'string' },
-              'weapon.$key.visual': { type: 'string', description: 'Description when looked at' },
+              'weapon.$key.depiction': { type: 'string' },
               'weapon.$key.description': { type: 'string' },
               'weapon.$key.dmg': { type: 'number' },
               'weapon.$key.range': { type: 'string', enum: ['1', '2', '3'] },
               'weapon.$key.speed': { type: 'integer' },
               'weapon.$key.value': { type: 'integer' },
               'weapon.$key.weight': { type: 'integer' },
-              'weapon.$key.hits': { type: 'array', items: { type: 'string' }, description: 'eg: [scratch, rip, tear]' },
-              'weapon.$key.misses': { type: 'array', items: { type: 'string' }, description: 'eg: [swipe, swing, paw]' },
-              'weapon.$key.scales.$stat': { type: 'number', description: 'Precision 1 number. $stat {str,dex,int,wis}' },
+              'weapon.$key.hits': { type: 'array', items: { type: 'string', description: 'singular' }, description: 'eg: [scratch, rip, tear]' },
+              'weapon.$key.misses': { type: 'array', items: { type: 'string', description: 'singular' }, description: 'eg: [swipe, swing, paw]' },
+              'weapon.$key.scales.$stat': { type: 'number', description: 'Precision 1 number' },
+              'weapon.$key.minRequired.$stat': { type: 'string', description: 'Minimum requirements' },
             },
           },
         },
@@ -189,24 +150,28 @@ program.command('train').action(async (thisCommand, actionCommand) => {
   });
 });
 
-program.command('prompt')
-  .argument('<prompt...>')
-  .option('-f, --file <name>', 'filename', 'response')
-  .action(async (prompt, opts, command) => {
-    const { file } = opts;
+program.command('query')
+  .argument('<query>')
+  .argument('[datasets...]')
+  .action(async (content, datasets, opts, command) => {
     const { openai, dungeonMaster } = command;
-    const content = prompt.flat().join(' ');
-    const filename = `${file}.${new Date().getTime()}.json`;
+    const filename = `response.${new Date().getTime()}.json`;
     const filepath = Path.join(__dirname, 'output', filename);
+    const { config } = CONFIG.toObject();
 
-    console.log(content);
+    // Create training files
+    const files = await Promise.all(datasets.map(async (dataset) => {
+      const data = JSON.stringify(Util.flatten(get(config, dataset, {}), { safe: true }));
+      const file = await OpenAI.toFile(Buffer.from(data));
+      return openai.files.create({ file, purpose: 'assistants' });
+    }));
 
     const data = {};
 
-    // Prompt the Dungeon Master
+    // Query the Dungeon Master
     const result = await openai.beta.threads.createAndRun({
       assistant_id: dungeonMaster,
-      thread: { messages: [{ role: 'user', content }] },
+      thread: { messages: [{ role: 'user', content, file_ids: files.map(f => f.id) }] },
     });
 
     // Await DM Response
@@ -237,6 +202,9 @@ program.command('prompt')
 
     // Capture Response
     FS.writeFileSync(filepath, JSON.stringify(data, null, 2));
+
+    // Delete files
+    await Promise.all(files.map(file => openai.files.del(file.id)));
   });
 
 program.command('commit').action(() => {
