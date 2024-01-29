@@ -20,12 +20,12 @@ Action.define('spawn', async (_, { actor }) => {
     CONFIG.get(`${room}.units`).add(actor);
   }
 
-  // Attach traits
-  actor.traits?.forEach((trait) => {
-    trait.mechanics.forEach((mechanic) => {
-      if (Action[mechanic.id]) actor.stream('trait', mechanic.id);
-    });
-  });
+  // // Attach traits
+  // actor.traits?.forEach((trait) => {
+  //   trait.mechanics.forEach((mechanic) => {
+  //     if (Action[mechanic.id]) actor.stream('trait', mechanic.id);
+  //   });
+  // });
 
   // Bind system events to this actor
   actor.on('*', (event, context) => {

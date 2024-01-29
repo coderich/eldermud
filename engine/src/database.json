@@ -1,113 +1,1148 @@
 {
+  "class": {
+    "arcane_scholar": {
+      "name": "Arcane Scholar",
+      "depiction": "A wizened figure surrounded by ancient tomes and mystical artifacts, fingers tracing through the air weaving intricate spells.",
+      "description": "Arcane Scholars are masters of ancient knowledge and powerful magics, dedicating their lives to unlocking the secrets of the universe. They are revered for their intellect and feared for their formidable spellcasting abilities.",
+      "int": 15,
+      "wis": 12,
+      "traits": [
+        "${self:trait.arcane_lore}",
+        "${self:trait.elder_wisdom}",
+        "${self:trait.magic_resonance}"
+      ],
+      "abilities": [
+        "${self:ability.spellcasting}",
+        "${self:ability.ritual_conduit}",
+        "${self:ability.runecraft}"
+      ]
+    },
+    "crimson_blade": {
+      "name": "Crimson Blade",
+      "depiction": "A fierce warrior in blood-red armor wielding a massive sword that seems to thirst for battle.",
+      "description": "Crimson Blades are relentless warriors who harness the power of blood to bolster their combat prowess. Their unyielding will and battle fervor make them devastating on the frontlines.",
+      "str": 16,
+      "con": 14,
+      "traits": [
+        "${self:trait.blood_oath}",
+        "${self:trait.war_cry}",
+        "${self:trait.interceptor}"
+      ],
+      "abilities": [
+        "${self:ability.blood_magic}",
+        "${self:ability.blade_dance}",
+        "${self:ability.lifedrinker}"
+      ]
+    },
+    "wildheart_druid": {
+      "name": "Wildheart Druid",
+      "depiction": "A guardian of nature, cloaked in robes of woven leaves and bark, surrounded by animals and plants bending to their will.",
+      "description": "Wildheart Druids form a sacred bond with nature. They can tap into the essence of life to heal, summon natural allies, and unleash the raw fury of the wilds against their foes.",
+      "wis": 14,
+      "con": 12,
+      "traits": [
+        "${self:trait.natures_ally}",
+        "${self:trait.elemental_attunement}",
+        "${self:trait.spiritual_communion}"
+      ],
+      "abilities": [
+        "${self:ability.shape_shift}",
+        "${self:ability.natural_summon}",
+        "${self:ability.earthwarden}"
+      ]
+    },
+    "star_scion": {
+      "name": "Star Scion",
+      "depiction": "A mystical figure with eyes that mirror the night sky, draped in celestial robes, channeling the power of the stars and constellations.",
+      "description": "Star Scions draw upon the energies of the cosmos to foresee the future, wield astronomical powers, and manipulate the tides of fate. They serve as beacons of guidance and wisdom.",
+      "int": 14,
+      "cha": 13,
+      "traits": [
+        "${self:trait.celestial_knowledge}",
+        "${self:trait.astromancy}",
+        "${self:trait.stellar_navigation}"
+      ],
+      "abilities": [
+        "${self:ability.starcall}",
+        "${self:ability.comet_strike}",
+        "${self:ability.gravity_mastery}"
+      ]
+    },
+    "shadowsage": {
+      "name": "Shadowsage",
+      "depiction": "A cloaked figure that blends seamlessly with the shadows, a silent observer whose eyes reveal an understanding of the darker aspects of magic.",
+      "description": "Shadowsages are enigmatic practitioners of shadow magic, excelling in subterfuge, illusion, and tapping into the unseen energies. They are both sought after and feared for their unique skills.",
+      "dex": 14,
+      "int": 13,
+      "traits": [
+        "${self:trait.shadow_affinity}",
+        "${self:trait.veil_of_darkness}",
+        "${self:trait.mind_shroud}"
+      ],
+      "abilities": [
+        "${self:ability.shadow_step}",
+        "${self:ability.nightmare_fabric}",
+        "${self:ability.enshadowing_mist}"
+      ]
+    },
+    "skylancer": {
+      "name": "Skylancer",
+      "depiction": "An armored knight atop a magnificent flying beast, leaping and soaring through the air with a lance of lightning in hand.",
+      "description": "Skylancers are elite aerial combatants who command the skies with their winged mounts and mastery of aeromancy. They strike with the speed and precision of a thunderbolt.",
+      "dex": 15,
+      "wis": 12,
+      "traits": [
+        "${self:trait.aerial_acrobat}",
+        "${self:trait.skybound}",
+        "${self:trait.windcaller}"
+      ],
+      "abilities": [
+        "${self:ability.riding_the_maelstrom}",
+        "${self:ability.tempest_charge}",
+        "${self:ability.zephyr_blades}"
+      ]
+    },
+    "doomsinger": {
+      "name": "Doomsinger",
+      "depiction": "A bard with a haunting presence, whose melodies can inspire dread and sorrow, the truth of their words echoing the inevitability of fate.",
+      "description": "Doomsingers are mournful bards whose songs resonate with the darker side of tales. Their music can sap the will of their enemies and soothe the despair of allies.",
+      "cha": 15,
+      "int": 12,
+      "traits": [
+        "${self:trait.elegy_of_the_end}",
+        "${self:trait.siren_call}",
+        "${self:trait.melancholic_aura}"
+      ],
+      "abilities": [
+        "${self:ability.cacophony_of_ruin}",
+        "${self:ability.dirge_of_dread}",
+        "${self:ability.requiem_of_resilience}"
+      ]
+    },
+    "inferno_summoner": {
+      "name": "Inferno Summoner",
+      "depiction": "A spellcaster with a pyromaniac's grin, surrounded by dancing flames and fiery creatures, the heat of their presence warping the air.",
+      "description": "Inferno Summoners call forth beings of fire and brimstone to do their bidding. They revel in the destructive power of flame and the chaos it can bring to their enemies.",
+      "int": 15,
+      "con": 13,
+      "traits": [
+        "${self:trait.flame_affinity}",
+        "${self:trait.emberborn}",
+        "${self:trait.pyromancer}"
+      ],
+      "abilities": [
+        "${self:ability.fire_call}",
+        "${self:ability.hellfire_gambit}",
+        "${self:ability.phoenix_rising}"
+      ]
+    },
+    "stoneshaper": {
+      "name": "Stoneshaper",
+      "depiction": "A figure armored in stone, their touch turning the earth beneath to mold as easily as clay, commanding the very ground to rise up and shield them.",
+      "description": "Stoneshapers are geomancers who have honed their magic to manipulate stone and earth. They form impenetrable defenses and shape the terrain to their advantage.",
+      "str": 14,
+      "wis": 13,
+      "traits": [
+        "${self:trait.earth_embrace}",
+        "${self:trait.bastion_aura}",
+        "${self:trait.terracraft}"
+      ],
+      "abilities": [
+        "${self:ability.earthen_bulwark}",
+        "${self:ability.gravity_well}",
+        "${self:ability.lithomancy}"
+      ]
+    },
+    "mystic_bladeweaver": {
+      "name": "Mystic Bladeweaver",
+      "depiction": "A graceful warrior whose blades whirl in an arcane dance, each movement infused with magical energy.",
+      "description": "Mystic Bladeweavers are agile swordsmen who blend martial prowess with enchantments. They weave spells into their swordplay, making every strike a deadly art.",
+      "dex": 16,
+      "int": 12,
+      "traits": [
+        "${self:trait.enchanted_edge}",
+        "${self:trait.balanced_harmony}",
+        "${self:trait.arcane_assault}"
+      ],
+      "abilities": [
+        "${self:ability.bladesong}",
+        "${self:ability.runic_cut}",
+        "${self:ability.spectral_sweep}"
+      ]
+    },
+    "necroWarrior": {
+      "name": "Necro Warrior",
+      "description": "Fearsome warriors who have been imbued with dark necrotic energies, granting them power over the undead and unholy resilience.",
+      "str": 16,
+      "con": 14,
+      "dex": 10,
+      "int": 8,
+      "wis": 12,
+      "cha": 10,
+      "traits": [
+        "${self:trait.deadlyCommand}",
+        "${self:trait.unholyVigor}"
+      ],
+      "abilities": [
+        "${self:ability.animateDeadWarrior}",
+        "${self:ability.deathlyAura}"
+      ]
+    },
+    "boneSorcerer": {
+      "name": "Bone Sorcerer",
+      "description": "Spellcasters whose magic flows from the power locked within bones, summoning skeletal minions and conjuring bone-armored barriers.",
+      "int": 17,
+      "wis": 14,
+      "cha": 13,
+      "str": 8,
+      "dex": 10,
+      "con": 12,
+      "traits": [
+        "${self:trait.skeletalAffinity}",
+        "${self:trait.boneWarding}"
+      ],
+      "abilities": [
+        "${self:ability.skeletalSummoning}",
+        "${self:ability.osseousEmpowerment}"
+      ]
+    },
+    "deathCleric": {
+      "name": "Death Cleric",
+      "description": "Clerics devoted to the gods of death, empowered with the ability to heal the living and harm the undead, commanding both with equal mastery.",
+      "wis": 16,
+      "cha": 12,
+      "con": 14,
+      "int": 10,
+      "str": 10,
+      "dex": 8,
+      "traits": [
+        "${self:trait.ritualOfFinality}",
+        "${self:trait.deathlyDominion}"
+      ],
+      "abilities": [
+        "${self:ability.necroticTouch}",
+        "${self:ability.spiritGuardian}"
+      ]
+    },
+    "lichEnvoy": {
+      "name": "Lich Envoy",
+      "depiction": "Messengers and heralds for ancient liches, possessing fragments of their masters' necromantic powers and their insidious will.",
+      "int": 18,
+      "wis": 12,
+      "cha": 15,
+      "con": 10,
+      "str": 6,
+      "dex": 9,
+      "traits": [
+        "${self:trait.lichLegacy}",
+        "${self:trait.paralyzingGaze}"
+      ],
+      "abilities": [
+        "${self:ability.phylacteryLink}",
+        "${self:ability.fearOfTheAncients}"
+      ]
+    },
+    "reaper": {
+      "name": "Reaper",
+      "depiction": "Mystic warriors who walk the boundary between life and death, able to sever the threads of life with their ethereal scythes.",
+      "str": 14,
+      "dex": 15,
+      "con": 12,
+      "int": 8,
+      "wis": 13,
+      "cha": 8,
+      "traits": [
+        "${self:trait.soulHarvest}",
+        "${self:trait.etherStride}"
+      ],
+      "abilities": [
+        "${self:ability.soulCleave}",
+        "${self:ability.deathStep}"
+      ]
+    },
+    "ghostlyDuelist": {
+      "name": "Ghostly Duelist",
+      "depiction": "Ethereal fencers who have mastered the art of incorporeal combat, striking terror and cold steel through their opponents.",
+      "dex": 18,
+      "cha": 14,
+      "con": 10,
+      "int": 10,
+      "wis": 8,
+      "str": 10,
+      "traits": [
+        "${self:trait.phantomFinesse}",
+        "${self:trait.spectralParry}"
+      ],
+      "abilities": [
+        "${self:ability.etherealLunge}",
+        "${self:ability.disembodiedManeuver}"
+      ]
+    },
+    "spiritBinder": {
+      "name": "Spirit Binder",
+      "depiction": "Conjurers who can bind and command spirits from beyond, compelling them to share their spectral might.",
+      "cha": 16,
+      "int": 14,
+      "wis": 12,
+      "con": 11,
+      "dex": 9,
+      "str": 8,
+      "traits": [
+        "${self:trait.spectralChain}",
+        "${self:trait.spiritualCommunion}"
+      ],
+      "abilities": [
+        "${self:ability.ectoplasmicBond}",
+        "${self:ability.soulShackle}"
+      ]
+    },
+    "zombieLord": {
+      "name": "Zombie Lord",
+      "depiction": "Commanders of the rotting hordes, these lords have authority over zombies, controlling and empowering them through dark magics.",
+      "con": 17,
+      "str": 14,
+      "cha": 13,
+      "int": 9,
+      "wis": 9,
+      "dex": 8,
+      "traits": [
+        "${self:trait.rotCommander}",
+        "${self:trait.necroticReinforcement}"
+      ],
+      "abilities": [
+        "${self:ability.zombieMastery}",
+        "${self:ability.decayAura}"
+      ]
+    },
+    "graveWarden": {
+      "name": "Grave Warden",
+      "depiction": "Guardians of the sacred burial sites, these solemn warriors can call forth spectral defenders and wield grave dust as a weapon.",
+      "wis": 16,
+      "str": 12,
+      "con": 13,
+      "dex": 10,
+      "int": 9,
+      "cha": 10,
+      "traits": [
+        "${self:trait.tombGuardian}",
+        "${self:trait.dustOfTheDeparted}"
+      ],
+      "abilities": [
+        "${self:ability.crypticBarrier}",
+        "${self:ability.silenceOfTheGraves}"
+      ]
+    },
+    "soulMage": {
+      "name": "Soul Mage",
+      "depiction": "Arcanists who traffic in souls, they can manipulate life force to heal or destroy, and meddle with the fabric of existence.",
+      "int": 17,
+      "cha": 14,
+      "wis": 12,
+      "dex": 9,
+      "con": 10,
+      "str": 8,
+      "traits": [
+        "${self:trait.soulSiphon}",
+        "${self:trait.ethericInsight}"
+      ],
+      "abilities": [
+        "${self:ability.lifeTransference}",
+        "${self:ability.soulStorm}"
+      ]
+    }
+  },
+  "trait": {
+    "arcane_lore": {
+      "name": "Arcane Lore",
+      "description": "This trait grants the Arcane Scholar a vast knowledge of magical theory and arcane history, providing bonus to spellcraft and ancient language deciphering."
+    },
+    "elder_wisdom": {
+      "name": "Elder Wisdom",
+      "description": "With years of study, this trait gives the Arcane Scholar an advantage in saving throws against spells and magical effects."
+    },
+    "magic_resonance": {
+      "name": "Magic Resonance",
+      "description": "The Arcane Scholar radiates a natural affinity for magic, granting them a minor bonus to all spellcasting abilities."
+    },
+    "blood_oath": {
+      "name": "Blood Oath",
+      "description": "The Crimson Blade has sworn an oath in blood, granting them increased damage and resistance when their health is low."
+    },
+    "war_cry": {
+      "name": "War Cry",
+      "description": "A fearsome roar that emboldens the Crimson Blade and allies, increasing attack and morale for a short duration."
+    },
+    "interceptor": {
+      "name": "Interceptor",
+      "description": "This trait allows the Crimson Blade to intercept attacks targeting nearby allies, reducing damage and drawing aggro."
+    },
+    "natures_ally": {
+      "name": "Nature's Ally",
+      "description": "The Wildheart Druid can call upon woodland creatures to aid them, gaining small bonuses when fighting in natural surroundings."
+    },
+    "elemental_attunement": {
+      "name": "Elemental Attunement",
+      "description": "The Druid has a deep connection with the elements, gaining minor bonuses to spells and abilities involving natural elements."
+    },
+    "spiritual_communion": {
+      "name": "Spiritual Communion",
+      "description": "This trait grants the Druid enhanced communication with the spirits of nature, allowing for information gathering and minor boons."
+    },
+    "celestial_knowledge": {
+      "name": "Celestial Knowledge",
+      "description": "The Star Scion's understanding of the heavens grants them insight into celestial events, navigation, and minor predictive abilities."
+    },
+    "astromancy": {
+      "name": "Astromancy",
+      "description": "This trait enhances the Star Scion's magical abilities that tap into the celestial bodies, increasing their potency."
+    },
+    "stellar_navigation": {
+      "name": "Stellar Navigation",
+      "description": "A Star Scion can navigate any terrain at night by reading the stars, also gaining benefits during night time combat or exploration."
+    },
+    "shadow_affinity": {
+      "name": "Shadow Affinity",
+      "description": "The Shadowsage is more at home in the darkness than light, gaining stealth and combat bonuses when shrouded by shadows."
+    },
+    "veil_of_darkness": {
+      "name": "Veil of Darkness",
+      "description": "The Shadowsage can wrap themselves in a cloak of darkness, becoming nearly invisible to the naked eye and greatly reducing chances of being hit."
+    },
+    "mind_shroud": {
+      "name": "Mind Shroud",
+      "description": "An innate protection against mental intrusions and illusions, the Shadowsage's mind is often a fortress that few can penetrate."
+    },
+    "aerial_acrobat": {
+      "name": "Aerial Acrobat",
+      "description": "The Skylancer's mastery of midair maneuvers grants them unmatched agility and acrobatics when fighting from above."
+    },
+    "skybound": {
+      "name": "Skybound",
+      "description": "Born of the skies, the Skylancer feels more comfortable in the air than on land, gaining flying capabilities and air-related bonuses."
+    },
+    "windcaller": {
+      "name": "Windcaller",
+      "description": "The Skylancer can call upon the winds to aid them, gaining control over breezes and gales for various effects both in and out of combat."
+    },
+    "elegy_of_the_end": {
+      "name": "Elegy of the End",
+      "description": "The Doomsinger's presence alone whispers the finality of fate, sapping enemies' strength and will to fight."
+    },
+    "siren_call": {
+      "name": "Siren Call",
+      "description": "The eerie melodies of the Doomsinger lure foes into a state of confusion or despair, lowering their defenses and resolve."
+    },
+    "melancholic_aura": {
+      "name": "Melancholic Aura",
+      "description": "Allies of the Doomsinger are shrouded in a somber resolve, granting them resistance to fear and emotional manipulation."
+    },
+    "flame_affinity": {
+      "name": "Flame Affinity",
+      "description": "This trait imbues the Inferno Summoner with a natural resistance to fire and heat, enhancing any fire-based spells and abilities."
+    },
+    "emberborn": {
+      "name": "Emberborn",
+      "description": "Inferno Summoners are born from fire, they are able to regenerate health gradually in the presence of flames or extreme heat."
+    },
+    "pyromancer": {
+      "name": "Pyromancer",
+      "description": "A powerful connection to fire makes Inferno Summoners formidable as they can manipulate flames in ways others cannot fathom."
+    },
+    "earth_embrace": {
+      "name": "Earth Embrace",
+      "description": "Stoneshapers are one with the earth, gaining bonus to armor and stability when standing on stone or earthen surfaces."
+    },
+    "bastion_aura": {
+      "name": "Bastion Aura",
+      "description": "An aura that emanates from the Stoneshaper, strengthening the defenses of nearby allies and fortifying structures."
+    },
+    "terracraft": {
+      "name": "Terracraft",
+      "description": "A gift that allows the Stoneshaper to sculpt and shape stone with ease for a variety of practical and combative uses."
+    },
+    "enchanted_edge": {
+      "name": "Enchanted Edge",
+      "description": "The Mystic Bladeweaver's weapons are infused with magic, granting each attack a chance to trigger spell effects."
+    },
+    "balanced_harmony": {
+      "name": "Balanced Harmony",
+      "description": "A perfect balance of swordsmanship and sorcery enhances the Mystic Bladeweaver's dexterity and intelligence, providing bonuses to related checks."
+    },
+    "arcane_assault": {
+      "name": "Arcane Assault",
+      "description": "Combining physical prowess with arcane energy, the Mystic Bladeweaver delivers attacks that penetrate magical defenses."
+    },
+    "deadlyCommand": {
+      "name": "Deadly Command",
+      "description": "Allows the Necro Warrior to issue commands to undead minions, boosting their attack and defense capabilities."
+    },
+    "unholyVigor": {
+      "name": "Unholy Vigor",
+      "description": "Provides the Necro Warrior with increased hit points and resistance to necrotic damage."
+    },
+    "skeletalAffinity": {
+      "name": "Skeletal Affinity",
+      "description": "Grants the Bone Sorcerer a bond with skeletal creatures, enhancing their summoning and control over them."
+    },
+    "boneWarding": {
+      "name": "Bone Warding",
+      "description": "Creates a protective barrier made of bone around the Bone Sorcerer, absorbing a portion of incoming damage."
+    },
+    "ritualOfFinality": {
+      "name": "Ritual of Finality",
+      "description": "Enables the Death Cleric to perform a powerful ritual that heavily damages undead or heals the living."
+    },
+    "deathlyDominion": {
+      "name": "Deathly Dominion",
+      "description": "Gives the Death Cleric increased influence over the undead, allowing them to command or repel them."
+    },
+    "lichLegacy": {
+      "name": "Lich Legacy",
+      "description": "The Lich Envoy carries the knowledge of liches, allowing them access to ancient spells and rituals."
+    },
+    "paralyzingGaze": {
+      "name": "Paralyzing Gaze",
+      "description": "The Lich Envoy can paralyze a foe with a piercing gaze, instilling deep fear and immobility."
+    },
+    "soulHarvest": {
+      "name": "Soul Harvest",
+      "description": "Reapers can harvest the souls of their fallen enemies, using them to empower their own abilities."
+    },
+    "etherStride": {
+      "name": "Ether Stride",
+      "description": "Grants the Reaper the ability to step through the ethereal plane for short bursts, effectively teleporting short distances."
+    },
+    "phantomFinesse": {
+      "name": "Phantom Finesse",
+      "description": "Grants the Ghostly Duelist enhanced dexterity and the ability to pass weapons through solid objects as if they were ethereal."
+    },
+    "spectralParry": {
+      "name": "Spectral Parry",
+      "description": "Enables the Ghostly Duelist to parry physical attacks, briefly turning insubstantial to avoid damage."
+    },
+    "spectralChain": {
+      "name": "Spectral Chain",
+      "description": "Provides the Spirit Binder with the ability to bind spirits to their will, forcing them to aid in battle or perform tasks."
+    },
+    "spiritualCommunion": {
+      "name": "Spiritual Communion",
+      "description": "Allows the Spirit Binder to communicate with spirits and gain information or request guidance."
+    },
+    "rotCommander": {
+      "name": "Rot Commander",
+      "description": "The Zombie Lord can directly control rotting minions, coordinating their attacks and bolstering their endurance."
+    },
+    "necroticReinforcement": {
+      "name": "Necrotic Reinforcement",
+      "description": "The Zombie Lord can strengthen their undead servants, making them tougher and more resilient against attacks."
+    },
+    "tombGuardian": {
+      "name": "Tomb Guardian",
+      "description": "As keepers of the dead, Grave Wardens can summon ethereal defenders from the tombs they guard."
+    },
+    "dustOfTheDeparted": {
+      "name": "Dust of the Departed",
+      "description": "Enables the Grave Warden to wield the ashen remains of the dead as a debilitating weapon against their enemies."
+    },
+    "soulSiphon": {
+      "name": "Soul Siphon",
+      "description": "The Soul Mage can drain the life force from others to rejuvenate themselves or empower their spells."
+    },
+    "ethericInsight": {
+      "name": "Etheric Insight",
+      "description": "Grants the Soul Mage the ability to see into the ethereal plane and perceive the true essence of living beings."
+    }
+  },
+  "ability": {
+    "spellcasting": {
+      "name": "Spellcasting",
+      "description": "A fundamental ability for the Arcane Scholar, allowing them to cast a wide array of powerful spells. The variety and strength of the spells increase with the scholar's experience.",
+      "minRequired": {
+        "int": "15"
+      }
+    },
+    "ritual_conduit": {
+      "name": "Ritual Conduit",
+      "description": "The Arcane Scholar can perform complex magical rituals, unlocking potent effects and enchantments not achievable through normal spellcasting.",
+      "minRequired": {
+        "int": "14"
+      }
+    },
+    "runecraft": {
+      "name": "Runecraft",
+      "description": "This ability enables the Arcane Scholar to inscribe mystical runes that can hold spells, trigger effects, or enhance objects. Requires materials and time to inscribe.",
+      "minRequired": {
+        "int": "13"
+      }
+    },
+    "blood_magic": {
+      "name": "Blood Magic",
+      "description": "The Crimson Blade can utilize their own life force to empower their abilities, at the risk of personal harm.",
+      "minRequired": {
+        "con": "14"
+      }
+    },
+    "blade_dance": {
+      "name": "Blade Dance",
+      "description": "A series of rapid, deadly strikes that allow the Crimson Blade to attack multiple targets in quick succession.",
+      "minRequired": {
+        "dex": "12"
+      }
+    },
+    "lifedrinker": {
+      "name": "Lifedrinker",
+      "description": "The Crimson Blade's weapon thirsts for blood, stealing health from enemy on hit and transferring it to the wielder.",
+      "minRequired": {
+        "str": "16"
+      }
+    },
+    "shape_shift": {
+      "name": "Shape Shift",
+      "description": "The defining Druid ability, allowing them to take on the forms of various animals, gaining their physical attributes and abilities.",
+      "minRequired": {
+        "wis": "14"
+      }
+    },
+    "natural_summon": {
+      "name": "Natural Summon",
+      "description": "This ability allows the Druid to summon powerful creatures from the natural world to aid them in battle or other tasks.",
+      "minRequired": {
+        "wis": "13"
+      }
+    },
+    "earthwarden": {
+      "name": "Earthwarden",
+      "description": "The Wildheart Druid can command the earth to create barriers or disrupt foes, providing strategic advantages based on the terrain.",
+      "minRequired": {
+        "con": "12"
+      }
+    },
+    "starcall": {
+      "name": "Starcall",
+      "description": "By invoking the names of the stars, the Star Scion can call forth beams of starlight to strike their enemies or heal their allies.",
+      "minRequired": {
+        "cha": "13"
+      }
+    },
+    "comet_strike": {
+      "name": "Comet Strike",
+      "description": "A powerful ability of the Star Scion that summons a comet from the sky, dealing massive area-of-effect damage.",
+      "minRequired": {
+        "int": "14"
+      }
+    },
+    "gravity_mastery": {
+      "name": "Gravity Mastery",
+      "description": "This ability grants the Star Scion control over gravity, allowing them to levitate objects, hinder enemies, or enhance movement.",
+      "minRequired": {
+        "int": "14"
+      }
+    },
+    "shadow_step": {
+      "name": "Shadow Step",
+      "description": "The Shadowsage can teleport short distances between shadows, appearing and disappearing as if a wraith.",
+      "minRequired": {
+        "dex": "14"
+      }
+    },
+    "nightmare_fabric": {
+      "name": "Nightmare Fabric",
+      "description": "An ability to weave shadows into tangible forms, the Shadowsage can create illusions or animated constructs to deceive and attack enemies.",
+      "minRequired": {
+        "int": "13"
+      }
+    },
+    "enshadowing_mist": {
+      "name": "Enshadowing Mist",
+      "description": "The Shadowsage can summon a thick, dark fog that obscures vision and dampens sound, disorienting foes and providing cover.",
+      "minRequired": {
+        "con": "12"
+      }
+    },
+    "riding_the_maelstrom": {
+      "name": "Riding the Maelstrom",
+      "description": "The Skylancer can ride turbulent air currents with ease, enabling rapid strikes and swift evasions while mounted.",
+      "minRequired": {
+        "wis": "12"
+      }
+    },
+    "tempest_charge": {
+      "name": "Tempest Charge",
+      "description": "The Skylancer can harness the power of storms for a high-speed, lightning-charged attack from the skies.",
+      "minRequired": {
+        "dex": "15"
+      }
+    },
+    "zephyr_blades": {
+      "name": "Zephyr Blades",
+      "description": "Enhances the Skylancer's weapons with the force of the winds, slicing through defenses and dealing wind-based damage.",
+      "minRequired": {
+        "str": "13"
+      }
+    },
+    "cacophony_of_ruin": {
+      "name": "Cacophony of Ruin",
+      "description": "The Doomsinger unleashes a dissonant barrage of sounds that wreak havoc on enemy ranks, causing damage and disarray.",
+      "minRequired": {
+        "cha": "15"
+      }
+    },
+    "dirge_of_dread": {
+      "name": "Dirge of Dread",
+      "description": "A haunting song that chills the hearts of foes, instilling a lingering fear that weakens their combat abilities.",
+      "minRequired": {
+        "int": "12"
+      }
+    },
+    "requiem_of_resilience": {
+      "name": "Requiem of Resilience",
+      "description": "A solemn anthem that bolsters the courage and endurance of allies, mitigating the effects of harmful spells and attacks.",
+      "minRequired": {
+        "wis": "13"
+      }
+    },
+    "fire_call": {
+      "name": "Fire Call",
+      "description": "The Inferno Summoner can conjure fire elementals and entities from the infernal realms to serve them.",
+      "minRequired": {
+        "int": "15"
+      }
+    },
+    "hellfire_gambit": {
+      "name": "Hellfire Gambit",
+      "description": "A risky maneuver that engulfs an area in hellfire, causing massive damage to all within - friend or foe.",
+      "minRequired": {
+        "int": "14"
+      }
+    },
+    "phoenix_rising": {
+      "name": "Phoenix Rising",
+      "description": "Upon receiving a fatal blow, the Inferno Summoner can erupt in flames and be reborn from the ashes with a portion of their health restored.",
+      "minRequired": {
+        "con": "13"
+      }
+    },
+    "earthen_bulwark": {
+      "name": "Earthen Bulwark",
+      "description": "The Stoneshaper can raise a wall of stone from the ground to protect against attacks or control the flow of battle.",
+      "minRequired": {
+        "wis": "13"
+      }
+    },
+    "gravity_well": {
+      "name": "Gravity Well",
+      "description": "A Stoneshaper can manipulate gravitational forces to root enemies in place or increase the weight of objects.",
+      "minRequired": {
+        "int": "12"
+      }
+    },
+    "lithomancy": {
+      "name": "Lithomancy",
+      "description": "A deep understanding of earth magic allows the Stoneshaper to imbue stones with energy for various magical effects.",
+      "minRequired": {
+        "str": "14"
+      }
+    },
+    "bladesong": {
+      "name": "Bladesong",
+      "description": "A mystical melody that the Mystic Bladeweaver hums during combat, bolstering their agility and magical attacks.",
+      "minRequired": {
+        "dex": "16"
+      }
+    },
+    "runic_cut": {
+      "name": "Runic Cut",
+      "description": "The Mystic Bladeweaver can inscribe runes onto their blade mid-combat, each slash unleashing different magical effects.",
+      "minRequired": {
+        "int": "12"
+      }
+    },
+    "spectral_sweep": {
+      "name": "Spectral Sweep",
+      "description": "A spinning attack that emits spectral energy, striking multiple enemies around the Mystic Bladeweaver and dealing bonus arcane damage.",
+      "minRequired": {
+        "str": "13"
+      }
+    },
+    "animateDeadWarrior": {
+      "name": "Animate Dead Warrior",
+      "description": "Empowers the Necro Warrior to raise a fallen warrior as an undead minion, achieving greater strength and combat prowess.",
+      "minRequired": {
+        "int": "10"
+      }
+    },
+    "deathlyAura": {
+      "name": "Deathly Aura",
+      "description": "The Necro Warrior emanates a chilling aura that weakens enemies within range and bolsters undead allies.",
+      "minRequired": {
+        "con": "14"
+      }
+    },
+    "skeletalSummoning": {
+      "name": "Skeletal Summoning",
+      "description": "This ability allows the Bone Sorcerer to summon skeletal creatures to fight alongside them, which are more durable and potent than regular skeletons.",
+      "minRequired": {
+        "int": "17"
+      }
+    },
+    "osseousEmpowerment": {
+      "name": "Osseous Empowerment",
+      "description": "Enhances the Bone Sorcerer's skeletal summons or bone-constructed armaments, granting them extraordinary hardness and deadliness.",
+      "minRequired": {
+        "wis": "14"
+      }
+    },
+    "necroticTouch": {
+      "name": "Necrotic Touch",
+      "description": "Allows the Death Cleric to touch a being, delivering a concentrated burst of necrotic energy that either harms or heals, depending on the nature of the target.",
+      "minRequired": {
+        "wis": "16"
+      }
+    },
+    "spiritGuardian": {
+      "name": "Spirit Guardian",
+      "description": "Summons a protective spirit that guards the Death Cleric, attacking or hindering foes that come too close.",
+      "minRequired": {
+        "cha": "12"
+      }
+    },
+    "phylacteryLink": {
+      "name": "Phylactery Link",
+      "description": "The Lich Envoy shares a link with their master's phylactery, allowing them to draw on its power or communicate through it.",
+      "minRequired": {
+        "int": "18"
+      }
+    },
+    "fearOfTheAncients": {
+      "name": "Fear of the Ancients",
+      "description": "Harnesses the ancient and dreadful presence of liches to instill terror in the hearts of enemies, possibly causing them to flee or freeze in fear.",
+      "minRequired": {
+        "cha": "15"
+      }
+    },
+    "soulCleave": {
+      "name": "Soul Cleave",
+      "description": "With a swing of their ethereal scythe, the Reaper cuts through both body and soul, dealing damage to physical form and draining life essence.",
+      "minRequired": {
+        "str": "14"
+      }
+    },
+    "deathStep": {
+      "name": "Death Step",
+      "description": "The Reaper blinks across the battlefield, moving instantly from one point to another within sight, leaving behind a trail of chilling mist.",
+      "minRequired": {
+        "dex": "15"
+      }
+    },
+    "etherealLunge": {
+      "name": "Ethereal Lunge",
+      "description": "Allows the Ghostly Duelist to perform a lunge that passes through obstacles and can strike directly at an opponent's life force.",
+      "minRequired": {
+        "dex": "18"
+      }
+    },
+    "disembodiedManeuver": {
+      "name": "Disembodied Maneuver",
+      "description": "The Ghostly Duelist temporarily becomes insubstantial, gaining the ability to move through solid objects and avoid most physical attacks.",
+      "minRequired": {
+        "cha": "14"
+      }
+    },
+    "ectoplasmicBond": {
+      "name": "Ectoplasmic Bond",
+      "description": "Creates a bond between the Spirit Binder and a spirit, allowing them to gain a spectral ally or draw upon the spirit's unique abilities.",
+      "minRequired": {
+        "cha": "16"
+      }
+    },
+    "soulShackle": {
+      "name": "Soul Shackle",
+      "description": "The Spirit Binder ensnares the soul of a target, hindering their movements and causing them anguish that can manifest as physical pain.",
+      "minRequired": {
+        "int": "14"
+      }
+    },
+    "zombieMastery": {
+      "name": "Zombie Mastery",
+      "description": "Enables the Zombie Lord to exert their will over zombies, commanding them to perform complex tasks or fight with increased ferocity.",
+      "minRequired": {
+        "con": "17"
+      }
+    },
+    "decayAura": {
+      "name": "Decay Aura",
+      "description": "The Zombie Lord emits an aura of decay that weakens the defenses of enemies while invigorating their own undead legions.",
+      "minRequired": {
+        "cha": "13"
+      }
+    },
+    "crypticBarrier": {
+      "name": "Cryptic Barrier",
+      "description": "The Grave Warden conjures a wall of ethereal energy sourced from the crypts they protect, blocking attacks and creating an obstacle for enemies.",
+      "minRequired": {
+        "wis": "16"
+      }
+    },
+    "silenceOfTheGraves": {
+      "name": "Silence of the Graves",
+      "description": "Invokes the quiet of the tomb, suppressing noise and spells in an area, making it ideal for ambushes or clandestine activities.",
+      "minRequired": {
+        "str": "12"
+      }
+    },
+    "lifeTransference": {
+      "name": "Life Transference",
+      "description": "The Soul Mage can transfer life force between creatures, healing one by sapping the vitality of another.",
+      "minRequired": {
+        "int": "17"
+      }
+    },
+    "soulStorm": {
+      "name": "Soul Storm",
+      "description": "Unleashes a tempest of tormented souls around the Soul Mage, dealing damage and causing emotional turmoil in those caught within.",
+      "minRequired": {
+        "cha": "14"
+      }
+    }
+  },
   "map": {
-    "new_map": {
-      "name": "Mystic Mazes",
-      "description": "A labyrinth of bewildering passages and enigmatic rooms, each with its own unique charm and challenge, created by a long-forgotten civilization.",
+    "startingArea": {
+      "name": "Greendale",
+      "description": "Greendale is a bustling township at the crossroads of adventure, with a myriad of shops, lodging, and pathways leading to different terrains. It's the perfect starting point for any wandering hero.",
       "rooms": {
-        "room_1": {
-          "name": "Entrance Hall",
-          "description": "The grand entryway to the Mystic Mazes, with towering stone arches and flickering torches lining the walls.",
+        "room1": {
+          "name": "Town Square",
+          "char": "!",
+          "description": "The heart of Greendale, the Town Square is lively with traders, locals, and adventurers. The main pathways extend in all cardinal directions.",
           "exits": {
-            "e": "${self:map.new_map.rooms.room_2}"
+            "n": "${self:map.startingArea.rooms.room2}",
+            "s": "${self:map.startingArea.rooms.room11}",
+            "e": "${self:map.startingArea.rooms.room21}",
+            "w": "${self:map.startingArea.rooms.room31}"
+          },
+          "shop": "${self:shop.shop1}"
+        },
+        "room2": {
+          "name": "North Gate",
+          "description": "Marked by a grand archway, the North Gate is watched over by guards and is the passage to lands beyond.",
+          "exits": {
+            "s": "${self:map.startingArea.rooms.room1}",
+            "n": "${self:map.startingArea.rooms.room3}"
           }
         },
-        "room_2": {
-          "name": "Echoing Chamber",
-          "description": "A room where even whispers can be heard bouncing off the stone walls, creating a cacophony of echoes.",
+        "room3": {
+          "name": "Market Street",
+          "description": "Lined with stalls and small shops, Market Street is always buzzing with bartering and haggling.",
           "exits": {
-            "w": "${self:map.new_map.rooms.room_1}",
-            "e": "${self:map.new_map.rooms.room_3}"
+            "s": "${self:map.startingArea.rooms.room2}",
+            "n": "${self:map.startingArea.rooms.room4}"
           }
         },
-        "room_3": {
-          "name": "Hall of Whispers",
-          "description": "A narrow corridor filled with gentle whispers, though the source can never be found.",
+        "room4": {
+          "name": "Merchants' Plaza",
+          "description": "A spacious plaza where merchants from all over set up temporary shops during festivals.",
           "exits": {
-            "w": "${self:map.new_map.rooms.room_2}",
-            "n": "${self:map.new_map.rooms.room_4}"
+            "s": "${self:map.startingArea.rooms.room3}",
+            "n": "${self:map.startingArea.rooms.room5}"
           }
         },
-        "room_4": {
-          "name": "Chamber of Reflection",
-          "description": "This room is lined with mirrors that create an endless maze of reflections.",
+        "room5": {
+          "name": "North Road",
+          "description": "The well-trodden North Road leads adventurers to distant forests and mountains.",
           "exits": {
-            "s": "${self:map.new_map.rooms.room_3}",
-            "u": "${self:map.new_map.rooms.room_5}"
+            "s": "${self:map.startingArea.rooms.room4}",
+            "n": "${self:map.startingArea.rooms.room6}"
           }
         },
-        "room_5": {
-          "name": "The Verdant Atrium",
-          "description": "A serene garden room filled with exotic plants and the sound of a bubbling fountain.",
+        "room6": {
+          "name": "Stone Bridge",
+          "description": "An ancient stone bridge that crosses over the serene Misty River.",
           "exits": {
-            "d": "${self:map.new_map.rooms.room_4}",
-            "n": "${self:map.new_map.rooms.room_6}"
+            "s": "${self:map.startingArea.rooms.room5}",
+            "n": "${self:map.startingArea.rooms.room7}"
           }
         },
-        "room_6": {
-          "name": "Flooded Grotto",
-          "description": "This room is partially flooded with clear water, reflecting the glow of luminescent algae on the ceiling.",
+        "room7": {
+          "name": "Crossroads",
+          "description": "A strategic point where one can choose their path to fame: the mountains, the forest, or the northern plains.",
           "exits": {
-            "s": "${self:map.new_map.rooms.room_5}",
-            "w": "${self:map.new_map.rooms.room_7}",
-            "se": "${self:map.new_map.rooms.room_8}"
+            "s": "${self:map.startingArea.rooms.room6}"
           }
         },
-        "room_7": {
-          "name": "Hall of the Ancients",
-          "description": "A solemn hall lined with statues of forgotten deities and heroes.",
+        "room11": {
+          "name": "Slowstream Path",
+          "description": "A gentle path that runs parallel to a babbling brook, leading to the South Gate.",
           "exits": {
-            "e": "${self:map.new_map.rooms.room_6}",
-            "nw": "${self:map.new_map.rooms.room_8}"
+            "n": "${self:map.startingArea.rooms.room1}",
+            "s": "${self:map.startingArea.rooms.room12}"
           }
         },
-        "room_8": {
-          "name": "The Library of Shadows",
-          "description": "A vast library where the books seem to absorb light, cloaking the room in semi-darkness.",
+        "room12": {
+          "name": "South Gate",
+          "description": "A vital trade route into the city, the South Gate is always busy with merchants and travelers.",
           "exits": {
-            "ne": "${self:map.new_map.rooms.room_7}",
-            "nw": "${self:map.new_map.rooms.room_9}"
+            "n": "${self:map.startingArea.rooms.room11}",
+            "s": "${self:map.startingArea.rooms.room13}"
           }
         },
-        "room_9": {
-          "name": "Chamber of Echoes",
-          "description": "A room where sound is amplified, making every footstep and breath thunderous.",
+        "room21": {
+          "name": "East Ave",
+          "description": "This bustling avenue is known for its fine eateries and inns, a great place for travelers to rest.",
           "exits": {
-            "se": "${self:map.new_map.rooms.room_8}",
-            "n": "${self:map.new_map.rooms.room_10}"
+            "w": "${self:map.startingArea.rooms.room1}",
+            "e": "${self:map.startingArea.rooms.room22}"
           }
         },
-        "room_10": {
-          "name": "The Crystal Sanctum",
-          "description": "The heart of the maze, resplendent with glowing crystals and the promise of ancient magic.",
+        "room22": {
+          "name": "Artisans' Quarter",
+          "description": "Home to skilled craftsmen and their workshops, Artisans' Quarter is a hub of creativity and innovation.",
           "exits": {
-            "s": "${self:map.new_map.rooms.room_9}"
+            "w": "${self:map.startingArea.rooms.room21}",
+            "e": "${self:map.startingArea.rooms.room23}"
+          },
+          "shop": "${self:shop.shop2}"
+        },
+        "room23": {
+          "name": "Oldtown Bridge",
+          "description": "An ornate bridge that connects to the historical part of Greendale, known as Oldtown.",
+          "exits": {
+            "w": "${self:map.startingArea.rooms.room22}",
+            "e": "${self:map.startingArea.rooms.room24}"
+          }
+        },
+        "room24": {
+          "name": "Oldtown",
+          "description": "The oldest part of Greendale, with cobblestone streets and ancient buildings teeming with history and mystery.",
+          "exits": {
+            "w": "${self:map.startingArea.rooms.room23}"
+          },
+          "shop": "${self:shop.shop3}"
+        },
+        "room31": {
+          "name": "West Walkway",
+          "description": "A leafy walkway lined with trees and benches, perfect for a peaceful stroll.",
+          "exits": {
+            "e": "${self:map.startingArea.rooms.room1}",
+            "w": "${self:map.startingArea.rooms.room32}"
+          }
+        },
+        "room32": {
+          "name": "Sunset Park",
+          "description": "A popular spot for locals to enjoy the outdoors, with views of the setting sun.",
+          "exits": {
+            "e": "${self:map.startingArea.rooms.room31}",
+            "w": "${self:map.startingArea.rooms.room33}"
+          }
+        },
+        "room33": {
+          "name": "Traders' Trail",
+          "description": "A trail leading to the western farmlands, used by traders and farmers alike.",
+          "exits": {
+            "e": "${self:map.startingArea.rooms.room32}",
+            "w": "${self:map.startingArea.rooms.room34}"
+          }
+        },
+        "room34": {
+          "name": "West Gate",
+          "description": "The West Gate opens to vast fields and is often used by farmers bringing in their harvest.",
+          "exits": {
+            "e": "${self:map.startingArea.rooms.room33}",
+            "w": "${self:map.startingArea.rooms.room35}"
+          }
+        },
+        "room13": {
+          "name": "Baker's Alley",
+          "description": "A narrow alley filled with the delightful aroma of freshly baked goods, frequented by those seeking comfort food.",
+          "exits": {
+            "n": "${self:map.startingArea.rooms.room12}",
+            "s": "${self:map.startingArea.rooms.room14}"
+          }
+        },
+        "room14": {
+          "name": "Herbalist's Lane",
+          "description": "An earthy lane where herbalists sell healing poultices, potions, and rare plants.",
+          "exits": {
+            "n": "${self:map.startingArea.rooms.room13}",
+            "s": "${self:map.startingArea.rooms.room15}"
+          }
+        },
+        "room15": {
+          "name": "Dragonfly Pond",
+          "description": "A serene pond where dragonflies flutter, a popular meditation spot for monks and sages.",
+          "exits": {
+            "n": "${self:map.startingArea.rooms.room14}",
+            "s": "${self:map.startingArea.rooms.room16}"
+          }
+        },
+        "room16": {
+          "name": "South Meadows",
+          "description": "Rolling meadows that stretch into the horizon, a place for pastoral bliss and nature's bounty.",
+          "exits": {
+            "n": "${self:map.startingArea.rooms.room15}",
+            "s": "${self:map.startingArea.rooms.room17}"
+          }
+        },
+        "room17": {
+          "name": "South Road",
+          "description": "The South Road leads through the meadows and connects to distant farming villages and the sea.",
+          "exits": {
+            "n": "${self:map.startingArea.rooms.room16}",
+            "s": "${self:map.startingArea.rooms.room18}"
+          }
+        },
+        "room18": {
+          "name": "South Gate Plaza",
+          "description": "The welcoming plaza just inside the South Gate, where travelers can find carriages and guides.",
+          "exits": {
+            "n": "${self:map.startingArea.rooms.room17}"
+          }
+        },
+        "room35": {
+          "name": "Farmland Path",
+          "description": "A dirt path leading through the abundant farmlands that feed the bustling town of Greendale.",
+          "exits": {
+            "e": "${self:map.startingArea.rooms.room34}",
+            "w": "${self:map.startingArea.rooms.room36}"
+          }
+        },
+        "room36": {
+          "name": "Windmill Hill",
+          "description": "A hill topped with a large windmill, its sails turning steadily in the breeze.",
+          "exits": {
+            "e": "${self:map.startingArea.rooms.room35}",
+            "w": "${self:map.startingArea.rooms.room37}"
+          }
+        },
+        "room37": {
+          "name": "Farming Hamlet",
+          "description": "A small settlement where the local farmers and their families live.",
+          "exits": {
+            "e": "${self:map.startingArea.rooms.room36}",
+            "w": "${self:map.startingArea.rooms.room38}"
+          }
+        },
+        "room38": {
+          "name": "Western Woods",
+          "description": "A dense forest that marks the start of the wilds, with untold secrets hidden under its canopies.",
+          "exits": {
+            "e": "${self:map.startingArea.rooms.room37}"
           }
         }
       }
     }
   },
-  "class": {
-    "mystic_archer": {
-      "name": "Mystic Archer",
-      "description": "Mystic Archers are known for their ability to imbue their arrows with magical properties. They are equally skilled with the bow as they are with spellcasting, allowing them to utilize a combination of ranged attacks and magic to control the battlefield from a distance.",
-      "str": 10,
-      "dex": 16,
-      "int": 14,
-      "wis": 12,
-      "pri": "dex",
-      "talents": [
-        "${self:talents:elemental_arrows}",
-        "${self:talents:arcane_marksmanship}",
-        "${self:talents:warded_position}"
-      ],
-      "traits": [
-        "${self:traits:keen_senses}",
-        "${self:traits:agile_movement}"
-      ],
-      "attacks": [
-        "${self:weapons:longbow}",
-        "${self:weapons:mystic_arrow}"
-      ]
+  "shop": {
+    "shop1": {
+      "name": "Ye Olde Gear Emporium",
+      "description": "A one-stop shop for all adventurers' needs, from sturdy backpacks to essential travel gear."
+    },
+    "shop2": {
+      "name": "The Enchanted Anvil",
+      "description": "A specialized shop where enchanted weapons and armor are crafted by the mystical blacksmiths of Greendale."
+    },
+    "shop3": {
+      "name": "The Old Scroll",
+      "description": "A quaint bookstore crammed with ancient tomes, maps, and scrolls of knowledge."
     }
   }
 }
