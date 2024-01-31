@@ -1,5 +1,6 @@
 const FS = require('fs');
 const Util = require('@coderich/util');
+const merge = require('lodash.merge');
 const { Command } = require('commander');
 
 const program = new Command();
@@ -16,7 +17,7 @@ program.command('stage').action(() => {
   FS.readdirSync(sourceDir).forEach((filename) => {
     const filepath = `${sourceDir}/${filename}`;
     const config = JSON.parse(FS.readFileSync(filepath));
-    Object.assign(database, config);
+    merge(database, Util.flatten(config, { safe: true }));
     files.push(filepath);
   });
 

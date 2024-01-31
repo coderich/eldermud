@@ -38,8 +38,7 @@ program.command('train').action(async (thisCommand, actionCommand) => {
     instructions: `
       You are a creative map maker for a MUD.
       Every map must consistently follow a cohesive theme and storyline.
-      Every map must utilize exits in all directions.
-      You must perform your duties within the confines of a single map.
+      Add a sense of dimension by creating long pathways that permeate the map.
     `,
   });
 });
