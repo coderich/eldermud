@@ -1,7 +1,7 @@
 module.exports = {
-  map: '${self:map.startingArea}',
-  room: '${self:map.startingArea.rooms.room1}',
-  checkpoint: '${self:map.startingArea.rooms.room1}',
+  map: '${self:map.townOfEchoes}',
+  room: '${self:map.townOfEchoes.rooms.centralPlaza}',
+  checkpoint: '${self:map.townOfEchoes.rooms.centralPlaza}',
   posture: 'stand',
   lvl: 1,
   exp: 0,

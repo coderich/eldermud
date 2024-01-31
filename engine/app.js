@@ -71,7 +71,6 @@ exports.setup = async () => {
   if (!module.parent) {
     exports.init(`${__dirname}/src/data`);
     CONFIG.merge(ConfigClient.parseFile(`${__dirname}/src/database.json`));
-    // exports.init(`${__dirname}/test/data`);
     // CONFIG.mergeConfig(`${__dirname}/test/data`);
     CONFIG.decorate();
     await exports.setup();

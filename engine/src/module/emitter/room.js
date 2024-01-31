@@ -6,7 +6,7 @@ Action.define('room', [
 
     const includeParty = Boolean(`${room}` === `${actor.room}`);
 
-    const $exits = Object.keys(room.exits).map((dir) => {
+    const $exits = Object.keys(room.exits || {}).map((dir) => {
       let text = APP.direction[dir];
       const path = CONFIG.get(`${room}.paths.${dir}`);
       if (path) text = `${path.label} ${text}`;
