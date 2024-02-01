@@ -1,0 +1,7 @@
+{
+  "name": "Blood Magic",
+  "description": "The Crimson Blade can utilize their own life force to empower their abilities, at the risk of personal harm.",
+  "minRequired": {
+    "con": "14"
+  }
+}

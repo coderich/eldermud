@@ -1,0 +1,7 @@
+{
+  "name": "Fire Call",
+  "description": "The Inferno Summoner can conjure fire elementals and entities from the infernal realms to serve them.",
+  "minRequired": {
+    "int": "15"
+  }
+}

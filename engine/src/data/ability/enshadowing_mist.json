@@ -1,0 +1,7 @@
+{
+  "name": "Enshadowing Mist",
+  "description": "The Shadowsage can summon a thick, dark fog that obscures vision and dampens sound, disorienting foes and providing cover.",
+  "minRequired": {
+    "con": "12"
+  }
+}

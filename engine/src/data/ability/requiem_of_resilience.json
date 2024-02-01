@@ -1,0 +1,7 @@
+{
+  "name": "Requiem of Resilience",
+  "description": "A solemn anthem that bolsters the courage and endurance of allies, mitigating the effects of harmful spells and attacks.",
+  "minRequired": {
+    "wis": "13"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Osseous Empowerment",
+  "description": "Enhances the Bone Sorcerer's skeletal summons or bone-constructed armaments, granting them extraordinary hardness and deadliness.",
+  "minRequired": {
+    "wis": "14"
+  }
+}

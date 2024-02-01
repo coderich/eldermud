@@ -1,0 +1,7 @@
+{
+  "name": "Cryptic Barrier",
+  "description": "The Grave Warden conjures a wall of ethereal energy sourced from the crypts they protect, blocking attacks and creating an obstacle for enemies.",
+  "minRequired": {
+    "wis": "16"
+  }
+}

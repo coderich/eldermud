@@ -1,0 +1,7 @@
+{
+  "name": "Earthen Bulwark",
+  "description": "The Stoneshaper can raise a wall of stone from the ground to protect against attacks or control the flow of battle.",
+  "minRequired": {
+    "wis": "13"
+  }
+}

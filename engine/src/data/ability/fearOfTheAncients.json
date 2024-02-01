@@ -1,0 +1,7 @@
+{
+  "name": "Fear of the Ancients",
+  "description": "Harnesses the ancient and dreadful presence of liches to instill terror in the hearts of enemies, possibly causing them to flee or freeze in fear.",
+  "minRequired": {
+    "cha": "15"
+  }
+}

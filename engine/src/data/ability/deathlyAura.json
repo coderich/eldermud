@@ -1,0 +1,7 @@
+{
+  "name": "Deathly Aura",
+  "description": "The Necro Warrior emanates a chilling aura that weakens enemies within range and bolsters undead allies.",
+  "minRequired": {
+    "con": "14"
+  }
+}

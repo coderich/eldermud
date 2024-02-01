@@ -1,0 +1,7 @@
+{
+  "name": "Blade Dance",
+  "description": "A series of rapid, deadly strikes that allow the Crimson Blade to attack multiple targets in quick succession.",
+  "minRequired": {
+    "dex": "12"
+  }
+}

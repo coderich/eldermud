@@ -1,0 +1,7 @@
+{
+  "name": "Gravity Mastery",
+  "description": "This ability grants the Star Scion control over gravity, allowing them to levitate objects, hinder enemies, or enhance movement.",
+  "minRequired": {
+    "int": "14"
+  }
+}

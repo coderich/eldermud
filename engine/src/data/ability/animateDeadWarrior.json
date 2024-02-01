@@ -1,0 +1,7 @@
+{
+  "name": "Animate Dead Warrior",
+  "description": "Empowers the Necro Warrior to raise a fallen warrior as an undead minion, achieving greater strength and combat prowess.",
+  "minRequired": {
+    "int": "10"
+  }
+}

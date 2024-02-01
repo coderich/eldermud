@@ -1,0 +1,7 @@
+{
+  "name": "Death Step",
+  "description": "The Reaper blinks across the battlefield, moving instantly from one point to another within sight, leaving behind a trail of chilling mist.",
+  "minRequired": {
+    "dex": "15"
+  }
+}

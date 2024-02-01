@@ -1,0 +1,18 @@
+{
+  "name": "Zombie Lord",
+  "depiction": "Commanders of the rotting hordes, these lords have authority over zombies, controlling and empowering them through dark magics.",
+  "con": 17,
+  "str": 14,
+  "cha": 13,
+  "int": 9,
+  "wis": 9,
+  "dex": 8,
+  "traits": [
+    "${self:trait.rotCommander}",
+    "${self:trait.necroticReinforcement}"
+  ],
+  "abilities": [
+    "${self:ability.zombieMastery}",
+    "${self:ability.decayAura}"
+  ]
+}

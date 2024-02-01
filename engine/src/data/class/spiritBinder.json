@@ -1,0 +1,18 @@
+{
+  "name": "Spirit Binder",
+  "depiction": "Conjurers who can bind and command spirits from beyond, compelling them to share their spectral might.",
+  "cha": 16,
+  "int": 14,
+  "wis": 12,
+  "con": 11,
+  "dex": 9,
+  "str": 8,
+  "traits": [
+    "${self:trait.spectralChain}",
+    "${self:trait.spiritualCommunion}"
+  ],
+  "abilities": [
+    "${self:ability.ectoplasmicBond}",
+    "${self:ability.soulShackle}"
+  ]
+}

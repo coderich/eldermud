@@ -1,0 +1,17 @@
+{
+  "name": "Inferno Summoner",
+  "depiction": "A spellcaster with a pyromaniac's grin, surrounded by dancing flames and fiery creatures, the heat of their presence warping the air.",
+  "description": "Inferno Summoners call forth beings of fire and brimstone to do their bidding. They revel in the destructive power of flame and the chaos it can bring to their enemies.",
+  "int": 15,
+  "con": 13,
+  "traits": [
+    "${self:trait.flame_affinity}",
+    "${self:trait.emberborn}",
+    "${self:trait.pyromancer}"
+  ],
+  "abilities": [
+    "${self:ability.fire_call}",
+    "${self:ability.hellfire_gambit}",
+    "${self:ability.phoenix_rising}"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Silence of the Graves",
+  "description": "Invokes the quiet of the tomb, suppressing noise and spells in an area, making it ideal for ambushes or clandestine activities.",
+  "minRequired": {
+    "str": "12"
+  }
+}

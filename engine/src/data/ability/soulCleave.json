@@ -1,0 +1,7 @@
+{
+  "name": "Soul Cleave",
+  "description": "With a swing of their ethereal scythe, the Reaper cuts through both body and soul, dealing damage to physical form and draining life essence.",
+  "minRequired": {
+    "str": "14"
+  }
+}

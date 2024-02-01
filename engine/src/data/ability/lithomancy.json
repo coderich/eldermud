@@ -1,0 +1,7 @@
+{
+  "name": "Lithomancy",
+  "description": "A deep understanding of earth magic allows the Stoneshaper to imbue stones with energy for various magical effects.",
+  "minRequired": {
+    "str": "14"
+  }
+}

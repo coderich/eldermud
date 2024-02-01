@@ -1,0 +1,17 @@
+{
+  "name": "Wildheart Druid",
+  "depiction": "A guardian of nature, cloaked in robes of woven leaves and bark, surrounded by animals and plants bending to their will.",
+  "description": "Wildheart Druids form a sacred bond with nature. They can tap into the essence of life to heal, summon natural allies, and unleash the raw fury of the wilds against their foes.",
+  "wis": 14,
+  "con": 12,
+  "traits": [
+    "${self:trait.natures_ally}",
+    "${self:trait.elemental_attunement}",
+    "${self:trait.spiritual_communion}"
+  ],
+  "abilities": [
+    "${self:ability.shape_shift}",
+    "${self:ability.natural_summon}",
+    "${self:ability.earthwarden}"
+  ]
+}

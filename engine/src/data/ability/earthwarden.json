@@ -1,0 +1,7 @@
+{
+  "name": "Earthwarden",
+  "description": "The Wildheart Druid can command the earth to create barriers or disrupt foes, providing strategic advantages based on the terrain.",
+  "minRequired": {
+    "con": "12"
+  }
+}

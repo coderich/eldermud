@@ -20,7 +20,6 @@ module.exports = {
             'map.$key.name': { type: 'string' },
             'map.$key.description': { type: 'string', description: 'A theme/backstory' },
             'map.$key.rooms.$key.name': { type: 'string' },
-            'map.$key.rooms.$key.char': { type: 'string', description: 'A single char to visually mark a poi' },
             'map.$key.rooms.$key.type': { type: 'string', enum: ['poi', 'structure', 'pathway', 'intersection', 'corner'] },
             'map.$key.rooms.$key.terrain': { type: 'string' },
             'map.$key.rooms.$key.description': { type: 'string', description: 'Describe the room, scenery, terrain, and purpose. Reference any connted POIs.' },

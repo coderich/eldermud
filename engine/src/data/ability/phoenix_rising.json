@@ -1,0 +1,7 @@
+{
+  "name": "Phoenix Rising",
+  "description": "Upon receiving a fatal blow, the Inferno Summoner can erupt in flames and be reborn from the ashes with a portion of their health restored.",
+  "minRequired": {
+    "con": "13"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Lifedrinker",
+  "description": "The Crimson Blade's weapon thirsts for blood, stealing health from enemy on hit and transferring it to the wielder.",
+  "minRequired": {
+    "str": "16"
+  }
+}

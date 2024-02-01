@@ -1,0 +1,17 @@
+{
+  "name": "Skylancer",
+  "depiction": "An armored knight atop a magnificent flying beast, leaping and soaring through the air with a lance of lightning in hand.",
+  "description": "Skylancers are elite aerial combatants who command the skies with their winged mounts and mastery of aeromancy. They strike with the speed and precision of a thunderbolt.",
+  "dex": 15,
+  "wis": 12,
+  "traits": [
+    "${self:trait.aerial_acrobat}",
+    "${self:trait.skybound}",
+    "${self:trait.windcaller}"
+  ],
+  "abilities": [
+    "${self:ability.riding_the_maelstrom}",
+    "${self:ability.tempest_charge}",
+    "${self:ability.zephyr_blades}"
+  ]
+}

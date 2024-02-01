@@ -1,0 +1,18 @@
+{
+  "name": "Death Cleric",
+  "description": "Clerics devoted to the gods of death, empowered with the ability to heal the living and harm the undead, commanding both with equal mastery.",
+  "wis": 16,
+  "cha": 12,
+  "con": 14,
+  "int": 10,
+  "str": 10,
+  "dex": 8,
+  "traits": [
+    "${self:trait.ritualOfFinality}",
+    "${self:trait.deathlyDominion}"
+  ],
+  "abilities": [
+    "${self:ability.necroticTouch}",
+    "${self:ability.spiritGuardian}"
+  ]
+}

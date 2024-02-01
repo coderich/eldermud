@@ -1,0 +1,7 @@
+{
+  "name": "Riding the Maelstrom",
+  "description": "The Skylancer can ride turbulent air currents with ease, enabling rapid strikes and swift evasions while mounted.",
+  "minRequired": {
+    "wis": "12"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "Shape Shift",
+  "description": "The defining Druid ability, allowing them to take on the forms of various animals, gaining their physical attributes and abilities.",
+  "minRequired": {
+    "wis": "14"
+  }
+}

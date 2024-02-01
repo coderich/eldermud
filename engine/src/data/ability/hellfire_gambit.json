@@ -1,0 +1,7 @@
+{
+  "name": "Hellfire Gambit",
+  "description": "A risky maneuver that engulfs an area in hellfire, causing massive damage to all within - friend or foe.",
+  "minRequired": {
+    "int": "14"
+  }
+}

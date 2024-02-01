@@ -1,0 +1,7 @@
+{
+  "name": "Bladesong",
+  "description": "A mystical melody that the Mystic Bladeweaver hums during combat, bolstering their agility and magical attacks.",
+  "minRequired": {
+    "dex": "16"
+  }
+}

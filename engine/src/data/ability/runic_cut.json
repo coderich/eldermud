@@ -1,0 +1,7 @@
+{
+  "name": "Runic Cut",
+  "description": "The Mystic Bladeweaver can inscribe runes onto their blade mid-combat, each slash unleashing different magical effects.",
+  "minRequired": {
+    "int": "12"
+  }
+}

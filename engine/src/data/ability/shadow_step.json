@@ -1,0 +1,7 @@
+{
+  "name": "Shadow Step",
+  "description": "The Shadowsage can teleport short distances between shadows, appearing and disappearing as if a wraith.",
+  "minRequired": {
+    "dex": "14"
+  }
+}

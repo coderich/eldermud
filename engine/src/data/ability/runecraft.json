@@ -1,0 +1,7 @@
+{
+  "name": "Runecraft",
+  "description": "This ability enables the Arcane Scholar to inscribe mystical runes that can hold spells, trigger effects, or enhance objects. Requires materials and time to inscribe.",
+  "minRequired": {
+    "int": "13"
+  }
+}

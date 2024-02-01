@@ -1,4 +1,5 @@
 const FS = require('fs');
+const Path = require('path');
 const Util = require('@coderich/util');
 const merge = require('lodash.merge');
 const { Command } = require('commander');
@@ -29,6 +30,28 @@ program.command('stage').action(() => {
 
   // // Cleanup files
   // files.forEach(file => FS.unlinkSync(file));
+});
+
+program.command('commit').action(() => {
+  const database = `${__dirname}/../src/database.json`;
+  const outputDir = `${__dirname}/output`;
+  const dataDir = `${__dirname}/../src/data`;
+
+  const data = Util.flatten(JSON.parse(FS.readFileSync(database)), { depth: 1 });
+  Object.entries(data).forEach(([key, value]) => {
+    const [folder, filename] = key.split('.');
+    const filepath = Path.resolve(`${dataDir}/${folder}/${filename}.json`);
+    FS.writeFileSync(filepath, JSON.stringify(value, null, 2));
+  });
+
+  // Cleanup output files
+  FS.readdirSync(outputDir).forEach((filename) => {
+    const filepath = `${outputDir}/${filename}`;
+    FS.unlinkSync(filepath);
+  });
+
+  // Reset database
+  FS.writeFileSync(database, JSON.stringify({}, null, 2));
 });
 
 //

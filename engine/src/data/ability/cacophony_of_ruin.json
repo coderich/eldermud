@@ -1,0 +1,7 @@
+{
+  "name": "Cacophony of Ruin",
+  "description": "The Doomsinger unleashes a dissonant barrage of sounds that wreak havoc on enemy ranks, causing damage and disarray.",
+  "minRequired": {
+    "cha": "15"
+  }
+}

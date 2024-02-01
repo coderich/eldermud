@@ -1,0 +1,7 @@
+{
+  "name": "Ethereal Lunge",
+  "description": "Allows the Ghostly Duelist to perform a lunge that passes through obstacles and can strike directly at an opponent's life force.",
+  "minRequired": {
+    "dex": "18"
+  }
+}
