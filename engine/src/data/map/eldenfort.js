@@ -21,16 +21,7 @@ module.exports = {
       description: "The entrance to the Elden Keep is guarded by stone gargoyles, silent watchers of the town's comings and goings. The heavy oak doors are adorned with ironwork, speaking to the stronghold's might and the secrets it holds within.",
       exits: {
         s: '${self:map.eldenfort.rooms.marketSquare}',
-        u: '${self:map.eldenfort.rooms.eldenKeep}',
-      },
-    },
-    eldenKeep: {
-      name: 'Elden Keep',
-      type: 'structure',
-      terrain: 'urban',
-      description: "The interior of the Elden Keep is a labyrinth of corridors and chambers, each echoing the glory of a bygone era. The keep contains the town's archives and serves as a residence for the current ruler, Lady Elethor.",
-      exits: {
-        d: '${self:map.eldenfort.rooms.eldenKeepEntrance}',
+        u: '${self:map.eldenKeepInterior.rooms.entrance}',
       },
     },
     southGate: {
@@ -149,16 +140,7 @@ module.exports = {
       description: "The entrance to the Chapel of Elden is an archway of carved stone, depicting the town's history. The dimly lit interior promises a reprieve from the outside world.",
       exits: {
         w: '${self:map.eldenfort.rooms.chapelSquare}',
-        u: '${self:map.eldenfort.rooms.chapelMainHall}',
-      },
-    },
-    chapelMainHall: {
-      name: 'Chapel Main Hall',
-      type: 'structure',
-      terrain: 'urban',
-      description: "Rows of pews face a magnificent stained glass window, casting colorful patterns on the cold stone floor. The silence is profound, broken only by the occasional turning of a page from the Chaplain's scriptures.",
-      exits: {
-        d: '${self:map.eldenfort.rooms.chapelEntrance}',
+        u: '${self:map.eldenfortChapel.rooms.entrance}',
       },
     },
   },

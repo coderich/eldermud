@@ -27,9 +27,6 @@ program.command('stage').action(() => {
     if (value != null) return value;
     return undefined;
   }, 2));
-
-  // // Cleanup files
-  // files.forEach(file => FS.unlinkSync(file));
 });
 
 program.command('commit').action(() => {
@@ -40,8 +37,8 @@ program.command('commit').action(() => {
   const data = Util.flatten(JSON.parse(FS.readFileSync(database)), { depth: 1 });
   Object.entries(data).forEach(([key, value]) => {
     const [folder, filename] = key.split('.');
-    const filepath = Path.resolve(`${dataDir}/${folder}/${filename}.json`);
-    FS.writeFileSync(filepath, JSON.stringify(value, null, 2));
+    const filepath = Path.resolve(`${dataDir}/${folder}/${filename}.js`);
+    FS.writeFileSync(filepath, `module.exports = ${JSON.stringify(value, null, 2)};\n`);
   });
 
   // Cleanup output files
