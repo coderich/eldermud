@@ -3,11 +3,11 @@ const Path = require('path');
 const OpenAI = require('openai');
 const get = require('lodash.get');
 const { Command } = require('commander');
-const { Loop } = require('@coderich/gameflow');
 const Util = require('@coderich/util');
 const ConfigClient = require('../src/service/ConfigClient');
 const EventEmitter = require('../src/service/EventEmitter');
 const AppService = require('../src/service/AppService');
+const Service = require('./service');
 
 const program = new Command();
 
@@ -41,7 +41,7 @@ program.command('train').action(async (thisCommand, actionCommand) => {
             Mutate Game Data
             Follow AD&D 2E standards
             References must have the syntax "\${self:path.to.reference}"
-            "$key" properties must be substituted with a meaningful varName
+            Every $key must be substituted with a meaningful camelCase name.
             "$stat" properties must be substituted for every {str,dex,int,wis,con,cha,lvl,exp}
             Type "number" can also accept a dice-roll string eg "2d6+4"
           `,
@@ -68,10 +68,6 @@ program.command('train').action(async (thisCommand, actionCommand) => {
               'class.$key.traits': { type: 'array', items: { type: 'string', description: '${self:reference} to trait' } },
               'class.$key.abilities': { type: 'array', items: { type: 'string', description: '${self:reference} to ability' } },
 
-              'npc.$key.name': { type: 'string' },
-              'npc.$key.depiction': { type: 'string' },
-              'npc.$key.description': { type: 'string' },
-
               'creature.$key.name': { type: 'string' },
               'creature.$key.depiction': { type: 'string' },
               'creature.$key.description': { type: 'string' },
@@ -83,21 +79,6 @@ program.command('train').action(async (thisCommand, actionCommand) => {
               'creature.$key.attacks': { type: 'array', items: { type: 'string', description: '${self:reference} to weapon' } },
               'creature.$key.traits': { type: 'array', items: { type: 'string', description: '${self:reference} to trait' } },
               'creature.$key.abilities': { type: 'array', items: { type: 'string', description: '${self:reference} to ability' } },
-
-              // 'blockade.$key.name': { type: 'string' },
-              // 'blockade.$key.depiction': { type: 'string' },
-              // 'blockade.$key.description': { type: 'string' },
-              // 'blockade.$key.successMsg': { type: 'string' },
-              // 'blockade.$key.failureMsg': { type: 'string' },
-              // 'blockade.$key.requires': { type: 'array', items: { type: 'string' }, description: '${self:reference} to items required to pass' },
-
-              // 'door.$key.name': { type: 'string' },
-              // 'door.$key.description': { type: 'string' },
-              // 'door.$key.key': { type: 'string', description: '${self:reference} to item if any' },
-
-              'shop.$key.name': { type: 'string' },
-              'shop.$key.description': { type: 'string' },
-              'shop.$key.inventory': { type: 'array', items: { type: 'string', description: '${self:reference} to {item,weapon}' } },
 
               'item.$key.name': { type: 'string' },
               'item.$key.depiction': { type: 'string' },
@@ -117,6 +98,9 @@ program.command('train').action(async (thisCommand, actionCommand) => {
               'weapon.$key.misses': { type: 'array', items: { type: 'string', description: 'singular' }, description: 'eg: [swipe, swing, paw]' },
               'weapon.$key.scales.$stat': { type: 'number', description: 'Precision 1. Repeat for every $stat' },
               'weapon.$key.minRequired.$stat': { type: 'string', description: 'Minimum requirements. Repeat for every $stat' },
+
+              'quest.$key.name': { type: 'string' },
+              'quest.$key.description': { type: 'string' },
             },
           },
         },
@@ -142,39 +126,14 @@ program.command('query')
       return openai.files.create({ file, purpose: 'assistants' });
     }));
 
-    const data = {};
-
     // Query the Dungeon Master
     const result = await openai.beta.threads.createAndRun({
       assistant_id: dungeonMaster,
       thread: { messages: [{ role: 'user', content, file_ids: files.map(f => f.id) }] },
     });
 
-    // Await DM Response
-    await new Loop(async (_, { abort }) => {
-      await APP.timeout(5000);
-      const run = await openai.beta.threads.runs.retrieve(result.thread_id, result.id);
-      console.log(run.status);
-
-      switch (run.status) {
-        case 'requires_action': {
-          const calls = run.required_action.submit_tool_outputs.tool_calls;
-          calls.forEach(call => Object.assign(data, JSON.parse(call.function.arguments)));
-          await openai.beta.threads.runs.submitToolOutputs(result.thread_id, run.id, {
-            tool_outputs: calls.map(call => ({ tool_call_id: call.id, output: 'ok' })),
-          });
-          break;
-        }
-        case 'completed': {
-          console.log(run);
-          abort();
-          break;
-        }
-        default: {
-          break; // loop
-        }
-      }
-    })();
+    //
+    const data = await Service.awaitResult(openai, result);
 
     // Capture Response
     FS.writeFileSync(filepath, JSON.stringify(data, null, 2));

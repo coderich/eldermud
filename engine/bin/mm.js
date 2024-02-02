@@ -32,8 +32,69 @@ program.command('train').action(async (thisCommand, actionCommand) => {
     name: 'Map Maker',
     file_ids: [],
     tools: [
-      // { type: 'retrieval' },
-      Service.functions.map,
+      { type: 'retrieval' },
+      {
+        type: 'function',
+        function: {
+          name: 'map',
+          description: `
+            The model is flattened and parallel calls for the same map are safe.
+            A #direction is one of {n,s,e,w,ne,nw,se,sw,u,d}.
+            Every $key must be substituted with a meaningful camelCase name.
+            All rooms must be logically connected via exits.
+            Every reference must be defined.
+          `,
+          parameters: {
+            type: 'object',
+            properties: {
+              'map.$key.name': { type: 'string' },
+              'map.$key.description': { type: 'string', description: 'A theme/backstory' },
+              'map.$key.rooms.$key.name': { type: 'string' },
+              'map.$key.rooms.$key.type': { type: 'string', enum: ['poi', 'structure', 'pathway', 'intersection', 'corner'] },
+              'map.$key.rooms.$key.terrain': { type: 'string' },
+              'map.$key.rooms.$key.description': { type: 'string', description: 'Describe the room, scenery, terrain, and purpose. Reference any connted POIs.' },
+              'map.$key.rooms.$key.exits.#direction': { type: 'string', description: 'Connect rooms via: "${self:map.$key.rooms.$key}"' },
+              // 'map.$key.rooms.$key.shop': { type: 'string', description: '${self:shop.$key} reference' },
+
+              // 'map.$key.shops.$key.name': { type: 'string' },
+              // 'map.$key.shops.$key.description': { type: 'string' },
+              // 'map.$key.shop.$key.inventory': { type: 'array', items: { type: 'string', description: '${self:reference} to {item,weapon}' } },
+
+              // 'blockade.$key.name': { type: 'string' },
+              // 'blockade.$key.depiction': { type: 'string' },
+              // 'blockade.$key.description': { type: 'string' },
+              // 'blockade.$key.successMsg': { type: 'string' },
+              // 'blockade.$key.failureMsg': { type: 'string' },
+              // 'blockade.$key.requires': { type: 'array', items: { type: 'string' }, description: '${self:reference} to items required to pass' },
+
+              // 'door.$key.name': { type: 'string' },
+              // 'door.$key.description': { type: 'string' },
+              // 'door.$key.key': { type: 'string', description: '${self:reference} to item if any' },
+
+              // 'npc.$key.name': { type: 'string' },
+              // 'npc.$key.quest': { type: 'array', items: { type: 'string', description: '${self:quest.$key} reference' }, description: 'Progressive quests, if any' },
+              // 'npc.$key.depiction': { type: 'string' },
+              // 'npc.$key.description': { type: 'string' },
+
+              // 'quest.$key.name': { type: 'string' },
+              // 'quest.$key.description': { type: 'string' },
+
+              // 'map.$key.rooms.$key.respawn': { type: 'number', description: 'If spawns, how long to respawn' },
+              // 'map.$key.rooms.$key.spawns': {
+              //   type: 'array',
+              //   items: {
+              //     type: 'object',
+              //     properties: {
+              //       num: { type: 'number' },
+              //       units: { type: 'array', items: { type: 'string', description: '${self:reference} creature' } },
+              //     },
+              //   },
+              //   description: 'Spawn creatures',
+              // },
+            },
+          },
+        },
+      },
     ],
     instructions: `
       You are a creative map maker for a MUD.

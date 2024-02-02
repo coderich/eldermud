@@ -53,4 +53,9 @@ module.exports = {
       exits: { e: $room('tunnel2') },
     },
   },
+  shops: {
+    general: {
+      inventory: ['${self:item.rope}', '${self:item.canteen}'],
+    },
+  },
 };
