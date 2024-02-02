@@ -42,6 +42,7 @@ Action.define('map', async (_, { actor }) => {
       const $room = rooms.find(el => el.id === room.mapId);
       $room.paths = Object.entries(room.paths || {}).reduce((prev, [key, value]) => Object.assign(prev, { [key]: value.status || 'closed' }), {});
       $room.exits = Object.entries(room.exits || {}).map(([dir, exit]) => {
+        if (!exit) console.log(room);
         let $exit = rooms.find(el => el.id === exit.mapId);
 
         // Edge of the map connecting to another...

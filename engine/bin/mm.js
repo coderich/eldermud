@@ -41,7 +41,8 @@ program.command('train').action(async (thisCommand, actionCommand) => {
             The model is flattened and parallel calls for the same map are safe.
             A #direction is one of {n,s,e,w,ne,nw,se,sw,u,d}.
             Every $key must be substituted with a meaningful camelCase name.
-            All rooms must be logically connected via exits.
+            All rooms must be evenly spaced and logically connected via exits.
+            An exit can only connect to an adjacent room.
             Every reference must be defined.
           `,
           parameters: {
@@ -99,7 +100,7 @@ program.command('train').action(async (thisCommand, actionCommand) => {
     instructions: `
       You are a creative map maker for a MUD.
       Every map must consistently follow a cohesive theme and storyline.
-      Add a sense of dimension by creating long pathways that permeate the map.
+      Open areas must be expressed with many connected rooms that act as pathways.
     `,
   });
 });

@@ -24,7 +24,7 @@ Action.define('room', [
 
     const $room = {
       name: APP.styleText('room.name', room.name),
-      description: APP.styleText('room.description', `    ${room.description}`),
+      description: APP.styleText('room.description', room.description),
       exitsLabel: APP.styleText('room.exitsLabel', 'Obvious exits:'),
       unitsLabel: APP.styleText('room.unitsLabel', 'Also here:'),
       partyLabel: APP.styleText('room.partyLabel', 'Party:'),
