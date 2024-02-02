@@ -10,7 +10,23 @@ const coords = {
   se: [2, -2, 0],
   sw: [-2, -2, 0],
   u: [0, 0, 2],
+  // un: [0, 2, 2],
+  // us: [0, -2, 2],
+  // ue: [2, 0, 2],
+  // uw: [-2, 0, 2],
+  // une: [2, 2, 2],
+  // unw: [-2, 2, 2],
+  // use: [2, -2, 2],
+  // usw: [-2, -2, 2],
   d: [0, 0, -2],
+  // dn: [0, 2, -2],
+  // ds: [0, -2, -2],
+  // de: [2, 0, -2],
+  // dw: [-2, 0, -2],
+  // dne: [2, 2, -2],
+  // dnw: [-2, 2, -2],
+  // dse: [2, -2, -2],
+  // dsw: [-2, -2, -2],
 };
 
 Action.define('map', async (_, { actor }) => {
@@ -26,7 +42,13 @@ Action.define('map', async (_, { actor }) => {
       const $room = rooms.find(el => el.id === room.mapId);
       $room.paths = Object.entries(room.paths || {}).reduce((prev, [key, value]) => Object.assign(prev, { [key]: value.status || 'closed' }), {});
       $room.exits = Object.entries(room.exits || {}).map(([dir, exit]) => {
-        const $exit = rooms.find(el => el.id === exit.mapId);
+        let $exit = rooms.find(el => el.id === exit.mapId);
+
+        // Edge of the map connecting to another...
+        if (!$exit) {
+          $room.paths[dir] = 'closed';
+          $exit = { id: $room.id * 1000 };
+        }
 
         if ($exit.id > $room.id) {
           const [x, y, z] = coords[dir];

@@ -49,7 +49,8 @@
       "terrain": "urban",
       "description": "The South Road stretches out from the gate, a well-trodden road leading travelers into the countryside beyond.",
       "exits": {
-        "n": "${self:map.eldenfort.rooms.southGate}"
+        "n": "${self:map.eldenfort.rooms.southGate}",
+        "s": "${self:map.townOfEchoes.rooms.deepWoods}"
       }
     },
     "westAlley": {

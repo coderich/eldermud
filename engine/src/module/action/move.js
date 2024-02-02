@@ -35,7 +35,8 @@ Action.define('move', [
     const { actor } = context;
 
     // Leave
-    await actor.save({ room: exit });
+    const [map] = `${exit}`.split('.rooms');
+    await actor.save({ room: exit, map });
     room.units.delete(actor);
     exit.units.add(actor);
     actor.$search.clear();

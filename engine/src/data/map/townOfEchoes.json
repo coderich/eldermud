@@ -221,6 +221,7 @@
       "terrain": "dirt",
       "description": "Heavy foliage blocks out much of the light in the Deep Woods, which begin just north of town. It's easy to imagine how the townsfolk might have felt a presence lurking here, watching them from the shadows.",
       "exits": {
+        "n": "${self:map.eldenfort.rooms.southRoad}",
         "s": "${self:map.townOfEchoes.rooms.northOutskirts}"
       }
     },
