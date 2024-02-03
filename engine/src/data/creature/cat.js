@@ -1,0 +1,16 @@
+module.exports = {
+  name: 'cat',
+  pri: 'dex',
+  str: 3,
+  dex: 2,
+  int: 1,
+  wis: 0,
+  exp: 1,
+  lvl: 1,
+  rank: '1d3-1',
+  ranks: ['baby', '', 'adult'],
+  adjectives: ['small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
+  moves: ['creep', 'scuttle', 'wobble'],
+  traits: ['${self:trait.lifeforce}', '${self:trait.hunter}'],
+  attacks: ['${self:weapon.claw}', '${self:weapon.teeth}'],
+};
