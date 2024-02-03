@@ -17,7 +17,6 @@ module.exports = {
     eldenKeepEntrance: {
       name: 'Elden Keep Entrance',
       type: 'poi',
-      char: 'K',
       terrain: 'urban',
       description: "The entrance to the Elden Keep is guarded by stone gargoyles, silent watchers of the town's comings and goings. The heavy oak doors are adorned with ironwork, speaking to the stronghold's might and the secrets it holds within.",
       exits: {

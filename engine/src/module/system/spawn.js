@@ -18,7 +18,9 @@ setInterval(async () => {
           Array.from(new Array(count)).forEach(() => {
             const unit = APP.randomElement(units);
             const room = APP.randomElement(Object.values(rooms));
-            APP.instantiate(unit, { room }).then(actor => actor.perform('spawn'));
+            const { random = {} } = unit;
+            const name = [APP.randomElement(['', ...random.impressions]), unit.name].filter(Boolean).join(' ').toLowerCase();
+            APP.instantiate(unit, { room, name }).then(actor => actor.perform('spawn'));
           });
         }
       });

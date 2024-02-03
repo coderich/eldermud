@@ -4,7 +4,7 @@ const { Action } = require('@coderich/gameflow');
  * Spawn an actor, bind system events and add them to the realm
  */
 Action.define('spawn', async (_, { actor }) => {
-  await actor.calcStats?.();
+  actor.calcStats?.();
 
   // Save pre-defined attributes (if not exists)
   await actor.save(actor, true);

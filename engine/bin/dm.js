@@ -98,9 +98,6 @@ program.command('train').action(async (thisCommand, actionCommand) => {
               'weapon.$key.misses': { type: 'array', items: { type: 'string', description: 'singular' }, description: 'eg: [swipe, swing, paw]' },
               'weapon.$key.scales.$stat': { type: 'number', description: 'Precision 1. Repeat for every $stat' },
               'weapon.$key.minRequired.$stat': { type: 'string', description: 'Minimum requirements. Repeat for every $stat' },
-
-              'quest.$key.name': { type: 'string' },
-              'quest.$key.description': { type: 'string' },
             },
           },
         },

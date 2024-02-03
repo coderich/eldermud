@@ -25,7 +25,7 @@ Action.define('stats', [
       Crits: '0',
       Poise: '0',
       Riposte: '0',
-      Talents: actor.talents.map(talent => talent.name).join(', '),
+      // Talents: actor.talents.map(talent => talent.name).join(', '),
       // Abilities: actor.abilities.map(ability => ability.name).join(', '),
       Traits: actor.traits.map(trait => trait.name).join(', '),
     }).reduce((prev, [key, value]) => {
@@ -46,7 +46,7 @@ Action.define('stats', [
     ], { sep: '' });
 
     const table2 = APP.table([
-      [...data.Talents],
+      // [...data.Talents],
       // [...data.Abilities],
       [...data.Traits],
     ], { sep: '' });

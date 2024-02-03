@@ -77,6 +77,10 @@ exports.hydrate = (keys) => {
   });
 };
 
+exports.spawn = () => {
+
+};
+
 exports.roll = (dice) => {
   if (exports.isNumeric(dice)) return parseInt(dice, 10);
 
