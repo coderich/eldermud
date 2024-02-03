@@ -23,9 +23,7 @@ Action.define('spawn', async (_, { actor }) => {
   // Attach traits
   if (actor.type !== 'player') {
     actor.traits?.forEach((trait) => {
-      trait.mechanics.forEach((mechanic) => {
-        if (Action[mechanic.id]) actor.stream('trait', mechanic.id);
-      });
+      if (Action[trait.id]) actor.stream('trait', trait.id);
     });
   }
 

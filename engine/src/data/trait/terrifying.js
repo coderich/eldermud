@@ -1,5 +1,4 @@
 module.exports = {
   name: 'Terrifying',
-  description: 'This unit is absolutely terrifying',
-  mechanics: ['${self:mechanic.terrifying}'],
+  description: 'Terrifying negates LifeForce while in the same room',
 };

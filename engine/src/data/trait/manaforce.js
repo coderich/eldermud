@@ -1,5 +1,4 @@
 module.exports = {
   name: 'ManaForce',
-  description: '${self:mechanic.manaforce.description}',
-  mechanics: ['${self:mechanic.manaforce}'],
+  description: 'Units with ManaForce slowly regain mana over time',
 };

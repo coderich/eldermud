@@ -1,5 +1,4 @@
 module.exports = {
   name: 'LifeForce',
-  description: '${self:mechanic.lifeforce.description}',
-  mechanics: ['${self:mechanic.lifeforce}'],
+  description: 'Units with LifeForce slowly regain health over time',
 };

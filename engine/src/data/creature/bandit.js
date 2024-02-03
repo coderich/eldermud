@@ -11,6 +11,7 @@ module.exports = {
   cha: 8,
   exp: 1,
   lvl: 1,
+  size: 2,
   stealth: '10d10',
   random: {
     ranks: [
@@ -33,7 +34,11 @@ module.exports = {
     ],
   },
   attacks: ['${self:attack.claw}', '${self:attack.teeth}'],
-  traits: ['${self:trait.lifeforce}', '${self:trait.hunter}'],
+  traits: [
+    '${self:trait.lifeforce}',
+    '${self:trait.vagabond}',
+    '${self:trait.territorial}',
+  ],
   // attacks: [
   //   '${self:weapon.scimitar}',
   //   '${self:weapon.dagger}',
