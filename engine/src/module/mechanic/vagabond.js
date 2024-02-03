@@ -5,7 +5,7 @@ Action.define('vagabond', [
     context.stream.on('abort', context.abort);
 
     new Loop(async (__, { actor, promise }) => {
-      await APP.timeout(5000);
+      await APP.timeout(APP.roll('7d1000+8000'));
 
       if (!actor.$target && !promise.aborted) {
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));

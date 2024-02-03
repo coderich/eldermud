@@ -1,6 +1,31 @@
 /**
- * Responsible for spawning creatures
+ * Responsible for spawning map creatures
  */
+setInterval(async () => {
+  Object.values(CONFIG.get('map')).forEach(({ spawns, rooms }) => {
+    if (spawns?.length) {
+      const mapUnits = Object.values(rooms).reduce((prev, room) => prev.concat(Array.from(room.units)), []);
+
+      spawns.forEach(({ num, max, units }) => {
+        const roll = APP.roll(num);
+        const ids = units.map(unit => unit.id);
+        const existingUnits = mapUnits.filter(unit => ids.includes(unit.id));
+        const maximum = max - existingUnits.length;
+        const count = Math.min(roll, maximum);
+
+        // Spawn
+        if (count > 0) {
+          Array.from(new Array(count)).forEach(() => {
+            const unit = APP.randomElement(units);
+            const room = APP.randomElement(Object.values(rooms));
+            APP.instantiate(unit, { room }).then(actor => actor.perform('spawn'));
+          });
+        }
+      });
+    }
+  });
+}, 3000);
+
 SYSTEM.on('pre:room', async (context) => {
   const { data: room } = context;
 
