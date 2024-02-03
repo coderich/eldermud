@@ -1,7 +1,0 @@
-{
-  "name": "Nightmare Fabric",
-  "description": "An ability to weave shadows into tangible forms, the Shadowsage can create illusions or animated constructs to deceive and attack enemies.",
-  "minRequired": {
-    "int": "13"
-  }
-}

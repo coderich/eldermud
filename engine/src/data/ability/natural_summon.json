@@ -1,7 +1,0 @@
-{
-  "name": "Natural Summon",
-  "description": "This ability allows the Druid to summon powerful creatures from the natural world to aid them in battle or other tasks.",
-  "minRequired": {
-    "wis": "13"
-  }
-}

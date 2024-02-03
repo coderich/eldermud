@@ -1,7 +1,0 @@
-{
-  "name": "Life Transference",
-  "description": "The Soul Mage can transfer life force between creatures, healing one by sapping the vitality of another.",
-  "minRequired": {
-    "int": "17"
-  }
-}

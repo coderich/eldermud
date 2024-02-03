@@ -9,6 +9,6 @@ module.exports = {
   dodge: 0,
   talents: ['${self:talent.consume}'],
   traits: ['${self:trait.manaforce}', '${self:trait.terrifying}', '${self:trait.killerblow}'],
-  attacks: ['${self:weapon.sword}'],
+  attacks: ['${self:attack.sword}'],
   description: 'Death Knights wield unholy powers of death and decay. Often risen from fallen heroes or corrupted knights, they are relentless in their pursuit of power and dominance on the battlefield.',
 };

@@ -1,7 +1,0 @@
-{
-  "name": "Spirit Guardian",
-  "description": "Summons a protective spirit that guards the Death Cleric, attacking or hindering foes that come too close.",
-  "minRequired": {
-    "cha": "12"
-  }
-}

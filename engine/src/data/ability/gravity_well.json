@@ -1,7 +1,0 @@
-{
-  "name": "Gravity Well",
-  "description": "A Stoneshaper can manipulate gravitational forces to root enemies in place or increase the weight of objects.",
-  "minRequired": {
-    "int": "12"
-  }
-}

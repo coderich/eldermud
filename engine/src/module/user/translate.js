@@ -66,7 +66,7 @@ const commands = [
     // { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },
     { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'action' } },
 
-    // Talents/Abilities
+    // Talents
     // { dble: { args: [1], code: 'talent.dble', stream: 'talent' } },
     // { hail: { args: [0], code: 'talent.hail', stream: 'talent' } },
     { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action' } },

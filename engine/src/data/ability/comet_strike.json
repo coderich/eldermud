@@ -1,7 +1,0 @@
-{
-  "name": "Comet Strike",
-  "description": "A powerful ability of the Star Scion that summons a comet from the sky, dealing massive area-of-effect damage.",
-  "minRequired": {
-    "int": "14"
-  }
-}

@@ -14,5 +14,5 @@ module.exports = {
     movements: ['sneak'],
   },
   traits: ['${self:trait.lifeforce}', '${self:trait.hunter}'],
-  attacks: ['${self:weapon.claw}', '${self:weapon.teeth}'],
+  attacks: ['${self:attack.claw}', '${self:attack.teeth}'],
 };

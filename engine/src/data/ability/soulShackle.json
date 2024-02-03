@@ -1,7 +1,0 @@
-{
-  "name": "Soul Shackle",
-  "description": "The Spirit Binder ensnares the soul of a target, hindering their movements and causing them anguish that can manifest as physical pain.",
-  "minRequired": {
-    "int": "14"
-  }
-}

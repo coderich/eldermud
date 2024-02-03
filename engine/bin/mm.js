@@ -92,6 +92,12 @@ program.command('train').action(async (thisCommand, actionCommand) => {
               //   },
               //   description: 'Spawn creatures',
               // },
+
+              // 'item.$key.name': { type: 'string' },
+              // 'item.$key.depiction': { type: 'string' },
+              // 'item.$key.description': { type: 'string' },
+              // 'item.$key.value': { type: 'integer' },
+              // 'item.$key.weight': { type: 'integer' },
             },
           },
         },

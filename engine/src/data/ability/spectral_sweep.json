@@ -1,7 +1,0 @@
-{
-  "name": "Spectral Sweep",
-  "description": "A spinning attack that emits spectral energy, striking multiple enemies around the Mystic Bladeweaver and dealing bonus arcane damage.",
-  "minRequired": {
-    "str": "13"
-  }
-}

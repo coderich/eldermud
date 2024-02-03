@@ -5,10 +5,15 @@ module.exports = {
   awaitResult: async (openai, result) => {
     const data = {};
 
-    // Await DM Response
+    // Await response
     await new Loop(async (_, { abort }) => {
       await APP.timeout(5000);
-      const run = await openai.beta.threads.runs.retrieve(result.thread_id, result.id);
+
+      const run = await openai.beta.threads.runs.retrieve(result.thread_id, result.id).catch((e) => {
+        console.log(e);
+        return { status: 'error' };
+      });
+
       console.log(run.status);
 
       switch (run.status) {

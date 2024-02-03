@@ -1,7 +1,0 @@
-{
-  "name": "Dirge of Dread",
-  "description": "A haunting song that chills the hearts of foes, instilling a lingering fear that weakens their combat abilities.",
-  "minRequired": {
-    "int": "12"
-  }
-}

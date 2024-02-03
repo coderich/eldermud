@@ -1,7 +1,0 @@
-{
-  "name": "Spellcasting",
-  "description": "A fundamental ability for the Arcane Scholar, allowing them to cast a wide array of powerful spells. The variety and strength of the spells increase with the scholar's experience.",
-  "minRequired": {
-    "int": "15"
-  }
-}

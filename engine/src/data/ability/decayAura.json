@@ -1,7 +1,0 @@
-{
-  "name": "Decay Aura",
-  "description": "The Zombie Lord emits an aura of decay that weakens the defenses of enemies while invigorating their own undead legions.",
-  "minRequired": {
-    "cha": "13"
-  }
-}

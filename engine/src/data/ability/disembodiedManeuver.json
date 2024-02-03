@@ -1,7 +1,0 @@
-{
-  "name": "Disembodied Maneuver",
-  "description": "The Ghostly Duelist temporarily becomes insubstantial, gaining the ability to move through solid objects and avoid most physical attacks.",
-  "minRequired": {
-    "cha": "14"
-  }
-}

@@ -1,7 +1,0 @@
-{
-  "name": "Soul Storm",
-  "description": "Unleashes a tempest of tormented souls around the Soul Mage, dealing damage and causing emotional turmoil in those caught within.",
-  "minRequired": {
-    "cha": "14"
-  }
-}

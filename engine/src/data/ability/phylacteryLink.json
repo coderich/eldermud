@@ -1,7 +1,0 @@
-{
-  "name": "Phylactery Link",
-  "description": "The Lich Envoy shares a link with their master's phylactery, allowing them to draw on its power or communicate through it.",
-  "minRequired": {
-    "int": "18"
-  }
-}

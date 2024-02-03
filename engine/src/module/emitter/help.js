@@ -9,8 +9,7 @@ Action.define('help', [
       case 'class': {
         actor.send('text', APP.styleText('highlight', target.name));
         actor.send('text', `${target.description}`);
-        // actor.send('text', APP.styleText('stat', 'Talents:'), APP.styleText('keyword', target.talents.map(talent => talent.name).join(', ')));
-        actor.send('text', APP.styleText('stat', 'Talents:'), APP.styleText('keyword', target.abilities.map(talent => talent.name).join(', ')));
+        actor.send('text', APP.styleText('stat', 'Talents:'), APP.styleText('keyword', target.talents.map(talent => talent.name).join(', ')));
         actor.send('text', APP.styleText('stat', 'Traits:'), APP.styleText('keyword', target.traits.map(trait => trait.name).join(', ')));
         break;
       }

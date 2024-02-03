@@ -1,7 +1,0 @@
-{
-  "name": "Zombie Mastery",
-  "description": "Enables the Zombie Lord to exert their will over zombies, commanding them to perform complex tasks or fight with increased ferocity.",
-  "minRequired": {
-    "con": "17"
-  }
-}

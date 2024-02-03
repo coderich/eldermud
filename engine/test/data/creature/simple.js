@@ -10,6 +10,5 @@ module.exports = {
   tiers: ['baby', '', 'adult'],
   adjectives: ['', 'small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
   moves: ['creep', 'scuttle', 'wobble'],
-  // traits: [],
-  attacks: ['${self:weapon.air}'],
+  attacks: ['${self:attack.air}'],
 };

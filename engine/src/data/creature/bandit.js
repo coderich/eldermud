@@ -9,6 +9,8 @@ module.exports = {
   wis: 9,
   con: 12,
   cha: 8,
+  exp: 1,
+  lvl: 1,
   stealth: '10d10',
   random: {
     ranks: [
@@ -30,6 +32,7 @@ module.exports = {
       'Flee',
     ],
   },
+  attacks: ['${self:attack.claw}', '${self:attack.teeth}'],
   traits: ['${self:trait.lifeforce}', '${self:trait.hunter}'],
   // attacks: [
   //   '${self:weapon.scimitar}',
@@ -40,8 +43,8 @@ module.exports = {
   //   '${self:trait.skulker}',
   //   '${self:trait.toughness}',
   // ],
-  // abilities: [
-  //   '${self:ability.sneakAttack}',
-  //   '${self:ability.hideInPlainSight}',
+  // talents: [
+  //   '${self:talent.sneakAttack}',
+  //   '${self:talent.hideInPlainSight}',
   // ],
 };

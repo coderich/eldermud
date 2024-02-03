@@ -1,7 +1,0 @@
-{
-  "name": "Ritual Conduit",
-  "description": "The Arcane Scholar can perform complex magical rituals, unlocking potent effects and enchantments not achievable through normal spellcasting.",
-  "minRequired": {
-    "int": "14"
-  }
-}

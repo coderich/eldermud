@@ -1,7 +1,0 @@
-{
-  "name": "Zephyr Blades",
-  "description": "Enhances the Skylancer's weapons with the force of the winds, slicing through defenses and dealing wind-based damage.",
-  "minRequired": {
-    "str": "13"
-  }
-}

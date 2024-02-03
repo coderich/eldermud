@@ -1,7 +1,0 @@
-{
-  "name": "Skeletal Summoning",
-  "description": "This ability allows the Bone Sorcerer to summon skeletal creatures to fight alongside them, which are more durable and potent than regular skeletons.",
-  "minRequired": {
-    "int": "17"
-  }
-}

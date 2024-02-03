@@ -1,7 +1,0 @@
-{
-  "name": "Necrotic Touch",
-  "description": "Allows the Death Cleric to touch a being, delivering a concentrated burst of necrotic energy that either harms or heals, depending on the nature of the target.",
-  "minRequired": {
-    "wis": "16"
-  }
-}

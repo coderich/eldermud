@@ -1,7 +1,0 @@
-{
-  "name": "Ectoplasmic Bond",
-  "description": "Creates a bond between the Spirit Binder and a spirit, allowing them to gain a spectral ally or draw upon the spirit's unique abilities.",
-  "minRequired": {
-    "cha": "16"
-  }
-}

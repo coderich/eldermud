@@ -1,7 +1,0 @@
-{
-  "name": "Starcall",
-  "description": "By invoking the names of the stars, the Star Scion can call forth beams of starlight to strike their enemies or heal their allies.",
-  "minRequired": {
-    "cha": "13"
-  }
-}

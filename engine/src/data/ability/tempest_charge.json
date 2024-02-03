@@ -1,7 +1,0 @@
-{
-  "name": "Tempest Charge",
-  "description": "The Skylancer can harness the power of storms for a high-speed, lightning-charged attack from the skies.",
-  "minRequired": {
-    "dex": "15"
-  }
-}
