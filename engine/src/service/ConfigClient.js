@@ -67,8 +67,8 @@ module.exports = class ConfigClient extends Config {
         config.set(`map.${key}.rooms.${id}.mapId`, (i * 1000) + j + 1);
         config.set(`map.${key}.rooms.${id}.type`, 'room');
         if (!room.description) config.set(`map.${key}.rooms.${id}.description`, Chance.paragraph());
-        config.set(`map.${key}.rooms.${id}.items`, new Set());
-        config.set(`map.${key}.rooms.${id}.units`, new Set());
+        if (!room.items) config.set(`map.${key}.rooms.${id}.items`, new Set());
+        if (!room.units) config.set(`map.${key}.rooms.${id}.units`, new Set());
         config.set(`map.${key}.rooms.${id}.toString`, () => `map.${key}.rooms.${id}`);
       });
     });

@@ -1,9 +1,5 @@
-const FS = require('fs');
-const Path = require('path');
 const OpenAI = require('openai');
-const get = require('lodash.get');
 const { Command } = require('commander');
-const Util = require('@coderich/util');
 const ConfigClient = require('../src/service/ConfigClient');
 const EventEmitter = require('../src/service/EventEmitter');
 const AppService = require('../src/service/AppService');
@@ -49,7 +45,8 @@ program.command('train').action(async (thisCommand, actionCommand) => {
             type: 'object',
             properties: {
               'map.$key.name': { type: 'string' },
-              'map.$key.description': { type: 'string', description: 'A theme/backstory' },
+              'map.$key.description': { type: 'string', description: 'A theme/storyline' },
+              'map.$key.backstory': { type: 'string', description: 'Backstory, including any secrets a DM should know' },
               'map.$key.rooms.$key.name': { type: 'string' },
               'map.$key.rooms.$key.type': { type: 'string', enum: ['poi', 'structure', 'pathway', 'intersection', 'corner'] },
               'map.$key.rooms.$key.terrain': { type: 'string' },
@@ -105,6 +102,7 @@ program.command('train').action(async (thisCommand, actionCommand) => {
     ],
     instructions: `
       You are a creative map maker for a MUD.
+      This MUD is a mix of HighFantasy, DarkFantasy, and Necromancy themes.
       Every map must consistently follow a cohesive theme and storyline.
       Open areas must be expressed with many connected rooms that act as pathways.
     `,
@@ -114,33 +112,9 @@ program.command('train').action(async (thisCommand, actionCommand) => {
 program.command('query')
   .argument('<query>')
   .argument('[datasets...]')
-  .action(async (content, datasets, opts, command) => {
+  .action((content, datasets, opts, command) => {
     const { openai, mapMaker } = command;
-    const filename = `mm.${new Date().getTime()}.json`;
-    const filepath = Path.join(__dirname, 'output', filename);
-    const { config } = CONFIG.toObject();
-
-    // Create training files
-    const files = await Promise.all(datasets.map(async (dataset) => {
-      const data = JSON.stringify(Util.flatten(get(config, dataset, {}), { safe: true }));
-      const file = await OpenAI.toFile(Buffer.from(data));
-      return openai.files.create({ file, purpose: 'assistants' });
-    }));
-
-    // Query the Map Maker
-    const result = await openai.beta.threads.createAndRun({
-      assistant_id: mapMaker,
-      thread: { messages: [{ role: 'user', content, file_ids: files.map(f => f.id) }] },
-    });
-
-    //
-    const data = await Service.awaitResult(openai, result);
-
-    // Capture Response
-    FS.writeFileSync(filepath, JSON.stringify(data, null, 2));
-
-    // Delete files
-    await Promise.all(files.map(file => openai.files.del(file.id)));
+    return Service.query(openai, mapMaker, content, datasets);
   });
 
 //

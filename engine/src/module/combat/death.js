@@ -40,13 +40,21 @@ SYSTEM.on('post:death', async ({ actor }) => {
         break;
       }
       default: {
-        const exp = Math.ceil((actor.mhp * actor.exp) / actor.$killers.size);
+        const killers = Array.from(actor.$killers).filter(killer => killer.type === 'player');
+        const killerCount = killers.length || 1;
+        const exp = Math.ceil((actor.mhp * actor.exp) / killerCount);
 
-        actor.$killers.forEach((killer) => {
-          killer.perform('affect', { exp });
-          killer.send('text', actor.slain);
-          killer.send('text', `You gain ${APP.styleText('keyword', exp)} soul power.`);
-          killer.perform('room');
+        // Broadcast to room that actor is dead
+        Array.from(actor.room.units.values()).forEach((unit) => {
+          unit.send('text', actor.slain);
+        });
+
+        actor.$killers.forEach(async (killer) => {
+          if (!killer.$dead) {
+            killer.perform('affect', { exp });
+            killer.send('text', `You gain ${APP.styleText('keyword', exp)} soul power.`);
+            killer.perform('room');
+          }
         });
 
         // Redis cleanup

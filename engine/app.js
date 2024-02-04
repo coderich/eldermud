@@ -26,7 +26,7 @@ exports.setup = async () => {
     await actor.perform('spawn');
   });
 
-  // Setup our creatures (Actors)
+  // Setup our creatures
   await REDIS.keys('creature.*').then((keys) => {
     return keys.length ? REDIS.mGet(keys).then((values) => {
       return keys.reduce((prev, key, i) => {
@@ -41,12 +41,14 @@ exports.setup = async () => {
     }) : [];
   }).then((creatures) => {
     return Promise.all(Object.values(creatures).map(async (creature) => {
-      const actor = new Creature(creature);
-      await actor.perform('spawn');
+      if (creature.room) {
+        const actor = new Creature(creature);
+        await actor.perform('spawn');
+      }
     }));
   });
 
-  // Setup our items (also Actors);
+  // Setup our items
   await REDIS.keys('item.*').then((keys) => {
     return keys.length ? REDIS.mGet(keys).then((values) => {
       return keys.reduce((prev, key, i) => {

@@ -5,8 +5,13 @@ Action.define('look', [
     if (!target) return abort('There is nothing to see there!');
 
     switch (target.type) {
-      case 'room': return actor.perform('room', target);
-      default: return actor.send('text', target.depiction);
+      case 'room': {
+        return actor.perform('room', target);
+      }
+      default: {
+        actor.send('text', `[${APP.styleText('keyword', target.name)}]`);
+        return actor.send('text', target.depiction);
+      }
     }
   },
 ]);

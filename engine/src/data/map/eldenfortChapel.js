@@ -27,6 +27,7 @@ module.exports = {
       type: 'poi',
       terrain: 'marble',
       description: 'A marble altar, adorned with silver and candlelight, offers a space for reflection and meditation. The stunning stained glass window behind it depicts the founder of the chapel in vibrant hues. An ornately carved wooden door to the north hints at a private chamber reserved for the Chaplain.',
+      paths: { n: '${self:map.eldenfortChapel.doors.wood}' },
       exits: {
         w: '${self:map.eldenfortChapel.rooms.aisle}',
         n: '${self:map.eldenfortChapel.rooms.chaplainsChamber}',
@@ -40,6 +41,17 @@ module.exports = {
       exits: {
         s: '${self:map.eldenfortChapel.rooms.altar}',
       },
+    },
+  },
+  doors: {
+    wood: {
+      name: 'Wooden Door',
+      label: '${self:map.eldenfortChapel.doors.wood.status} door',
+      description: 'A door made of wood.',
+      status: 'closed',
+      durability: 100,
+      picklock: 100,
+      key: '${self:item.key.key1}',
     },
   },
 };

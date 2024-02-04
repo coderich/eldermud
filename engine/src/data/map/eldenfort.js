@@ -1,6 +1,28 @@
 module.exports = {
   name: 'Eldenfort',
   description: 'An ancient town with cobblestone paths leading through vibrant markets and quiet residential alleys. In the heart of the town stands the majestic Elden Keep, guarding the secrets of the past.',
+  backstory: `
+    Eldenfort was once known as the "City of Whispers," a place where tales of magic and mystery were whispered among the townsfolk.
+
+    It was founded over a thousand years ago by a group of enigmatic travelers who sought refuge from the harsh world outside.
+    These travelers brought with them ancient knowledge and artifacts, which they used to create a sanctuary of peace and learning within the city walls.
+
+    The city was built around the Elden Keep, a grand fortress that served not only as a symbol of protection but also as a repository for the arcane lore and relics collected by the founders.
+    The keep's towering spires reached towards the heavens, casting long shadows that danced across the cobblestone streets during the day and glowed with an ethereal light at night.
+
+    Over time, Eldenfort became a hub for scholars, mystics, and adventurers from all corners of the realm.
+    Its libraries were filled with tomes that held the wisdom of ages, and its markets bustled with exotic goods and rare artifacts.
+    Yet, despite its prosperity, the city remained shrouded in a veil of secrecy, with many of its most profound mysteries kept hidden even from its own inhabitants.
+
+    The true power of Eldenfort lay in the Elden Keep.
+    Within its hallowed halls, the keep's guardians maintained a vigilant watch over the ancient relics and forbidden texts.
+    Among these treasures was the "Scepter of the Ancients," a powerful artifact rumored to grant its wielder control over the elements.
+    However, the scepter was said to be cursed, and those who dared to seek its power often met with untimely ends.
+
+    In recent times, whispers of a great calamity have begun to echo through the streets of Eldenfort.
+    Some believe that the keep's secrets are the key to averting this impending disaster, while others fear that the very act of revealing these secrets could trigger the downfall of the city.
+    As the town prepares for the unknown, the residents of Eldenfort must decide whether to embrace the truth or continue living in the shadow of their own history.
+  `,
   rooms: {
     marketSquare: {
       name: 'Market Square',
@@ -144,8 +166,8 @@ module.exports = {
       },
     },
   },
-  spawns: [
-    { num: 1, max: 3, units: ['${self:creature.cat}'] },
-    { num: 1, max: 3, units: ['${self:creature.rat}'] },
-  ],
+  // spawns: [
+  //   { num: 1, max: 3, units: ['${self:creature.cat}'] },
+  //   { num: 1, max: 3, units: ['${self:creature.rat}'] },
+  // ],
 };

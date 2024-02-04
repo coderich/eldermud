@@ -3,18 +3,25 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('territorial', [
   (_, { actor, stream, promise }) => {
+    let aborted = false;
+
     // We have to debounce the function to take into account race conditions
     // In doing so we introduce a delay so we should also verify that the promise has not be aborted
     const scan = debounce(async () => {
-      if (!actor.$target && !promise.aborted) {
+      if (!actor.$target && !promise.aborted && !aborted) {
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
-        const target = APP.randomElement(Array.from(room.units.values()).filter(unit => unit.type === 'player'));
-        if (target) actor.stream('action', 'attack', { target });
+        const target = APP.randomElement(Array.from(room.units.values()).filter(unit => unit.id !== actor.id));
+        if (target) {
+          actor.stream('action', 'attack', { target });
+          target.once('post:death', scan);
+        }
       }
     }, 25);
 
     stream.on('abort', () => {
+      aborted = true;
       SYSTEM.offFunction(scan);
+      actor.$target?.offFunction(scan);
     });
 
     actor.on('post:move', ({ result }) => {

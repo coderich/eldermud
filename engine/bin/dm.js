@@ -1,9 +1,5 @@
-const FS = require('fs');
-const Path = require('path');
 const OpenAI = require('openai');
-const get = require('lodash.get');
 const { Command } = require('commander');
-const Util = require('@coderich/util');
 const ConfigClient = require('../src/service/ConfigClient');
 const EventEmitter = require('../src/service/EventEmitter');
 const AppService = require('../src/service/AppService');
@@ -92,7 +88,10 @@ program.command('train').action(async (thisCommand, actionCommand) => {
         },
       },
     ],
-    instructions: 'You are a creative Dungeon Master',
+    instructions: `
+      You are a creative Dungeon Master for a MUD.
+      This MUD is a mix of HighFantasy, DarkFantasy, and Necromancy themes.
+    `,
   });
 });
 
@@ -101,31 +100,7 @@ program.command('query')
   .argument('[datasets...]')
   .action(async (content, datasets, opts, command) => {
     const { openai, dungeonMaster } = command;
-    const filename = `dm.${new Date().getTime()}.json`;
-    const filepath = Path.join(__dirname, 'output', filename);
-    const { config } = CONFIG.toObject();
-
-    // Create training files
-    const files = await Promise.all(datasets.map(async (dataset) => {
-      const data = JSON.stringify(Util.flatten(get(config, dataset, {}), { safe: true }));
-      const file = await OpenAI.toFile(Buffer.from(data));
-      return openai.files.create({ file, purpose: 'assistants' });
-    }));
-
-    // Query the Dungeon Master
-    const result = await openai.beta.threads.createAndRun({
-      assistant_id: dungeonMaster,
-      thread: { messages: [{ role: 'user', content, file_ids: files.map(f => f.id) }] },
-    });
-
-    //
-    const data = await Service.awaitResult(openai, result);
-
-    // Capture Response
-    FS.writeFileSync(filepath, JSON.stringify(data, null, 2));
-
-    // Delete files
-    await Promise.all(files.map(file => openai.files.del(file.id)));
+    return Service.query(openai, dungeonMaster, content, datasets);
   });
 
 //

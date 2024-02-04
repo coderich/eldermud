@@ -15,6 +15,7 @@
     "dev": "coderich-dev",
     "dm": "node ./bin/dm.js",
     "mm": "node ./bin/mm.js",
+    "st": "node ./bin/st.js",
     "vmm": "node ./bin/vmm.js",
     "db": "node ./bin/db.js",
     "start": "nodemon ./app.js -e js,yml"
