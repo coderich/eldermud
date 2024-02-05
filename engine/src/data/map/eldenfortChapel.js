@@ -27,7 +27,9 @@ module.exports = {
       type: 'poi',
       terrain: 'marble',
       description: 'A marble altar, adorned with silver and candlelight, offers a space for reflection and meditation. The stunning stained glass window behind it depicts the founder of the chapel in vibrant hues. An ornately carved wooden door to the north hints at a private chamber reserved for the Chaplain.',
-      paths: { n: '${self:map.eldenfortChapel.doors.wood}' },
+      paths: {
+        n: '${self:map.eldenfortChapel.doors.sanctuary}',
+      },
       exits: {
         w: '${self:map.eldenfortChapel.rooms.aisle}',
         n: '${self:map.eldenfortChapel.rooms.chaplainsChamber}',
@@ -38,20 +40,24 @@ module.exports = {
       type: 'poi',
       terrain: 'wooden',
       description: "The Chaplain's private chamber is a haven of solitude, filled with relics of the chapel's history, a modest desk for sermon preparation, and a small, personal altar. A tall, narrow window provides a sliver of natural light, while shelves of books and artifacts speak of a lifetime devoted to the divine.",
+      paths: {
+        s: '${self:map.eldenfortChapel.doors.sanctuary}',
+      },
       exits: {
         s: '${self:map.eldenfortChapel.rooms.altar}',
       },
     },
   },
   doors: {
-    wood: {
-      name: 'Wooden Door',
-      label: '${self:map.eldenfortChapel.doors.wood.status} door',
-      description: 'A door made of wood.',
-      status: 'closed',
+    sanctuary: {
+      name: 'Sanctuary Door',
+      label: '${self:map.eldenfortChapel.doors.sanctuary.status} door',
+      opaque: '@{in:${self:map.eldenfortChapel.doors.sanctuary.status}, closed, locked}',
+      depiction: 'This door, intricately carved with religious motifs and symbols, stands tall and imposing. Its design showcases the skill of a master craftsman, with intricate patterns woven into the grain of the wood. The door is adorned with a large brass handle and a small, circular window that allows a glimpse into the dimly lit interior. Despite its grandeur, it speaks of a place of solitude and reflection, reserved for the Chaplain\'s personal devotions and spiritual guidance.',
+      status: 'locked',
       durability: 100,
       picklock: 100,
-      key: '${self:item.key.key1}',
+      key: '${self:item.key.eldenfortChapel}',
     },
   },
 };

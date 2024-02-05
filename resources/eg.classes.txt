@@ -1,3 +1,16 @@
+Mage
+  * Warlock
+Warrior
+Rogue
+Cleric
+Ranger
+Paladin
+Druid
+Monk
+Barbarian
+Bard
+
+
 Necromancer
   - Specializes in manipulating the dead, raising undead minions, and harnessing the power of souls for dark magic.
 

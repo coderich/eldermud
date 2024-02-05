@@ -6,7 +6,7 @@ const Item = require('../model/Item');
 const Creature = require('../model/Creature');
 
 const chance = new Chance();
-const models = { npc: NPC, item: Item, creature: Creature };
+const models = { npc: NPC, item: Item, creature: Creature, key: Item };
 
 exports.chance = chance;
 exports.pluralize = Pluralize;

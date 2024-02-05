@@ -10,12 +10,24 @@ Action.define('open', [
     return door ? { door, dir } : abort('There is no door in that direction!');
   },
   ({ door, dir }, { actor }) => {
-    if (door.status !== 'open') {
-      CONFIG.set(`${door}.status`, 'open');
-      actor.perform('map');
-      actor.send('text', `You open the door ${APP.direction[dir]}.`);
-    } else {
-      actor.send('text', 'The door is already open!');
+    switch (door.status) {
+      case 'open': {
+        actor.send('text', 'The door is already open!');
+        break;
+      }
+      case 'locked': {
+        actor.send('text', 'The door is locked!');
+        break;
+      }
+      case 'closed': {
+        CONFIG.set(`${door}.status`, 'open');
+        actor.perform('map');
+        actor.send('text', `You open the door ${APP.direction[dir]}.`);
+        break;
+      }
+      default: {
+        break;
+      }
     }
   },
 ]);

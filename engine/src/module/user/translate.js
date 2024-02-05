@@ -43,7 +43,7 @@ const commands = [
   [
     { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', channel: 'realm', stream: 'voice' } },
     // { exp: { args: [0], code: 'exp', stream: 'action' } },
-    // { use: { args: [1, 2, 3, 4, 5], code: 'use', stream: 'action' } },
+    { use: { args: [1, 2, 3, 4, 5], code: 'use', channel: 'realm', stream: 'action' } },
     { buy: { args: [1, 2, 3, 4, 5], code: 'buy', channel: 'realm', stream: 'action' } },
     { sell: { args: [1, 2, 3, 4, 5], code: 'sell', channel: 'realm', stream: 'action' } },
     { break: { args: [0], code: 'break', channel: 'info', stream: 'info' } },

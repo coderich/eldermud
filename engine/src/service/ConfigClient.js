@@ -7,7 +7,10 @@ const appRootPath = Path.join(__dirname, '..', '..');
 
 module.exports = class ConfigClient extends Config {
   constructor(dir) {
-    super();
+    super({}, {
+      eq: (a, b) => Boolean(a === b),
+      in: (a, ...arr) => arr.includes(a),
+    });
     this.mergeConfig(dir);
     this.merge(Config.parseFile(`${appRootPath}/app.config.yml`));
     this.merge(Config.parseFile(`${appRootPath}/app.secrets.yml`));

@@ -43,7 +43,7 @@ module.exports = {
       description: "The entrance to the Elden Keep is guarded by stone gargoyles, silent watchers of the town's comings and goings. The heavy oak doors are adorned with ironwork, speaking to the stronghold's might and the secrets it holds within.",
       exits: {
         s: '${self:map.eldenfort.rooms.marketSquare}',
-        u: '${self:map.eldenKeepInterior.rooms.entrance}',
+        u: '${self:map.eldenKeep.rooms.entrance}',
       },
     },
     southGate: {
@@ -55,6 +55,9 @@ module.exports = {
         n: '${self:map.eldenfort.rooms.marketSquare}',
         s: '${self:map.eldenfort.rooms.southRoad}',
       },
+      paths: {
+        s: '${self:map.eldenfort.doors.southGate}',
+      },
     },
     southRoad: {
       name: 'South Road',
@@ -64,6 +67,9 @@ module.exports = {
       exits: {
         n: '${self:map.eldenfort.rooms.southGate}',
         s: '${self:map.eldenfortCountryside.rooms.entranceToCountryside}',
+      },
+      paths: {
+        n: '${self:map.eldenfort.doors.southGate}',
       },
     },
     westAlley: {
@@ -164,6 +170,16 @@ module.exports = {
         w: '${self:map.eldenfort.rooms.chapelSquare}',
         u: '${self:map.eldenfortChapel.rooms.entrance}',
       },
+    },
+  },
+  doors: {
+    southGate: {
+      name: 'South Gate of Eldenfort',
+      depiction: 'A monumental structure that serves as the town\'s lifeblood. It is constructed from sturdy oak timbers, reinforced with iron bands, and adorned with intricate carvings that tell tales of the town\'s history. The gate is flanked by towering stone pillars, each bearing the crest of Eldenfort, and is surmounted by a grand archway that allows for the passage of wagons and mounted troops.',
+      label: '${self:map.eldenfort.doors.southGate.status} gate',
+      status: 'open',
+      durability: 100,
+      picklock: 100,
     },
   },
   // spawns: [

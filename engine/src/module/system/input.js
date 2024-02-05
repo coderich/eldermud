@@ -17,12 +17,12 @@ SYSTEM.on('*', async (event, context) => {
       case 'get': {
         const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
-        const roomItems = Array.from(room.items.values()).filter(item => item.type === 'item');
+        const roomItems = Array.from(room.items.values()).filter(item => item.type);
         const searchItems = Array.from(actor.$search.values());
         Object.assign(data, APP.target(roomItems.concat(searchItems), args));
         break;
       }
-      case 'drop': {
+      case 'drop': case 'use': {
         const { args } = data;
         const inventory = APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
         return Object.assign(data, APP.target(inventory, args));
@@ -33,6 +33,7 @@ SYSTEM.on('*', async (event, context) => {
         break;
       }
       case 'look': case 'search': {
+        let target;
         const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
 
@@ -41,10 +42,18 @@ SYSTEM.on('*', async (event, context) => {
 
         // Direction
         const cmd = await actor.perform('translate', args.join(' '));
-        if (cmd.tags?.includes('direction')) return Object.assign(data, { target: room.exits?.[cmd.code] });
+        if (cmd.tags?.includes('direction')) {
+          const path = room.paths?.[cmd.code];
+          if (path?.opaque) return Object.assign(data, { target: path });
+          return Object.assign(data, { target: room.exits?.[cmd.code] });
+        }
+
+        // Pathway obstacles
+        ({ target } = APP.target(Object.values(room.paths || {}), args));
+        if (target) return Object.assign(data, { target });
 
         // Unit
-        const { target } = APP.target(room.units, args);
+        ({ target } = APP.target(room.units, args));
         if (target) return Object.assign(data, { target });
 
         // Item
