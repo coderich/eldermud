@@ -16,6 +16,7 @@ SYSTEM.on('*', async (event, context) => {
         break;
       }
       case 'move': {
+        SYSTEM.emit(`path:${result.room.paths?.[result.dir]}`, context);
         SYSTEM.emit(`enter:${result.exit}`, context);
         SYSTEM.emit(`leave:${result.room}`, context);
         break;
