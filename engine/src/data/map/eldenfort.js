@@ -119,6 +119,17 @@ module.exports = {
       description: 'A small, forgotten corner of the town, where old toys and broken furniture hint at stories untold.',
       exits: {
         e: '${self:map.eldenfort.rooms.westernResidences}',
+        // w: '${self:map.eldenfortResidence.rooms.foyer}',
+      },
+      paths: {
+        w: {
+          name: 'Residence',
+          label: 'hidden passage',
+          status: 'hidden',
+          depiction: 'Hello',
+          opaque: true,
+          toString: () => 'eldenfortResidence',
+        },
       },
     },
     eastAlley: {

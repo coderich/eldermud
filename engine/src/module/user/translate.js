@@ -47,7 +47,7 @@ const commands = [
     { buy: { args: [1, 2, 3, 4, 5], code: 'buy', channel: 'realm', stream: 'action' } },
     { sell: { args: [1, 2, 3, 4, 5], code: 'sell', channel: 'realm', stream: 'action' } },
     { break: { args: [0], code: 'break', channel: 'info', stream: 'info' } },
-    { search: { args: [0], code: 'search', channel: 'realm', stream: 'action' } },
+    { search: { args: [0, 1, 2, 3, 4, 5], code: 'search', channel: 'realm', stream: 'action' } },
     { follow: { args: [1, 2], code: 'follow', channel: 'realm', stream: 'action' } },
     { leave: { args: [0], code: 'leave', channel: 'realm', stream: 'action' } },
     { inventory: { args: [0], code: 'i', channel: 'realm', stream: 'info' } },

@@ -40,13 +40,13 @@ Action.define('map', async (_, { actor }) => {
     // Append exits (with x,y,x coordinates) to rooms
     Object.values(configMap.rooms).forEach((room) => {
       const $room = rooms.find(el => el.id === room.mapId);
-      $room.paths = Object.entries(room.paths || {}).reduce((prev, [key, value]) => Object.assign(prev, { [key]: value.status || 'closed' }), {});
+      $room.paths = Object.entries(room.paths || {}).reduce((prev, [key, value]) => Object.assign(prev, { [key]: value.status }), {});
       $room.exits = Object.entries(room.exits || {}).map(([dir, exit]) => {
         let $exit = rooms.find(el => el.id === exit.mapId);
 
         // Edge of the map connecting to another...
         if (!$exit) {
-          $room.paths[dir] = 'closed';
+          $room.paths[dir] ??= 'closed';
           $exit = { id: $room.id * 1000 };
         }
 

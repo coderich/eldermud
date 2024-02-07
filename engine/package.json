@@ -21,7 +21,7 @@
     "start": "nodemon ./app.js -e js,yml"
   },
   "dependencies": {
-    "@coderich/config": "^1.0.5",
+    "@coderich/config": "^1.0.6",
     "@coderich/gameflow": "^1.1.19",
     "@coderich/gameserver": "^1.1.2",
     "@coderich/util": "^0.1.6",
@@ -29,6 +29,7 @@
     "lodash.debounce": "4.0.8",
     "lodash.get": "4.4.2",
     "lodash.merge": "4.6.2",
+    "lodash.set": "4.3.2",
     "openai": "4.25.0",
     "pluralize": "8.0.0",
     "redis": "4.6.11"
