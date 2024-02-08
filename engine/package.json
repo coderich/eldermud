@@ -21,7 +21,7 @@
     "start": "nodemon ./app.js -e js,yml"
   },
   "dependencies": {
-    "@coderich/config": "^1.1.0",
+    "@coderich/config": "^1.1.1",
     "@coderich/gameflow": "^1.1.19",
     "@coderich/gameserver": "^1.1.2",
     "@coderich/util": "^0.1.6",

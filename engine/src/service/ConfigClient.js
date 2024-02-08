@@ -30,7 +30,7 @@ module.exports = class ConfigClient extends Config {
         const ns = $paths.join('.');
         const id = $paths[$paths.length - 1];
         const type = $paths[$paths.length - 2];
-        this.set(ns, Config.parseFile(filepath));
+        this.merge({ [ns]: Config.parseFile(filepath) });
         this.set(`${ns}.id`, id);
         this.set(`${ns}.type`, type);
         this.set(`${ns}.toString`, () => ns);

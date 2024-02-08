@@ -20,10 +20,12 @@ exports.init = (datadir, mapdir) => {
 };
 
 exports.setup = async () => {
-  // Setup our NPCs (Actors)
-  Object.values(CONFIG.get('npc', {})).forEach(async (npc) => {
-    const actor = new NPC(npc);
-    await actor.perform('spawn');
+  // Setup our NPCs
+  Object.values(CONFIG.get('map', {})).forEach(({ npc = {} }) => {
+    Object.values(npc).forEach(async (config) => {
+      const actor = new NPC(config);
+      await actor.perform('spawn');
+    });
   });
 
   // Setup our creatures

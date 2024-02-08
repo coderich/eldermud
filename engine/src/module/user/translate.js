@@ -16,7 +16,7 @@ const commands = [
     { down: { args: [0], code: 'd', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { east: { args: [0], code: 'e', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { get: { args: [1, 2, 3, 4, 5], code: 'get', channel: 'realm', stream: 'action' } },
-    { look: { args: [0, 1], code: 'l', channel: 'realm', stream: 'sight' } },
+    { look: { args: [0, 1, 2, 3], code: 'l', channel: 'realm', stream: 'sight' } },
     { north: { args: [0], code: 'n', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { south: { args: [0], code: 's', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { up: { args: [0], code: 'u', channel: 'realm', stream: 'action', tags: ['direction'] } },

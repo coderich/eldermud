@@ -144,7 +144,7 @@ module.exports = {
   },
   doors: {
     lady: {
-      name: 'Lady Elethor\'s Entrance',
+      name: 'Chambers Door',
       label: '${self:map.eldenKeep.doors.lady.status} door',
       opaque: '@{in:${self:map.eldenKeep.doors.lady.status}, closed, locked}',
       depiction: 'This door, subtle yet elegant, leads to the private chambers of Lady Elethor. It is crafted from polished mahogany, its surface smooth and unblemished, hinting at the refined taste of its occupant. The door features delicate carvings of intertwined vines, a symbol of nobility and elegance, and is adorned with a finely wrought silver handle. A small, discreet plaque near the handle reads "Lady Elethor", adding a touch of personalization to the otherwise austere entrance.',
@@ -154,7 +154,7 @@ module.exports = {
       key: '${self:map.eldenKeep.key.ladyElethor}',
     },
     archive: {
-      name: 'Archive\'s Door',
+      name: 'Archive Door',
       label: '${self:map.eldenKeep.doors.archive.status} door',
       opaque: '@{in:${self:map.eldenKeep.doors.archive.status}, closed, locked}',
       depiction: 'This door, while not ostentatious, is a gateway to the expansive archives room within Elden Keep. It is made of solid oak, with a simple rectangular design that allows for easy access without unnecessary embellishments. Despite its simplicity, the door serves as a testament to the importance of knowledge and the dedication to preserving it.',

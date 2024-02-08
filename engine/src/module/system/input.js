@@ -17,7 +17,7 @@ SYSTEM.on('*', async (event, context) => {
       case 'get': {
         const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
-        const roomItems = Array.from(room.items.values()).filter(item => item.type);
+        const roomItems = Array.from(room.items.values()).filter(item => ['item', 'weapon'].includes(item.type));
         const searchItems = Array.from(actor.$search.values());
         Object.assign(data, APP.target(roomItems.concat(searchItems), args));
         break;

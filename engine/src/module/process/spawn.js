@@ -23,11 +23,9 @@ Action.define('spawn', async (_, { actor }) => {
   }
 
   // Attach traits
-  if (actor.type !== 'player') {
-    actor.traits?.forEach((trait) => {
-      if (Action[trait.id]) actor.stream('trait', trait.id);
-    });
-  }
+  actor.traits?.forEach((trait) => {
+    if (Action[trait.id]) actor.stream('trait', trait.id);
+  });
 
   // Bind system events to this actor
   actor.on('*', (event, context) => {
