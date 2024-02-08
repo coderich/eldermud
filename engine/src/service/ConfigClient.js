@@ -6,12 +6,12 @@ const Config = require('@coderich/config');
 const appRootPath = Path.join(__dirname, '..', '..');
 
 module.exports = class ConfigClient extends Config {
-  constructor(dir) {
+  constructor() {
     super({}, {
       eq: (a, b) => Boolean(a === b),
       in: (a, ...arr) => arr.includes(a),
     });
-    this.mergeConfig(dir);
+    // this.mergeConfig(dir);
     this.merge(Config.parseFile(`${appRootPath}/app.config.yml`));
     this.merge(Config.parseFile(`${appRootPath}/app.secrets.yml`));
     this.merge(Config.parseEnv({ pick: ['app__redis__url'] }));
@@ -22,39 +22,26 @@ module.exports = class ConfigClient extends Config {
       const { name } = Path.parse(filename);
       const filepath = `${dir}/${filename}`;
       const stat = FS.statSync(filepath);
-      const $paths = paths.concat(name);
-      if (stat?.isDirectory()) this.mergeConfig(filepath, $paths);
-      else if (!name.startsWith('.')) this.set($paths.join('.'), Config.parseFile(filepath));
+      const $paths = name === 'index' ? paths : paths.concat(name);
+
+      if (stat?.isDirectory()) {
+        this.mergeConfig(filepath, $paths);
+      } else if (!name.startsWith('.')) {
+        const ns = $paths.join('.');
+        const id = $paths[$paths.length - 1];
+        const type = $paths[$paths.length - 2];
+        this.set(ns, Config.parseFile(filepath));
+        this.set(`${ns}.id`, id);
+        this.set(`${ns}.type`, type);
+        this.set(`${ns}.toString`, () => ns);
+      }
     });
+
+    return this;
   }
 
   decorate() {
     const config = this;
-
-    //
-    Object.entries(config.get()).forEach(([type, models]) => {
-      if (!['app', 'help', 'player'].includes(type)) {
-        Object.entries(models).forEach(([key, value]) => {
-          const ns = `${type}.${key}`;
-          config.set(`${ns}.id`, key);
-          config.set(`${ns}.type`, type);
-          config.set(`${ns}.toString`, () => ns);
-        });
-      }
-
-      // if (['npc', 'creature', 'player'].includes(type)) {
-      //   Object.values(models).forEach((model) => {
-      //     if (!model.ac) config.set(`${model}.ac`, 0);
-      //     if (!model.dr) config.set(`${model}.dr`, 0);
-      //     if (!model.acc) config.set(`${model}.acc`, 0);
-      //     if (!model.crit) config.set(`${model}.crit`, 0);
-      //     if (!model.dodge) config.set(`${model}.dodge`, 0);
-      //     if (!model.ma) config.set(`${model}.ma`, 0);
-      //     if (!model.maa) config.set(`${model}.mma`, 0);
-      //     if (!model.adjectives) config.set(`${model}.adjectives`, []);
-      //   });
-      // }
-    });
 
     Object.entries(config.get('map')).forEach(([key, map], i) => {
       if (map.doors) {

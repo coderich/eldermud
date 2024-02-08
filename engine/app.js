@@ -8,10 +8,10 @@ const Item = require('./src/model/Item');
 const NPC = require('./src/model/NPC');
 const server = require('./src/server');
 
-exports.init = (datadir) => {
+exports.init = (datadir, mapdir) => {
   // Yep, globals
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
-  global.CONFIG = new ConfigClient(datadir);
+  global.CONFIG = new ConfigClient().mergeConfig(datadir).mergeConfig(mapdir, ['map']);
   global.REDIS = new RedisClient(CONFIG.get('app.redis'));
   global.APP = AppService;
 
@@ -33,7 +33,7 @@ exports.setup = async () => {
         const [root, id, counter, attr] = key.split('.');
         const path = `${root}.${id}.${counter}`;
         const ns = `${root}.${id}`;
-        prev[path] ??= CONFIG.get(ns);
+        prev[path] ??= { ...CONFIG.get(ns) };
         prev[path][attr] = values[i];
         prev[path].toString = () => path;
         return prev;
@@ -55,7 +55,7 @@ exports.setup = async () => {
         const [root, id, counter, attr] = key.split('.');
         const path = `${root}.${id}.${counter}`;
         const ns = `${root}.${id}`;
-        prev[path] ??= CONFIG.get(ns);
+        prev[path] ??= { ...CONFIG.get(ns) };
         prev[path][attr] = values[i];
         prev[path].toString = () => path;
         return prev;
@@ -71,9 +71,8 @@ exports.setup = async () => {
 
 (async () => {
   if (!module.parent) {
-    exports.init(`${__dirname}/src/data`);
-    CONFIG.merge(ConfigClient.parseFile(`${__dirname}/src/database.json`));
-    // CONFIG.mergeConfig(`${__dirname}/test/data`);
+    exports.init(`${__dirname}/config/data`, `${__dirname}/config/map`);
+    // CONFIG.merge(ConfigClient.parseFile(`${__dirname}/src/database.json`));
     CONFIG.decorate();
     await exports.setup();
     server.start();

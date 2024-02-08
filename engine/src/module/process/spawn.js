@@ -11,8 +11,8 @@ Action.define('spawn', async (_, { actor }) => {
 
   // Assign actors to world
   const [map, room] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
-  actor.map = map;
-  actor.room = room;
+  actor.map = CONFIG.get(`${map}`);
+  actor.room = CONFIG.get(`${room}`);
 
   if (['item'].includes(actor.type)) {
     if (room) CONFIG.get(`${room}.items`).add(actor);
