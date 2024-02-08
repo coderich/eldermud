@@ -1,3 +1,5 @@
+const Actor = require('../../model/Actor');
+
 /**
  * Responsible for normalizing input that comes from the command line before reaching actions
  */
@@ -17,7 +19,8 @@ SYSTEM.on('*', async (event, context) => {
       case 'get': {
         const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
-        const roomItems = Array.from(room.items.values()).filter(item => ['item', 'weapon'].includes(item.type));
+        // const roomItems = Array.from(room.items.values()).filter(item => ['item', 'key', 'weapon'].includes(item.type));
+        const roomItems = Array.from(room.items.values()).filter(item => item instanceof Actor);
         const searchItems = Array.from(actor.$search.values());
         Object.assign(data, APP.target(roomItems.concat(searchItems), args));
         break;

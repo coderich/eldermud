@@ -21,17 +21,13 @@ SYSTEM.on('*', async (event, context) => {
         SYSTEM.emit(`leave:${result.room}`, context);
         break;
       }
-      case 'greet': {
-        SYSTEM.emit(`greet:${result.target}`, context);
-        break;
-      }
       case 'ask': {
         context.args = result.args;
         SYSTEM.emit(`ask:${result.target}`, context);
         break;
       }
-      case 'search': {
-        SYSTEM.emit(`search:${result.target}`, context);
+      case 'search': case 'greet': case 'look': {
+        SYSTEM.emit(`${action}:${result.target}`, context);
         break;
       }
       default: break;

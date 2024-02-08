@@ -21,11 +21,9 @@ exports.init = (datadir, mapdir) => {
 
 exports.setup = async () => {
   // Setup our NPCs
-  Object.values(CONFIG.get('map', {})).forEach(({ npc = {} }) => {
-    Object.values(npc).forEach(async (config) => {
-      const actor = new NPC(config);
-      await actor.perform('spawn');
-    });
+  Object.values(CONFIG.get('npc', {})).forEach(async (npc) => {
+    const actor = new NPC(npc);
+    await actor.perform('spawn');
   });
 
   // Setup our creatures
@@ -51,7 +49,11 @@ exports.setup = async () => {
   });
 
   // Setup our items
-  await REDIS.keys('item.*').then((keys) => {
+  await Promise.all([
+    REDIS.keys('key.*'),
+    REDIS.keys('item.*'),
+  ]).then((keys) => {
+    keys = keys.flat();
     return keys.length ? REDIS.mGet(keys).then((values) => {
       return keys.reduce((prev, key, i) => {
         const [root, id, counter, attr] = key.split('.');

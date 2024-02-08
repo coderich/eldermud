@@ -41,6 +41,7 @@ Action.define('room', [
       if (includeParty && $party.length > 1) actor.send('text', $room.partyLabel, `[${$room.party}]`);
       if ($room.units.length) actor.send('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
       actor.send('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
+      actor.send('text', `[HP=${actor.hp}/MA=${actor.ma}]`);
     }
   },
 ]);

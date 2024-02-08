@@ -122,7 +122,7 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.map', 'gmcp.eldermud.map',
   for i,room in ipairs(data.rooms) do
     for j,exit in ipairs(room.exits) do
       setRoomEnv(exit.id, 0);
-      if (room.paths[exit.dir] and room.paths[exit.dir] ~= 'closed') then setExitStub(room.id, exit.dir, true);
+      if (room.paths[exit.dir] and room.paths[exit.dir] ~= 'open') then setExitStub(room.id, exit.dir, true);
       else setExit(room.id, exit.id, exit.dir); end;
       -- setExitStub(room.id, exit.dir, true);
       -- setDoor(i, 's', 1);

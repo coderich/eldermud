@@ -33,7 +33,7 @@ const commands = [
     // { ul: { args: [1], code: 'unlock', name: 'unlock', channel: 'realm', stream: 'action' } },
     // { equip: { args: [1, 2, 3, 4, 5], code: 'equip', stream: 'action' } },
     { list: { args: [0], code: 'list', channel: 'realm', stream: 'action' } },
-    { open: { args: [1], code: 'open', channel: 'realm', stream: 'action' } },
+    { open: { args: [1, 2, 3], code: 'open', channel: 'realm', stream: 'action' } },
     { close: { args: [1], code: 'close', channel: 'realm', stream: 'action' } },
     { stats: { args: [0], code: 'stats', channel: 'realm', stream: 'info' } },
     { drop: { args: [1, 2, 3, 4, 5], code: 'drop', channel: 'realm', stream: 'action' } },

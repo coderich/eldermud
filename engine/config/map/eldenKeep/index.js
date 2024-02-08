@@ -151,7 +151,7 @@ module.exports = {
       status: 'locked',
       durability: 100,
       picklock: 100,
-      key: '${self:map.eldenKeep.key.ladyElethor}',
+      key: '${self:key.ladyElethor}',
     },
     archive: {
       name: 'Archive Door',

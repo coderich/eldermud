@@ -2,7 +2,7 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('search', [
   async ({ target }, { actor, abort }) => {
-    if (!target) abort('There is nothing to see there!');
+    if (!target) abort('Your search reveals nothing.');
   },
 
   async ({ target }, { actor }) => {

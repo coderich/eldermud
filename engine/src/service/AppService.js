@@ -73,7 +73,9 @@ exports.hydrate = (keys) => {
     const arr = `${key}`.split('.');
     const toString = () => `${key}`;
     const $key = exports.isNumeric(arr.pop()) ? arr.join('.') : key;
-    return { ...CONFIG.get(`${$key}`), toString };
+    const config = CONFIG.get(`${$key}`);
+    // return { ...CONFIG.get(`${$key}`), toString };
+    return new models[config.type]({ ...config, toString });
   });
 };
 
