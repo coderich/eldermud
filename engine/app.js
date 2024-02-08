@@ -3,8 +3,6 @@ const EventEmitter = require('./src/service/EventEmitter');
 const ConfigClient = require('./src/service/ConfigClient');
 const RedisClient = require('./src/service/RedisClient');
 const AppService = require('./src/service/AppService');
-const Creature = require('./src/model/Creature');
-const Item = require('./src/model/Item');
 const NPC = require('./src/model/NPC');
 const server = require('./src/server');
 
@@ -21,42 +19,28 @@ exports.init = (datadir, mapdir) => {
 
 exports.setup = async () => {
   // Setup our NPCs
-  Object.values(CONFIG.get('npc', {})).forEach(async (npc) => {
-    const actor = new NPC(npc);
-    await actor.perform('spawn');
+  Object.values(CONFIG.get('npc', {})).forEach((map) => {
+    Object.values(map).forEach(async (npc) => {
+      const actor = new NPC(npc);
+      await actor.perform('spawn');
+    });
   });
 
-  // Setup our creatures
-  await REDIS.keys('creature.*').then((keys) => {
-    return keys.length ? REDIS.mGet(keys).then((values) => {
-      return keys.reduce((prev, key, i) => {
-        const [root, id, counter, attr] = key.split('.');
-        const path = `${root}.${id}.${counter}`;
-        const ns = `${root}.${id}`;
-        prev[path] ??= { ...CONFIG.get(ns) };
-        prev[path][attr] = values[i];
-        prev[path].toString = () => path;
-        return prev;
-      }, {});
-    }) : [];
-  }).then((creatures) => {
-    return Promise.all(Object.values(creatures).map(async (creature) => {
-      if (creature.room) {
-        const actor = new Creature(creature);
-        await actor.perform('spawn');
-      }
-    }));
-  });
-
-  // Setup our items
+  // Setup our instances
   await Promise.all([
     REDIS.keys('key.*'),
     REDIS.keys('item.*'),
+    REDIS.keys('creature.*'),
   ]).then((keys) => {
     keys = keys.flat();
     return keys.length ? REDIS.mGet(keys).then((values) => {
       return keys.reduce((prev, key, i) => {
-        const [root, id, counter, attr] = key.split('.');
+        key = key.split('.');
+        // const [root, id, counter, attr] = key.split('.');
+        const root = key.shift();
+        const attr = key.pop();
+        const counter = key.pop();
+        const id = key.pop();
         const path = `${root}.${id}.${counter}`;
         const ns = `${root}.${id}`;
         prev[path] ??= { ...CONFIG.get(ns) };
@@ -66,8 +50,8 @@ exports.setup = async () => {
       }, {});
     }) : [];
   }).then((items) => {
-    return Promise.all(Object.values(items).map(async (item) => {
-      const actor = new Item(item);
+    return Promise.all(Object.values(items).map(async (conf) => {
+      const actor = APP.hydrate(`${conf}`, conf);
       await actor.perform('spawn');
     }));
   });

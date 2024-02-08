@@ -26,10 +26,10 @@ module.exports = class ConfigClient extends Config {
       if (stat?.isDirectory()) {
         this.mergeConfig(filepath, $paths);
       } else if (!name.startsWith('.')) {
-        // const ns = $paths.join('.');
         const id = $paths[$paths.length - 1];
         const type = $paths[$paths.length - 2];
-        const ns = [type, id].filter(Boolean).join('.');
+        const root = $paths[$paths.length - 3];
+        const ns = [type, root, id].filter(Boolean).join('.');
         this.merge({ [ns]: Config.parseFile(filepath) });
         this.set(`${ns}.id`, id);
         this.set(`${ns}.type`, type);

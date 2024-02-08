@@ -68,14 +68,13 @@ exports.instantiate = (keys, data = {}) => {
 /**
  * Given a set of configuration keys; will return a configuration object
  */
-exports.hydrate = (keys) => {
+exports.hydrate = (keys, data = {}) => {
   return Util.map(keys, (key) => {
     const arr = `${key}`.split('.');
     const toString = () => `${key}`;
     const $key = exports.isNumeric(arr.pop()) ? arr.join('.') : key;
     const config = CONFIG.get(`${$key}`);
-    // return { ...CONFIG.get(`${$key}`), toString };
-    return new models[config.type]({ ...config, toString });
+    return new models[config.type]({ ...config, toString, ...data });
   });
 };
 

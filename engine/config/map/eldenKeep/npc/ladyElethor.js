@@ -25,7 +25,7 @@ module.exports = {
     Once a scholar of ancient and forbidden knowledge, Lady Elethor was thrust into the role of leadership after a succession crisis.
     Under her reign, Eldenfort has seen a time of relative peace, but recent necromantic activity threatens to unravel the world she has strived to protect.
   `,
-  room: '${self:map.eldenKeep.rooms.ladyElethorChambers}',
+  room: '${self:map.eldenkeep.rooms.ladyElethorChambers}',
   quests: [
     '${self:quest.ghastlyWhispers}',
     '${self:quest.echosOfTheAncients}',

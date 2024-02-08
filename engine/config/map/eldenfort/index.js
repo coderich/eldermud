@@ -30,20 +30,20 @@ module.exports = {
       terrain: 'urban',
       description: 'The Market Square is a hive of activity, where vendors from all around come to sell their wares. The scent of fresh bread and herbs permeates the air, and the sound of haggling fills the ears. The Elden Keep can be glimpsed to the north.',
       exits: {
-        n: '${self:map.eldenfort.rooms.eldenKeepEntrance}',
+        n: '${self:map.eldenfort.rooms.eldenkeepEntrance}',
         w: '${self:map.eldenfort.rooms.westAlley}',
         e: '${self:map.eldenfort.rooms.eastAlley}',
         s: '${self:map.eldenfort.rooms.southGate}',
       },
     },
-    eldenKeepEntrance: {
+    eldenkeepEntrance: {
       name: 'Elden Keep Entrance',
       type: 'poi',
       terrain: 'urban',
       description: "The entrance to the Elden Keep is guarded by stone gargoyles, silent watchers of the town's comings and goings. The heavy oak doors are adorned with ironwork, speaking to the stronghold's might and the secrets it holds within.",
       exits: {
         s: '${self:map.eldenfort.rooms.marketSquare}',
-        u: '${self:map.eldenKeep.rooms.entrance}',
+        u: '${self:map.eldenkeep.rooms.entrance}',
       },
     },
     southGate: {
