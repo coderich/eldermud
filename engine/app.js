@@ -31,28 +31,17 @@ exports.setup = async () => {
     REDIS.keys('key.*'),
     REDIS.keys('item.*'),
     REDIS.keys('creature.*'),
-  ]).then((keys) => {
-    keys = keys.flat();
-    return keys.length ? REDIS.mGet(keys).then((values) => {
-      return keys.reduce((prev, key, i) => {
-        key = key.split('.');
-        const root = key.shift();
-        const attr = key.pop();
-        const counter = key.pop();
-        const id = key.pop();
-        const path = `${root}.${id}.${counter}`;
-        const ns = `${root}.${id}`;
-        prev[path] ??= { ...CONFIG.get(ns) };
-        prev[path][attr] = values[i];
-        prev[path].toString = () => path;
-        return prev;
-      }, {});
-    }) : [];
-  }).then((items) => {
-    return Promise.all(Object.values(items).map(async (conf) => {
-      const actor = APP.hydrate(`${conf}`, conf);
-      await actor.perform('spawn');
+  ]).then(async (results) => {
+    // Unique set of keys (up until the numeric segment)
+    const keys = new Set(results.flat(2).map((key) => {
+      const arr = key.split('.');
+      const index = arr.findIndex(el => APP.isNumeric(el));
+      return arr.slice(0, index + 1).join('.');
     }));
+
+    // Hydrate and spawn instances
+    const actors = await APP.hydrate(Array.from(keys.values()));
+    return Promise.all(actors.map(actor => actor.perform('spawn')));
   });
 };
 

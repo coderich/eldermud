@@ -70,12 +70,13 @@ exports.instantiate = (keys, data = {}) => {
  * Given a set of configuration keys; will return a configuration object
  */
 exports.hydrate = (keys, data = {}) => {
-  return Util.map(keys, (key) => {
+  return Util.mapPromise(keys, async (key) => {
     const arr = `${key}`.split('.');
-    const toString = () => `${key}`;
-    const $key = exports.isNumeric(arr.pop()) ? arr.join('.') : key;
-    const config = CONFIG.get(`${$key}`);
-    return new models[config.type]({ ...config, toString, ...data });
+    const configKey = exports.isNumeric(arr.pop()) ? arr.join('.') : key;
+    const configData = CONFIG.get(`${configKey}`);
+    const redisKeys = await REDIS.keys(`${key}.*`);
+    const redisData = redisKeys.length ? await REDIS.mGet(redisKeys).then(values => values.reduce((prev, value, i) => Object.assign(prev, { [redisKeys[i].split('.').pop()]: value }), {})) : {};
+    return new models[configData.type]({ ...configData, ...redisData, toString: () => `${key}` });
   });
 };
 

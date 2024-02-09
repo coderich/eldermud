@@ -39,7 +39,7 @@ SYSTEM.on('*', async (event, context) => {
       }
       case 'drop': case 'use': {
         const { args } = data;
-        const inventory = APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
+        const inventory = await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
         Object.assign(data, APP.target(inventory, args));
         break;
       }

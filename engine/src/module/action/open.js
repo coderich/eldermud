@@ -22,12 +22,11 @@ Action.define('open', [
         if (await REDIS.sAdd(`${target}.players`, `${actor}`)) {
           const items = await APP.instantiate(target.spawns.map(spawn => Array.from(new Array(APP.roll(spawn.num))).map(() => APP.randomElement(spawn.items))).flat(2), { owner: `${actor}` });
           await REDIS.sAdd(`${target}.inventory`, ...items.map(item => `${item}`));
-          // await APP.instantiate(target.items, { room: `${actor.room}`, owner: `${actor}` }).then((items) => {
-          //   return Promise.all(items.map(item => item.perform('spawn')));
-          // });
         }
-        return null;
-        // const inventory = APP.hydrate(REDIS.sMembers(`${target}.inventory`)).filter(item => ``);
+
+        const inventory = await APP.hydrate(await REDIS.sMembers(`${target}.inventory`)).then(items => items.filter(item => item.owner === `${actor}`));
+        const contents = inventory.length ? inventory.map(item => APP.styleText('keyword', item.name)).join(', ') : 'nothing.';
+        return actor.send('text', `You open the ${target.name} and reveal: ${contents}`);
       }
       default: {
         return abort('You cannot open that!');
