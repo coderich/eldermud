@@ -18,14 +18,16 @@ Action.define('open', [
         if (target instanceof Actor) {
           return null;
         }
+
         // World Map Chest
         if (await REDIS.sAdd(`${target}.players`, `${actor}`)) {
-          const items = await APP.instantiate(target.spawns.map(spawn => Array.from(new Array(APP.roll(spawn.num))).map(() => APP.randomElement(spawn.items))).flat(2), { owner: `${actor}` });
-          await REDIS.sAdd(`${target}.inventory`, ...items.map(item => `${item}`));
+          const items = await APP.instantiate(target.spawns.map(spawn => Array.from(new Array(APP.roll(spawn.num))).map(() => APP.randomElement(spawn.items))).flat(2), { owner: `${actor}`, container: `${target}` });
+          await REDIS.sAdd(`${target}.inventory`, items.map(item => `${item}`));
         }
 
         const inventory = await APP.hydrate(await REDIS.sMembers(`${target}.inventory`)).then(items => items.filter(item => item.owner === `${actor}`));
         const contents = inventory.length ? inventory.map(item => APP.styleText('keyword', item.name)).join(', ') : 'nothing.';
+        actor.$search = new Set(inventory);
         return actor.send('text', `You open the ${target.name} and reveal: ${contents}`);
       }
       default: {
