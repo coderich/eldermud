@@ -1,21 +1,23 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('close', [
-  async ({ args }, { abort, actor }) => {
-    // Door check
-    const [dir] = args;
-    const { paths } = CONFIG.get(await REDIS.get(`${actor}.room`));
-    const path = paths?.[dir];
-    const door = path?.type === 'door' ? path : null;
-    return door ? { door, dir } : abort('There is no door in that direction!');
+  ({ target }, { abort, actor }) => {
+    if (!target) abort('There is nothing to open!');
+    if (target.status !== 'open') abort(`The ${target.name} is not open!`);
   },
-  ({ door, dir }, { actor }) => {
-    if (door.status !== 'closed') {
-      CONFIG.set(`${door}.status`, 'closed');
-      actor.perform('map');
-      actor.send('text', `You close the door ${APP.direction[dir]}.`);
-    } else {
-      actor.send('text', 'The door is already closed!');
+  ({ target }, { actor, abort }) => {
+    switch (target.type) {
+      case 'door': {
+        CONFIG.set(`${target}.status`, 'closed');
+        actor.perform('map');
+        return actor.send('text', `You close the ${target.name}.`);
+      }
+      case 'chest': {
+        return null;
+      }
+      default: {
+        return null;
+      }
     }
   },
 ]);

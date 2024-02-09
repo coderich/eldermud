@@ -19,16 +19,29 @@ SYSTEM.on('*', async (event, context) => {
       case 'get': {
         const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
-        // const roomItems = Array.from(room.items.values()).filter(item => ['item', 'key', 'weapon'].includes(item.type));
         const roomItems = Array.from(room.items.values()).filter(item => item instanceof Actor);
         const searchItems = Array.from(actor.$search.values());
         Object.assign(data, APP.target(roomItems.concat(searchItems), args));
         break;
       }
+      case 'open': case 'close': {
+        const { args } = data;
+        const room = CONFIG.get(await REDIS.get(`${actor}.room`));
+
+        // Door check
+        const cmd = await actor.perform('translate', args.join(' '));
+        if (cmd.tags?.includes('direction')) return Object.assign(data, { target: room.paths?.[cmd.code] });
+
+        // Items check
+        const inventory = await REDIS.sMembers(`${actor}.inventory`).then(keys => keys.map(key => CONFIG.get(key.split('.').slice(0, -1).join('.'))));
+        const roomItems = Array.from(room.items.values());
+        return Object.assign(data, APP.target(inventory.concat(roomItems), args));
+      }
       case 'drop': case 'use': {
         const { args } = data;
         const inventory = APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
-        return Object.assign(data, APP.target(inventory, args));
+        Object.assign(data, APP.target(inventory, args));
+        break;
       }
       case 'list': case 'buy': case 'sell': {
         const { shop } = CONFIG.get(await REDIS.get(`${actor}.room`));

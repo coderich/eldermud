@@ -12,7 +12,6 @@ Action.define('buy', [
     const souls = await REDIS.get(`${actor}.exp`);
     if (souls < item.value) return abort('You cannot afford it.');
     const $item = await APP.instantiate(item);
-    await $item.perform('spawn');
     await REDIS.sAdd(`${actor}.inventory`, `${$item}`);
     await actor.perform('affect', { exp: -item.value });
     return actor.send('text', 'You obtain', item.name);

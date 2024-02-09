@@ -55,12 +55,13 @@ exports.target = (list, args, by = 'name') => {
 };
 
 /**
- * Given a set of configuration keys; will instantiate a new model
+ * Given a set of configuration keys; will instantiate a new model and save to disk
  */
 exports.instantiate = (keys, data = {}) => {
   return Util.mapPromise(keys, (key) => {
     return Promise.all([CONFIG.get(`${key}`), REDIS.incr(`counter.${key}`)]).then(([config, counter]) => {
-      return new models[config.type]({ ...config, toString: () => `${key}.${counter}`, ...data });
+      const attrs = { ...config, toString: () => `${key}.${counter}`, ...data };
+      return new models[config.type](attrs).save(attrs);
     });
   });
 };
@@ -76,10 +77,6 @@ exports.hydrate = (keys, data = {}) => {
     const config = CONFIG.get(`${$key}`);
     return new models[config.type]({ ...config, toString, ...data });
   });
-};
-
-exports.spawn = () => {
-
 };
 
 exports.roll = (dice) => {
@@ -129,7 +126,4 @@ exports.table = (rows, options = {}) => {
   }, ''));
 
   return table.trimEnd('\n');
-};
-
-exports.shutdown = () => {
 };

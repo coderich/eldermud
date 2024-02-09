@@ -1,5 +1,7 @@
 module.exports = {
   name: 'small chest',
   depiction: 'A small chest',
-  items: ['${self:item.rope}'],
+  spawns: [
+    { num: 1, items: ['${self:item.rope}'] },
+  ],
 };

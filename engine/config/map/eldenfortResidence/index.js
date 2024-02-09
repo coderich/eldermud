@@ -98,7 +98,7 @@ module.exports = {
       type: 'poi',
       terrain: 'sinking wood',
       description: 'The guest room, veiled in a layer of dust and cobwebs, whispers secrets of past visitors. The stale bedding and collapsed wardrobe hint at long-forgotten hastiness left behind.',
-      items: ['${self:chest.small}'],
+      items: ['${self:chest.eldenfortResidence.small}'],
       exits: {
         e: '${self:map.eldenfortResidence.rooms.collapsedHallway}',
       },
@@ -128,7 +128,7 @@ module.exports = {
       type: 'poi',
       terrain: 'packed earth',
       description: "This space, cluttered with rusting tools and remnants of preserved goods, alludes to the storage room's practical past. The odd assortment of items may still hold value for those willing to sift through the past.",
-      items: ['${self:chest.large}'],
+      items: ['${self:chest.eldenfortResidence.large}'],
       exits: {
         w: '${self:map.eldenfortResidence.rooms.basementLanding}',
       },

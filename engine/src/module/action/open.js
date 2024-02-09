@@ -1,32 +1,36 @@
-const { Action } = require('@coderich/gameflow');
+const { Action, Actor } = require('@coderich/gameflow');
 
 Action.define('open', [
-  async ({ args }, { abort, actor }) => {
-    // Door check
-    const [dir] = args;
-    const { paths } = CONFIG.get(await REDIS.get(`${actor}.room`));
-    const path = paths?.[dir];
-    const door = path?.type === 'door' ? path : null;
-    return door ? { door, dir } : abort('There is no door in that direction!');
+  ({ target }, { abort, actor }) => {
+    if (!target) abort('There is nothing to open!');
   },
-  ({ door, dir }, { actor }) => {
-    switch (door.status) {
-      case 'open': {
-        actor.send('text', 'The door is already open!');
-        break;
-      }
-      case 'locked': {
-        actor.send('text', 'The door is locked!');
-        break;
-      }
-      case 'closed': {
-        CONFIG.set(`${door}.status`, 'open');
+  async ({ target }, { actor, abort }) => {
+    if (target.status === 'open') return abort(`The ${target.name} is already open!`);
+    if (target.status === 'locked') return abort(`The ${target.name} is locked!`);
+
+    switch (target.type) {
+      case 'door': {
+        CONFIG.set(`${target}.status`, 'open');
         actor.perform('map');
-        actor.send('text', `You open the door ${APP.direction[dir]}.`);
-        break;
+        return actor.send('text', `You open the ${target.name}.`);
+      }
+      case 'chest': {
+        if (target instanceof Actor) {
+          return null;
+        }
+        // World Map Chest
+        if (await REDIS.sAdd(`${target}.players`, `${actor}`)) {
+          const items = await APP.instantiate(target.spawns.map(spawn => Array.from(new Array(APP.roll(spawn.num))).map(() => APP.randomElement(spawn.items))).flat(2), { owner: `${actor}` });
+          await REDIS.sAdd(`${target}.inventory`, ...items.map(item => `${item}`));
+          // await APP.instantiate(target.items, { room: `${actor.room}`, owner: `${actor}` }).then((items) => {
+          //   return Promise.all(items.map(item => item.perform('spawn')));
+          // });
+        }
+        return null;
+        // const inventory = APP.hydrate(REDIS.sMembers(`${target}.inventory`)).filter(item => ``);
       }
       default: {
-        break;
+        return abort('You cannot open that!');
       }
     }
   },

@@ -36,7 +36,6 @@ exports.setup = async () => {
     return keys.length ? REDIS.mGet(keys).then((values) => {
       return keys.reduce((prev, key, i) => {
         key = key.split('.');
-        // const [root, id, counter, attr] = key.split('.');
         const root = key.shift();
         const attr = key.pop();
         const counter = key.pop();
