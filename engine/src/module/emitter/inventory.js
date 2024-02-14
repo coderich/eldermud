@@ -2,11 +2,15 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('inventory', [
   async (_, { actor }) => {
-    const items = await REDIS.sMembers(`${actor}.inventory`).then((ids) => {
-      return ids.map(id => CONFIG.get(id.split('.').slice(0, -1).join('.'))).filter(Boolean);
-    });
+    const items = await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
 
-    const description = items.length ? items.map(item => item.name).join(', ') : 'nothing!';
-    actor.send('text', 'You are carrying', description);
+    const inventory = items.reduce((prev, item) => {
+      prev[item.id] ??= { name: item.name, num: 0 };
+      prev[item.id].num++;
+      return prev;
+    }, {});
+
+    const description = items.length ? Object.values(inventory).map(item => APP.styleText('keyword', item.name).concat(`(${item.num})`)).join(', ') : 'nothing!';
+    actor.send('text', 'You are carrying:', description);
   },
 ]);

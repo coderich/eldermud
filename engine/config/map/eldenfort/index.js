@@ -26,7 +26,6 @@ module.exports = {
   rooms: {
     marketSquare: {
       name: 'Market Square',
-      type: 'poi',
       terrain: 'urban',
       description: 'The Market Square is a hive of activity, where vendors from all around come to sell their wares. The scent of fresh bread and herbs permeates the air, and the sound of haggling fills the ears. The Elden Keep can be glimpsed to the north.',
       exits: {
@@ -38,7 +37,6 @@ module.exports = {
     },
     eldenkeepEntrance: {
       name: 'Elden Keep Entrance',
-      type: 'poi',
       terrain: 'urban',
       description: "The entrance to the Elden Keep is guarded by stone gargoyles, silent watchers of the town's comings and goings. The heavy oak doors are adorned with ironwork, speaking to the stronghold's might and the secrets it holds within.",
       exits: {
@@ -48,7 +46,6 @@ module.exports = {
     },
     southGate: {
       name: 'South Gate',
-      type: 'poi',
       terrain: 'urban',
       description: 'The South Gate stands as the main artery through which the life of the town flows. Merchants, travelers, and adventurers pass under its shadow, guarded by vigilant town watch.',
       exits: {
@@ -61,7 +58,6 @@ module.exports = {
     },
     southRoad: {
       name: 'South Road',
-      type: 'pathway',
       terrain: 'urban',
       description: 'The South Road stretches out from the gate, a well-trodden road leading travelers into the countryside beyond.',
       exits: {
@@ -74,7 +70,6 @@ module.exports = {
     },
     westAlley: {
       name: 'West Alley',
-      type: 'intersection',
       terrain: 'urban',
       description: 'The West Alley is a quieter vein of the town, where local residents come and go about their daily lives, away from the hustle of the market.',
       exits: {
@@ -85,7 +80,6 @@ module.exports = {
     },
     westEnd: {
       name: 'West End',
-      type: 'corner',
       terrain: 'urban',
       description: "The aptly named West End is a cul-de-sac bordered by the town's ancient walls, offering a moment of tranquility and a touch of greenery with its overgrown ivy.",
       exits: {
@@ -94,7 +88,6 @@ module.exports = {
     },
     westCorner: {
       name: 'West Corner',
-      type: 'corner',
       terrain: 'urban',
       description: 'A sharp turn that leads to the residential areas of the town, marked by a weathered fountain that no longer runs.',
       exits: {
@@ -104,7 +97,6 @@ module.exports = {
     },
     westernResidences: {
       name: 'Western Residences',
-      type: 'pathway',
       terrain: 'urban',
       description: "This street is home to the town's craftspeople and merchants. The sound of a blacksmith at work rings out intermittently, blending with children's laughter.",
       exits: {
@@ -114,7 +106,6 @@ module.exports = {
     },
     westernDeadEnd: {
       name: 'Western Dead End',
-      type: 'corner',
       terrain: 'urban',
       description: 'A small, forgotten corner of the town, where old toys and broken furniture hint at stories untold.',
       exits: {
@@ -133,7 +124,6 @@ module.exports = {
     },
     eastAlley: {
       name: 'East Alley',
-      type: 'intersection',
       terrain: 'urban',
       description: 'An alley laden with the fragrances of nearby bakeries and the distant toll of the chapel bell.',
       exits: {
@@ -144,7 +134,6 @@ module.exports = {
     },
     eastEnd: {
       name: 'East End',
-      type: 'corner',
       terrain: 'urban',
       description: "The road culminates here, with an impressive view of the Elden Keep to the northwest, and a sun-warmed brick wall that's a popular resting spot for the local cats.",
       exits: {
@@ -153,7 +142,6 @@ module.exports = {
     },
     chapelRoad: {
       name: 'Chapel Road',
-      type: 'pathway',
       terrain: 'urban',
       description: 'Along this road, the distant singing from the chapel can be heard, inviting townsfolk to reflection and prayer.',
       exits: {
@@ -163,7 +151,6 @@ module.exports = {
     },
     chapelSquare: {
       name: 'Chapel Square',
-      type: 'poi',
       terrain: 'urban',
       description: 'The square is peaceful, a sanctuary within the town where people come to find solace, surrounded by small gardens meticulously maintained by the monks.',
       exits: {
@@ -173,7 +160,6 @@ module.exports = {
     },
     chapelEntrance: {
       name: 'Chapel Entrance',
-      type: 'poi',
       terrain: 'urban',
       description: "The entrance to the Chapel of Elden is an archway of carved stone, depicting the town's history. The dimly lit interior promises a reprieve from the outside world.",
       exits: {

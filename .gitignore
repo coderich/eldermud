@@ -5,3 +5,4 @@ build
 app.secrets.yml
 input/
 output/
+database.json

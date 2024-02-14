@@ -4,7 +4,6 @@ module.exports = {
   rooms: {
     townSquare: {
       name: 'Town Square',
-      type: 'intersection',
       terrain: 'cobblestone',
       description: "At the heart of Twilight Hollow is the Town Square, surrounded by a variety of quaint shops. The ever-present twilight sky gives the cobblestone square an ethereal atmosphere. Exits lead in all directions, continuing the town's enigmatic pathways.",
       exits: {
@@ -22,7 +21,6 @@ module.exports = {
     },
     marketStreet: {
       name: 'Market Street',
-      type: 'poi',
       terrain: 'cobblestone',
       description: 'This bustling street is known for Crystal Curiosities, a shop selling rare gems that seem to glow with an inner light. The energy of the crowds add life to the otherwise eerie ambiance of Twilight Hollow.',
       exits: {
@@ -31,7 +29,6 @@ module.exports = {
     },
     astralAlley: {
       name: 'Astral Alley',
-      type: 'poi',
       terrain: 'cobblestone',
       description: "A crooked alley leading to The Star-Gazer's Inn, a cozy refuge for travelers. Its windows cast a soft golden glow onto the alley's stones.",
       exits: {
@@ -40,7 +37,6 @@ module.exports = {
     },
     whisperWay: {
       name: 'Whisper Way',
-      type: 'poi',
       terrain: 'cobblestone',
       description: 'Whisper Way is eerily quiet except for the soft sounds coming from The Silent Library, a repository of mystical tomes.',
       exits: {
@@ -49,7 +45,6 @@ module.exports = {
     },
     shadowLane: {
       name: 'Shadow Lane',
-      type: 'pathway',
       terrain: 'cobblestone',
       description: 'A narrow lane that twists mysteriously into the darkness, as if shadows cling to the very air. It eventually leads back to the Town Square, forming a loop.',
       exits: {
@@ -58,7 +53,6 @@ module.exports = {
     },
     arcaneAvenue: {
       name: 'Arcane Avenue',
-      type: 'pathway',
       terrain: 'cobblestone',
       description: "Arcane symbols are etched into the buildings along this avenue, hinting at the magical nature of the town's inhabitants.",
       exits: {
@@ -67,7 +61,6 @@ module.exports = {
     },
     mysticMews: {
       name: 'Mystic Mews',
-      type: 'pathway',
       terrain: 'cobblestone',
       description: 'The houses here are built closely together, creating a labyrinthine network of homes that seem to whisper secrets to the initiated.',
       exits: {
@@ -76,7 +69,6 @@ module.exports = {
     },
     sunsetStreet: {
       name: 'Sunset Street',
-      type: 'pathway',
       terrain: 'cobblestone',
       description: 'Despite the name, the sun never fully sets; it lingers on the horizon, bathing the street in permanent twilight.',
       exits: {
@@ -85,7 +77,6 @@ module.exports = {
     },
     moonlitPath: {
       name: 'Moonlit Path',
-      type: 'pathway',
       terrain: 'cobblestone',
       description: "The path is illuminated by a moon that never wanes. It's a favored spot for nocturnal lovers and dreamers.",
       exits: {
@@ -94,7 +85,6 @@ module.exports = {
     },
     spireOfTwilight: {
       name: 'Spire of Twilight',
-      type: 'structure',
       terrain: 'stone',
       description: 'The Spire of Twilight rises above the town, its apex lost in the perpetual dusk. It serves as a beacon for those drawn to the arcane, and its foundation seems to extend below ground as much as it pierces the sky.',
       exits: {
@@ -103,7 +93,6 @@ module.exports = {
     },
     crypticCatacombs: {
       name: 'Cryptic Catacombs',
-      type: 'corner',
       terrain: 'stone',
       description: 'Beneath the town, the catacombs wind and weave. Their cold stone walls are lined with cryptic symbols that pulse with an ancient power.',
       exits: {
