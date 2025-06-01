@@ -80,8 +80,8 @@ SYSTEM.on('*', async (event, context) => {
       case 'help': {
         const { args } = data;
         const config = CONFIG.get();
-        const things = Object.values(config).map(el => Object.values(el));
-        Object.assign(data, APP.target(things.flat(), args));
+        const things = Object.values(config).map(el => Object.values(el)).flat();
+        Object.assign(data, APP.target(things, args));
         break;
       }
       default: {

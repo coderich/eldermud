@@ -47,6 +47,8 @@ module.exports = {
       },
     },
     eastWing: {
+      // char: '📚',
+      char: '🏦',
       name: 'East Wing',
       terrain: 'marble',
       description: "Here resides the Elden Keep's expansive archives, a series of vaults teeming with historical texts and scrolls. Scholars and scribes work diligently, preserving the lore and legalities of the land.",
@@ -66,6 +68,7 @@ module.exports = {
       },
     },
     ladyElethorChambers: {
+      char: '👑',
       name: "Lady Elethor's Chambers",
       terrain: 'plush carpet',
       description: "Elegantly appointed and strictly private, the chambers of Lady Elethor exude luxury and authority. A grand canopy bed, a stately writing desk, and personal artifacts reflect the ruler's taste and station.",
@@ -97,6 +100,7 @@ module.exports = {
       },
     },
     chapel: {
+      char: '⛪',
       name: 'Chapel',
       terrain: 'sanctified stone',
       description: "A place of reverence and tranquility, the Chapel's stained glass windows paint the room with multicolored light, while the altar at the northern end stands as a testament to faith and tradition.",
@@ -105,6 +109,7 @@ module.exports = {
       },
     },
     library: {
+      char: '📖',
       name: 'Library',
       terrain: 'oak',
       description: 'Shelves laden with ancient tomes stretch to the vaulted ceiling, accessible by rolling ladders. The musty air is ripe with knowledge, and the quiet is only broken by the occasional turning of a page.',
@@ -113,6 +118,7 @@ module.exports = {
       },
     },
     diningHall: {
+      char: '🍽',
       name: 'Dining Hall',
       terrain: 'granite',
       description: 'Grand banquets were once hosted here beneath the watchful gaze of ancestral paintings. The long tables can accommodate scores of guests, with a great hearth providing warmth and comfort.',
@@ -121,6 +127,8 @@ module.exports = {
       },
     },
     councilRoom: {
+      // char: '🏛',
+      char: '🪑',
       name: 'Council Room',
       terrain: 'mahogany',
       description: "A solemn round room ringed by high-backed chairs, the Council Room is the center of governance. Intricate carvings on the table depict the town's crest, symbolizing the weight of decisions made within these walls.",

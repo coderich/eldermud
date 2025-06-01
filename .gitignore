@@ -6,3 +6,4 @@ app.secrets.yml
 input/
 output/
 database.json
+dump.rdb

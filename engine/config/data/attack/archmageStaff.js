@@ -5,16 +5,8 @@ module.exports = {
   dmg: '3d10+5',
   range: '3',
   speed: 5,
-  hits: [
-    'engulf',
-    'blast',
-    'disintegrate',
-  ],
-  misses: [
-    'fizzle',
-    'miss',
-    'whiff',
-  ],
+  hits: ['engulf', 'blast', 'disintegrate'],
+  misses: ['fizzle', 'miss', 'whiff'],
   scales: {
     str: 0.1,
     dex: 0.5,
