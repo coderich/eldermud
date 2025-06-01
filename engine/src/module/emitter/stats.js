@@ -2,7 +2,7 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('stats', [
   async (_, { actor }) => {
-    const stats = await actor.mGet(['hp', 'ma', 'exp', 'str', 'dex', 'int', 'wis', 'lvl', 'class']);
+    const stats = await actor.mGet(['hp', 'ma', 'exp', 'str', 'dex', 'int', 'wis', 'con', 'cha', 'lvl', 'class']);
 
     const data = Object.entries({
       Name: actor.name,
@@ -16,6 +16,8 @@ Action.define('stats', [
       Dexterity: `${stats.dex}`,
       Intellect: `${stats.int}`,
       Wisdom: `${stats.wis}`,
+      Constitution: `${stats.con}`,
+      Charisma: `${stats.cha}`,
       Armor: `${actor.ac}/${actor.dr}`,
       Accuracy: `${actor.acc}`,
       Dodge: '0',
@@ -42,6 +44,7 @@ Action.define('stats', [
       [...Empty, ...Empty, ...data.Riposte],
       [...data.Strength, ...data.Dexterity, ...data.Stealth],
       [...data.Intellect, ...data.Wisdom, ...data.Crits],
+      [...data.Constitution, ...data.Charisma, ...Empty],
     ], { sep: '' });
 
     const table2 = APP.table([

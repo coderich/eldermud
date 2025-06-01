@@ -5,16 +5,8 @@ module.exports = {
   dmg: '1d10+5',
   range: '3',
   speed: 2,
-  hits: [
-    'siphon',
-    'drain',
-    'wither',
-  ],
-  misses: [
-    'miss',
-    'graze',
-    'whiff',
-  ],
+  hits: ['siphon', 'drain', 'wither'],
+  misses: ['miss', 'graze', 'whiff'],
   scales: {
     int: 0.5,
   },

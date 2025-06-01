@@ -3,7 +3,7 @@ module.exports = {
   description: "The Elden Keep's interior, a sprawling complex of corridors and chambers, stands as a testament to the town's illustrious past. Housing both the archives and residence of the current ruler, Lady Elethor, the keep is a bastion of history and power.",
   rooms: {
     entrance: {
-      name: 'Elden Keep',
+      name: 'Entrance',
       terrain: 'urban',
       description: "The interior of the Elden Keep is a labyrinth of corridors and chambers, each echoing the glory of a bygone era. The keep contains the town's archives and serves as a residence for the current ruler, Lady Elethor.",
       exits: {

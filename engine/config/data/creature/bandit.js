@@ -33,7 +33,10 @@ module.exports = {
       'Flee',
     ],
   },
-  attacks: ['${self:attack.claw}', '${self:attack.teeth}'],
+  attacks: [
+    '${self:attack.claw}',
+    '${self:attack.teeth}',
+  ],
   traits: [
     '${self:trait.lifeforce}',
     '${self:trait.vagabond}',

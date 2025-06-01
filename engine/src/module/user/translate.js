@@ -12,7 +12,7 @@ const channelArgs = Array.from(new Array(100)).map((el, i) => i);
  */
 const commands = [
   [
-    { attack: { args: [1, 2, 3], code: 'a', channel: 'realm', stream: 'action' } },
+    { attack: { args: [1, 2, 3], code: 'a', channel: 'realm', stream: 'action', tags: ['other'] } },
     { down: { args: [0], code: 'd', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { east: { args: [0], code: 'e', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { get: { args: [1, 2, 3, 4, 5], code: 'get', channel: 'realm', stream: 'action' } },
@@ -41,14 +41,14 @@ const commands = [
     { exit: { args: [0], code: 'x', channel: 'realm', stream: 'action' } },
   ],
   [
-    { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', channel: 'realm', stream: 'voice' } },
+    { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', channel: 'realm', stream: 'voice', tags: ['npc'] } },
     // { exp: { args: [0], code: 'exp', stream: 'action' } },
     { use: { args: [1, 2, 3, 4, 5], code: 'use', channel: 'realm', stream: 'action' } },
     { buy: { args: [1, 2, 3, 4, 5], code: 'buy', channel: 'realm', stream: 'action' } },
     { sell: { args: [1, 2, 3, 4, 5], code: 'sell', channel: 'realm', stream: 'action' } },
     { break: { args: [0], code: 'break', channel: 'info', stream: 'info' } },
     { search: { args: [0, 1, 2, 3, 4, 5], code: 'search', channel: 'realm', stream: 'action' } },
-    { follow: { args: [1, 2], code: 'follow', channel: 'realm', stream: 'action' } },
+    { follow: { args: [1, 2], code: 'follow', channel: 'realm', stream: 'action', tags: ['other'] } },
     { leave: { args: [0], code: 'leave', channel: 'realm', stream: 'action' } },
     { inventory: { args: [0], code: 'i', channel: 'realm', stream: 'info' } },
     { frontrank: { args: [0], code: 'frontrank', channel: 'realm', stream: 'action' } },
@@ -64,23 +64,24 @@ const commands = [
     { rest: { args: [0], code: 'rest', channel: 'realm', stream: 'action' } },
     { stand: { args: [0], code: 'stand', channel: 'realm', stream: 'action' } },
     // { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },
-    { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'action' } },
+    { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'action', tags: ['other'] } },
 
     // Talents
     // { dble: { args: [1], code: 'talent.dble', stream: 'talent' } },
     // { hail: { args: [0], code: 'talent.hail', stream: 'talent' } },
-    { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action' } },
+    { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action', tags: ['talent', 'player'] } },
     // { rage: { args: [0], code: 'talent.rage', stream: 'talent' } },
-    { stab: { args: [0], code: 'stab', channel: 'realm', stream: 'tactic' } },
+    { stab: { args: [0], code: 'stab', channel: 'realm', stream: 'tactic', tags: ['talent'] } },
     // { tote: { args: [1], code: 'talent.tote', stream: 'talent' } },
-    { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action' } },
+    { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action', tags: ['talent', 'other'] } },
 
     // Channels
     { '/gos': { args: channelArgs, name: 'gos', code: 'gos', channel, stream: 'info' } },
     { '/auc': { args: channelArgs, name: 'auc', code: 'auc', channel, stream: 'info' } },
+    // { '/help': { args: channelArgs, name: 'help', code: 'auc', channel, stream: 'info' } },
   ],
   [
-    { greet: { args: [0, 1, 2, 3, 4, 5], code: 'greet', channel: 'realm', stream: 'voice' } },
+    { greet: { args: [0, 1, 2, 3, 4, 5], code: 'greet', channel: 'realm', stream: 'voice', tags: ['other'] } },
     { train: { args: [1], code: 'train', channel: 'realm', stream: 'action' } },
     // { learn: { args: [1], code: 'learn', stream: 'action' } },
   ],

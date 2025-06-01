@@ -5,16 +5,8 @@ module.exports = {
   dmg: '2d8+6',
   range: '2',
   speed: 5,
-  hits: [
-    'sever',
-    'shroud',
-    'ensnare',
-  ],
-  misses: [
-    'whisper',
-    'flicker',
-    'recede',
-  ],
+  hits: ['sever', 'shroud', 'ensnare'],
+  misses: ['whisper', 'flicker', 'recede'],
   scales: {
     str: 0.5,
     dex: 1,

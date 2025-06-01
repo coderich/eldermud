@@ -41,9 +41,7 @@ module.exports = class ConfigClient extends Config {
   }
 
   decorate() {
-    const config = this;
-
-    Object.entries(config.get('map')).forEach(([key, map], i) => {
+    Object.entries(this.get('map')).forEach(([key, map], i) => {
       if (map.doors) {
         Object.entries(map.doors).forEach(([id, door], j) => {
           door.id = id;
@@ -56,6 +54,7 @@ module.exports = class ConfigClient extends Config {
         room.id = id;
         room.mapId = (i * 1000) + j + 1;
         room.type = 'room';
+        room.name = `${map.name}, ${room.name}`;
         room.description ??= Chance.paragraph();
         room.items = new Set(room.items);
         room.units = new Set(room.units);

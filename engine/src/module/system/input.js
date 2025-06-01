@@ -4,20 +4,38 @@ const Actor = require('../../model/Actor');
  * Responsible for normalizing input that comes from the command line before reaching actions
  */
 SYSTEM.on('*', async (event, context) => {
-  const { actor, data, translate } = context;
+  const { actor, data, translate, abort } = context;
   const [type, action] = event.split(':');
 
   // Normalize input for actions
-  if (type === 'pre' && translate) {
-    switch (action) {
-      case 'greet': case 'ask': case 'attack': case 'follow': case 'invite': case 'vamp': {
-        const { args } = data;
-        const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
-        Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
-        break;
+  if (type === 'pre' && data && translate) {
+    const { args, tags = [], input } = data;
+
+    if (tags.includes('talent')) {
+      if (!actor.talents.find(t => t.id === action)) {
+        abort();
+        actor.perform('say', input);
       }
+    }
+
+    // Tag based targeting...
+    if (tags.includes('unit')) {
+      const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      Object.assign(data, APP.target([...units], args));
+    } else if (tags.includes('other')) {
+      const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
+    } else if (tags.includes('player')) {
+      const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      Object.assign(data, APP.target([...units].filter(unit => unit.type === 'player'), args));
+    } else if (tags.includes('npc')) {
+      const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      Object.assign(data, APP.target([...units].filter(unit => unit.type === 'npc'), args));
+    }
+
+    // Specific action handling...
+    switch (action) {
       case 'get': {
-        const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
         const roomItems = Array.from(room.items.values()).filter(item => item instanceof Actor);
         const searchItems = Array.from(actor.$search.values());
@@ -25,7 +43,6 @@ SYSTEM.on('*', async (event, context) => {
         break;
       }
       case 'open': case 'close': {
-        const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
 
         // Door check
@@ -38,7 +55,6 @@ SYSTEM.on('*', async (event, context) => {
         return Object.assign(data, APP.target(inventory.concat(roomItems), args));
       }
       case 'drop': case 'use': {
-        const { args } = data;
         const inventory = await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
         Object.assign(data, APP.target(inventory, args));
         break;
@@ -50,7 +66,6 @@ SYSTEM.on('*', async (event, context) => {
       }
       case 'look': case 'search': {
         let target;
-        const { args } = data;
         const room = CONFIG.get(await REDIS.get(`${actor}.room`));
 
         // Current room
@@ -78,9 +93,8 @@ SYSTEM.on('*', async (event, context) => {
         return Object.assign(data, APP.target(inventory.concat(roomItems), args));
       }
       case 'help': {
-        const { args } = data;
         const config = CONFIG.get();
-        const things = Object.values(config).map(el => Object.values(el)).flat();
+        const things = Object.values(config).map(el => Object.values(el)).flat().filter(Boolean);
         Object.assign(data, APP.target(things, args));
         break;
       }

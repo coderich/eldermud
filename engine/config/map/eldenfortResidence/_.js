@@ -1,6 +1,8 @@
-SYSTEM.on('pre:move', ({ actor, data }) => {
+SYSTEM.on('pre:move', async ({ actor, data, abort }) => {
   if (`${actor.room}` === 'map.eldenfortResidence.rooms.collapsedHallway' && data === 'w') {
-    console.log('rope check');
+    const inventory = await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
+    if (!inventory.find(item => item.id === 'rope')) abort(APP.styleText('error', 'You are unable to pass!'));
+    else actor.send('text', APP.styleText('boost', 'You traverse the hallway with your rope and grapple'));
   }
 });
 

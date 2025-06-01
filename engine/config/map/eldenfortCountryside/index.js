@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'Countryside of Eldenfort',
+  name: 'Eldenfort Countryside',
   description: 'This sprawling countryside is characterized by lush green fields and a gentle breeze that carries the scent of wildflowers. The area is dotted with small farms and the ruins of ancient structures, a testament to a bygone era. The distant outline of the ancient town of Eldenfort looms to the north, its weathered walls speaking of a rich and mysterious past.',
   rooms: {
     entranceToCountryside: {

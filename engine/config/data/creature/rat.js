@@ -19,5 +19,8 @@ module.exports = {
     '${self:trait.vagabond}',
     '${self:trait.territorial}',
   ],
-  attacks: ['${self:attack.claw}', '${self:attack.teeth}'],
+  attacks: [
+    '${self:attack.claw}',
+    '${self:attack.teeth}',
+  ],
 };
