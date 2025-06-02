@@ -26,9 +26,8 @@ program.command('train').action(async (thisCommand, actionCommand) => {
   // Update DM
   await openai.beta.assistants.update(mapMaker, {
     name: 'Map Maker',
-    file_ids: [],
     tools: [
-      { type: 'retrieval' },
+      { type: 'file_search' },
       {
         type: 'function',
         function: {

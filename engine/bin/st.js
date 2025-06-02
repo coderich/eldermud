@@ -12,8 +12,8 @@ program.name('ST').description('Story Teller');
 // Setup
 program.hook('preAction', (thisCommand, actionCommand) => {
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
-  global.CONFIG = new ConfigClient(`${__dirname}/../src/data`);
-  global.CONFIG.merge(ConfigClient.parseFile(`${__dirname}/../src/database.json`));
+  global.CONFIG = new ConfigClient(`${__dirname}/../config/data`);
+  global.CONFIG.merge(ConfigClient.parseFile(`${__dirname}/../config/database.json`));
   global.APP = AppService;
   const { apiKey, storyTeller } = CONFIG.get('secrets.openai');
   actionCommand.storyTeller = storyTeller;
@@ -26,9 +26,8 @@ program.command('train').action(async (thisCommand, actionCommand) => {
   // Update assistant
   await openai.beta.assistants.update(storyTeller, {
     name: 'Story Teller',
-    file_ids: [],
     tools: [
-      { type: 'retrieval' },
+      { type: 'file_search' },
       {
         type: 'function',
         function: {

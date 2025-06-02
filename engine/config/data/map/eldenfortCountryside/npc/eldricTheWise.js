@@ -13,6 +13,14 @@ module.exports = {
     His connection to the city runs deep, and he remains a silent observer of its affairs, always ready to offer guidance to those who seek it.
   `,
   room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
+  // trigger: {
+  //   'greet:npc.eldenfortCountryside.eldricTheWise': {
+  //     idk: 'hi',
+  //   },
+  // },
+  // triggers: [
+  //   { on: 'greet:npc.eldenfortCountryside.eldricTheWise' },
+  // ],
   // quests: [
   //   '${self:quest.echosOfTheAncients}',
   // ],

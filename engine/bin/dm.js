@@ -26,9 +26,8 @@ program.command('train').action(async (thisCommand, actionCommand) => {
   // Update DM
   await openai.beta.assistants.update(dungeonMaster, {
     name: 'Dungeon Master',
-    file_ids: [],
     tools: [
-      { type: 'retrieval' },
+      { type: 'file_search' },
       {
         type: 'function',
         function: {

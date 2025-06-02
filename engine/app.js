@@ -6,10 +6,10 @@ const AppService = require('./src/service/AppService');
 const NPC = require('./src/model/NPC');
 const server = require('./src/server');
 
-exports.init = (datadir, mapdir) => {
+exports.init = (datadir) => {
   // Yep, globals
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
-  global.CONFIG = new ConfigClient().mergeConfig(datadir).mergeConfig(mapdir, ['map']);
+  global.CONFIG = new ConfigClient().mergeConfig(datadir);
   global.REDIS = new RedisClient(CONFIG.get('app.redis'));
   global.APP = AppService;
 
@@ -47,7 +47,7 @@ exports.setup = async () => {
 
 (async () => {
   if (!module.parent) {
-    exports.init(`${__dirname}/config/data`, `${__dirname}/config/map`);
+    exports.init(`${__dirname}/config/data`);
     // CONFIG.merge(ConfigClient.parseFile(`${__dirname}/src/database.json`));
     CONFIG.decorate();
     await exports.setup();
