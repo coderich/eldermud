@@ -18,7 +18,7 @@ Action.define('death', () => null);
 SYSTEM.on('post:death', async ({ actor }) => {
   if (!actor.$dead) {
     actor.$dead = true;
-    CONFIG.get(await REDIS.get(`${actor}.room`)).units.delete(actor);
+    actor.room.units.delete(actor);
     actor.removeAllPossibleListeners();
 
     switch (actor.type) {
@@ -40,26 +40,29 @@ SYSTEM.on('post:death', async ({ actor }) => {
         break;
       }
       default: {
-        const killers = Array.from(actor.$killers).filter(killer => killer.type === 'player');
-        const killerCount = killers.length || 1;
-        const exp = Math.ceil((actor.mhp * actor.exp) / killerCount);
+        // const killers = Array.from(actor.$killers).filter(killer => killer.type === 'player');
+        // const killerCount = killers.length || 1;
+        // const exp = Math.ceil((actor.mhp * actor.exp) / killerCount);
 
         // Broadcast to room that actor is dead
-        Array.from(actor.room.units.values()).forEach((unit) => {
-          unit.send('text', actor.slain);
-        });
+        actor.broadcast('text', actor.slain);
 
-        actor.$killers.forEach(async (killer) => {
-          if (!killer.$dead) {
-            killer.perform('affect', { exp });
-            killer.send('text', `You gain ${APP.styleText('keyword', exp)} soul power.`);
-            killer.perform('room');
-          }
-        });
+        // actor.$killers.forEach(async (killer) => {
+        //   if (!killer.$dead) {
+        //     killer.perform('affect', { exp });
+        //     killer.send('text', `You gain ${APP.styleText('keyword', exp)} soul power.`);
+        //     killer.perform('room');
+        //   }
+        // });
 
-        // Redis cleanup
-        const keys = await REDIS.keys(`${actor}.*`);
-        await REDIS.del(keys);
+        // Create corpse
+        await APP.instantiate('item.corpse', {
+          room: actor.room,
+          name: `${actor.name} corpse`,
+        }).then(corpse => corpse.perform('spawn'));
+
+        // Destroy actor
+        await actor.perform('destroy');
 
         break;
       }
