@@ -67,7 +67,7 @@ exports.instantiate = (keys, data = {}) => {
 };
 
 /**
- * Given a set of configuration keys; will return a configuration object
+ * Given a set of configuration keys; will return a hydrated configuration object
  */
 exports.hydrate = (keys, data = {}) => {
   return Util.mapPromise(keys, async (key) => {

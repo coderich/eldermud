@@ -1,9 +1,8 @@
 module.exports = {
-  map: '${self:map.eldenfort}',
-  room: '${self:map.eldenfort.rooms.marketSquare}',
-  checkpoint: '${self:map.eldenfort.rooms.marketSquare}',
+  map: '${self:map.necropolis}',
+  room: '${self:map.necropolis.rooms.entrancePlaza}',
+  checkpoint: '${self:map.necropolis.rooms.entrancePlaza}',
   posture: 'stand',
   lvl: 1,
   exp: 0,
-  stealth: 0,
 };

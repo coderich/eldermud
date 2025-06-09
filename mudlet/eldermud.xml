@@ -196,7 +196,7 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.status', 'gmcp.eldermud.st
     .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
     -- .. 'Carry: [ &lt;span style="background-color:orange"&gt;' .. 100 .. '/' .. 1000 .. '&lt;/span&gt; ]'
     -- .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
-    .. 'Soul: &lt;span style="color:LightSeaGreen"&gt;' .. data.exp .. '&lt;/span&gt;'
+    .. 'Remnants: &lt;span style="color:LightSeaGreen"&gt;' .. data.exp .. '&lt;/span&gt;'
     .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
     .. 'Posture: &lt;span style="color:magenta"&gt;' .. data.posture .. '&lt;/span&gt;'
   );

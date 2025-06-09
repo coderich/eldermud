@@ -65,6 +65,7 @@ const commands = [
     { stand: { args: [0], code: 'stand', channel: 'realm', stream: 'action' } },
     // { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },
     { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'action', tags: ['other'] } },
+    { harvest: { args: [1, 2, 3, 4, 5], code: 'harvest', channel: 'realm', stream: 'action', tags: ['corpse'] } },
 
     // Talents
     // { dble: { args: [1], code: 'talent.dble', stream: 'talent' } },

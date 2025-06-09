@@ -14,6 +14,7 @@ app:
   styles:
     reset: '<reset>'
     stat: '<ansiGreen>'
+    value: '<LightSeaGreen>'
     query: '<SeaGreen>'
     keyword: '<LightSeaGreen>'
     highlight: '<yellow>'

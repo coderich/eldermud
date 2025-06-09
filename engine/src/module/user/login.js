@@ -7,7 +7,7 @@ Action.define('login', async (username, { actor, abort }) => {
   actor.loginAttempts ??= 0;
 
   // Check if they need to set password
-  const info = await actor.mGet('password', 'class');
+  const info = await actor.mGet('password', 'class', 'race');
   if (!info.password) return actor.perform('setPassword').then(() => actor.perform('onboard'));
 
   // Query for password + check

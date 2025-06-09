@@ -1,0 +1,26 @@
+| Heritage      | Passive Bonus                            | Signature Ability                                                  |
+| ------------- | ---------------------------------------- | ------------------------------------------------------------------ |
+| **Revenant**  | +5% damage vs. living foes               | **Vengeful Return**: on kill, gain a stacking damage buff for 10 s |
+| **Hollowed**  | +2% HP regen out of combat               | **Hollow’s Respite**: once per rest, heal 20% max HP over 5 s      |
+| **Graveborn** | +10% resistance to necrotic damage       | **Grave’s Embrace**: create a 3 s area that slows enemies by 20%   |
+| **Spectral**  | +5% Dodge                                | **Slip the Veil**: pass through non-magical barriers for 5 s       |
+| **Lichborn**  | +10% max Mana/Stamina, –10% Radiant res. | **Soulwell**: convert 10% max HP into temporary mana/stamina       |
+
+
+| Race      | Base Stat Bonus | Flavor Link                                             |
+| --------- | --------------- | ------------------------------------------------------- |
+| Human     | +1 all stats    | “Cursed Undead” echo of Dark Souls                      |
+| Elf       | +2 Dex, +1 Int  | Graceful, natural affinity for soul-magic               |
+| Dwarf     | +2 Con, +1 Str  | Stout frame perfect for bone-forged weaponry            |
+| Tiefling  | +2 Int, +1 Cha  | Infernal blood amplifies dark rites                     |
+| Ghoulkin  | +2 Str, +1 Dex  | Flesh-hungered kin; bonus to necrotic-harvest actions   |
+| Wraithkin | +2 Dex, +1 Wis  | Ethereal descendants; stronger spirit-link interactions |
+
+
+| Class                    | Role    | Core Focus                         | Specialty Corpse Actions                 |
+| ------------------------ | ------- | ---------------------------------- | ---------------------------------------- |
+| **Necromancer**          | Caster  | Raise minions, soul-siphon spells  | Animate Corpse, Cadaverous Minions       |
+| **Deathblade Warrior**   | Melee   | Bone-forged weapons, bleed combos  | Deathblade Execution, Trophy Display     |
+| **Soul Warden**          | Support | Spirit wards, buffs via rituals    | Spiritual Cleansing, Soul Link           |
+| **Cursed Alchemist**     | Utility | Corpse-derived potions, explosives | Alchemical Experiment, Corpse Explosives |
+| **Voidstalker Assassin** | Stealth | Shadow-void dash & vanish          | Slip Veil, Corpse Puppetry               |

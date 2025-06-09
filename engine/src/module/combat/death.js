@@ -57,6 +57,8 @@ SYSTEM.on('post:death', async ({ actor }) => {
 
         // Create corpse
         await APP.instantiate('item.corpse', {
+          mhp: actor.mhp,
+          lvl: actor.lvl,
           room: actor.room,
           name: `${actor.name} corpse`,
         }).then(corpse => corpse.perform('spawn'));

@@ -1,13 +1,13 @@
 const { Action } = require('@coderich/gameflow');
 
-Action.define('selectClass', async (_, { actor }) => {
-  const classes = CONFIG.get('class');
+Action.define('selectRace', async (_, { actor }) => {
+  const races = CONFIG.get('race');
   const line = Array.from(new Array(100)).join('-');
 
   actor.send('text', `\n${line}\n`);
 
-  Object.values(classes).forEach((hero, i) => {
-    const { name, str, dex, int, wis, con, cha, description, talents, traits } = hero;
+  Object.values(races).forEach((race, i) => {
+    const { name, str, dex, int, wis, con, cha, description, talents, traits } = race;
     const stats = Object.entries({ str, dex, int, wis, con, cha }).map(([key, value]) => APP.styleText('stat', `${key}:`).concat(' ', APP.styleText('keyword', value)));
     actor.send('text', APP.styleText('highlight', name), '(', stats.join(', '), ')');
     actor.send('text', `${description}`);
@@ -15,10 +15,10 @@ Action.define('selectClass', async (_, { actor }) => {
   });
 
   actor.send('text', `${line}\n`);
-  const { text: classname } = await actor.query(APP.styleText('query', 'Welcome', APP.styleText('keyword', actor.name), APP.styleText('query', '- enter a class name you\'d like to play!')));
-  const { target } = APP.target(Object.values(classes), [classname]);
-  if (!target) return actor.perform('selectClass');
+  const { text: racename } = await actor.query(APP.styleText('query', 'Welcome', APP.styleText('keyword', actor.name), APP.styleText('query', '- enter a race name you\'d like to play!')));
+  const { target } = APP.target(Object.values(races), [racename]);
+  if (!target) return actor.perform('selectRace');
   Object.assign(actor, { ...target, ...actor });
-  await REDIS.set(`${actor}.class`, `${target}`);
+  await REDIS.set(`${actor}.race`, `${target}`);
   return target;
 });
