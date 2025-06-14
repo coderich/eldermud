@@ -11,10 +11,6 @@ Action.define('duel', [
       actor.send('text', APP.styleText('engaged', '*combat off*'));
       APP.timeout(100).then(() => data.target.$killers.delete(actor));
     });
-
-    // Normalize dynamic mods
-    data.mods = { ac: 0, dr: 0, acc: 0, dmg: 0, crit: 0, dodge: 0, ...data.mods || {} };
-    data.attack = { acc: 0, crit: 0, ...data.attack };
   },
 
   new Loop([
@@ -23,7 +19,8 @@ Action.define('duel', [
 
     // Attack
     async (data, { actor, stream, promise }) => {
-      const { attack, target, mods } = data;
+      const { target } = data;
+      const attack = typeof data.attack === 'function' ? data.attack() : data.attack;
 
       // Resource check
       if (attack.cost) {
@@ -38,17 +35,25 @@ Action.define('duel', [
       stream.pause();
       const toHit = 30;
       const roll = APP.roll('1d100');
-      const hitroll = (roll + mods.acc - mods.ac);
+      const hitroll = (roll + actor.acc + attack.acc - target.ac);
+      const dmgroll = Math.max(APP.roll(attack.dmg) - target.dr, 0);
+      const critroll = APP.roll(`1d${actor.crits + attack.crits}`);
+      const dodgeroll = APP.roll(`1d${target.dodge}`); // default
+
+      // // This must be based on posture
+      // const parryroll = APP.roll(`1d${target.parry}`);
+      // const riposteroll = APP.roll(`1d${target.riposte}`);
 
       if (hitroll <= toHit) {
         await actor.perform('miss', { attack, target });
-      } else if (hitroll - mods.dodge <= toHit) {
+      } else if (hitroll - dodgeroll <= toHit) {
         await actor.perform('miss', { attack, target, dodge: true });
+      } else if (dmgroll) {
+        const crit = roll + critroll > 95;
+        const dmg = crit ? Math.ceil(dmgroll * 1.5) : dmgroll;
+        await actor.perform('hit', { attack, target, dmg, crit });
       } else {
-        data.crit = roll + mods.crit > 95;
-        data.dmg = APP.roll(attack.dmg) + mods.dmg - mods.dr;
-        if (data.crit) data.dmg = Math.ceil(data.dmg * 1.5);
-        await actor.perform('hit', data);
+        await actor.perform('miss', { attack, target, glance: true });
       }
 
       await APP.timeout(2000);

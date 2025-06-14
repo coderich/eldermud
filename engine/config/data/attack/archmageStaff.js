@@ -3,6 +3,8 @@ module.exports = {
   depiction: 'An ornate staff crowned with a crystal that pulses with raw magical energy',
   description: 'This ancient staff is said to channel the very essence of magic. It allows an Archmage to cast devastating spells with amplified power, commanding the forces of the elements at their will. The staff not only serves as a conduit for existing spells but also enables the forging of new arcane wonders.',
   dmg: '3d10+5',
+  acc: 1,
+  crits: 1,
   range: '3',
   speed: 5,
   hits: ['engulf', 'blast', 'disintegrate'],

@@ -22,7 +22,7 @@ module.exports = class ActorWrapper extends Actor {
       sound: new Stream('sound'),
       scent: new Stream('scent'),
       touch: new Stream('touch'),
-      trait: new Stream('trait'), // Passive traits
+      trait: new Stream('trait').batch(100), // Passive traits
       tactic: new Stream('tactic'), // Immediate combat tactics
       action: new Stream('action'), // Active actions
       preAction: new Stream('preAction'),

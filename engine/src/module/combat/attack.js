@@ -9,8 +9,7 @@ Action.define('attack', [
   },
 
   ({ target }, { actor, stream }) => {
-    const attack = APP.randomElement(actor.attacks);
-    const mods = { acc: actor.acc, ac: target.ac, dr: target.dr };
-    actor.stream(stream, 'engage', { target, attack, mods });
+    const attack = () => APP.randomElement(actor.attacks);
+    actor.stream(stream, 'engage', { target, attack });
   },
 ]);

@@ -5,6 +5,8 @@ module.exports = {
   dex: 2,
   int: 1,
   wis: 0,
+  con: 1,
+  cha: 1,
   exp: 1,
   lvl: 1,
   size: 1,

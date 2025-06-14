@@ -42,6 +42,7 @@ const commands = [
   ],
   [
     { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', channel: 'realm', stream: 'voice', tags: ['npc'] } },
+    { who: { args: [0], code: 'who', channel: 'realm', stream: 'info' } },
     // { exp: { args: [0], code: 'exp', stream: 'action' } },
     { use: { args: [1, 2, 3, 4, 5], code: 'use', channel: 'realm', stream: 'action' } },
     { buy: { args: [1, 2, 3, 4, 5], code: 'buy', channel: 'realm', stream: 'action' } },
@@ -51,6 +52,7 @@ const commands = [
     { follow: { args: [1, 2], code: 'follow', channel: 'realm', stream: 'action', tags: ['other'] } },
     { leave: { args: [0], code: 'leave', channel: 'realm', stream: 'action' } },
     { inventory: { args: [0], code: 'i', channel: 'realm', stream: 'info' } },
+    { party: { args: [0], code: 'party', channel: 'realm', stream: 'info' } },
     { frontrank: { args: [0], code: 'frontrank', channel: 'realm', stream: 'action' } },
     { midrank: { args: [0], code: 'midrank', channel: 'realm', stream: 'action' } },
     { backrank: { args: [0], code: 'backrank', channel: 'realm', stream: 'action' } },
@@ -108,6 +110,8 @@ const translateArray = (arr, input, cmd, args) => {
     }
   }
 
+  if (cmd.startsWith('/')) return { name: 'telepath', input, args: [cmd.substring(1), ...args], code: 'tele', channel: 'realm', stream: 'info', tags: ['realm'] };
+  if (cmd.startsWith('@')) return { name: 'at', input, args: [cmd.substring(1), ...args], code: 'at', channel: 'realm', stream: 'info', tags: ['other'] };
   return { name: 'unknown', input, args, code: 'unk', channel: 'realm' };
 };
 

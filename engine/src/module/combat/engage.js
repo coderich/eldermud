@@ -1,5 +1,8 @@
 const { Action } = require('@coderich/gameflow');
 
+/**
+ * This takes into account the time it takes to move into position for an attack
+ */
 Action.define('engage', [
   async ({ target, attack }, { actor, abort }) => {
     if (!target) abort('You dont see that here!');
@@ -7,7 +10,7 @@ Action.define('engage', [
   },
 
   // Engage with the target
-  ({ target, attack, mods }, { actor, stream, abort, promise }) => {
+  ({ target, attack }, { actor, stream, abort, promise }) => {
     const disengage = ({ result }) => {
       delete actor.$target;
       delete actor.$engaged;
@@ -28,7 +31,7 @@ Action.define('engage', [
         actor.$engaged = true;
         target.$killers.add(actor);
         stream.off('add', disengage);
-        actor.stream(stream, 'duel', { target, attack, mods });
+        actor.stream(stream, 'duel', { target, attack });
       }
     });
   },

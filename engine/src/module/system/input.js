@@ -1,3 +1,4 @@
+const Game = require('@coderich/gameflow');
 const Actor = require('../../model/Actor');
 
 /**
@@ -34,6 +35,8 @@ SYSTEM.on('*', async (event, context) => {
     } else if (tags.includes('corpse')) {
       const { items } = CONFIG.get(await REDIS.get(`${actor}.room`));
       Object.assign(data, APP.target([...items].filter(item => item.id === 'corpse'), args));
+    } else if (tags.includes('realm')) {
+      Object.assign(data, APP.target(Object.values(Game.Actor), args));
     }
 
     // Specific action handling...

@@ -47,11 +47,17 @@ exports.setup = async () => {
 
 (async () => {
   if (!module.parent) {
+    process.on('unhandledRejection', (reason, promise) => {
+      console.error('❌ Unhandled Rejection at:', promise, 'reason:', reason);
+    });
+
+    console.log('Before load:', process.memoryUsage().heapUsed);
     exports.init(`${__dirname}/config/data`);
     // CONFIG.merge(ConfigClient.parseFile(`${__dirname}/src/database.json`));
     CONFIG.decorate();
     await exports.setup();
     server.start();
+    console.log('After load:', process.memoryUsage().heapUsed);
     console.log('Server ready.');
   }
 })();

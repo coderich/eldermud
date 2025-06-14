@@ -13,6 +13,17 @@ module.exports = {
     His connection to the city runs deep, and he remains a silent observer of its affairs, always ready to offer guidance to those who seek it.
   `,
   room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
+  str: 13,
+  dex: 11,
+  int: 10,
+  wis: 9,
+  con: 12,
+  cha: 8,
+  exp: 1,
+  lvl: 1,
+  traits: [
+    '${self:trait.sanctuary}',
+  ],
   // trigger: {
   //   'greet:npc.eldenfortCountryside.eldricTheWise': {
   //     idk: 'hi',

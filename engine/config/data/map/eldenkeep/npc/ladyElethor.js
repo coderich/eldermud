@@ -30,4 +30,12 @@ module.exports = {
     '${self:quest.ghastlyWhispers}',
     '${self:quest.echosOfTheAncients}',
   ],
+  str: 13,
+  dex: 11,
+  int: 10,
+  wis: 9,
+  con: 12,
+  cha: 8,
+  exp: 1,
+  lvl: 1,
 };
