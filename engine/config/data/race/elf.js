@@ -1,10 +1,12 @@
 module.exports = {
   name: 'Elf',
-  depiction: 'A dark sorcerer shrouded in tattered robes, commanding a horde of undead minions that rise from the soil at their command.',
-  description: 'Necromancers are practitioners who defy the natural order, invoking taboo rituals to summon and control the undead, prolong their existence, and spread decay.',
+  depiction: 'A tall, lithe figure with pointed ears, clad in finely woven garments and a keen, perceptive gaze.',
+  description: 'Elves are denizens of ancient forests and moonlit glades, known for their agility, keen senses, and attunement to the arcane. They move with grace and strike with deadly precision.',
   gains: { str: 0, dex: 2, int: 1, wis: 0, con: 0, cha: 0 },
   traits: [
+    // '${self:trait.nightsGrace}', // passive: once per short rest, become invisible for 10s in dim light areas
   ],
   talents: [
+    // '${self:talent.feyStep}', // active: teleport up to 3 meters instantly, costs 4 MP, 20s cooldown
   ],
 };

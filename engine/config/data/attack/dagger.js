@@ -1,0 +1,20 @@
+module.exports = {
+  name: 'Dagger',
+  depiction: 'A small, sharp blade suitable for swift strikes or throwing',
+  description: 'Lightweight and easy to conceal, this dagger excels at precise hits.',
+  dmg: '1d4',
+  acc: 1,
+  crits: 1,
+  range: '1',
+  speed: 2,
+  hits: ['stab', 'pierce', 'nick'],
+  misses: ['fumble', 'drop', 'miss'],
+  scales: {
+    str: 0,
+    dex: 1,
+    int: 0,
+    wis: 0,
+    con: 0,
+    cha: 0,
+  },
+};

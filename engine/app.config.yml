@@ -37,6 +37,7 @@ app:
     boost: '<SlateBlue>'
     item: '<LightSeaGreen>'
     noise: '<ansi_magenta>'
+    muted: '<DimGrey>'
     room:
       name: '<cyan>'
       description: ''

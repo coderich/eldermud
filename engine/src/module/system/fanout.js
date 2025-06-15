@@ -9,6 +9,7 @@ SYSTEM.on('*', async (event, context) => {
     switch (action) {
       case 'spawn': { // Enter the realm
         SYSTEM.emit(`enter:${result.room}`, context);
+        Array.from(CONFIG.get(result.room).units).forEach(unit => SYSTEM.emit(`meet:${unit}`, context));
         break;
       }
       case 'exit': {
@@ -19,6 +20,7 @@ SYSTEM.on('*', async (event, context) => {
         SYSTEM.emit(`path:${result.room.paths?.[result.dir]}`, context);
         SYSTEM.emit(`enter:${result.exit}`, context);
         SYSTEM.emit(`leave:${result.room}`, context);
+        Array.from(result.room.units).forEach(unit => SYSTEM.emit(`meet:${unit}`, context));
         break;
       }
       case 'ask': {

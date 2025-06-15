@@ -25,12 +25,12 @@ module.exports = {
     '${self:trait.sanctuary}',
   ],
   // trigger: {
-  //   'greet:npc.eldenfortCountryside.eldricTheWise': {
+  //   'greet:npc.eldricTheWise': {
   //     idk: 'hi',
   //   },
   // },
   // triggers: [
-  //   { on: 'greet:npc.eldenfortCountryside.eldricTheWise' },
+  //   { on: 'greet:npc.eldricTheWise' },
   // ],
   // quests: [
   //   '${self:quest.echosOfTheAncients}',

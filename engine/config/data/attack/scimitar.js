@@ -1,0 +1,20 @@
+module.exports = {
+  name: 'Scimitar',
+  depiction: 'A curved, single-edged sword favored by swift fighters',
+  description: 'This sleek blade delivers quick slashing strikes with moderate damage potential.',
+  dmg: '1d6',
+  acc: 1,
+  crits: 1,
+  range: '1',
+  speed: 3,
+  hits: ['slash', 'slice', 'cleave'],
+  misses: ['whoosh', 'miss', 'glancing blow'],
+  scales: {
+    str: 1,
+    dex: 0,
+    int: 0,
+    wis: 0,
+    con: 0,
+    cha: 0,
+  },
+};

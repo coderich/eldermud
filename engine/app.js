@@ -19,16 +19,15 @@ exports.init = (datadir) => {
 
 exports.setup = async () => {
   // Setup our NPCs
-  Object.values(CONFIG.get('npc', {})).forEach((map) => {
-    Object.values(map).forEach(async (npc) => {
-      const actor = new NPC(npc);
-      await actor.perform('spawn');
-    });
+  Object.values(CONFIG.get('npc', {})).forEach(async (npc) => {
+    const actor = new NPC(npc);
+    await actor.perform('spawn');
   });
 
   // Setup our instances
   await Promise.all([
     REDIS.keys('key.*'),
+    REDIS.keys('npc.*'),
     REDIS.keys('item.*'),
     REDIS.keys('creature.*'),
   ]).then(async (results) => {
@@ -40,7 +39,7 @@ exports.setup = async () => {
     }));
 
     // Hydrate and spawn instances
-    const actors = await APP.hydrate(Array.from(keys.values()));
+    const actors = await APP.hydrate(Array.from(keys.values().filter(Boolean)));
     return Promise.all(actors.map(actor => actor.perform('spawn')));
   });
 };
