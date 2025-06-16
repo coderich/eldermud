@@ -152,13 +152,19 @@ local cmd = 'cmd';
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.cmd', 'sysDataSendRequest', function(e, text)
   sendGMCP('eldermud.' .. cmd .. yajl.to_string{text = text});
+  cmd = 'cmd';
 end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.query', 'gmcp.eldermud.query', function (event, ns)
+  cmd = 'query';
+end);
+
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.console', 'gmcp.eldermud', function (event, ns)
   local name = string.sub(ns, 15);
   local data = gmcp.eldermud[name];
   
-  if (name == 'console' or name == 'text' or name == 'cmd') then
+  if (name == 'query' or name == 'text' or name == 'cmd') then
     cecho(data .. '\n')
   elseif (name == 'room') then
     cecho(data.name .. '\n');

@@ -25,9 +25,25 @@ module.exports = class ActorWrapper extends Actor {
       trait: new Stream('trait').batch(100), // Passive traits
       tactic: new Stream('tactic'), // Immediate combat tactics
       action: new Stream('action'), // Active actions
-      preAction: new Stream('preAction'),
+      preAction: new Stream('preAction'), // Used to await/delay the current action
       telepath: new Stream('telepath'),
     };
+
+    // Bind system events to this actor
+    this.on('*', (event, context) => {
+      const [type] = event.split(':');
+
+      if (type === 'pre') {
+        // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
+        context.promise.listen(step => step > 1 || SYSTEM.emit(event, context));
+        // context.promise.listen(step => step > 1 || Promise.all([SYSTEM.emit(event, context), SYSTEM.emit('*', event, context)]));
+      } else {
+        setImmediate(() => {
+          SYSTEM.emit(event, context);
+          // SYSTEM.emit('*', event, context);
+        });
+      }
+    });
   }
 
   mGet(...keys) {
@@ -56,7 +72,7 @@ module.exports = class ActorWrapper extends Actor {
   }
 
   query(...messages) {
-    return this.socket.query('cmd', APP.styleText('query', '>', messages.flat().join(' ')));
+    return this.socket.query('query', APP.styleText('query', '>', messages.flat().join(' ')));
   }
 
   async broadcast(...args) {

@@ -3,10 +3,11 @@ const Util = require('@coderich/util');
 const Pluralize = require('pluralize');
 const NPC = require('../model/NPC');
 const Item = require('../model/Item');
+const Room = require('../model/Room');
 const Creature = require('../model/Creature');
 
 const chance = new Chance();
-const models = { npc: NPC, item: Item, creature: Creature, key: Item };
+const models = { npc: NPC, item: Item, creature: Creature, key: Item, room: Room };
 
 exports.chance = chance;
 exports.pluralize = Pluralize;
@@ -27,13 +28,13 @@ exports.castValue = (value) => {
   return value;
 };
 
-exports.styleBlockText = (styles = [], blocktext) => {
+exports.styleBlockText = (base, styles = [], blocktext) => {
   return styles.reduce((prev, { text, style, limit = Infinity }) => {
     const re = new RegExp(`\\b${text}(?=$|\\W)`, 'g');
     return prev.replace(re, (match) => {
-      return limit-- > 0 ? exports.styleText(style, text) : match;
+      return limit-- > 0 ? exports.styleText(style, text).concat(CONFIG.get(`app.styles.${base}`)) : match;
     });
-  }, blocktext);
+  }, APP.styleText(base, blocktext));
 };
 
 exports.target = (list, args, by = 'name') => {
@@ -69,7 +70,7 @@ exports.instantiate = (keys, data = {}) => {
 /**
  * Given a set of configuration keys; will return a hydrated configuration object
  */
-exports.hydrate = (keys, data = {}) => {
+exports.hydrate = (keys) => {
   return Util.mapPromise(keys, async (key) => {
     const arr = `${key}`.split('.');
     const configKey = exports.isNumeric(arr.pop()) ? arr.join('.') : key;
@@ -116,14 +117,17 @@ exports.table = (rows, options = {}) => {
   if (options.header) {
     startIndex = 1;
     const headers = rows[0];
-    table = table.concat(headers.reduce((prev, header, i) => {
+    table = table.concat(headers.reduce((prev, header, i, arr) => {
       return prev.concat(`${header.toString().padEnd(colWidths[i])} | `);
     }, '| '), '\n').concat('|', headers.map((_, i) => `${'-'.repeat(colWidths[i] + 2)}|`).join(''), '\n');
   }
 
   // Generate data
   table = table.concat(rows.slice(startIndex).reduce((prev, row) => {
-    return prev.concat(sep, row.map((data, i) => `${data.toString().padEnd(colWidths[i])} ${sep}`).join(''), '\n');
+    return prev.concat(sep, row.map((data, i, arr) => {
+      const value = i <= arr.length - 2 ? `${data.toString().padEnd(colWidths[i])} ${sep}` : `${data.toString()} ${sep}`;
+      return value;
+    }).join(''), '\n');
   }, ''));
 
   return table.trimEnd('\n');

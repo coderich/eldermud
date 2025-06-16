@@ -6,6 +6,6 @@ SYSTEM.on('*', async (event, context) => {
   const [type] = event.split(':');
 
   if (type === 'abort' && promise.reason && promise.reason !== '$source') {
-    actor.send('text', promise.reason);
+    await actor.send('text', promise.reason);
   }
 });

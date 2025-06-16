@@ -7,10 +7,9 @@ const Get = require('lodash.get');
 const noop = ({ promise }) => promise.abort();
 
 const intro = [
-  'Your thoughts slip like oil through your fingers.',
   'You try to move, but your limbs respond like echoes.',
   'Something pulses in the dark. Once... then again. A rhythm.',
-  'The shadows bend. One shape lingers longer than the rest.',
+  'The shadows bend. A single shape lingers longer than the rest.',
   'You are not asleep. You are not whole.',
   'You must awaken...',
 ];
@@ -29,11 +28,8 @@ const spawn = async (actor) => {
   const npc = await APP.instantiate('npc.sisterCaldra');
   await npc.save({ map, room }).then(el => el.perform('spawn'));
 
-  //
-  await actor.save({ map, room });
-  actor.send('cls');
-  actor.perform('map');
-  actor.perform('room');
+  // Spawn Actor
+  await actor.perform('teleport', { map, room });
 };
 
 SYSTEM.on('enter:map.start.rooms.start', async ({ actor }) => {
@@ -42,9 +38,10 @@ SYSTEM.on('enter:map.start.rooms.start', async ({ actor }) => {
 
   actor.once('pre:execute', async () => {
     actor.send('text', '');
-    await Util.promiseChain(intro.map(line => async () => {
+
+    await Util.promiseChain(intro.map((line, i) => async () => {
       actor.send('text', APP.styleText('muted', `\t${line}`));
-      await APP.timeout(3500);
+      if (i < intro.length - 1) await APP.timeout(3500);
     }));
 
     actor.once('pre:execute', async () => {
@@ -56,8 +53,18 @@ SYSTEM.on('enter:map.start.rooms.start', async ({ actor }) => {
 
 SYSTEM.on('post:spawn', (context) => {
   if (context.actor.id === 'sisterCaldra') {
-    SYSTEM.on(`greet:${context.actor}`, ({ actor }) => {
-      actor.send('text', 'Yeah yeah yeah');
+    SYSTEM.on(`enter:${context.actor.room}`, async ({ actor }) => {
+      await actor.send('text', `${context.actor.name} (to you):`, APP.styleText('dialog', "You... you're awake? Saints preserve us! I thought the fever took you for sure."));
+      await APP.timeout(3000);
+      await actor.send('text', `${context.actor.name} (to you):`, APP.styleBlockText('dialog', [
+        { text: 'stand', style: 'keyword' },
+      ], "The Plague eats more than flesh - it devours identity... there isn't much time, can you stand?"));
+
+      actor.once('abort:stand', () => {
+        APP.instantiate('creature.plagueWretch', {
+          room: `${actor.map}.rooms.quarantineHall`,
+        }).then(unit => unit.perform('spawn'));
+      });
     });
   }
 });

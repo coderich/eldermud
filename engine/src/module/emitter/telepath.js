@@ -3,7 +3,9 @@ const { Action } = require('@coderich/gameflow');
 Action.define('telepath', [
   async ({ target, rest }, { actor, abort }) => {
     if (!target) return abort('Cannot find user!');
-    actor.send('text', `--- Telepath Sent to ${target.name} ---`);
-    return target.send('text', `${actor.name} telepaths: ${rest.join(' ')}`);
+    const label = APP.styleText('keyword', `${actor.name} telepaths:`);
+    const text = rest.join(' ');
+    actor.send('text', `--- Telepath sent to ${target.name} ---`);
+    return target.send('text', `${label} ${text}`);
   },
 ]);

@@ -10,9 +10,9 @@ module.exports = {
         { actor: 'quest.tutorial' },
       ],
       do: [
-        { text: "You... you're awake? Saints preserve us. I thought the fever took you for sure." },
+        { text: "You... you're awake? Saints preserve us! I thought the fever took you for sure." },
         { query: '' },
-        { text: 'No memory? Not unusual. The Plague eats more than flesh—it devours identity.' },
+        { text: 'No memory? Not unusual. The Plague eats more than flesh — it devours identity.' },
         { set: '' },
       ],
     },

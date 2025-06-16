@@ -6,12 +6,8 @@ Action.define('selectRace', async (_, { actor }) => {
 
   actor.send('text', `\n${line}\n`);
 
-  Object.values(races).forEach((race, i) => {
-    const { name, gains, description, talents, traits } = race;
-    const stats = Object.entries(gains).map(([key, value]) => APP.styleText('stat', `${key}:`).concat(' ', APP.styleText('keyword', `+${value}`)));
-    actor.send('text', APP.styleText('highlight', name), '{', stats.join(', '), '}');
-    actor.send('text', `${description}`);
-    actor.send('text', APP.styleText('stat', 'Begin with:'), '[', APP.styleText('keyword', talents.concat(traits).map(el => el.name).join(', ')), ']\n');
+  Object.values(races).forEach((target, i) => {
+    actor.perform('help', { target });
   });
 
   actor.send('text', `${line}\n`);

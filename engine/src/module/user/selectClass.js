@@ -6,13 +6,8 @@ Action.define('selectClass', async (_, { actor }) => {
 
   actor.send('text', `\n${line}\n`);
 
-  Object.values(classes).forEach((hero, i) => {
-    const { name, str, dex, int, wis, con, cha, gains, description, talents, traits } = hero;
-    const stats = Object.entries({ str, dex, int, wis, con, cha }).map(([key, value]) => APP.styleText('stat', `${key}:`).concat(' ', APP.styleText('keyword', value), APP.styleText('muted', ` + ${gains[key]}`)));
-    actor.send('text', APP.styleText('highlight', name), '{', stats.join(', '), '}');
-    actor.send('text', `${description}`);
-    actor.send('text', APP.styleText('stat', 'Traits:'), '[', APP.styleText('keyword', traits.map(el => el.name).join(', ')), ']');
-    actor.send('text', APP.styleText('stat', 'Talents:'), '[', APP.styleText('keyword', talents.map(el => el.name).join(', ')), ']\n');
+  Object.values(classes).forEach((target, i) => {
+    actor.perform('help', { target });
   });
 
   actor.send('text', `${line}\n`);

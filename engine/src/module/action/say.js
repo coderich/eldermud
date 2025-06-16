@@ -2,7 +2,11 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('say', [
   (input, { actor }) => {
-    actor.send('text', `You say "${input}"`);
-    actor.broadcast('text', `${actor.name} says "${input}"`);
+    const text = APP.styleText('dialog', input);
+
+    return Promise.all([
+      actor.send('text', `${actor.name}: ${text}`),
+      actor.broadcast('text', `${actor.name}: ${text}`),
+    ]);
   },
 ]);

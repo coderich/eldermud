@@ -27,21 +27,6 @@ Action.define('spawn', async (_, { actor }) => {
     if (Action[trait.id]) actor.stream('trait', trait.id);
   });
 
-  // Bind system events to this actor
-  actor.on('*', (event, context) => {
-    const [type] = event.split(':');
-
-    if (type === 'pre') {
-      // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
-      context.promise.listen(step => step > 1 || Promise.all([SYSTEM.emit(event, context), SYSTEM.emit('*', event, context)]));
-    } else {
-      setImmediate(() => {
-        SYSTEM.emit(event, context);
-        SYSTEM.emit('*', event, context);
-      });
-    }
-  });
-
   if (['player', 'npc', 'creature'].includes(actor.type)) {
     actor.perform('map');
     actor.perform('room', CONFIG.get(room));

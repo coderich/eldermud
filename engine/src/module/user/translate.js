@@ -59,6 +59,8 @@ const commands = [
     // { lock: { args: [1], code: 'lock', stream: 'action' } },
     // { unlock: { args: [1], code: 'unlock', channel: 'realm', stream: 'action' } },
     // { remove: { args: [1, 2, 3], code: 'remove', stream: 'action' } },
+    { gossip: { args: channelArgs, code: 'gossip', channel, stream: 'info' } },
+    { auction: { args: channelArgs, code: 'auction', channel, stream: 'info' } },
   ],
   [
     // { push: { args: [1, 2, 3, 4, 5], code: 'push', stream: 'action' } },
@@ -79,8 +81,8 @@ const commands = [
     { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action', tags: ['talent', 'other'] } },
 
     // Channels
-    { '/gos': { args: channelArgs, name: 'gos', code: 'gos', channel, stream: 'info' } },
-    { '/auc': { args: channelArgs, name: 'auc', code: 'auc', channel, stream: 'info' } },
+    // { '/gos': { args: channelArgs, name: 'gos', code: 'gos', channel, stream: 'info' } },
+    // { '/auc': { args: channelArgs, name: 'auc', code: 'auc', channel, stream: 'info' } },
     // { '/help': { args: channelArgs, name: 'help', code: 'auc', channel, stream: 'info' } },
   ],
   [
@@ -116,7 +118,7 @@ const translateArray = (arr, input, cmd, args) => {
 };
 
 Action.define('translate', (input, { actor }) => {
-  input = input.trim().toLowerCase();
+  input = input.trim();
   const [cmd, ...args] = input.match(/\S+/g) || [];
-  return cmd ? translateArray(commands, input, cmd, args) : { name: 'none', input, args, code: null, channel: 'realm' };
+  return cmd ? translateArray(commands, input, cmd.toLowerCase(), args) : { name: 'none', input, args, code: null, channel: 'realm' };
 });
