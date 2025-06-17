@@ -1,8 +1,7 @@
 module.exports = {
-  map: '${self:map.start}',
-  room: '${self:map.start.rooms.start}',
-  checkpoint: '${self:map.start.rooms.start}',
-  posture: 'rest',
+  room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
+  checkpoint: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
+  posture: 'stand',
   lvl: 1,
   exp: 0,
   str: 0,

@@ -6,7 +6,8 @@ Action.define('get', [
   },
   async (target, { actor }) => {
     actor.$search.delete(target);
-    target.room?.items?.delete(target);
+    const room = CONFIG.get(await actor.get('room'));
+    room.items.delete(target);
     await REDIS.del(`${target}.room`);
     await REDIS.del(`${target}.hidden`);
     await REDIS.sRem(`${target.container}.inventory`, `${target}`);

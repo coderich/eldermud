@@ -21,7 +21,7 @@ Action.define('help', [
         // actor.send('text', APP.styleText('highlight', name)); // , '{', stats.join(', '), '}');
         // actor.send('text', description);
         // actor.send('text', stats.join(', '));
-        actor.send('text', APP.table([
+        return actor.send('text', APP.table([
           [APP.styleText('highlight', name)],
           [description],
           [APP.table([
@@ -30,12 +30,12 @@ Action.define('help', [
             ['Talents:', APP.styleText('keyword', talents.map(el => el.name).join(', '))],
           ], { sep: '' })],
         ], { sep: '' }));
-        break;
       }
       case 'race': {
         const { name, gains, description, talents, traits } = target;
         const stats = Object.entries(gains).map(([key, value]) => APP.styleText('stat', `${ucFirst(key)}:`).concat(' ', APP.styleText('keyword', `+ ${value}`)));
-        actor.send('text', APP.table([
+
+        return actor.send('text', APP.table([
           [APP.styleText('highlight', name)],
           [description],
           [APP.table([
@@ -47,12 +47,12 @@ Action.define('help', [
         // actor.send('text', APP.styleText('highlight', name), '{', stats.join(', '), '}');
         // actor.send('text', `${description}`);
         // actor.send('text', APP.styleText('stat', 'Begin with:'), '[', APP.styleText('keyword', talents.concat(traits).map(el => el.name).join(', ')), ']\n');
-        break;
       }
       default: {
-        actor.send('text', APP.styleText('highlight', target.name));
-        actor.send('text', `${target.description}`);
-        break;
+        return Promise.all([
+          actor.send('text', APP.styleText('highlight', target.name)),
+          actor.send('text', `${target.description}`),
+        ]);
       }
     }
   },

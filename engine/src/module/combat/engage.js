@@ -24,7 +24,7 @@ Action.define('engage', [
     target.once('post:death', disengage); // They may die before we get to duel
     actor.send('text', APP.styleText('engaged', `*combat engaged (${target.name})*`));
     target.send('text', APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText('highlight', 'you')}!`);
-    Array.from(actor.room.units.values()).filter(unit => unit !== actor && unit !== target).forEach(unit => unit.send('text', APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText(target.type, target.name)}!`));
+    Array.from(CONFIG.get(`${actor.room}`).units.values()).filter(unit => unit !== actor && unit !== target).forEach(unit => unit.send('text', APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText(target.type, target.name)}!`));
 
     APP.timeout(2000).then(() => {
       if (!promise.aborted) {

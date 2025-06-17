@@ -4,22 +4,20 @@ const { Action } = require('@coderich/gameflow');
  * Spawn an actor, bind system events and add them to the realm
  */
 Action.define('spawn', async (_, { actor }) => {
-  actor.calcStats?.();
+  await actor.calcStats?.();
 
   // Save pre-defined attributes (if not exists)
   await actor.save(actor, true);
 
   // Assign actors to world
-  const [map, room] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
-  actor.map = CONFIG.get(`${map}`);
-  actor.room = CONFIG.get(`${room}`);
+  const room = CONFIG.get(await actor.get('room'));
 
   if (['item'].includes(actor.type)) {
-    if (room) CONFIG.get(`${room}.items`).add(actor);
+    if (room) room.add(actor);
   }
 
   if (['player', 'creature', 'npc'].includes(actor.type)) {
-    CONFIG.get(`${room}.units`).add(actor);
+    room.units.add(actor);
   }
 
   // Attach traits
@@ -29,8 +27,8 @@ Action.define('spawn', async (_, { actor }) => {
 
   if (['player', 'npc', 'creature'].includes(actor.type)) {
     actor.perform('map');
-    actor.perform('room', CONFIG.get(room));
+    actor.perform('room', room);
   }
 
-  return { map, room };
+  return { room };
 });

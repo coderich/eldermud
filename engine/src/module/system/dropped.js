@@ -1,10 +1,8 @@
 /**
  * Middelware to stop actions when dropped (<=0 health)
  */
-SYSTEM.on('*', async (event, context) => {
-  const { actor, promise, stream, abort } = context;
-
-  if (actor.hp <= 0 && ['action', 'preAction'].includes(stream?.id)) {
-    abort(`You are too weak to ${promise.id}!`);
+SYSTEM.on('*', async (event, { actor, promise, stream, abort }) => {
+  if (['action', 'preAction'].includes(stream?.id)) {
+    if (await actor.get('hp') <= 0) abort(`You are too weak to ${promise.id}!`);
   }
 });

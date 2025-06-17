@@ -2,12 +2,11 @@
  * Responsible for creating new/specialized/specific game events
  */
 SYSTEM.on('*', async (event, context) => {
-  const { actor, result } = context;
+  const { result } = context;
   const [type, action] = event.split(':');
 
   if (type === 'post') {
     if (result?.target) {
-      actor.emit(`${action}:${result.target}`, context);
       SYSTEM.emit(`${action}:${result.target}`, context);
     }
 
@@ -17,7 +16,7 @@ SYSTEM.on('*', async (event, context) => {
         break;
       }
       case 'exit': { // Exit realm
-        SYSTEM.emit(`leave:${result.room}`, context);
+        SYSTEM.emit(`leave:${result.exit}`, context);
         break;
       }
       case 'teleport': {
@@ -26,9 +25,9 @@ SYSTEM.on('*', async (event, context) => {
         break;
       }
       case 'move': {
-        SYSTEM.emit(`path:${result.room.paths?.[result.dir]}`, context);
-        SYSTEM.emit(`enter:${result.exit}`, context);
-        SYSTEM.emit(`leave:${result.room}`, context);
+        SYSTEM.emit(`path:${result.exit.paths?.[result.dir]}`, context);
+        SYSTEM.emit(`enter:${result.room}`, context);
+        SYSTEM.emit(`leave:${result.exit}`, context);
         break;
       }
       default: {

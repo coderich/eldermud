@@ -1,15 +1,14 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('teleport', [
-  async ({ map, room }, { actor }) => {
-    room = await CONFIG.get(`${room}`);
-    const exit = actor.room;
-    await actor.save({ map, room });
-    room.units.delete(actor);
-    exit.units.add(actor);
+  async ({ room }, { actor }) => {
+    const exit = CONFIG.get(await actor.get('room'));
+    room.units.add(actor);
+    exit.units.delete(actor);
+    await actor.save({ room });
     await actor.send('cls');
     await actor.perform('map');
     await actor.perform('room');
-    return { map, room, exit: actor.room };
+    return { room, exit };
   },
 ]);

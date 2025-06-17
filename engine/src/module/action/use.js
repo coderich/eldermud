@@ -3,7 +3,7 @@ const { Action } = require('@coderich/gameflow');
 Action.define('use', [
   async ({ target, rest }, { actor, abort }) => {
     if (!target) return abort('You dont see that here!');
-    const room = CONFIG.get(await REDIS.get(`${actor}.room`));
+    const room = CONFIG.get(await actor.get('room'));
 
     switch (target.type) {
       case 'key': {

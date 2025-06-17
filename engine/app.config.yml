@@ -4,8 +4,8 @@ app:
 
   # Attrs to persist to DB
   spawn:
-    item: ['map', 'room', 'name', 'hidden', 'durability', 'container', 'owner']
-    unit: ['map', 'room', 'name', 'race', 'class', 'lvl', 'rank', 'str', 'dex', 'int', 'wis', 'con', 'cha', 'hp', 'ma', 'exp', 'posture', 'checkpoint']
+    item: ['room', 'name', 'hidden', 'durability', 'container', 'owner']
+    unit: ['room', 'name', 'race', 'class', 'lvl', 'rank', 'str', 'dex', 'int', 'wis', 'con', 'cha', 'hp', 'ma', 'exp', 'posture', 'checkpoint']
     key: ${self:app.spawn.item}
     npc: ${self:app.spawn.unit}
     player: ${self:app.spawn.unit}

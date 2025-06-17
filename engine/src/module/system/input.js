@@ -21,19 +21,19 @@ SYSTEM.on('*', async (event, context) => {
 
     // Tag based targeting...
     if (tags.includes('unit')) {
-      const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      const { units } = CONFIG.get(await actor.get('room'));
       Object.assign(data, APP.target([...units], args));
     } else if (tags.includes('other')) {
-      const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      const { units } = CONFIG.get(await actor.get('room'));
       Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
     } else if (tags.includes('player')) {
-      const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      const { units } = CONFIG.get(await actor.get('room'));
       Object.assign(data, APP.target([...units].filter(unit => unit.type === 'player'), args));
     } else if (tags.includes('npc')) {
-      const { units } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      const { units } = CONFIG.get(await actor.get('room'));
       Object.assign(data, APP.target([...units].filter(unit => unit.type === 'npc'), args));
     } else if (tags.includes('corpse')) {
-      const { items } = CONFIG.get(await REDIS.get(`${actor}.room`));
+      const { items } = CONFIG.get(await REDIS.get('room'));
       Object.assign(data, APP.target([...items].filter(item => item.id === 'corpse'), args));
     } else if (tags.includes('realm')) {
       Object.assign(data, APP.target(Object.values(Game.Actor), args));
@@ -42,14 +42,14 @@ SYSTEM.on('*', async (event, context) => {
     // Specific action handling...
     switch (action) {
       case 'get': {
-        const room = CONFIG.get(await REDIS.get(`${actor}.room`));
+        const room = CONFIG.get(await actor.get('room'));
         const roomItems = Array.from(room.items.values()).filter(item => item instanceof Actor);
         const searchItems = Array.from(actor.$search.values());
         Object.assign(data, APP.target(roomItems.concat(searchItems), args));
         break;
       }
       case 'open': case 'close': {
-        const room = CONFIG.get(await REDIS.get(`${actor}.room`));
+        const room = CONFIG.get(await actor.get('room'));
 
         // Door check
         const cmd = await actor.perform('translate', args.join(' '));
@@ -66,13 +66,13 @@ SYSTEM.on('*', async (event, context) => {
         break;
       }
       case 'list': case 'buy': case 'sell': {
-        const { shop } = CONFIG.get(await REDIS.get(`${actor}.room`));
+        const { shop } = CONFIG.get(await actor.get('room'));
         Object.assign(data, { shop });
         break;
       }
       case 'look': case 'search': {
         let target;
-        const room = CONFIG.get(await REDIS.get(`${actor}.room`));
+        const room = CONFIG.get(await actor.get('room'));
 
         // Current room
         if (!args.length) return Object.assign(data, { target: room });

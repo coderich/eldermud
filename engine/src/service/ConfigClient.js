@@ -32,6 +32,7 @@ module.exports = class ConfigClient extends Config {
         this.set(`${ns}.id`, id);
         this.set(`${ns}.type`, type);
         this.set(`${ns}.toString`, () => ns);
+        this.set(`${ns}.__proto`, 'action');
       }
     });
 
@@ -45,6 +46,7 @@ module.exports = class ConfigClient extends Config {
           door.id = id;
           door.type = 'door';
           door.toString = () => `map.${key}.doors.${id}`;
+          door.__proto = 'action';
         });
       }
 
@@ -56,6 +58,7 @@ module.exports = class ConfigClient extends Config {
         room.items = new Set(room.items);
         room.units = new Set(room.units);
         room.toString = () => `map.${key}.rooms.${id}`;
+        room.__proto = 'action';
       });
     });
 

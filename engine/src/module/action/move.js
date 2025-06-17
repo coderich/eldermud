@@ -5,12 +5,12 @@ Action.define('move', [
     const { actor, abort, promise } = context;
 
     // Exit check
-    const room = await CONFIG.get(await REDIS.get(`${actor}.room`));
-    const exit = room?.exits?.[dir];
-    if (!exit) return abort('There is no exit in that direction!');
+    const exit = CONFIG.get(await actor.get('room'));
+    const room = exit?.exits?.[dir];
+    if (!room) return abort('There is no exit in that direction!');
 
     // Pathway check
-    const path = room.paths?.[dir];
+    const path = exit.paths?.[dir];
     if (path) {
       switch (path.type) {
         case 'door': {
@@ -31,14 +31,11 @@ Action.define('move', [
 
   () => APP.timeout(1000),
 
-  async ({ dir, room, exit }, context) => {
-    const { actor } = context;
-
+  async ({ dir, room, exit }, { actor }) => {
     // Leave
-    const [map] = `${exit}`.split('.rooms');
-    await actor.save({ room: exit, map });
-    room.units.delete(actor);
-    exit.units.add(actor);
+    await actor.save({ room });
+    exit.units.delete(actor);
+    room.units.add(actor);
     actor.$search.clear();
   },
 ]);

@@ -24,13 +24,10 @@ SYSTEM.on('post:death', async ({ actor }) => {
     switch (actor.type) {
       case 'player': {
         const { checkpoint } = await actor.mGet(['checkpoint']);
-        const [map] = `${checkpoint}`.split('.rooms');
-        await actor.calcStats();
 
         await REDIS.mSet({
           [`${actor}.hp`]: `${actor.mhp}`,
           [`${actor}.ma`]: `${actor.mma}`,
-          [`${actor}.map`]: `${map}`,
           [`${actor}.room`]: `${checkpoint}`,
           [`${actor}.exp`]: '0',
         });

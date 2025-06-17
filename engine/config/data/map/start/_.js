@@ -26,14 +26,15 @@ const spawn = async (actor) => {
 
   // Spawn NPC(s)
   const npc = await APP.instantiate('npc.sisterCaldra');
-  await npc.save({ map, room }).then(el => el.perform('spawn'));
+  await npc.save({ room }).then(el => el.perform('spawn'));
 
   // Spawn Actor
-  await actor.perform('teleport', { map, room });
+  await actor.perform('teleport', { room });
 };
 
 SYSTEM.on('enter:map.start.rooms.start', async ({ actor }) => {
-  actor.room.units.delete(actor);
+  const room = CONFIG.get(await actor.get('room'));
+  room.units.delete(actor);
   actor.on('pre:execute', noop);
 
   actor.once('pre:execute', async () => {
@@ -41,7 +42,7 @@ SYSTEM.on('enter:map.start.rooms.start', async ({ actor }) => {
 
     await Util.promiseChain(intro.map((line, i) => async () => {
       actor.send('text', APP.styleText('muted', `\t${line}`));
-      if (i < intro.length - 1) await APP.timeout(3500);
+      if (i < intro.length - 1) await APP.timeout(500);
     }));
 
     actor.once('pre:execute', async () => {
@@ -54,6 +55,7 @@ SYSTEM.on('enter:map.start.rooms.start', async ({ actor }) => {
 SYSTEM.on('post:spawn', (context) => {
   if (context.actor.id === 'sisterCaldra') {
     SYSTEM.on(`enter:${context.actor.room}`, async ({ actor }) => {
+      const [map] = `${actor.room}`.split('.rooms');
       await actor.send('text', `${context.actor.name} (to you):`, APP.styleText('dialog', "You... you're awake? Saints preserve us! I thought the fever took you for sure."));
       await APP.timeout(3000);
       await actor.send('text', `${context.actor.name} (to you):`, APP.styleBlockText('dialog', [
@@ -62,7 +64,7 @@ SYSTEM.on('post:spawn', (context) => {
 
       actor.once('abort:stand', () => {
         APP.instantiate('creature.plagueWretch', {
-          room: `${actor.map}.rooms.quarantineHall`,
+          room: `${map}.rooms.quarantineHall`,
         }).then(unit => unit.perform('spawn'));
       });
     });

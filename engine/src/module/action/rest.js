@@ -9,7 +9,7 @@ Action.define('rest', [
     actor.send('text', 'You stop to rest.');
 
     const interval = setInterval(async () => {
-      const hp = await REDIS.get(`${actor}.hp`).then(v => parseInt(v, 10));
+      const hp = await actor.get('hp').then(v => parseInt(v, 10));
       const incrHP = Math.min(actor.mhp - hp, 5);
       await actor.perform('affect', { hp: incrHP });
     }, 2000);

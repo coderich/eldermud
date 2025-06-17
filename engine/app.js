@@ -20,7 +20,7 @@ exports.init = (datadir) => {
 exports.setup = async () => {
   // Setup our NPCs
   Object.values(CONFIG.get('npc', {})).forEach(async (npc) => {
-    const actor = new NPC(npc);
+    const actor = await new NPC(npc);
     await actor.perform('spawn');
   });
 
@@ -55,8 +55,9 @@ exports.setup = async () => {
     // CONFIG.merge(ConfigClient.parseFile(`${__dirname}/src/database.json`));
     CONFIG.decorate();
     await exports.setup();
-    server.start();
+    await server.start();
     console.log('After load:', process.memoryUsage().heapUsed);
     console.log('Server ready.');
+    new NPC().emit('server', {});
   }
 })();

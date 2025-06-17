@@ -7,8 +7,10 @@ Action.define('exit', [
 
   () => APP.timeout(3000),
 
-  (_, { actor }) => {
-    actor.room.units.delete(actor);
+  async (_, { actor }) => {
+    const exit = CONFIG.get(await actor.get('room'));
+    exit.units.delete(actor);
     actor.disconnect();
+    return { exit };
   },
 ]);

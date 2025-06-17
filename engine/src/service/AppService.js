@@ -4,6 +4,7 @@ const Pluralize = require('pluralize');
 const NPC = require('../model/NPC');
 const Item = require('../model/Item');
 const Room = require('../model/Room');
+const Actor = require('../model/Actor');
 const Creature = require('../model/Creature');
 
 const chance = new Chance();
@@ -13,6 +14,7 @@ exports.chance = chance;
 exports.pluralize = Pluralize;
 exports.timeout = Util.timeout;
 exports.ucFirst = Util.ucFirst;
+exports.mapPromise = Util.mapPromise;
 exports.fib = [3, 5, 8, 13, 21, 34, 55, 89];
 exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northeast', nw: 'northwest', se: 'southeast', sw: 'southwest', u: 'up', d: 'down' };
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };
@@ -23,6 +25,9 @@ exports.isBoolean = str => ['true', 'false'].includes(`${str}`.toLowerCase());
 exports.fibStat = (val, every = 10) => Array.from(new Array(parseInt(val ?? 0, 10))).reduce((prev, el, i) => prev + exports.fib[Math.floor(i / every)], 0);
 
 exports.castValue = (value) => {
+  if (value == null) return value;
+  if (value instanceof Actor) return `${value}`;
+  if (typeof value === 'object') return value.__proto === 'action' ? `${value}` : value;
   if (APP.isNumeric(value)) return parseInt(value, 10);
   if (APP.isBoolean(value)) return Boolean(`${value.toLowerCase()}` === 'true');
   return value;
@@ -59,7 +64,7 @@ exports.target = (list, args, by = 'name') => {
  * Given a set of configuration keys; will instantiate a new model and save to disk
  */
 exports.instantiate = (keys, data = {}) => {
-  return Util.mapPromise(keys, (key) => {
+  return exports.mapPromise(keys, (key) => {
     return Promise.all([CONFIG.get(`${key}`), REDIS.incr(`counter.${key}`)]).then(([config, counter]) => {
       const attrs = { ...config, toString: () => `${key}.${counter}`, ...data };
       return new models[config.type](attrs).save(attrs);
@@ -68,15 +73,15 @@ exports.instantiate = (keys, data = {}) => {
 };
 
 /**
- * Given a set of configuration keys; will return a hydrated configuration object
+ * Given a set of configuration keys; will return a hydrated model
  */
 exports.hydrate = (keys) => {
-  return Util.mapPromise(keys, async (key) => {
+  return exports.mapPromise(keys, async (key) => {
     const arr = `${key}`.split('.');
     const configKey = exports.isNumeric(arr.pop()) ? arr.join('.') : key;
     const configData = CONFIG.get(`${configKey}`);
     const redisKeys = await REDIS.keys(`${key}.*`);
-    const redisData = redisKeys.length ? await REDIS.mGet(redisKeys).then(values => values.reduce((prev, value, i) => Object.assign(prev, { [redisKeys[i].split('.').pop()]: value }), {})) : {};
+    const redisData = redisKeys.length ? await REDIS.mGet(redisKeys).then(values => values.reduce((prev, value, i) => Object.assign(prev, { [redisKeys[i].split('.').pop()]: APP.castValue(value) }), {})) : {};
     return new models[configData.type]({ ...configData, ...redisData, toString: () => `${key}` });
   });
 };

@@ -31,8 +31,8 @@ const coords = {
 
 Action.define('map', async (_, { actor }) => {
   if (actor.type === 'player') {
-    const [dbMap, dbRoom] = await REDIS.mGet([`${actor}.map`, `${actor}.room`]);
-    const [configMap, configRoom] = [CONFIG.get(dbMap), CONFIG.get(dbRoom)];
+    const configRoom = CONFIG.get(await actor.get('room'));
+    const configMap = CONFIG.get(`${configRoom}`.split('.rooms')[0]);
 
     // Convert to array of rooms
     const rooms = Object.values(configMap.rooms).map(({ mapId, name, char = '' }) => ({ id: mapId, name, char, x: 0, y: 0, z: 0 }));

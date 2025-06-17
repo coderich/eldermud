@@ -8,9 +8,9 @@ const socket = new Proxy({}, {
 });
 
 module.exports = class ActorWrapper extends Actor {
-  constructor(data) {
+  constructor(data = {}) {
     super();
-    Object.assign(this, data);
+    this.assign(data);
     this.socket ??= socket;
 
     // Streams
@@ -36,34 +36,46 @@ module.exports = class ActorWrapper extends Actor {
       if (type === 'pre') {
         // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
         context.promise.listen(step => step > 1 || SYSTEM.emit(event, context));
-        // context.promise.listen(step => step > 1 || Promise.all([SYSTEM.emit(event, context), SYSTEM.emit('*', event, context)]));
       } else {
         setImmediate(() => {
           SYSTEM.emit(event, context);
-          // SYSTEM.emit('*', event, context);
         });
       }
     });
   }
 
+  get(key) {
+    return this.mGet(key).then(data => data[key]);
+  }
+
   mGet(...keys) {
     keys = keys.flat();
+
     return REDIS.mGet(keys.map(key => `${this}.${key}`)).then((values) => {
       return values.reduce((prev, value, i) => {
-        return Object.assign(prev, { [keys[i]]: APP.castValue(value) });
+        const key = keys[i];
+        value ??= this[key];
+        return Object.assign(prev, { [key]: APP.castValue(value) });
       }, {});
     });
   }
 
   save(data = {}, NX = false) {
+    this.assign(data, NX);
+
     return Promise.all(Object.entries(data).map(async ([key, value]) => {
       if (CONFIG.get(`app.spawn.${this.type}`).includes(key)) {
-        await REDIS.set(`${this}.${key}`, value.toString(), { NX, GET: true });
-        this[key] = CONFIG.get(`${value}`) ?? value;
-      } else {
-        this[key] = value;
+        await REDIS.set(`${this}.${key}`, this[key], { NX, GET: true });
       }
     })).then(() => this);
+  }
+
+  assign(data, NX = false) {
+    Object.entries(data).forEach(([key, value]) => {
+      if (NX) this[key] ??= APP.castValue(value);
+      else this[key] = APP.castValue(value);
+    });
+    return this;
   }
 
   send(event, message, ...rest) {

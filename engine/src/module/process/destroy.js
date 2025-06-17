@@ -4,10 +4,11 @@ Action.define('destroy', async (_, { actor }) => {
   //
   actor.removeAllPossibleListeners();
 
-  actor.room.units.delete(actor);
-  actor.room.items.delete(actor);
+  // Remove from room
+  const room = CONFIG.get(await actor.get('room'));
+  room.units.delete(actor);
+  room.items.delete(actor);
 
   // Redis cleanup
-  const keys = await REDIS.keys(`${actor}.*`);
-  await REDIS.del(keys);
+  await REDIS.del(await REDIS.keys(`${actor}.*`));
 });

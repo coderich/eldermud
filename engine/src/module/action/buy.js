@@ -9,7 +9,7 @@ Action.define('buy', [
     return target;
   },
   async (item, { actor, abort }) => {
-    const remnants = await REDIS.get(`${actor}.exp`);
+    const remnants = await actor.get('exp');
     if (remnants < item.value) return abort('You cannot afford it.');
     const $item = await APP.instantiate(item);
     await REDIS.sAdd(`${actor}.inventory`, `${$item}`);
