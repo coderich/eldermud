@@ -2,13 +2,8 @@ const { Actor, Action } = require('@coderich/gameflow');
 
 Action.define('who', [
   async (_, { actor }) => {
-    actor.send('text', APP.styleText('highlight', 'Current Adventurers:'));
-    actor.send('text', APP.table([
-      ...Object.values(Actor).map(unit => [
-        '  ',
-        unit.name,
-        `(${CONFIG.get(unit.class).name})`,
-      ]),
-    ], { sep: '' }));
+    const actors = await Promise.all(Object.values(Actor).map(el => el.mGet('name', 'class')));
+    await actor.send('text', APP.styleText('highlight', 'Current Adventurers:'));
+    return actor.send('text', actors.map(el => `  ${el.name}\t(${CONFIG.get(el.class).name})`).join('\n'));
   },
 ]);

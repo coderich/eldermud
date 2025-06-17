@@ -12,8 +12,8 @@ Action.define('spawn', async (_, { actor }) => {
   // Assign actors to world
   const room = CONFIG.get(await actor.get('room'));
 
-  if (['item'].includes(actor.type)) {
-    if (room) room.add(actor);
+  if (['item', 'key'].includes(actor.type)) {
+    if (room) room.items.add(actor);
   }
 
   if (['player', 'creature', 'npc'].includes(actor.type)) {

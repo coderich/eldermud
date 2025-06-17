@@ -1,8 +1,11 @@
 /**
  * Responsible for creating new/specialized/specific game events
  */
+
+const Unit = require('../../model/Unit');
+
 SYSTEM.on('*', async (event, context) => {
-  const { result } = context;
+  const { result, actor } = context;
   const [type, action] = event.split(':');
 
   if (type === 'post') {
@@ -12,7 +15,7 @@ SYSTEM.on('*', async (event, context) => {
 
     switch (action) {
       case 'spawn': { // Enter the realm
-        SYSTEM.emit(`enter:${result.room}`, context);
+        if (actor instanceof Unit) SYSTEM.emit(`enter:${result.room}`, context);
         break;
       }
       case 'exit': { // Exit realm

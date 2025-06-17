@@ -3,7 +3,7 @@ const { Action } = require('@coderich/gameflow');
 Action.define('room', [
   async (room, { actor }) => {
     if (actor.type === 'player') {
-      room ??= CONFIG.get(await REDIS.get(`${actor}.room`));
+      room ??= CONFIG.get(await actor.get('room'));
 
       const includeParty = Boolean(`${room}` === `${actor.room}`);
 

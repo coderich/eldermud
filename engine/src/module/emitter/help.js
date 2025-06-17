@@ -10,17 +10,7 @@ Action.define('help', [
       case 'class': {
         const { name, str, dex, int, wis, con, cha, gains, description, talents, traits } = target;
         const stats = Object.entries({ str, dex, int, wis, con, cha }).map(([key, value]) => APP.styleText('stat', `${ucFirst(key)}:`).concat(' ', APP.styleText('keyword', value), APP.styleText('muted', gains[key] ? ` + ${gains[key]}` : '')));
-        // const stats = Object.entries({ str, dex, int, wis, con, cha }).reduce((prev, [key, value]) => Object.assign(prev, { [key]: [APP.styleText('stat', `${ucFirst(key)}:`), APP.styleText('keyword', value), APP.styleText('muted', gains[key] ? `+ ${gains[key]} ` : '')] }), {});
 
-        // actor.send('text', APP.styleText('highlight', name));
-        // actor.send('text', description);
-        // actor.send('text', APP.table([
-        //   [...stats.str, ...stats.dex, ...stats.int, ...stats.wis, ...stats.dex, ...stats.con],
-        // ], { sep: '' }));
-
-        // actor.send('text', APP.styleText('highlight', name)); // , '{', stats.join(', '), '}');
-        // actor.send('text', description);
-        // actor.send('text', stats.join(', '));
         return actor.send('text', APP.table([
           [APP.styleText('highlight', name)],
           [description],
@@ -44,9 +34,6 @@ Action.define('help', [
             ['Talents:', APP.styleText('keyword', talents.map(el => el.name).join(', '))],
           ], { sep: '' })],
         ], { sep: '' }));
-        // actor.send('text', APP.styleText('highlight', name), '{', stats.join(', '), '}');
-        // actor.send('text', `${description}`);
-        // actor.send('text', APP.styleText('stat', 'Begin with:'), '[', APP.styleText('keyword', talents.concat(traits).map(el => el.name).join(', ')), ']\n');
       }
       default: {
         return Promise.all([
