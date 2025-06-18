@@ -8,11 +8,6 @@ SYSTEM.on('*', async (event, context) => {
   const { result, actor } = context;
   const [type, action] = event.split(':');
 
-  // // Combat
-  // if (event === 'pre:engage') SYSTEM.emit('pre:combat', context);
-  // if (event === 'abort:engage') SYSTEM.emit('abort:combat', context);
-  // if (['start:duel', 'post:duel', 'abort:duel'].includes(event)) SYSTEM.emit(`${type}:combat`, context);
-
   if (type === 'post') {
     if (result?.target) {
       SYSTEM.emit(`${action}:${result.target}`, context);

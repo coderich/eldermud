@@ -25,6 +25,13 @@ Action.define('spawn', async (_, { actor }) => {
     if (Action[trait.id]) actor.stream('trait', trait.id);
   });
 
+  // Bind system events to this actor
+  actor.on('*', (event, context) => {
+    const [type] = event.split(':');
+    if (type === 'pre') context.promise.listen(step => step > 1 || SYSTEM.emit(event, context)); // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
+    else SYSTEM.emit(event, context);
+  });
+
   if (['player', 'npc', 'creature'].includes(actor.type)) {
     actor.perform('map');
     actor.perform('room', room);

@@ -10,8 +10,6 @@ module.exports = {
   cha: 8,
   gains: { str: 1, dex: 2, int: 0, wis: 1, con: 1, cha: 0 },
   traits: [
-    '${self:trait.lifeforce}',
-    '${self:trait.manaforce}',
     '${self:trait.marksman}',
   ],
   talents: [

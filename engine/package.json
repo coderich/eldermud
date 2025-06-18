@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@coderich/config": "^1.4.0",
-    "@coderich/gameflow": "^1.4.0",
+    "@coderich/gameflow": "^1.4.1",
     "@coderich/gameserver": "^1.1.2",
     "@coderich/util": "^1.2.3",
     "chance": "1.1.11",

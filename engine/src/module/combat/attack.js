@@ -1,7 +1,7 @@
 const { Action } = require('@coderich/gameflow');
 
 /**
- * Initiate basic attack with whatever weapon is in hand
+ * Initiate basic weapon attack
  */
 Action.define('attack', [
   ({ target }, { abort }) => {

@@ -9,7 +9,7 @@ Action.define('sanctuary', [
       if (actor.type === 'creature') {
         const actorRoom = CONFIG.get(await actor.get('room'));
         const toRoom = actorRoom.exits[data];
-        if (`${toRoom}` === `${room}`) abort('You shall not pass');
+        if (`${toRoom}` === `${room}`) abort();
       }
     };
 

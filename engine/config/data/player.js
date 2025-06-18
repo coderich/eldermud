@@ -10,7 +10,10 @@ module.exports = {
   wis: 0,
   con: 0,
   cha: 0,
-  traits: [],
+  traits: [
+    '${self:trait.lifeforce}',
+    '${self:trait.manaforce}',
+  ],
   talents: [],
   attacks: ['${self:attack.fist}'],
 };

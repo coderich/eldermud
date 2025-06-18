@@ -28,20 +28,6 @@ module.exports = class ActorWrapper extends Actor {
       preAction: new Stream('preAction'), // Used to await/delay the current action
       telepath: new Stream('telepath'),
     };
-
-    // Bind system events to this actor
-    this.on('*', (event, context) => {
-      const [type] = event.split(':');
-
-      if (type === 'pre') {
-        // This postpones the action (on the very very first step 0) until SYSTEM events are fired and finished
-        context.promise.listen(step => step > 1 || SYSTEM.emit(event, context));
-      } else {
-        setImmediate(() => {
-          SYSTEM.emit(event, context);
-        });
-      }
-    });
   }
 
   get(key) {
