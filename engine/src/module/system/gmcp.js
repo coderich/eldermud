@@ -5,9 +5,12 @@ SYSTEM.on('*', async (event, context) => {
   const [type] = event.split(':');
 
   if (['post:move'].includes(event)) {
-    // Visual for the actor
     actor.perform('map');
     actor.perform('room', result.to);
+  }
+
+  if (['post:engage', 'abort:engage'].includes(event)) {
+    actor.send('text', APP.styleText('engaged', '*combat off*'));
   }
 
   if (type === 'enter') {

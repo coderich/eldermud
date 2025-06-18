@@ -1,37 +1,25 @@
-const debounce = require('lodash.debounce');
-const { Action } = require('@coderich/gameflow');
+const { Action, Loop } = require('@coderich/gameflow');
 
-Action.define('territorial', [
-  (_, { actor, stream, promise }) => {
-    let aborted = false;
+Action.define('territorial', new Loop([
+  async (_, { actor }) => {
+    const room = CONFIG.get(await actor.get('room'));
+    const idleResolvers = Promise.withResolvers();
+    const combatResolvers = Promise.withResolvers();
+    const abort = () => { idleResolvers.resolve(); combatResolvers.resolve(); };
 
-    // We have to debounce the function to take into account race conditions
-    // In doing so we introduce a delay so we should also verify that the promise has not be aborted
-    const scan = debounce(async () => {
-      if (!actor.$target && !promise.aborted && !aborted) {
-        const room = CONFIG.get(await REDIS.get(`${actor}.room`));
-        const target = APP.randomElement(Array.from(room.units.values()).filter(unit => unit.id !== actor.id));
-        if (target) {
-          actor.stream('action', 'attack', { target });
-          target.once('post:death', scan);
-        }
-      }
-    }, 25);
+    actor.on('post:move', abort);
+    actor.on('post:engage', abort);
+    actor.on('abort:engage', abort);
+    SYSTEM.on(`enter:${room}`, idleResolvers.resolve);
 
-    stream.on('abort', () => {
-      aborted = true;
-      SYSTEM.offFunction(scan);
-      actor.$target?.offFunction(scan);
-    });
+    actor.streams.action.on('abort', combatResolvers.resolve);
+    const target = APP.randomElement(Array.from(room.units.values()).filter(unit => unit.id !== actor.id));
+    if (target) actor.stream('action', 'attack', { target });
+    await (target ? combatResolvers.promise : idleResolvers.promise);
 
-    actor.on('post:move', ({ result }) => {
-      const { room, exit } = result;
-      SYSTEM.on(`enter:${exit}`, scan);
-      SYSTEM.off(`enter:${room}`, scan);
-    });
-
-    SYSTEM.on(`enter:${actor.room}`, scan);
-
-    scan();
+    actor.on('post:move', abort);
+    actor.on('post:engage', abort);
+    actor.on('abort:engage', abort);
+    SYSTEM.on(`enter:${room}`, idleResolvers.resolve);
   },
-]);
+]));

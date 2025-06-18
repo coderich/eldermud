@@ -12,4 +12,5 @@ module.exports = {
   cha: 0,
   traits: [],
   talents: [],
+  attacks: ['${self:attack.fist}'],
 };

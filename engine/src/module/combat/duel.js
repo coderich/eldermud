@@ -4,11 +4,9 @@ Action.define('duel', [
   // Setup
   (data, { actor, stream, abort, promise }) => {
     stream.once('add', () => abort());
-    data.target.once('post:move', () => abort());
-    data.target.once('post:death', () => abort());
-
+    data.target.once('post:move', () => setImmediate(() => abort()));
+    data.target.once('post:death', () => setImmediate(() => abort()));
     promise.onAbort(() => {
-      actor.send('text', APP.styleText('engaged', '*combat off*'));
       APP.timeout(100).then(() => data.target.$killers.delete(actor));
     });
   },
@@ -20,7 +18,10 @@ Action.define('duel', [
     // Attack
     async (data, { actor, stream, promise }) => {
       const { target } = data;
+      const stats = ['ac', 'acc', 'dr', 'crits', 'dodge'];
       const attack = typeof data.attack === 'function' ? data.attack() : data.attack;
+      const actorStats = await actor.mGet(stats);
+      const targetStats = await target.mGet(stats);
 
       // Resource check
       if (attack.cost) {
@@ -35,10 +36,10 @@ Action.define('duel', [
       stream.pause();
       const toHit = 30;
       const roll = APP.roll('1d100');
-      const hitroll = (roll + actor.acc + attack.acc - target.ac);
-      const dmgroll = Math.max(APP.roll(attack.dmg) - target.dr, 0);
-      const critroll = APP.roll(`1d${actor.crits + attack.crits}`);
-      const dodgeroll = APP.roll(`1d${target.dodge}`); // default
+      const hitroll = (roll + actorStats.acc + attack.acc - targetStats.ac);
+      const dmgroll = Math.max(APP.roll(attack.dmg) - targetStats.dr, 0);
+      const critroll = APP.roll(`1d${actorStats.crits + attack.crits}`);
+      const dodgeroll = APP.roll(`1d${targetStats.dodge}`); // default
 
       // // This must be based on posture
       // const parryroll = APP.roll(`1d${target.parry}`);

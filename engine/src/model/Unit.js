@@ -11,7 +11,7 @@ module.exports = class Unit extends Actor {
   }
 
   async calcStats() {
-    const stats = await this.mGet('str', 'dex', 'con', 'int', 'wis', 'cha');
+    const stats = await this.mGet('str', 'dex', 'con', 'int', 'wis', 'cha', 'class');
     this.hp = this.mhp = APP.fibStat(stats.con) + stats.str;
     this.ma = this.mma = Math.floor((APP.fibStat(stats.int) + APP.fibStat(stats.wis)) / 2);
     this.ac = this.acc = Math.floor(stats.dex / 10);

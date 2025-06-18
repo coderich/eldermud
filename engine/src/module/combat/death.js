@@ -4,8 +4,9 @@
 
 const { Action } = require('@coderich/gameflow');
 
-SYSTEM.on('post:spawn', ({ actor }) => {
-  actor.$dead = Boolean(actor.hp <= 0);
+SYSTEM.on('post:spawn', async ({ actor }) => {
+  const hp = await actor.get('hp');
+  actor.$dead = Boolean(hp <= 0);
 });
 
 SYSTEM.on('post:affect', (context) => {
@@ -18,20 +19,14 @@ Action.define('death', () => null);
 SYSTEM.on('post:death', async ({ actor }) => {
   if (!actor.$dead) {
     actor.$dead = true;
-    actor.room.units.delete(actor);
+    const room = CONFIG.get(await actor.get('room'));
+    room.units.delete(actor);
     actor.removeAllPossibleListeners();
 
     switch (actor.type) {
       case 'player': {
-        const { checkpoint } = await actor.mGet(['checkpoint']);
-
-        await REDIS.mSet({
-          [`${actor}.hp`]: `${actor.mhp}`,
-          [`${actor}.ma`]: `${actor.mma}`,
-          [`${actor}.room`]: `${checkpoint}`,
-          [`${actor}.exp`]: '0',
-        });
-
+        const { checkpoint, mhp, mma } = await actor.mGet('checkpoint', 'mhp', 'mma');
+        await actor.save({ hp: mhp, ma: mma, room: checkpoint, exp: 0 });
         actor.send('text', 'You have died.');
         actor.perform('spawn');
         break;
@@ -56,7 +51,7 @@ SYSTEM.on('post:death', async ({ actor }) => {
         await APP.instantiate('item.corpse', {
           mhp: actor.mhp,
           lvl: actor.lvl,
-          room: actor.room,
+          room,
           name: `${actor.name} corpse`,
         }).then(corpse => corpse.perform('spawn'));
 

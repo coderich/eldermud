@@ -14,6 +14,11 @@ module.exports = class ConfigClient extends Config {
     this.merge(Config.parseEnv({ pick: ['app__redis__url'] }));
   }
 
+  get(key, ...rest) {
+    if (key == null) return super.get(null, ...rest);
+    return super.get(key, ...rest);
+  }
+
   mergeConfig(dir, paths = []) {
     FS.readdirSync(dir).forEach((filename) => {
       const { name } = Path.parse(filename);

@@ -8,7 +8,7 @@ Action.define('selectClass', async (_, { actor }) => {
   await Promise.all(Object.values(classes).map(target => actor.perform('help', { target })));
   await actor.send('text', `\n${line}\n`);
 
-  const { text: classname } = await actor.query(APP.styleText('query', 'Welcome', APP.styleText('keyword', actor.name), APP.styleText('query', '- enter a class name you\'d like to play!')));
+  const { text: classname } = await actor.query(APP.styleText('dialog', 'Welcome', APP.styleText('keyword', actor.name), APP.styleText('dialog', '- enter a class name you\'d like to play!')));
   const { target } = APP.target(Object.values(classes), [classname]);
   if (!target) return actor.perform('selectClass');
   await actor.save({

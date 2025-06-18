@@ -1,6 +1,7 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('hit', async ({ attack, target, dmg, crit }, { actor }) => {
+  const room = CONFIG.get(await actor.get('room'));
   const hit = APP.randomElement(attack.hits);
   const hits = APP.pluralize(hit);
   const adverb = crit ? 'critically' : '';
@@ -10,6 +11,6 @@ Action.define('hit', async ({ attack, target, dmg, crit }, { actor }) => {
 
   actor.send('text', APP.styleText('youHit', `You ${verb} ${target.name} with your ${attack.name} for ${dmg} damage!`));
   target.send('text', APP.styleText('hitYou', `${source} ${verbs} you with their ${attack.name} for ${dmg} damage!`));
-  Array.from(actor.room.units.values()).filter(el => ![actor, target].includes(el)).forEach(el => el.send('text', APP.styleText('hit', `${source} ${verbs} ${target.name} for ${dmg} damage!`)));
+  Array.from(room.units.values()).filter(el => ![actor, target].includes(el)).forEach(el => el.send('text', APP.styleText('hit', `${source} ${verbs} ${target.name} for ${dmg} damage!`)));
   await target.perform('affect', { hp: -dmg });
 });

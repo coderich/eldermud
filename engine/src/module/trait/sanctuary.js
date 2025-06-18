@@ -6,9 +6,11 @@ Action.define('sanctuary', [
 
     // Do not allow creatures to enter sanctuary
     const moveHandler = async ({ actor, data, abort }) => {
-      const actorRoom = CONFIG.get(await actor.get('room'));
-      const toRoom = actorRoom.exits[data];
-      if (`${toRoom}` === `${room}` && actor.type === 'creature') abort();
+      if (actor.type === 'creature') {
+        const actorRoom = CONFIG.get(await actor.get('room'));
+        const toRoom = actorRoom.exits[data];
+        if (`${toRoom}` === `${room}`) abort('You shall not pass');
+      }
     };
 
     // Do not allow fighting in the sanctuary
@@ -17,11 +19,11 @@ Action.define('sanctuary', [
       if (`${actorRoom}` === `${room}`) abort('You break off your attack.');
     };
 
-    SYSTEM.on('start:move', moveHandler);
-    SYSTEM.on('start:engage', attackHandler);
+    SYSTEM.on('pre:move', moveHandler);
+    SYSTEM.on('pre:attack', attackHandler);
     context.actor.on('post:destroy', () => {
-      SYSTEM.off('start:move', moveHandler);
-      SYSTEM.off('start:engage', attackHandler);
+      SYSTEM.off('pre:move', moveHandler);
+      SYSTEM.off('pre:attack', attackHandler);
     });
   },
 ]);

@@ -22,7 +22,7 @@ module.exports = class ActorWrapper extends Actor {
       sound: new Stream('sound'),
       scent: new Stream('scent'),
       touch: new Stream('touch'),
-      trait: new Stream('trait').batch(100), // Passive traits
+      trait: new Stream('trait').chained(false), // Passive traits
       tactic: new Stream('tactic'), // Immediate combat tactics
       action: new Stream('action'), // Active actions
       preAction: new Stream('preAction'), // Used to await/delay the current action
@@ -84,7 +84,7 @@ module.exports = class ActorWrapper extends Actor {
   }
 
   query(...messages) {
-    return this.socket.query('query', APP.styleText('query', '>', messages.flat().join(' ')));
+    return this.socket.query('query', APP.styleText('dialog', '>', messages.flat().join(' ')));
   }
 
   async broadcast(...args) {

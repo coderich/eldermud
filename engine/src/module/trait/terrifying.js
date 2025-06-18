@@ -1,7 +1,9 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('terrifying', [
-  (_, context) => {
+  async (_, context) => {
+    const room = CONFIG.get(await context.actor.get('room'));
+
     // These functions must be defined in the context of the actor
     const heartstop = ({ promise }) => promise.abort();
     const heartbeat = ({ actor }) => actor.off('start:lifeforce', heartstop);
@@ -11,19 +13,16 @@ Action.define('terrifying', [
     context.stream.on('abort', () => {
       SYSTEM.offFunction(heartbeat);
       SYSTEM.offFunction(heartattack);
-      context.actor.room.units.forEach(target => target.offFunction(heartstop));
+      room.units.forEach(target => target.offFunction(heartstop));
     });
 
-    REDIS.get(`${context.actor}.room`).then(room => CONFIG.get(`${room}`)).then((room) => {
-      SYSTEM.on(`enter:${room}`, heartattack);
-      SYSTEM.on(`leave:${room}`, heartbeat);
-      Array.from(room.units.values()).filter(unit => unit !== context.actor).forEach((unit) => {
-        unit.on('start:lifeforce', heartstop);
-      });
+    SYSTEM.on(`enter:${room}`, heartattack);
+    SYSTEM.on(`leave:${room}`, heartbeat);
+    Array.from(room.units.values()).filter(unit => unit !== context.actor).forEach((unit) => {
+      unit.on('start:lifeforce', heartstop);
     });
 
-    context.actor.once('post:move', ({ result }) => {
-      const { room } = result;
+    context.actor.once('post:move', () => {
       SYSTEM.off(`enter:${room}`, heartattack);
       SYSTEM.off(`leave:${room}`, heartbeat);
       room.units.forEach(unit => unit.off('start:lifeforce', heartstop));

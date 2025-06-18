@@ -5,10 +5,11 @@ const NPC = require('../model/NPC');
 const Item = require('../model/Item');
 const Room = require('../model/Room');
 const Actor = require('../model/Actor');
+const Player = require('../model/Player');
 const Creature = require('../model/Creature');
 
 const chance = new Chance();
-const models = { npc: NPC, item: Item, creature: Creature, key: Item, room: Room };
+const models = { npc: NPC, player: Player, item: Item, creature: Creature, key: Item, room: Room };
 
 exports.chance = chance;
 exports.pluralize = Pluralize;
@@ -75,14 +76,15 @@ exports.instantiate = (keys, data = {}) => {
 /**
  * Given a set of configuration keys; will return a hydrated model
  */
-exports.hydrate = (keys) => {
+exports.hydrate = (keys, asData = false) => {
   return exports.mapPromise(keys, async (key) => {
     const arr = `${key}`.split('.');
     const configKey = exports.isNumeric(arr.pop()) ? arr.join('.') : key;
     const configData = CONFIG.get(`${configKey}`);
     const redisKeys = await REDIS.keys(`${key}.*`);
     const redisData = redisKeys.length ? await REDIS.mGet(redisKeys).then(values => values.reduce((prev, value, i) => Object.assign(prev, { [redisKeys[i].split('.').pop()]: APP.castValue(value) }), {})) : {};
-    return new models[configData.type]({ ...configData, ...redisData, toString: () => `${key}` });
+    const data = { ...configData, ...redisData, toString: () => `${key}` };
+    return asData ? data : new models[configData.type](data);
   });
 };
 
@@ -91,6 +93,7 @@ exports.roll = (dice) => {
 
   const input = dice.match(/\S+/g).join('');
   const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+-\\*\\/]?)(\d*)/);
+  if (Number.parseInt(sides, 10) <= 0) return 0;
 
   // Dice roll value
   const value = Array.from(Array(Number.parseInt(rolls, 10))).reduce((prev, curr) => {

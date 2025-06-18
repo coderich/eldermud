@@ -4,6 +4,7 @@ Action.define('room', [
   async (room, { actor }) => {
     if (actor.type === 'player') {
       room ??= CONFIG.get(await actor.get('room'));
+      const stats = await actor.mGet('hp', 'ma');
 
       const includeParty = Boolean(`${room}` === `${actor.room}`);
 
@@ -41,7 +42,7 @@ Action.define('room', [
       if (includeParty && $party.length > 1) actor.send('text', $room.partyLabel, `[${$room.party}]`);
       if ($room.units.length) actor.send('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
       actor.send('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
-      actor.send('text', `[HP=${actor.hp}/MA=${actor.ma}]`);
+      actor.send('text', `[HP=${stats.hp}/MA=${stats.ma}]`);
     }
   },
 ]);

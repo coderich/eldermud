@@ -8,8 +8,9 @@ Action.define('attack', [
     if (!target) abort('You dont see that here!');
   },
 
-  ({ target }, { actor, stream }) => {
-    const attack = () => APP.randomElement(actor.attacks);
+  async ({ target }, { actor, stream }) => {
+    const attacks = await actor.get('attacks');
+    const attack = () => APP.randomElement(attacks);
     actor.stream(stream, 'engage', { target, attack });
   },
 ]);

@@ -21,7 +21,10 @@ Action.define('open', [
 
         // World Map Chest
         if (await REDIS.sAdd(`${target}.players`, `${actor}`)) {
-          const items = await APP.instantiate(target.spawns.map(spawn => Array.from(new Array(APP.roll(spawn.num))).map(() => APP.randomElement(spawn.items))).flat(2), { owner: `${actor}`, container: `${target}` });
+          const items = await APP.instantiate(target.spawns.map(spawn => Array.from(new Array(APP.roll(spawn.num))).map(() => APP.randomElement(spawn.items))).flat(2), {
+            owner: `${actor}`,
+            // container: `${target}`, // This needed? (see "get" action)
+          });
           await REDIS.sAdd(`${target}.inventory`, items.map(item => `${item}`));
         }
 
