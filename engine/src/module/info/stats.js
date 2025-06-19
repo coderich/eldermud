@@ -49,14 +49,14 @@ Action.define('stats', [
     const Empty = [APP.styleText('stat', ''), APP.styleText('keyword', '')];
 
     const table1 = APP.table([
-      [...data.Name, ...data.Level, ...Empty, ...Empty],
-      [...data.Race, ...data['AC/DR'], ...data.Dodge, ...data.Perception],
-      [...data.Class, ...data.Health, ...Empty, ...data.Thievery],
-      [...data.Heritage, ...data.Mana, ...data.Parry, ...data.Traps],
-      [...Empty, ...Empty, ...data.Leadership, ...data.Lockpicks],
-      [...data.Strength, ...data.Dexterity, ...data.Riposte, ...data.Tracking],
-      [...data.Intellect, ...data.Wisdom, ...data.Stealth, ...data.Willpower],
-      [...data.Constitution, ...data.Charisma, ...data.Crits],
+      [...data.Name, ...data.Level, ...data.Dodge, ...data.Perception],
+      [...data.Race, ...data['AC/DR'], ...data.Parry, ...data.Thievery],
+      [...data.Class, ...data.Health, ...data.Riposte, ...data.Tracking],
+      [...data.Heritage, ...data.Mana, ...data.Stealth, ...data.Traps],
+      [...Empty, ...Empty, ...data.Crits, ...data.Lockpicks],
+      [...data.Strength, ...data.Dexterity, ...data.Leadership, ...data.Willpower],
+      [...data.Intellect, ...data.Wisdom],
+      [...data.Constitution, ...data.Charisma],
     ], { sep: '' });
 
     const table2 = APP.table([

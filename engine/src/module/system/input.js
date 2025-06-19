@@ -81,8 +81,8 @@ SYSTEM.on('*', async (event, context) => {
         const cmd = await actor.perform('translate', args.join(' '));
         if (cmd.tags?.includes('direction')) {
           const path = room.paths?.[cmd.code];
-          if (path?.opaque) return Object.assign(data, { target: path });
-          return Object.assign(data, { target: room.exits?.[cmd.code] });
+          if (path?.opaque) return Object.assign(data, { target: path, cmd });
+          return Object.assign(data, { target: room.exits?.[cmd.code], cmd });
         }
 
         // Pathway obstacles

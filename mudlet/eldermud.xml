@@ -140,7 +140,269 @@ end);
 				<name>console</name>
 				<packageName></packageName>
 				<script>clearCmdLine()
-enableCommandLine();
+enableCommandLine('');
+setCmdLineStyleSheet("main", [[
+  QPlainTextEdit {
+    color: white;
+    font: Arial;
+  }
+]]);
+
+local cmd = 'cmd';
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.cmd', 'sysDataSendRequest', function(e, text)
+  sendGMCP('eldermud.' .. cmd .. yajl.to_string{text = text});
+  cmd = 'cmd';
+end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.query', 'gmcp.eldermud.query', function (event, ns)
+  cmd = 'query';
+end);
+
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.console', 'gmcp.eldermud', function (event, ns)
+  local name = string.sub(ns, 15);
+  local data = gmcp.eldermud[name];
+  
+  if (name == 'query' or name == 'text' or name == 'cmd') then
+    cecho(data .. '\n')
+  elseif (name == 'room') then
+    cecho(data.name .. '\n');
+    if (#data.items &gt; 0) then cecho(data.itemsLabel .. table.concat(data.items, ', ') .. '\n'); end
+    if (#data.units &gt; 0) then cecho(data.unitsLabel .. table.concat(data.units, ', ') .. '\n'); end
+    cecho(data.exitsLabel .. table.concat(data.exits, ', ') .. '\n');
+  elseif (name == 'cls') then
+    clearWindow();
+  end;
+end);
+</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>status</name>
+				<packageName></packageName>
+				<script>local status = Geyser.Label:new({
+  name = 'statusContainer',
+  x = 0, y = '-35px', width = '60%', height = '30px',
+});
+
+status:setStyleSheet([[
+  border-top: 0px dotted white;
+  border-bottom: 1px dotted white;
+]]);
+
+status:setFontSize(16);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.status', 'gmcp.eldermud.status', function()
+  local data = gmcp.eldermud.status;
+  status:echo(
+    'Health: [ &lt;span style="background-color:green"&gt;' .. data.hp .. '/' .. data.mhp .. '&lt;/span&gt; ]'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. 'Mana: [ &lt;span style="background-color:blue"&gt;' .. data.ma .. '/' .. data.mma .. '&lt;/span&gt; ]'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    -- .. 'Carry: [ &lt;span style="background-color:orange"&gt;' .. 100 .. '/' .. 1000 .. '&lt;/span&gt; ]'
+    -- .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. 'Remnants: &lt;span style="color:LightSeaGreen"&gt;' .. data.exp .. '&lt;/span&gt;'
+    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. 'Posture: &lt;span style="color:magenta"&gt;' .. data.posture .. '&lt;/span&gt;'
+  );
+end);
+
+-- local hpBar = Geyser.Gauge:new({
+  -- name = 'hpBar',
+  -- width = '30%', height = '100%',
+-- }, eldermud.statusContainer);
+-- 
+-- local maBar = Geyser.Gauge:new({
+  -- name = 'maBar',
+  -- x = '33%', width = '30%', height = '100%',
+-- }, eldermud.statusContainer);
+-- 
+-- eldermud:styleGauge(hpBar, 'green');
+-- eldermud:styleGauge(maBar, 'blue');
+-- 
+-- registerNamedEventHandler('Eldermud', 'eldermud.component.status', 'gmcp.eldermud.status', function (event)
+  -- local data = gmcp.eldermud.status;
+  -- hpBar:setValue(tonumber(data.hp), tonumber(data.mhp));
+  -- maBar:setValue(tonumber(data.ma), tonumber(data.mma));
+-- end)
+</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>menu</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {};
+
+local EMCO = require('MDK.emco');
+
+local menu = EMCO:new({
+  name = 'menu',
+  x = 0, y = '40%', width = '100%', height = '60%',
+  consoles = { 'GOSSIP', 'AUCTION', 'HELP' },
+  activeTabCSS = [[background-color: black; border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
+  inactiveTabCSS = [[background-color: rgb(60,60,60,255); border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
+}, eldermud.rightContainer);
+
+menu:clearAll();
+menu:setGap(10);
+menu:enableBlink();
+menu:setFontSize(14);
+menu:setConsoleColor('black');
+-- menu:setFont('Bitstream Vera Sans Mon');
+-- menu:setTabFont('Bitstream Vera Sans Mon');
+menu:setActiveTabFGColor('LightSeaGreen');
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.gos', 'gmcp.eldermud.gos', function()
+  menu:cecho('GOSSIP', gmcp.eldermud.gos .. '\n');
+end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.auc', 'gmcp.eldermud.auc', function()
+  menu:cecho('AUCTION', gmcp.eldermud.auc .. '\n');
+end);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.help', 'gmcp.eldermud.help', function()
+  menu:cecho('HELP', gmcp.eldermud.help .. '\n');
+end);
+</script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>function</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>Style Gauge</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {}
+
+function eldermud:styleGauge(gauge, color)
+  local colors = {
+    green = {
+      front = { "#98f041", "#8cf029", "#66cc00", "#52a300", "#66cc00" },
+      back = { "#78bd33", "#6ebd20", "#4c9900", "#387000", "#4c9900" },
+    },
+    red = {
+      front = { "#f04141", "#ef2929", "#cc0000", "#a40000", "#cc0000" },
+      back = { "#bd3333", "#bd2020", "#990000", "#700000", "#990000" },
+    },
+    blue = {
+      front = { "#4141f0", "#2929ef", "#0000cc", "#0000a4", "#0000cc" },
+      back = { "#3333bd", "#2020bd", "#000099", "#000070", "#000099" },
+    },
+  }
+  
+  local stops = colors[color]
+    
+  gauge.front:setStyleSheet([[
+    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ]].. stops.front[1] ..[[, stop: 0.1 ]].. stops.front[2] ..[[, stop: 0.49 ]].. stops.front[3] ..[[, stop: 0.5 ]].. stops.front[4] ..[[, stop: 1 ]].. stops.front[5] ..[[);
+    border-top: 1px black solid;
+    border-left: 1px black solid;
+    border-bottom: 1px black solid;
+    border-radius: 7;
+    padding: 3px;
+  ]])
+
+  gauge.back:setStyleSheet([[
+    background-color: QLinearGradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 ]].. stops.back[1] ..[[, stop: 0.1 ]].. stops.back[2] ..[[, stop: 0.49 ]].. stops.back[3] ..[[, stop: 0.5 ]].. stops.back[4] ..[[, stop: 1 ]].. stops.back[5] ..[[);
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 7;
+    padding: 3px;
+  ]])
+end
+</script>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>component</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>layout</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {};
+
+clearWindow();
+disableScrollBar();
+setBorderTop(10);
+setBorderLeft(0);
+setBorderRight(0);
+setBorderBottom(35);
+-- setFont('Courier New');
+setFontSize(15);
+setFont('Bitstream Vera Sans Mon');
+-- display(getAvailableFonts());
+
+eldermud.rightContainer = eldermud.rightContainer or Geyser.Container:new({
+  name = 'rightContainer',
+  x = '60%', y = 0, width = '40%', height = '100%',
+});
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.cls', 'eldermud.cls', function (event, reverse)
+  clearWindow();
+end);
+</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>mapper</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {};
+
+deleteMap();
+setMapZoom(14);
+setCustomEnvColor(0, 0, 0, 0, 255);
+setCustomEnvColor(1, 255, 0, 0, 255);
+
+Geyser.Mapper:new({
+  name = "mapper",
+  x = 0, y = 0, width = '100%', height = '40%',
+}, eldermud.rightContainer);
+
+registerNamedEventHandler('Eldermud', 'eldermud.event.map', 'gmcp.eldermud.map', function()
+  local data = gmcp.eldermud.map;
+  local areaId = 1
+  deleteArea(areaId)
+  clearAreaUserData(areaId)
+  setAreaName(areaId, data.name)
+  
+  -- First create all rooms
+  for i,room in ipairs(data.rooms) do
+    addRoom(room.id);
+    setRoomArea(room.id, areaId);
+    setRoomCoordinates(room.id, room.x, room.y, room.z);
+    setRoomChar(room.id, room.char);
+  end
+
+  -- Then go back and create the exits
+  for i,room in ipairs(data.rooms) do
+    for j,exit in ipairs(room.exits) do
+      setRoomEnv(exit.id, 0);
+      if (room.paths[exit.dir] and room.paths[exit.dir] ~= 'open') then setExitStub(room.id, exit.dir, true);
+      else setExit(room.id, exit.id, exit.dir); end;
+      -- setExitStub(room.id, exit.dir, true);
+      -- setDoor(i, 's', 1);
+      -- setDoor(i, 'n', 1);
+      -- addCustomLine(room.id, exit.id, exit.dir, "dot line", {100, 100, 100}, true)
+    end
+  end
+
+  centerview(data.room)
+end);
+</script>
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>console</name>
+				<packageName></packageName>
+				<script>clearCmdLine()
+enableCommandLine('');
 setCmdLineStyleSheet("main", [[
   QPlainTextEdit {
     color: white;

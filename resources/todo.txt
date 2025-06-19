@@ -1,15 +1,26 @@
-* The ROOM has to have a fallback for what you are looking at
-* Talk vs Greet <NPC>
-* Scan? and if so, then look should only be for direction
-* The killer blow, if item(s) drop, they are "owner" for a short while? (only owner can pick up off ground)
-
-! If you kill a creature does it still hit you? (it should be possible to trade blows...)
-
 * Combat Mechanics
   - I like the idea of combat tactics; how many things you can perform in a given round (ie swing and use potion)
   - How about channeling abilities?
   - Moments of opportunity? Player off-balance?
 
-* Need class/race combos
-  - Leaving things open-ended is not good; the player needs a vision and direction
-  - I like the idea that classes and races have set attribute boosts per level and special traits/abilities
+**
+- give => accept?
+- talent: cooldown, limited uses (until rest)?
+- rest: limited uses? tent? tavern/inn?
+- dynamic creature traits: aggressive|large|small etc
+- illness (status effect)
+- item req to perform? (shovel => bury)
+- corpse limitations
+- hired help; telepath @do heal rand
+- room visibility (dark, torch, etc)
+- attack vs weapon
+- armor slots
+- train
+- drag unit?
+- REDIS: sMembers, sAdd, sRem, incrBy, incr, sIsMember (inventory)
+- draw creature aggression
+- creature re-targeting
+- party ranks effect combat...
+- shops; buy reasonable weapon
+- main menu: enter, about, help?
+- Item progression

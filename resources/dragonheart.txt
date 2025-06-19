@@ -1,0 +1,84 @@
+Key Player-Selectable Elements & Customization
+
+Classes & Subclasses: At character creation you pick one of ~10 core classes (Wizard, Sorcerer, Bard, Rogue, Ranger, Druid, Fighter, Seraph, Warrior, Guardian) and then choose a foundation subclass card to refine your focus. 
+daggerheart.org
+
+Heritage: You combine an Ancestry card (your race) with a Community card (your upbringing/environment) to flavor both stats and story. 
+daggerheart.com
+
+Character Traits: Distribute modifiers (−1, 0, 0, +1, +1, +2) across six traits—Agility, Strength, Finesse, Instinct, Presence, Knowledge—that you’ll add to rolls. 
+daggerheart.com
+
+Background & Experiences: Pick narrative “Background” options, then generate two free-form Experiences (phrases + +2 bonus) reflecting what your character has learned. 
+daggerheart.com
+
+Domain Deck Cards: Each class has two domains; at 1st level you choose two cards (and gain more each level), shaping your abilities and playstyle. 
+daggerheart.com
+
+Equipment & Armor: Select starting weapons and armor; armor grants Damage Thresholds and Armor Slots you’ll mark to soak damage. 
+daggerheart.com
+
+Level-Up Upgrades: Every time you advance, you pick two options from a broad upgrade list (proficiency, new traits, HP, Stress tools, domain cards, multiclassing, etc.), giving far more per-level customization than many other RPGs. 
+reddit.com
+
+Player Resources & Tokens
+
+Hope & Fear: Central to narrative flow. Hope tokens fuel player benefits; Fear tokens fuel GM moves and complications.
+
+Stress & Hit Points: Manage Stress as a currency for mechanical or narrative effects; HP tracks physical well-being.
+
+Loadout & Experiences: Your deck of domain cards (“loadout”) and narrative Experiences are tactical resources you can swap or spend. 
+reddit.com
+
+Core Dice Mechanic
+
+Roll 2 × d12, sum both dice against a Difficulty target. One die is designated Hope, the other Fear—the higher of the two adds that token on every roll.
+
+This bell-curve approach smooths probabilities and ensures every roll yields narrative tension. 
+dmdavid.com
+
+Action Rolls & Outcomes
+
+Pick a Trait (add its modifier)
+
+Choose Difficulty (Very Easy 5 → Nearly Impossible 30)
+
+Set Stakes with GM
+
+Apply Advantage/Disadvantage (extra d6)
+
+Roll the Duality Dice
+
+Resolve based on success/failure and Hope/Fear die.
+
+Critical Success: You get it + extra; gain Hope & clear Stress
+
+Success with Hope: You get it; gain Hope
+
+Success with Fear: You get it + consequence; GM gains Fear
+
+Failure with Hope: You don’t get it; gain Hope & consequences
+
+Failure with Fear: You don’t get it; things go very badly; GM gains Fear 
+daggerheart.com
+
+Spending Tokens
+
+Players spend Hope to help an ally, use an Experience, initiate a Tag Team Roll, or activate special Hope features.
+
+GM spends Fear to interrupt, make extra moves, spotlight adversaries, trigger enemy/environment Fear features, or add Experiences to rolls. 
+daggerheart.com
+
+Combat & Damage
+
+After a hit, roll your weapon’s damage dice equal to your Proficiency, add total.
+
+On a critical success (both dice tie), max one die then roll as usual for extra damage. 
+daggerheart.com
+
+Rest & Downtime
+
+Short Rest: Swap domain cards (Stress cost), then pick two moves (Tend Wounds, Clear Stress, Repair Armor, Prepare for +Hope). GM gains 1d4 Fear.
+
+Long Rest: Swap cards, pick two long-rest moves (full HP/Stress/Armor recovery, Prepare group Hope). GM gains PCs+1d4 Fear and may advance long-term countdowns. 
+

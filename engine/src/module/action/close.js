@@ -2,8 +2,8 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('close', [
   ({ target }, { abort, actor }) => {
-    if (!target) abort('There is nothing to open!');
-    if (target.status !== 'open') abort(`The ${target.name} is not open!`);
+    if (!target) abort('There is nothing to close!');
+    else if (target.status !== 'open') abort(`The ${target.name} is not open!`);
   },
   ({ target }, { actor, abort }) => {
     switch (target.type) {

@@ -10,7 +10,7 @@ Action.define('exit', [
   async (_, { actor }) => {
     const exit = CONFIG.get(await actor.get('room'));
     exit.units.delete(actor);
-    actor.disconnect();
+    actor.disconnect('exit');
     return { exit };
   },
 ]);

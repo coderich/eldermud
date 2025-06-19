@@ -22,11 +22,11 @@ module.exports = class ActorWrapper extends Actor {
       sound: new Stream('sound'),
       scent: new Stream('scent'),
       touch: new Stream('touch'),
+      gesture: new Stream('gesture'),
       trait: new Stream('trait').chained(false), // Passive traits
       tactic: new Stream('tactic'), // Immediate combat tactics
       action: new Stream('action'), // Active actions
       preAction: new Stream('preAction'), // Used to await/delay the current action
-      telepath: new Stream('telepath'),
     };
   }
 
@@ -73,14 +73,20 @@ module.exports = class ActorWrapper extends Actor {
     return this.socket.query('query', APP.styleText('dialog', '>', messages.flat().join(' ')));
   }
 
+  async realm(...args) {
+    return Promise.all(Object.values(Actor).map(async (actor) => {
+      if (actor !== this) await actor.send(...args);
+    }));
+  }
+
   async broadcast(...args) {
-    const room = CONFIG.get(await REDIS.get(`${this}.room`));
+    const room = CONFIG.get(await this.get('room'));
     room.units.forEach(unit => unit !== this && unit.send(...args));
   }
 
   async perimeter(...args) {
-    const room = CONFIG.get(await REDIS.get(`${this}.room`));
-    room.exits.forEach((exit) => {
+    const room = CONFIG.get(await this.get('room'));
+    Object.values(room.exits).forEach((exit) => {
       exit.units.forEach(unit => unit !== this && unit.send(...args));
     });
   }

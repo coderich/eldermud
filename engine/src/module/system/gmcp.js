@@ -1,8 +1,12 @@
 /**
  */
-SYSTEM.on('*', async (event, context) => {
-  const { actor, result } = context;
+SYSTEM.on('*', (event, context) => {
+  const { actor, result, promise } = context;
   const [type] = event.split(':');
+
+  if (type === 'abort' && promise.reason && promise.reason !== '$source') {
+    actor.send('text', promise.reason);
+  }
 
   if (['post:move'].includes(event)) {
     actor.perform('map');
@@ -18,11 +22,8 @@ SYSTEM.on('*', async (event, context) => {
 
     // Broadcast to room that you have arrived
     Array.from(room.units.values()).filter(unit => unit !== actor && !actor.$party.has(unit)).forEach((unit) => {
-      let direction = APP.rdirection[result.dir];
-      if (direction === 'up') direction = 'above';
-      else if (direction === 'down') direction = 'below';
-      else direction = `the ${direction}`;
-      unit.send('text', `${APP.styleText(actor.type, actor.name)} enters from ${direction}.`);
+      const direction = APP.theRDirection[result.dir] || 'nowhere!';
+      unit.send('text', `${APP.styleText(actor.type, actor.name)} enters the room from ${direction}`);
     });
 
     // Notify those around you (except for room you just came from)

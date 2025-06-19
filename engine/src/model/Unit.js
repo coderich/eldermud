@@ -30,6 +30,7 @@ module.exports = class Unit extends Actor {
     this.lockpicks = Math.floor(stats.int / 10);
     this.tracking = Math.floor(stats.wis / 10);
     this.leadership = 0;
+    this.depiction ??= CONFIG.get(`${stats.class}.depiction`);
     return this;
   }
 };

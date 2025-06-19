@@ -58,6 +58,6 @@ exports.setup = async () => {
     await server.start();
     console.log('After load:', process.memoryUsage().heapUsed);
     console.log('Server ready.');
-    new NPC().emit('server', {});
+    SYSTEM.emit('server', {});
   }
 })();

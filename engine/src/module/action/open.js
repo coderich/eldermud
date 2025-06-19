@@ -3,11 +3,10 @@ const { Action, Actor } = require('@coderich/gameflow');
 Action.define('open', [
   ({ target }, { abort, actor }) => {
     if (!target) abort('There is nothing to open!');
+    else if (target.status === 'open') abort(`The ${target.name} is already open!`);
+    else if (target.status === 'locked') abort(`The ${target.name} is locked!`);
   },
   async ({ target }, { actor, abort }) => {
-    if (target.status === 'open') return abort(`The ${target.name} is already open!`);
-    if (target.status === 'locked') return abort(`The ${target.name} is locked!`);
-
     switch (target.type) {
       case 'door': {
         CONFIG.set(`${target}.status`, 'open');

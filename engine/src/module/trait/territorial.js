@@ -7,19 +7,18 @@ Action.define('territorial', new Loop([
     const combatResolvers = Promise.withResolvers();
     const abort = () => { idleResolvers.resolve(); combatResolvers.resolve(); };
 
-    actor.on('post:move', abort);
-    actor.on('post:engage', abort);
-    actor.on('abort:engage', abort);
-    SYSTEM.on(`enter:${room}`, idleResolvers.resolve);
+    actor.once('post:move', abort);
+    actor.once('post:engage', abort);
+    actor.once('abort:engage', abort);
+    SYSTEM.once(`enter:${room}`, idleResolvers.resolve);
+    actor.streams.action.once('abort', combatResolvers.resolve);
 
-    actor.streams.action.on('abort', combatResolvers.resolve);
     const target = APP.randomElement(Array.from(room.units.values()).filter(unit => unit.id !== actor.id));
     if (target) actor.stream('action', 'attack', { target });
     await (target ? combatResolvers.promise : idleResolvers.promise);
 
-    actor.on('post:move', abort);
-    actor.on('post:engage', abort);
-    actor.on('abort:engage', abort);
-    SYSTEM.on(`enter:${room}`, idleResolvers.resolve);
+    actor.offFunction(abort);
+    SYSTEM.off(`enter:${room}`, idleResolvers.resolve);
+    actor.streams.action.off('abort', combatResolvers.resolve);
   },
 ]));

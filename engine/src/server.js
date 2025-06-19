@@ -12,13 +12,14 @@ server.on('connect', ({ socket }) => {
   player.perform('authenticate');
   player.once('post:authenticate', async () => {
     Actor[socket.id] = player; // Add them to the list of Actors to respond to (server.on('cmd') below)
-    player.send('cls');
-    player.perform('spawn');
+    await player.send('cls');
+    await player.perform('spawn');
+    await player.realm('text', `${APP.styleText(player.type, player.name)} enters the realm.`);
   });
 });
 
-server.on('disconnect', async ({ socket }) => {
-  await Actor[socket.id]?.perform('logout');
+server.on('disconnect', async ({ socket, reason }) => {
+  await Actor[socket.id]?.perform('logout', { reason });
   delete Actor[socket.id];
 });
 

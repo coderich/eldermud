@@ -19,6 +19,8 @@ exports.mapPromise = Util.mapPromise;
 exports.fib = [3, 5, 8, 13, 21, 34, 55, 89];
 exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northeast', nw: 'northwest', se: 'southeast', sw: 'southwest', u: 'up', d: 'down' };
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };
+exports.theDirection = Object.entries(exports.direction).reduce((prev, [k, v]) => ({ [k]: `the ${v}`, ...prev }), { u: 'above', d: 'below' });
+exports.theRDirection = Object.entries(exports.rdirection).reduce((prev, [k, v]) => ({ [k]: `the ${v}`, ...prev }), { d: 'above', u: 'below' });
 exports.randomElement = arr => arr[Math.floor(Math.random() * arr.length)];
 exports.styleText = (style, ...text) => `${CONFIG.get(`app.styles.${style}`)}${text.flat().join(' ')}${CONFIG.get('app.styles.reset')}`;
 exports.isNumeric = str => !Number.isNaN(Number(`${str}`));

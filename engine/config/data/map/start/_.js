@@ -18,17 +18,15 @@ const spawn = async (actor) => {
   const { config } = CONFIG.toObject();
   const id = randomUUID();
   const map = `map.${id}`;
-  const room = `${map}.rooms.triageRoom`;
   const path = Path.resolve(__dirname, '..', `${id}.json`);
   const data = JSON.stringify({ ...Get(config, 'map.eldenfortSanatorium'), id }, null, 2).replaceAll('map.eldenfortSanatorium', map);
   FS.writeFileSync(path, data);
   CONFIG.mergeConfig(Path.resolve(__dirname, '..'), ['map']).decorate();
 
-  // Spawn NPC(s)
+  // Spawn NPC(s) + teleport actor
+  const room = CONFIG.get(`${map}.rooms.triageRoom`);
   const npc = await APP.instantiate('npc.sisterCaldra');
   await npc.save({ room }).then(el => el.perform('spawn'));
-
-  // Spawn Actor
   await actor.perform('teleport', { room });
 };
 

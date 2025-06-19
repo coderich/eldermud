@@ -7,7 +7,7 @@ const changeRank = (rank, { actor, abort }) => {
   actor.$partyRank = rank;
   const position = ranks[rank - 1];
   actor.send('text', `You position yourself ${position}.`);
-  return actor.$party.forEach(unit => unit !== actor && unit.send('text', `${actor.name} just moved ${position}.`));
+  return actor.$party.forEach(unit => unit !== actor && unit.send('text', `${APP.styleText(actor.type, actor.name)} just moved ${position}.`));
 };
 
 Action.define('frontrank', (_, context) => changeRank(1, context));
