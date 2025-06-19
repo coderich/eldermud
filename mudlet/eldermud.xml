@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE MudletPackage>
 <MudletPackage version="1.001">
-  <TriggerPackage />
-  <TimerPackage />
-  <AliasPackage />
-  <ActionPackage />
-  <ScriptPackage>
-    <ScriptGroup isActive="yes" isFolder="yes">
-      <name>function</name>
-      <packageName></packageName>
-      <script></script>
-      <eventHandlerList />
-      <Script isActive="yes" isFolder="no">
-        <name>Style Gauge</name>
-        <packageName></packageName>
-        <script>eldermud = eldermud or {}
+	<TriggerPackage />
+	<TimerPackage />
+	<AliasPackage />
+	<ActionPackage />
+	<ScriptPackage>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>function</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>Style Gauge</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {}
 
 function eldermud:styleGauge(gauge, color)
   local colors = {
@@ -53,18 +53,18 @@ function eldermud:styleGauge(gauge, color)
   ]])
 end
 </script>
-        <eventHandlerList />
-      </Script>
-    </ScriptGroup>
-    <ScriptGroup isActive="yes" isFolder="yes">
-      <name>component</name>
-      <packageName></packageName>
-      <script></script>
-      <eventHandlerList />
-      <Script isActive="yes" isFolder="no">
-        <name>layout</name>
-        <packageName></packageName>
-        <script>eldermud = eldermud or {};
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+		<ScriptGroup isActive="yes" isFolder="yes">
+			<name>component</name>
+			<packageName></packageName>
+			<script></script>
+			<eventHandlerList />
+			<Script isActive="yes" isFolder="no">
+				<name>layout</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {};
 
 clearWindow();
 disableScrollBar();
@@ -77,8 +77,9 @@ setFontSize(15);
 setFont('Bitstream Vera Sans Mon');
 -- display(getAvailableFonts());
 
-eldermud.rightContainer = eldermud.rightContainer or Geyser.Container:new({
+eldermud.rightContainer = Geyser.Container:new({
   name = 'rightContainer',
+  styleSheet = 'border-left: 1px solid white;',
   x = '60%', y = 0, width = '40%', height = '100%',
 });
 
@@ -86,12 +87,12 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.cls', 'eldermud.cls', func
   clearWindow();
 end);
 </script>
-        <eventHandlerList />
-      </Script>
-      <Script isActive="yes" isFolder="no">
-        <name>mapper</name>
-        <packageName></packageName>
-        <script>eldermud = eldermud or {};
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>mapper</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {};
 
 deleteMap();
 setMapZoom(14);
@@ -99,7 +100,7 @@ setCustomEnvColor(0, 0, 0, 0, 255);
 setCustomEnvColor(1, 255, 0, 0, 255);
 
 Geyser.Mapper:new({
-  name = "mapper",
+  name = 'mapper',
   x = 0, y = 0, width = '100%', height = '40%',
 }, eldermud.rightContainer);
 
@@ -134,14 +135,14 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.map', 'gmcp.eldermud.map',
   centerview(data.room)
 end);
 </script>
-        <eventHandlerList />
-      </Script>
-      <Script isActive="yes" isFolder="no">
-        <name>console</name>
-        <packageName></packageName>
-        <script>clearCmdLine()
-enableCommandLine();
-setCmdLineStyleSheet("main", [[
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>console</name>
+				<packageName></packageName>
+				<script>clearCmdLine('main')
+enableCommandLine('main');
+setCmdLineStyleSheet('main', [[
   QPlainTextEdit {
     color: white;
     font: Arial;
@@ -176,34 +177,34 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.console', 'gmcp.eldermud',
   end;
 end);
 </script>
-        <eventHandlerList />
-      </Script>
-      <Script isActive="yes" isFolder="no">
-        <name>status</name>
-        <packageName></packageName>
-        <script>local status = Geyser.Label:new({
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>status</name>
+				<packageName></packageName>
+				<script>local status = Geyser.Label:new({
   name = 'statusContainer',
   x = 0, y = '-35px', width = '60%', height = '30px',
 });
 
 status:setStyleSheet([[
-  border-top: 1px solid white;
+  border-top: none;
   border-bottom: 1px solid white;
 ]]);
 
 status:setFontSize(16);
 
+local sep = '&amp;nbsp;&amp;nbsp;&amp;nbsp;';
+
 registerNamedEventHandler('Eldermud', 'eldermud.event.status', 'gmcp.eldermud.status', function()
   local data = gmcp.eldermud.status;
   status:echo(
-    'Health: [ &lt;span style="background-color:green"&gt;' .. data.hp .. '/' .. data.mhp .. '&lt;/span&gt; ]'
-    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
-    .. 'Mana: [ &lt;span style="background-color:blue"&gt;' .. data.ma .. '/' .. data.mma .. '&lt;/span&gt; ]'
-    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
-    -- .. 'Carry: [ &lt;span style="background-color:orange"&gt;' .. 100 .. '/' .. 1000 .. '&lt;/span&gt; ]'
-    -- .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    'Health: &lt;span style="color:green"&gt;' .. data.hp .. '&lt;/span&gt;'
+    .. sep
+    .. 'Mana: &lt;span style="color:SkyBlue"&gt;' .. data.ma .. '&lt;/span&gt;'
+    .. sep
     .. 'Remnants: &lt;span style="color:LightSeaGreen"&gt;' .. data.exp .. '&lt;/span&gt;'
-    .. '&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;'
+    .. sep
     .. 'Posture: &lt;span style="color:magenta"&gt;' .. data.posture .. '&lt;/span&gt;'
   );
 end);
@@ -227,12 +228,12 @@ end);
   -- maBar:setValue(tonumber(data.ma), tonumber(data.mma));
 -- end)
 </script>
-        <eventHandlerList />
-      </Script>
-      <Script isActive="yes" isFolder="no">
-        <name>menu</name>
-        <packageName></packageName>
-        <script>eldermud = eldermud or {};
+				<eventHandlerList />
+			</Script>
+			<Script isActive="yes" isFolder="no">
+				<name>menu</name>
+				<packageName></packageName>
+				<script>eldermud = eldermud or {};
 
 local EMCO = require('MDK.emco');
 
@@ -265,12 +266,12 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.help', 'gmcp.eldermud.help
   menu:cecho('HELP', gmcp.eldermud.help .. '\n');
 end);
 </script>
-        <eventHandlerList />
-      </Script>
-    </ScriptGroup>
-  </ScriptPackage>
-  <KeyPackage />
-  <HelpPackage>
-    <helpURL></helpURL>
-  </HelpPackage>
+				<eventHandlerList />
+			</Script>
+		</ScriptGroup>
+	</ScriptPackage>
+	<KeyPackage />
+	<HelpPackage>
+		<helpURL></helpURL>
+	</HelpPackage>
 </MudletPackage>
