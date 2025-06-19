@@ -10,6 +10,6 @@ Action.define('stand', [
 
   async (_, { actor }) => {
     await REDIS.set(`${actor}.posture`, 'stand');
-    actor.send('text', 'You hop to your feet');
+    actor.send('text', 'You rise to your feet');
   },
 ]);

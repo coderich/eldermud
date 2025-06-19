@@ -14,9 +14,9 @@ Action.define('stats', [
       Name: stats.name,
       Level: `${stats.lvl}`,
       Leadership: `${stats.leadership}`,
-      Race: `${CONFIG.get(stats.race)?.name}`,
-      Class: `${CONFIG.get(stats.class)?.name}`,
-      Heritage: `${CONFIG.get(stats.heritage)?.name}`,
+      Race: `${CONFIG.get(stats.race)?.name || '<unknown>'}`,
+      Class: `${CONFIG.get(stats.class)?.name || '<unknown>'}`,
+      Heritage: `${CONFIG.get(stats.heritage)?.name || '<unknown>'}`,
       Health: `${stats.hp}/${stats.mhp}`,
       Mana: `${stats.ma}/${stats.mma}`,
       'AC/DR': `${stats.ac}/${stats.dr}`,
@@ -40,8 +40,8 @@ Action.define('stats', [
       Lockpicks: `${stats.lockpicks}`,
       Tracking: `${stats.tracking}`,
       Willpower: `${stats.mr}`,
-      Talents: stats.talents.map(talent => talent.name).join(', '),
-      Traits: stats.traits.map(trait => trait.name).join(', '),
+      Talents: stats.talents.map(talent => talent.name).join(', ') || '<none>',
+      Traits: stats.traits.map(trait => trait.name).join(', ') || '<none>',
     }).reduce((prev, [key, value]) => {
       return Object.assign(prev, { [key]: [APP.styleText('stat', `${key}:`), APP.styleText('keyword', `${value}  `)] });
     }, {});

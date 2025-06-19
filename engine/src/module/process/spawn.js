@@ -37,5 +37,5 @@ Action.define('spawn', async (_, { actor }) => {
     actor.perform('room', room);
   }
 
-  return { room };
+  return { room, target: actor };
 });

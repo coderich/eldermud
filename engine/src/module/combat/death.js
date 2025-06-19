@@ -25,9 +25,9 @@ SYSTEM.on('post:death', async ({ actor }) => {
 
     switch (actor.type) {
       case 'player': {
-        const { checkpoint, mhp, mma } = await actor.mGet('checkpoint', 'mhp', 'mma');
-        await actor.save({ hp: mhp, ma: mma, room: checkpoint, exp: 0 });
-        actor.send('text', 'You have died.');
+        const { deathpoint, mhp, mma } = await actor.mGet('deathpoint', 'mhp', 'mma');
+        await actor.save({ hp: mhp, ma: mma, room: deathpoint, exp: 0, posture: 'rest' });
+        actor.send('text', 'You have fallen...');
         actor.perform('spawn');
         break;
       }

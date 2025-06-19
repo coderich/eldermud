@@ -9,6 +9,6 @@ Action.define('teleport', [
     await actor.send('cls');
     await actor.perform('map');
     await actor.perform('room');
-    return { room, exit };
+    return { room, exit, target: room };
   },
 ]);

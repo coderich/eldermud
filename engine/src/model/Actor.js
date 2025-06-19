@@ -99,10 +99,17 @@ module.exports = class ActorWrapper extends Actor {
   disconnect(...args) {
     this.removeAllPossibleListeners();
     this.socket.disconnect(...args);
+    return this;
+  }
+
+  abortAllStreams() {
+    Object.values(this.streams).forEach(stream => stream.abort());
+    return this;
   }
 
   removeAllPossibleListeners() {
     this.removeAllListeners();
     Object.values(this.streams).forEach(stream => stream.abort() && stream.removeAllListeners());
+    return this;
   }
 };

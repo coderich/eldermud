@@ -1,16 +1,16 @@
-const start = {
-  room: '${self:map.start.rooms.start}',
-  checkpoint: '${self:map.start.rooms.start}',
+const purgatory = {
+  room: '${self:map.purgatory.rooms.purgatory}',
 };
 
 const hermit = {
   room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
-  checkpoint: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
 };
 
 module.exports = {
-  ...start,
+  ...purgatory,
   posture: 'rest',
+  deathpoint: '${self:map.purgatory.rooms.purgatory}',
+  checkpoint: '${self:map.eldenfortSanatorium.rooms.triageRoom}',
   lvl: 1,
   exp: 0,
   str: 1,
