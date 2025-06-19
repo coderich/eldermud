@@ -7,7 +7,7 @@ Action.define('invite', [
   },
   ({ target }, { actor }) => {
     actor.$invited.add(target);
-    actor.send('text', APP.styleText('boost', `You invite ${target.name} to follow you.`));
-    target.send('text', APP.styleText('boost', `${actor.name} invites you follow them.`));
+    actor.send('text', APP.styleText('boost', `You invite ${target.name} to follow you`));
+    target.send('text', APP.styleText('boost', `${actor.name} invites you follow them`));
   },
 ]);

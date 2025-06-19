@@ -16,7 +16,7 @@ Action.define('sanctuary', [
     // Do not allow fighting in the sanctuary
     const attackHandler = async ({ actor, abort }) => {
       const actorRoom = CONFIG.get(await actor.get('room'));
-      if (`${actorRoom}` === `${room}`) abort('You break off your attack.');
+      if (`${actorRoom}` === `${room}`) abort('You break off your attack');
     };
 
     SYSTEM.on('pre:move', moveHandler);

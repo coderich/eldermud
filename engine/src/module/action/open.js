@@ -11,7 +11,7 @@ Action.define('open', [
       case 'door': {
         CONFIG.set(`${target}.status`, 'open');
         actor.perform('map');
-        return actor.send('text', `You open the ${target.name}.`);
+        return actor.send('text', `You open the ${target.name}`);
       }
       case 'chest': {
         if (target instanceof Actor) {

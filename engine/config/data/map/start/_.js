@@ -50,20 +50,32 @@ SYSTEM.on('enter:map.start.rooms.start', async ({ actor }) => {
   });
 });
 
-SYSTEM.on('post:spawn', (context) => {
+SYSTEM.on('post:spawn', async (context) => {
   if (context.actor.id === 'sisterCaldra') {
-    SYSTEM.on(`enter:${context.actor.room}`, async ({ actor }) => {
-      const [map] = `${actor.room}`.split('.rooms');
-      await actor.send('text', `${context.actor.name} (to you):`, APP.styleText('dialog', "You... you're awake? Saints preserve us! I thought the fever took you for sure."));
-      await APP.timeout(3000);
-      await actor.send('text', `${context.actor.name} (to you):`, APP.styleBlockText('dialog', [
-        { text: 'stand', style: 'keyword' },
-      ], "The Plague eats more than flesh - it devours identity... there isn't much time, can you stand?"));
+    const npc = context.actor;
+    const room = CONFIG.get(await npc.get('room'));
 
-      actor.once('abort:stand', () => {
-        APP.instantiate('creature.plagueWretch', {
-          room: `${map}.rooms.quarantineHall`,
-        }).then(unit => unit.perform('spawn'));
+    SYSTEM.on(`enter:${room}`, async ({ actor }) => {
+      await APP.timeout(1000);
+      const [map] = `${room}`.split('.rooms');
+      await actor.send('text', `${npc.name} (to you):`, APP.styleText('dialog', "You... you're awake? Saints preserve us! I thought the fever took you for sure."));
+      await APP.timeout(3000);
+      await actor.send('text', `${npc.name} (to you):`, APP.styleBlockText('dialog', [
+        { text: 'follow', style: 'gesture' },
+      ], "The Plague eats more than flesh - it devours identity. There isn't much time... follow me!"));
+      await APP.timeout(2000);
+      npc.perform('invite', { target: actor });
+
+      actor.once(`follow:${npc}`, async () => {
+        const target = CONFIG.get(`${map}.rooms.quarantineHall`);
+
+        if (!target.units.size) {
+          await APP.instantiate('creature.plagueWretch', { room: target }).then(unit => unit.perform('spawn'));
+          await npc.perform('look', { target, cmd: { code: 'n' } });
+        }
+
+        npc.stream('action', 'move', 'w');
+        npc.stream('action', 'move', 'w');
       });
     });
   }

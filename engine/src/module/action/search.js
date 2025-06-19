@@ -2,7 +2,7 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('search', [
   async ({ target }, { actor, abort }) => {
-    if (!target) abort('Your search reveals nothing.');
+    if (!target) abort('Your search reveals nothing');
   },
 
   async ({ target }, { actor }) => {
@@ -10,8 +10,8 @@ Action.define('search', [
       case 'room': {
         const items = Array.from(target.items.values()).filter(item => item.hidden && item.owner === `${actor}`);
         actor.$search = new Set(items);
-        if (items.length) actor.send('text', 'You notice', items.map(item => item.name).join(', '), 'here.');
-        else actor.send('text', 'Your search reveals nothing.');
+        if (items.length) actor.send('text', 'You notice', items.map(item => item.name).join(', '), 'here');
+        else actor.send('text', 'Your search reveals nothing');
         break;
       }
       default: {

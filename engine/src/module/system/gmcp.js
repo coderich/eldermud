@@ -32,7 +32,7 @@ SYSTEM.on('*', (event, context) => {
         let direction = APP.rdirection[d];
         if (direction === 'up') direction = 'above';
         else if (direction === 'down') direction = 'below';
-        x.units?.forEach(unit => unit.send('text', APP.styleText('noise', `You hear movement ${direction}.`)));
+        x.units?.forEach(unit => unit.send('text', APP.styleText('noise', `You hear movement ${direction}`)));
       });
     }
   }
@@ -42,7 +42,7 @@ SYSTEM.on('*', (event, context) => {
 
     // Broadcast to room that actor left
     Array.from(exit.units.values()).filter(unit => unit !== actor && !actor.$party.has(unit)).forEach((unit) => {
-      unit.send('text', `${APP.styleText(actor.type, actor.name)} leaves the room heading ${APP.direction[result.dir]}.`);
+      unit.send('text', `${APP.styleText(actor.type, actor.name)} leaves the room heading ${APP.direction[result.dir]}`);
     });
   }
 });

@@ -20,8 +20,9 @@ module.exports = {
     '${self:attack.teeth}',
     // '${self:attack.contagionTouch}',
   ],
-  // traits: [
-  //   '${self:trait.contagious}',
-  //   '${self:trait.frenzied}',
-  // ],
+  traits: [
+    '${self:trait.territorial}',
+    // '${self:trait.contagious}',
+    // '${self:trait.frenzied}',
+  ],
 };

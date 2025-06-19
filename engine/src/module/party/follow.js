@@ -16,7 +16,7 @@ Action.define('follow', [
 
     // Notifications
     actor.send('text', APP.styleText('engaged', `*Following ${target.name}*`));
-    target.send('text', `${APP.styleText(actor.type, actor.name)} is now following you.`);
+    target.send('text', `${APP.styleText(actor.type, actor.name)} is now following you`);
 
     // Keep track following listeners so you can unfollow/leave
     actor.$following = target;
@@ -28,7 +28,7 @@ Action.define('follow', [
     const leave = () => actor.perform('leave');
     const stray = ({ promise }) => !promise.$follow && leave();
     const unable = ({ promise }) => promise.$follow && promise.reason !== '$source' && leave();
-    const notice = ({ data }) => actor.send('text', `--- Following ${APP.styleText(actor.type, actor.name)} ${APP.direction[data]} ---`);
+    const notice = ({ data }) => actor.send('text', `--- Following ${APP.styleText(target.type, target.name)} ${APP.direction[data]} ---`);
 
     actor.once('post:death', leave);
     actor.once('post:logout', leave);

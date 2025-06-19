@@ -9,7 +9,7 @@ Action.define('drop', [
     await REDIS.sRem(`${actor}.inventory`, `${target}`);
     await REDIS.set(`${target}.room`, `${room}`);
     room.items.add(target);
-    actor.send('text', `You dropped ${target.name}.`);
-    actor.broadcast('text', `${actor.name} dropped ${target.name}.`);
+    actor.send('text', `You dropped ${target.name}`);
+    actor.broadcast('text', `${actor.name} dropped ${target.name}`);
   },
 ]);

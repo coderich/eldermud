@@ -23,4 +23,4 @@
 - party ranks effect combat...
 - shops; buy reasonable weapon
 - main menu: enter, about, help?
-- Item progression
+- item progression

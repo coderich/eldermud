@@ -10,6 +10,6 @@ Action.define('harvest', [
     const remnants = stats.mhp * stats.lvl;
     const exp = Math.floor((remnants / 10) * stats.durability);
     actor.perform('affect', { exp });
-    return actor.send('text', `You harvest ${APP.styleText('keyword', exp)} remnants from ${stats.name}.`);
+    return actor.send('text', `You harvest ${APP.styleText('keyword', exp)} remnants from ${stats.name}`);
   },
 ]);

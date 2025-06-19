@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'Prelude',
+  name: 'Purgatory',
   rooms: {
     start: {
       name: 'Shifting Void',
