@@ -20,10 +20,10 @@ Action.define('sanctuary', [
     };
 
     SYSTEM.on('pre:move', moveHandler);
-    SYSTEM.on('pre:attack', attackHandler);
+    SYSTEM.on('start:attack', attackHandler);
     context.actor.on('post:destroy', () => {
       SYSTEM.off('pre:move', moveHandler);
-      SYSTEM.off('pre:attack', attackHandler);
+      SYSTEM.off('start:attack', attackHandler);
     });
   },
 ]);

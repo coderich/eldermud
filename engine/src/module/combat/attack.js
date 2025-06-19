@@ -1,11 +1,13 @@
 const { Action } = require('@coderich/gameflow');
 
 /**
- * Initiate basic weapon attack
+ * Initiate an attack on a target in the same room
  */
 Action.define('attack', [
-  ({ target }, { abort }) => {
-    if (!target) abort('You dont see that here!');
+  async ({ target }, { actor, abort }) => {
+    // We must ensure the target is still in the room (due to movement etc)
+    const room = CONFIG.get(await actor.get('room'));
+    if (!Array.from(room.units).includes(target)) abort('You dont see that here!');
   },
 
   async ({ target }, { actor, stream }) => {
