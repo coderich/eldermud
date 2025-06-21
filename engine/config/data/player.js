@@ -1,14 +1,6 @@
-const purgatory = {
-  room: '${self:map.purgatory.rooms.purgatory}',
-};
-
-const hermit = {
-  room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
-};
-
 module.exports = {
-  ...purgatory,
-  posture: 'rest',
+  // room: '${self:map.purgatory.rooms.purgatory}',
+  room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
   deathpoint: '${self:map.purgatory.rooms.purgatory}',
   checkpoint: '${self:map.eldenfortSanatorium.rooms.triageRoom}',
   lvl: 1,
@@ -19,6 +11,7 @@ module.exports = {
   wis: 1,
   con: 1,
   cha: 1,
+  posture: 'rest',
   traits: [
     '${self:trait.lifeforce}',
     '${self:trait.manaforce}',

@@ -33,7 +33,7 @@ SYSTEM.on('*', async (event, context) => {
       const { units } = CONFIG.get(await actor.get('room'));
       Object.assign(data, APP.target([...units].filter(unit => unit.type === 'npc'), args));
     } else if (tags.includes('corpse')) {
-      const { items } = CONFIG.get(await REDIS.get('room'));
+      const { items } = CONFIG.get(await actor.get('room'));
       Object.assign(data, APP.target([...items].filter(item => item.id === 'corpse'), args));
     } else if (tags.includes('realm')) {
       Object.assign(data, APP.target(Object.values(Game.Actor), args));

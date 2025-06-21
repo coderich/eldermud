@@ -24,14 +24,6 @@ module.exports = {
   traits: [
     '${self:trait.sanctuary}',
   ],
-  // trigger: {
-  //   'greet:npc.eldricTheWise': {
-  //     idk: 'hi',
-  //   },
-  // },
-  // triggers: [
-  //   { on: 'greet:npc.eldricTheWise' },
-  // ],
   // quests: [
   //   '${self:quest.echosOfTheAncients}',
   // ],

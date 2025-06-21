@@ -26,10 +26,10 @@ module.exports = {
     Under her reign, Eldenfort has seen a time of relative peace, but recent necromantic activity threatens to unravel the world she has strived to protect.
   `,
   room: '${self:map.eldenkeep.rooms.ladyElethorChambers}',
-  quests: [
-    '${self:quest.ghastlyWhispers}',
-    '${self:quest.echosOfTheAncients}',
-  ],
+  // quests: [
+  //   '${self:quest.ghastlyWhispers}',
+  //   '${self:quest.echosOfTheAncients}',
+  // ],
   str: 13,
   dex: 11,
   int: 10,
@@ -38,4 +38,7 @@ module.exports = {
   cha: 8,
   exp: 1,
   lvl: 1,
+  traits: [
+    '${self:trait.sanctuary}',
+  ],
 };

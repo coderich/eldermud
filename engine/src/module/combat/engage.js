@@ -41,7 +41,7 @@ Action.define('engage', [
     // Attack
     async (data, { actor, stream, abort }) => {
       const { target } = data;
-      const stats = ['ac', 'acc', 'dr', 'crits', 'dodge'];
+      const stats = ['str', 'dex', 'int', 'wis', 'con', 'cha', 'ac', 'acc', 'dr', 'crits', 'dodge'];
       const attack = typeof data.attack === 'function' ? data.attack() : data.attack;
       const actorStats = await actor.mGet(stats);
       const targetStats = await target.mGet(stats);
@@ -54,11 +54,18 @@ Action.define('engage', [
           await actor.perform('affect', attack.cost);
         }
 
+        // To hit roll
         const toHit = 30;
         const roll = APP.roll('1d100');
-        const hitroll = (roll + actorStats.acc + attack.acc - targetStats.ac);
-        const dmgroll = Math.max(APP.roll(attack.dmg) - targetStats.dr, 0);
-        const critroll = APP.roll(`1d${actorStats.crits + attack.crits}`);
+        const cover = Math.max(0, (target.$partyRank - attack.range) * 2);
+        const hitroll = (roll + actorStats.acc + APP.roll(attack.acc) - cover - targetStats.ac);
+
+        // Damage roll
+        const bonus = Math.floor(Object.entries(attack.scale).reduce((prev, [k, v]) => prev + actorStats[k] * v, 0));
+        const dmgroll = Math.max(APP.roll(attack.dmg) + bonus - targetStats.dr, 0);
+
+        // Aux rolls
+        const critroll = APP.roll(`1d${actorStats.crits + APP.roll(attack.crits)}`);
         const dodgeroll = APP.roll(`1d${targetStats.dodge}`); // default
 
         // // This must be based on posture

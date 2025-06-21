@@ -1,11 +1,10 @@
 module.exports = {
   name: 'fist',
-  dmg: '1d3',
-  acc: 1,
-  crits: 1,
+  dmg: '1d5',
+  acc: 10,
+  crits: 0,
   range: 1,
-  spd: 2000,
-  scale: { str: 1, dex: 0.5 },
+  scale: { str: 0.3, dex: 0.1, con: 0.1 },
   hits: ['punch', 'strike', 'pound'],
   misses: ['swing', 'lunge'],
 };

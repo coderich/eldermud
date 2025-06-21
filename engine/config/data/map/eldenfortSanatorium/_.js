@@ -3,7 +3,6 @@ const Path = require('path');
 const { randomUUID } = require('crypto');
 const Get = require('lodash.get');
 
-// const noop = ({ promise }) => promise.abort();
 const startRoom = 'triageRoom';
 
 // Create a new map/instance
@@ -20,6 +19,7 @@ SYSTEM.on(`teleport:map.eldenfortSanatorium.rooms.${startRoom}`, async ({ actor 
   const room = CONFIG.get(`${map}.rooms.${startRoom}`);
   const npc = await APP.instantiate('npc.sisterCaldra');
   await npc.save({ room }).then(el => el.perform('spawn'));
+  await actor.save({ checkpoint: room });
   await actor.perform('teleport', { room });
 });
 
@@ -42,7 +42,7 @@ SYSTEM.on('post:spawn', async (context) => {
         await APP.timeout(3000);
         await actor.send('text', `${npc.name} (to you):`, APP.styleBlockText('dialog', [
           { text: 'follow', style: 'gesture' },
-        ], "This plague eats more than flesh - it devours identity. There isn't much time... follow me!"));
+        ], "This plague eats more than flesh - it devours identity. There isn't much time... please follow me!"));
         await APP.timeout(2000);
         npc.perform('invite', { target: actor });
 

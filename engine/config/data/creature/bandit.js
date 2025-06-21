@@ -27,6 +27,9 @@ module.exports = {
     ranks: ['Thug', 'Highwayman', 'Raider', 'Cutthroat'],
     impressions: ['Gruff', 'Scarred', 'Wary', 'Greedy'],
     movements: ['Lurk', 'Pounce', 'Ambush', 'Flee'],
+    // ranks: ['Thug', 'Outlaw', 'Highwayman', 'Raider'],
+    // impressions: ['Scraggly', 'Filthy', 'Menacing', 'Cunning'],
+    // movements: ['Lurk', 'Pounce', 'Ambush', 'Flee'],
   },
 
   // Standard weapon attacks

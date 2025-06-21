@@ -1,11 +1,10 @@
 module.exports = {
   name: 'touch',
   dmg: '1d5+1',
-  acc: 0,
+  acc: 5,
   crits: 0,
   range: 1,
-  spd: 2500,
-  scale: { str: 1, dex: 0.5 },
+  scale: { str: 0.3, dex: 0.3, int: 0.3, wis: 0.3 },
   hits: ['brush', 'smite', 'swipe', 'grip'],
   misses: ['swipe', 'swing', 'lunge', 'snap'],
 };

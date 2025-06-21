@@ -22,15 +22,7 @@ module.exports = {
   con: 9,
   cha: 12,
   lvl: 4,
-  // traits: [
-  //   '${self:trait.sanctuary}',
-  //   '${self:trait.plagueTouched}',
-  // ],
-  // triggers: [
-  //   { on: 'greet:npc.sisterCaldra' },
-  //   { on: 'ask:sisterCaldra.memoryShard' },
-  // ],
-  // quests: [
-  //   '${self:quest.memoryFragmentation}',
-  // ],
+  traits: [
+    '${self:trait.sanctuary}',
+  ],
 };
