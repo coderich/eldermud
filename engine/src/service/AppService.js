@@ -16,7 +16,7 @@ exports.pluralize = Pluralize;
 exports.timeout = Util.timeout;
 exports.ucFirst = Util.ucFirst;
 exports.mapPromise = Util.mapPromise;
-exports.fib = [3, 5, 8, 13, 21, 34, 55, 89];
+exports.fib = [1, 3, 5, 8, 13, 21, 34, 55, 89];
 exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northeast', nw: 'northwest', se: 'southeast', sw: 'southwest', u: 'up', d: 'down' };
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };
 exports.theDirection = Object.entries(exports.direction).reduce((prev, [k, v]) => ({ [k]: `the ${v}`, ...prev }), { u: 'above', d: 'below' });
@@ -91,7 +91,7 @@ exports.hydrate = (keys, asData = false) => {
 };
 
 exports.roll = (dice) => {
-  if (exports.isNumeric(dice)) return parseInt(dice, 10);
+  if (exports.isNumeric(dice)) return Number(dice);
 
   const input = dice.match(/\S+/g).join('');
   const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+-\\*\\/]?)(\d*)/);

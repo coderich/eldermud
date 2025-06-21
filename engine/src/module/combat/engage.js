@@ -61,7 +61,7 @@ Action.define('engage', [
         const hitroll = (roll + actorStats.acc + APP.roll(attack.acc) - cover - targetStats.ac);
 
         // Damage roll
-        const bonus = Math.floor(Object.entries(attack.scale).reduce((prev, [k, v]) => prev + actorStats[k] * v, 0));
+        const bonus = Math.floor(Object.entries(attack.scale).reduce((prev, [k, v]) => prev + actorStats[k] * APP.roll(v), 0));
         const dmgroll = Math.max(APP.roll(attack.dmg) + bonus - targetStats.dr, 0);
 
         // Aux rolls
@@ -78,7 +78,7 @@ Action.define('engage', [
           await actor.perform('miss', { attack, target, dodge: true });
         } else if (dmgroll) {
           const crit = roll + critroll > 95;
-          const dmg = crit ? Math.ceil(dmgroll * 1.5) : dmgroll;
+          const dmg = crit ? Math.ceil(dmgroll * 2) : dmgroll;
           await actor.perform('hit', { attack, target, dmg, crit });
         } else {
           await actor.perform('miss', { attack, target, glance: true });
