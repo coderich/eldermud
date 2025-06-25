@@ -1,8 +1,8 @@
 module.exports = {
-  name: 'Dagger',
+  name: 'dagger',
   depiction: 'A small, sharp blade suitable for swift strikes or throwing',
   description: 'Lightweight and easy to conceal, this dagger excels at precise hits.',
-  dmg: '1d4',
+  dmg: '2d4',
   acc: 5,
   crits: 1,
   range: 1,

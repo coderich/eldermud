@@ -32,6 +32,7 @@ SYSTEM.on('post:death', async ({ actor }) => {
         break;
       }
       default: {
+        const { name, lvl, mhp } = await actor.mGet('name', 'lvl', 'mhp');
         // const killers = Array.from(actor.$killers).filter(killer => killer.type === 'player');
         // const killerCount = killers.length || 1;
         // const exp = Math.ceil((actor.mhp * actor.exp) / killerCount);
@@ -48,12 +49,7 @@ SYSTEM.on('post:death', async ({ actor }) => {
         // });
 
         // Create corpse
-        await APP.instantiate('item.corpse', {
-          room,
-          mhp: actor.mhp,
-          lvl: actor.lvl,
-          name: `${actor.name} corpse`,
-        }).then(corpse => corpse.perform('spawn'));
+        await APP.instantiate('item.corpse', { room, lvl, mhp, name: `${name} corpse`}).then(corpse => corpse.perform('spawn'));
 
         // Destroy actor
         await actor.perform('destroy');

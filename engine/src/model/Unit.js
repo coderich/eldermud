@@ -11,15 +11,15 @@ module.exports = class Unit extends Actor {
   }
 
   async calcStats() {
-    const stats = await this.mGet('str', 'dex', 'con', 'int', 'wis', 'cha', 'class');
-    this.hp = this.mhp = APP.fibStat(stats.con) + stats.str;
-    this.ma = this.mma = Math.floor((APP.fibStat(stats.int) + APP.fibStat(stats.wis)) / 2);
-    this.ac = this.acc = Math.floor(stats.dex / 10);
-    this.dr = Math.floor((stats.str / 5)); // Damage Reduction + Poise
+    const stats = await this.mGet('lvl', 'str', 'dex', 'con', 'int', 'wis', 'cha', 'class');
+    this.hp = this.mhp = APP.fibStat(stats.lvl) + APP.fibStat(stats.con) + stats.str;
+    this.ma = this.mma = APP.fibStat(stats.lvl) + Math.floor((APP.fibStat(stats.int) + APP.fibStat(stats.wis)) / 2);
+    this.ac = this.acc = stats.lvl + Math.floor(stats.dex / 10);
+    this.dr = stats.lvl + Math.floor((stats.str / 5)); // Damage Reduction + Poise
     this.sc = this.mma; // Spellcasting
-    this.mr = Math.floor(stats.wis + (stats.str / 3) + (stats.con / 2)); // Magic Reduction/Resist
-    this.enc = APP.fibStat(stats.str);
-    this.perception = stats.int + stats.dex;
+    this.mr = stats.lvl + Math.floor(stats.wis + (stats.str / 3) + (stats.con / 2)); // Magic Reduction/Resist
+    this.enc = 600 + ((stats.lvl + stats.str) * 20)
+    this.perception = stats.lvl + stats.int + stats.dex;
     this.crits = Math.floor(stats.dex / 10);
     this.dodge = Math.floor(stats.dex / 10);
     this.parry = Math.floor(stats.dex / 10);
@@ -29,7 +29,7 @@ module.exports = class Unit extends Actor {
     this.traps = Math.floor(stats.int / 10);
     this.lockpicks = Math.floor(stats.int / 10);
     this.tracking = Math.floor(stats.wis / 10);
-    this.leadership = 0;
+    this.leadership = 1;
     this.depiction ??= CONFIG.get(`${stats.class}.depiction`);
     return this;
   }

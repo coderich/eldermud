@@ -1,9 +1,11 @@
 const Util = require('@coderich/util');
+const { Action } = require('@coderich/gameflow');
 const EventEmitter = require('./src/service/EventEmitter');
 const ConfigClient = require('./src/service/ConfigClient');
 const RedisClient = require('./src/service/RedisClient');
 const AppService = require('./src/service/AppService');
 const NPC = require('./src/model/NPC');
+const Actor = require('./src/model/Actor');
 const server = require('./src/server');
 
 exports.init = (datadir) => {
@@ -18,10 +20,22 @@ exports.init = (datadir) => {
 };
 
 exports.setup = async () => {
+  // Setup our world
+  Object.values(CONFIG.get('map')).forEach((map) => {
+    Object.values(map.doors || {}).forEach((door) => {
+      if (door.traits) {
+        const actor = new Actor(door);
+        door.traits.forEach((trait) => {
+          if (Action[trait?.id]) actor.stream('trait', trait.id);
+        });
+      }
+    });
+  });
+
   // Setup our NPCs
   Object.values(CONFIG.get('npc', {})).forEach(async (npc) => {
     const actor = await new NPC(npc);
-    await actor.perform('spawn');
+    if (npc.room) await actor.perform('spawn');
   });
 
   // Setup our instances

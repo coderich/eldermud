@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'Light Crossbow',
+  name: 'light crossbow',
   depiction: 'A compact crossbow that fires bolts with deadly accuracy',
   description: 'This weapon fires metal bolts at medium ranges, ideal for ambushes.',
   dmg: '1d8',

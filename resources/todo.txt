@@ -13,14 +13,16 @@
 - corpse limitations
 - hired help; telepath @do heal rand
 - room visibility (dark, torch, etc)
-- attack vs weapon
-- armor slots
 - train
 - drag unit?
 - REDIS: sMembers, sAdd, sRem, incrBy, incr, sIsMember (inventory)
 - draw creature aggression
 - creature re-targeting
 - party ranks effect combat...
-- shops; buy reasonable weapon
 - main menu: enter, about, help?
-- item progression
+- item progression matrix
+- target range vs source range - distance can be up to 5 (out of range!)
+- Terrain (buffs, debuffs, movement, off-balance-checks, etc)
+- room points-of-interest (eg. fountain); touch fountain +1 str etc
+- actions/gestures list
+- blockades/paths as first-class citizens with attached behavior...

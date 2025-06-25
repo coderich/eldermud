@@ -51,7 +51,7 @@ module.exports = class ActorWrapper extends Actor {
 
     return Promise.all(Object.entries(data).map(async ([key, value]) => {
       if (CONFIG.get(`app.spawn.${this.type}`).includes(key)) {
-        await REDIS.set(`${this}.${key}`, this[key], { NX, GET: true });
+        await REDIS.set(`${this}.${key}`, this[key], { NX });
       }
     })).then(() => this);
   }

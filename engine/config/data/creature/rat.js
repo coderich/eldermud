@@ -9,8 +9,6 @@ module.exports = {
   cha: 1,
   exp: 1,
   lvl: 1,
-  size: 1,
-  stealth: '10d10',
   slain: 'The rat takes its final breath, succumbing to the inevitable grasp of mortality.',
   random: {
     impressions: ['small', 'giant', 'huge', 'fat', 'skinny', 'angry'],

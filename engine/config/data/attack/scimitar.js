@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'Scimitar',
+  name: 'scimitar',
   depiction: 'A curved, single-edged sword favored by swift fighters',
   description: 'This sleek blade delivers quick slashing strikes with moderate damage potential.',
   dmg: '1d6',

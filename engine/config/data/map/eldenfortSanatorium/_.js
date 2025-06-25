@@ -2,8 +2,12 @@ const FS = require('fs');
 const Path = require('path');
 const { randomUUID } = require('crypto');
 const Get = require('lodash.get');
+const Item = require('../../../../src/model/Item');
+const NPC = require('../../../../src/model/NPC');
 
+const noop = ({ abort }) => abort();
 const startRoom = 'triageRoom';
+const onboardRoom = 'wardingChamber';
 
 // Create a new map/instance
 SYSTEM.on(`teleport:map.eldenfortSanatorium.rooms.${startRoom}`, async ({ actor }) => {
@@ -27,14 +31,15 @@ SYSTEM.on(`teleport:map.eldenfortSanatorium.rooms.${startRoom}`, async ({ actor 
 SYSTEM.on('post:spawn', async (context) => {
   if (context.actor.id === 'sisterCaldra') {
     const npc = context.actor;
-    const room = CONFIG.get(await npc.get('room'));
+    let room = CONFIG.get(await npc.get('room'));
     const [map] = `${room}`.split('.rooms');
 
     SYSTEM.on(`enter:${map}.rooms.${startRoom}`, async ({ actor }) => {
-      if (!actor.$sisterCaldra && `${room}` === `${map}.rooms.${startRoom}`) {
+      if (actor.type === 'player' && !actor.$sisterCaldra && `${room}` === `${map}.rooms.${startRoom}`) {
         actor.$sisterCaldra = true;
         actor.once('post:death', () => {
           delete actor.$sisterCaldra;
+          actor.offFunction(noop);
         });
 
         await APP.timeout(1000);
@@ -42,11 +47,12 @@ SYSTEM.on('post:spawn', async (context) => {
         await APP.timeout(3000);
         await actor.send('text', `${npc.name} (to you):`, APP.styleBlockText('dialog', [
           { text: 'follow', style: 'gesture' },
-        ], "This plague eats more than flesh - it devours identity. There isn't much time... please follow me!"));
+        ], "The Plague eats more than flesh - it devours identity. There isn't much time... follow me!"));
         await APP.timeout(2000);
         npc.perform('invite', { target: actor });
 
         actor.once(`follow:${npc}`, async () => {
+          actor.on('pre:execute', noop);
           const target = CONFIG.get(`${map}.rooms.quarantineHall`);
 
           if (!target.units.size) {
@@ -56,15 +62,38 @@ SYSTEM.on('post:spawn', async (context) => {
             await APP.timeout(1500);
             await actor.send('text', `${npc.name} (to you):`, APP.styleBlockText('dialog', [
               { text: creature.name, style: creature.type },
-            ], `Damn, another ${creature.name}... we need to move fast.`));
+            ], `${creature.name}... we need to move fast.`));
             await APP.timeout(1000);
             await npc.perform('look', { target, cmd: { code: 'w' } });
           }
 
           await APP.timeout(1500);
-          npc.stream('action', 'move', 'w');
-          npc.stream('action', 'move', 'w');
+          await npc.stream('action', 'move', 'w');
+          await npc.stream('action', 'move', 'w');
         });
+      }
+    });
+
+    SYSTEM.on(`enter:${map}.rooms.${onboardRoom}`, async ({ actor }) => {
+      room = CONFIG.get(await npc.get('room'));
+
+      if (actor.type === 'player' && !actor.$sisterCaldra2 && `${room}` === `${map}.rooms.${onboardRoom}`) {
+        actor.$sisterCaldra2 = true;
+        room.items = new Set();
+        // actor.on('pre:execute', noop);
+        actor.once('post:death', () => {
+          delete actor.$sisterCaldra2;
+          actor.offFunction(noop);
+        });
+        await APP.timeout(3000);
+        actor.send('text', APP.styleText('boost', `${npc.name} makes a sweeping gesture...`));
+        await APP.timeout(2000);
+        actor.send('text', APP.styleText('debuff', 'The runes on the floor begin to glow bright red!'));
+        await APP.timeout(2000);
+        await actor.perform('selectClass');
+        // await Promise.all(Object.values(CONFIG.get('class')).map((echo) => {
+        //   return new NPC({ ...CONFIG.get('npc.archetype'), name: `${echo.name}`, room, echo }).perform('spawn');
+        // }));
       }
     });
   }

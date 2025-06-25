@@ -9,6 +9,9 @@ module.exports = {
   con: 10,
   cha: 8,
   gains: { str: 0, dex: 0, int: 1, wis: 2, con: 1, cha: 1 },
+  attacks: [
+    '${self:attack.polearm}',
+  ],
   traits: [
     '${self:trait.naturalist}',
   ],

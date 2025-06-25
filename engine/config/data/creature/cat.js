@@ -9,8 +9,6 @@ module.exports = {
   cha: 1,
   exp: 1,
   lvl: 1,
-  size: 1,
-  stealth: '10d10+50',
   depiction: 'A sleek, agile feline with piercing eyes, a coat of midnight black fur, and graceful movements that exude a sense of mystery and cunning',
   slain: 'The life force fades from the feline\'s eyes, and its once vibrant spirit succumbs to the eternal slumber.',
   random: {

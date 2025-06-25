@@ -13,6 +13,7 @@ server.on('connect', ({ socket }) => {
   player.once('post:authenticate', async () => {
     Actor[socket.id] = player; // Add them to the list of Actors to respond to (server.on('cmd') below)
     await player.send('cls');
+    await player.save(player, true);
     await player.perform('spawn');
     await player.realm('text', `${APP.styleText(player.type, player.name)} enters the realm.`);
   });

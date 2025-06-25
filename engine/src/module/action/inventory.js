@@ -12,6 +12,6 @@ Action.define('inventory', [
 
     const description = items.length ? Object.values(inventory).map(item => APP.styleText('keyword', item.name).concat(`(${item.num})`)).join(', ') : 'nothing!';
     actor.send('text', 'You are carrying:', description);
-    actor.send('text', APP.styleText('stat', 'Encumbrance:'), APP.styleText('value', actor.enc));
+    actor.send('text', APP.styleText('stat', 'Encumbrance:'), APP.styleText('value', `0 / ${actor.enc}`));
   },
 ]);

@@ -20,6 +20,7 @@ SYSTEM.on('*', (event, context) => {
   if (type === 'enter') {
     const { room, exit } = result;
 
+    if (!room) console.log(`${actor}`);
     // Broadcast to room that you have arrived
     Array.from(room.units.values()).filter(unit => unit !== actor && !actor.$party.has(unit)).forEach((unit) => {
       const direction = APP.theRDirection[result.dir] || 'nowhere!';

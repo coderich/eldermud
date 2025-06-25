@@ -7,7 +7,7 @@ Action.define('decay', new Force([
     const { durability } = await actor.perform('affect', { durability: -1 });
 
     if (durability <= 0) {
-      await actor.broadcast('text', `${actor.name} disintegrates into dust`);
+      await actor.broadcast('text', `The ${actor.name} collapses to dust`);
       await actor.perform('destroy');
     }
   },
