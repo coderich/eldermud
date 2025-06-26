@@ -14,7 +14,6 @@
 - hired help; telepath @do heal rand
 - room visibility (dark, torch, etc)
 - train
-- drag unit?
 - REDIS: sMembers, sAdd, sRem, incrBy, incr, sIsMember (inventory)
 - draw creature aggression
 - creature re-targeting
@@ -26,3 +25,5 @@
 - room points-of-interest (eg. fountain); touch fountain +1 str etc
 - actions/gestures list
 - blockades/paths as first-class citizens with attached behavior...
+- drop when below zero hp, bleeding?, aid command? drag command? death hp a % of your max hp?
+-

@@ -45,7 +45,8 @@ app:
       description: ''
       exit: '<ansiGreen>'
       unitsLabel: '<ansi_magenta>'
-      partyLabel: '<PaleGoldenrod>'
+      # partyLabel: '<PaleGoldenrod>'
+      partyLabel: '<SlateBlue>'
       # exitsLabel: '<ForestGreen>'
       exitsLabel: '<ansiGreen>'
 

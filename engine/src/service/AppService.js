@@ -142,3 +142,13 @@ exports.table = (rows, options = {}) => {
 
   return table.trimEnd('\n');
 };
+
+exports.to2DParty = (party) => {
+  const arr = [
+    party.filter(unit => unit.$partyRank === 1).map(unit => APP.styleText(unit.type, unit.name)).join(', '),
+    party.filter(unit => unit.$partyRank === 2).map(unit => APP.styleText(unit.type, unit.name)).join(', '),
+    party.filter(unit => unit.$partyRank === 3).map(unit => APP.styleText(unit.type, unit.name)).join(', '),
+  ].filter(Boolean).join(' > ');
+  return `[${arr}]`;
+};
+
