@@ -4,7 +4,7 @@ module.exports = {
   description: 'Bandits roam wild roads and forests, ambushing travelers for coin and goods. Agile and cunning, they rely on stealth and quick strikes.',
   slain: 'The bandit staggers back, dropping their weapon before collapsing with a final breath.',
 
-  // Ability scores (d6 modifiers applied)
+  // Ability scores
   str: 12, // Moderate strength for melee
   dex: 14, // High dexterity for stealth and ranged attacks
   int: 10, // Average intelligence
@@ -32,20 +32,19 @@ module.exports = {
     // movements: ['Lurk', 'Pounce', 'Ambush', 'Flee'],
   },
 
-  // Standard weapon attacks
   attacks: [
     '${self:attack.scimitar}',
     '${self:attack.dagger}',
     '${self:attack.lightCrossbow}',
   ],
 
-  // Traits for behavior and resilience
   traits: [
     '${self:trait.lifeforce}',
+    '${self:trait.manaforce}',
+    '${self:trait.banding}',
+    // '${self:trait.tactical}',
     '${self:trait.vagabond}',
     '${self:trait.territorial}',
-    // '${self:trait.skulker}',
-    // '${self:trait.toughness}',
   ],
 
   // // Talents for special actions

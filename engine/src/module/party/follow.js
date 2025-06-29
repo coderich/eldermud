@@ -12,7 +12,7 @@ Action.define('follow', [
     target.$party.add(actor);
     target.$invited.delete(actor);
     actor.$invited.delete(target);
-    actor.$partyRank = 2;
+    actor.$partyRank = 2; // 1 | 2 | 3
 
     // Notifications
     actor.send('text', APP.styleText('engaged', `*Following ${target.name}*`));

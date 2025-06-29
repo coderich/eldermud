@@ -15,6 +15,7 @@ module.exports = {
   traits: [
     '${self:trait.lifeforce}',
     '${self:trait.manaforce}',
+    '${self:trait.banding}',
   ],
   talents: [],
   attacks: ['${self:attack.fist}'],

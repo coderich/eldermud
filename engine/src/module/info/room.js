@@ -5,13 +5,6 @@ Action.define('room', [
     if (actor.type === 'player') {
       room ??= CONFIG.get(await actor.get('room'));
 
-      const $exits = Object.keys(room.exits || {}).map((dir) => {
-        let text = APP.direction[dir];
-        const path = CONFIG.get(`${room}.paths.${dir}`);
-        if (path) text = `${path.label} ${text}`;
-        return APP.styleText('room.exit', text);
-      });
-
       const $loners = Array.from(room.units.values()).filter(unit => unit !== actor && unit.$party.size <= 1);
       const $groups = Array.from(new Set(Array.from(room.units.values()).filter(unit => unit.$party.size > 1).map(u => u.$party)));
       const $npcs = $loners.filter(el => el.type === 'npc').map(unit => APP.styleText(unit.type, unit.name))
@@ -23,6 +16,13 @@ Action.define('room', [
         ...$groups.map(el => APP.to2DParty(Array.from(el))),
         ...$players,
       ].filter(Boolean);
+
+      const $exits = Object.keys(room.exits || {}).map((dir) => {
+        let text = APP.direction[dir];
+        const path = CONFIG.get(`${room}.paths.${dir}`);
+        if (path) text = `${path.label} ${text}`;
+        return APP.styleText('room.exit', text);
+      });
 
       const $room = {
         name: APP.styleText('room.name', room.name),

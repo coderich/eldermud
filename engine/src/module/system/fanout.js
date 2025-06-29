@@ -32,6 +32,9 @@ SYSTEM.on('*', async (event, context) => {
           actor.emit(`path:${result.exit.paths?.[result.dir]}`, context);
           actor.emit(`enter:${result.room}`, context);
           actor.emit(`leave:${result.exit}`, context);
+          //
+          Array.from(CONFIG.get(`${result.room}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitEntered', { actor }));
+          Array.from(CONFIG.get(`${result.exit}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitLeft', { actor }));
           break;
         }
         default: {

@@ -170,6 +170,6 @@ module.exports = {
     },
   },
   spawns: [
-    { num: 1, max: 3, units: ['${self:creature.bandit}'] },
+    { num: 1, max: 5, units: ['${self:creature.bandit}'] },
   ],
 };
