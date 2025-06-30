@@ -5,22 +5,19 @@ module.exports = {
   slain: 'The bandit staggers back, dropping their weapon before collapsing with a final breath.',
 
   // Ability scores
-  str: 12, // Moderate strength for melee
-  dex: 14, // High dexterity for stealth and ranged attacks
-  int: 10, // Average intelligence
-  wis: 10, // Average perception
-  con: 13, // Good constitution for endurance
-  cha: 10, // Neutral charisma
+  str: 10,
+  dex: 12,
+  int: 10,
+  wis: 10,
+  con: 10,
+  cha: 10,
 
   // Combat parameters
   exp: 1,
   lvl: 1,
-  // ac: 14,                     // Leather armor + Dex
-  // hp: '1d8+3',                // Single d8 hit die + Con modifier
   // exp: 25,                    // Experience awarded when defeated
   // lvl: 2,                     // Challenge level
   // size: 1,                    // Medium creature
-  // stealth: '1d20+4',          // Stealth roll with Dex bonus
 
   // Random flavor tables for variety
   random: {

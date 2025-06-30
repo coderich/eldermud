@@ -25,7 +25,6 @@ module.exports = class Unit extends Actor {
     this.parry = Math.floor(stats.dex / 10);
     this.riposte = Math.floor(stats.dex / 10);
     this.stealth = Math.floor(stats.dex / 10);
-    this.thievery = Math.floor(stats.dex / 10);
     this.traps = Math.floor(stats.int / 10);
     this.lockpicks = Math.floor(stats.int / 10);
     this.tracking = Math.floor(stats.wis / 10);

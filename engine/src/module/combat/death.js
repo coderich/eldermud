@@ -11,7 +11,6 @@ SYSTEM.on('post:spawn', async ({ actor }) => {
 
 SYSTEM.on('post:affect', (context) => {
   const { actor, result } = context;
-  console.log(`${actor}`, result);
   if (result.hp <= 0) actor.perform('death');
 });
 

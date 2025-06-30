@@ -1,7 +1,7 @@
 module.exports = {
-  name: 'Warden',
+  name: 'Druid',
   depiction: 'A guardian of nature, clad in living bark and leaves, staff in hand.',
-  description: 'Wardens stand as defenders of the wild, calling upon natural magic to entangle foes and bolster allies.',
+  description: 'Druids stand as defenders of the wild, calling upon natural magic to entangle foes and bolster allies.',
   str: 8,
   dex: 8,
   int: 10,

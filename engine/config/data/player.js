@@ -1,6 +1,6 @@
 module.exports = {
-  // room: '${self:map.purgatory.rooms.purgatory}',
-  room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
+  room: '${self:map.purgatory.rooms.purgatory}',
+  // room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
   deathpoint: '${self:map.purgatory.rooms.purgatory}',
   checkpoint: '${self:map.eldenfortSanatorium.rooms.triageRoom}',
   lvl: 1,

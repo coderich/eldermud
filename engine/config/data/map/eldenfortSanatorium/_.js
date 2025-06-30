@@ -39,7 +39,7 @@ SYSTEM.on('post:spawn', async (context) => {
         actor.$sisterCaldra = true;
         actor.once('post:death', () => {
           delete actor.$sisterCaldra;
-          actor.offFunction(noop);
+          // actor.offFunction(noop);
         });
 
         await APP.timeout(1000);
@@ -52,7 +52,7 @@ SYSTEM.on('post:spawn', async (context) => {
         npc.perform('invite', { target: actor });
 
         actor.once(`follow:${npc}`, async () => {
-          actor.on('pre:execute', noop);
+          // actor.on('pre:execute', noop);
           const target = CONFIG.get(`${map}.rooms.quarantineHall`);
 
           if (!target.units.size) {
@@ -83,17 +83,17 @@ SYSTEM.on('post:spawn', async (context) => {
         // actor.on('pre:execute', noop);
         actor.once('post:death', () => {
           delete actor.$sisterCaldra2;
-          actor.offFunction(noop);
+          // actor.offFunction(noop);
         });
         await APP.timeout(3000);
         actor.send('text', APP.styleText('boost', `${npc.name} makes a sweeping gesture...`));
         await APP.timeout(2000);
         actor.send('text', APP.styleText('debuff', 'The runes on the floor begin to glow bright red!'));
         await APP.timeout(2000);
-        await actor.perform('selectClass');
-        // await Promise.all(Object.values(CONFIG.get('class')).map((echo) => {
-        //   return new NPC({ ...CONFIG.get('npc.archetype'), name: `${echo.name}`, room, echo }).perform('spawn');
-        // }));
+        // await actor.perform('selectClass');
+        await Promise.all(Object.values(CONFIG.get('class')).map((echo) => {
+          return new NPC({ ...CONFIG.get('npc.archetype'), name: `${echo.name}`, room, echo }).perform('spawn');
+        }));
       }
     });
   }

@@ -37,6 +37,7 @@ const commands = [
     { close: { args: [1], code: 'close', channel: 'realm', stream: 'action' } },
     { stats: { args: [0], code: 'stats', channel: 'realm', stream: 'info' } },
     { drop: { args: [1, 2, 3, 4, 5], code: 'drop', channel: 'realm', stream: 'action' } },
+    { actions: { args: [0], code: 'actions', channel: 'realm', stream: 'info' } },
     // { repeat: { args: [0], code: 're', stream: '' } },
     { exit: { args: [0], code: 'x', channel: 'realm', stream: 'action' } },
   ],

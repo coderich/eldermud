@@ -19,7 +19,7 @@ Action.define('stats', [
       Heritage: `${CONFIG.get(stats.heritage)?.name || '<unknown>'}`,
       Health: `${stats.hp}/${stats.mhp}`,
       Mana: `${stats.ma}/${stats.mma}`,
-      'AC/DR': `${stats.ac}/${stats.dr}`,
+      'AC/DR/MR': `${stats.ac}/${stats.dr}/${stats.mr}`,
       Remnants: `${stats.exp}`,
       Strength: `${stats.str}`,
       Dexterity: `${stats.dex}`,
@@ -35,11 +35,10 @@ Action.define('stats', [
       Riposte: `${stats.riposte}`,
       Encumbrance: `${stats.enc}`,
       Perception: `${stats.perception}`,
-      Thievery: `${stats.thievery}`,
       Traps: `${stats.traps}`,
       Lockpicks: `${stats.lockpicks}`,
       Tracking: `${stats.tracking}`,
-      Willpower: `${stats.mr}`,
+      Weapon: 'Sword',
       Talents: stats.talents.map(talent => talent.name).join(', ') || '<none>',
       Traits: stats.traits.map(trait => trait.name).join(', ') || '<none>',
     }).reduce((prev, [key, value]) => {
@@ -49,17 +48,21 @@ Action.define('stats', [
     const Empty = [APP.styleText('stat', ''), APP.styleText('keyword', '')];
 
     const table1 = APP.table([
-      [...data.Name, ...data.Level, ...data.Dodge, ...data.Perception],
-      [...data.Race, ...data['AC/DR'], ...data.Parry, ...data.Thievery],
-      [...data.Class, ...data.Health, ...data.Riposte, ...data.Tracking],
-      [...data.Heritage, ...data.Mana, ...data.Stealth, ...data.Traps],
-      [...Empty, ...Empty, ...data.Crits, ...data.Lockpicks],
-      [...data.Strength, ...data.Dexterity, ...data.Leadership, ...data.Willpower],
-      [...data.Intellect, ...data.Wisdom],
-      [...data.Constitution, ...data.Charisma],
+      [...data.Name, ...data.Level, ...data.Dodge],
+      [...data.Race, ...data['AC/DR/MR'], ...data.Parry],
+      [...data.Class, ...data.Health, ...data.Riposte],
+      [...data.Heritage, ...data.Mana, ...data.Stealth],
+      [...Empty, ...Empty, ...data.Crits],
+      [...data.Strength, ...data.Dexterity, ...data.Leadership],
+      [...data.Intellect, ...data.Wisdom, ...data.Tracking],
+      [...data.Constitution, ...data.Charisma, ...data.Traps],
+      [...Empty, ...Empty, ...data.Lockpicks],
+      [...Empty, ...Empty, ...data.Perception],
+      [],
     ], { sep: '' });
 
     const table2 = APP.table([
+      [...data.Weapon],
       [...data.Traits],
       [...data.Talents],
     ], { sep: '' });
