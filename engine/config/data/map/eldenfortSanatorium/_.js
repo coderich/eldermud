@@ -2,10 +2,10 @@ const FS = require('fs');
 const Path = require('path');
 const { randomUUID } = require('crypto');
 const Get = require('lodash.get');
-const Item = require('../../../../src/model/Item');
+// const Item = require('../../../../src/model/Item');
 const NPC = require('../../../../src/model/NPC');
 
-const noop = ({ abort }) => abort();
+// const noop = ({ abort }) => abort();
 const startRoom = 'triageRoom';
 const onboardRoom = 'wardingChamber';
 
@@ -21,8 +21,9 @@ SYSTEM.on(`teleport:map.eldenfortSanatorium.rooms.${startRoom}`, async ({ actor 
 
   // Spawn NPC(s) + teleport actor
   const room = CONFIG.get(`${map}.rooms.${startRoom}`);
+  const room2 = CONFIG.get(`${map}.rooms.${onboardRoom}`);
   const npc = await APP.instantiate('npc.sisterCaldra');
-  await npc.save({ room }).then(el => el.perform('spawn'));
+  await npc.save({ room: room2 }).then(el => el.perform('spawn'));
   await actor.save({ checkpoint: room });
   await actor.perform('teleport', { room });
 });
@@ -34,12 +35,14 @@ SYSTEM.on('post:spawn', async (context) => {
     let room = CONFIG.get(await npc.get('room'));
     const [map] = `${room}`.split('.rooms');
 
+    // NPC meets Player
     SYSTEM.on(`enter:${map}.rooms.${startRoom}`, async ({ actor }) => {
-      if (actor.type === 'player' && !actor.$sisterCaldra && `${room}` === `${map}.rooms.${startRoom}`) {
+      room = CONFIG.get(await npc.get('room'));
+
+      if (`${room}` === `${map}.rooms.${startRoom}`) {
         actor.$sisterCaldra = true;
         actor.once('post:death', () => {
           delete actor.$sisterCaldra;
-          // actor.offFunction(noop);
         });
 
         await APP.timeout(1000);
@@ -52,7 +55,6 @@ SYSTEM.on('post:spawn', async (context) => {
         npc.perform('invite', { target: actor });
 
         actor.once(`follow:${npc}`, async () => {
-          // actor.on('pre:execute', noop);
           const target = CONFIG.get(`${map}.rooms.quarantineHall`);
 
           if (!target.units.size) {
@@ -74,16 +76,15 @@ SYSTEM.on('post:spawn', async (context) => {
       }
     });
 
+    // Player onboarding
     SYSTEM.on(`enter:${map}.rooms.${onboardRoom}`, async ({ actor }) => {
       room = CONFIG.get(await npc.get('room'));
 
       if (actor.type === 'player' && !actor.$sisterCaldra2 && `${room}` === `${map}.rooms.${onboardRoom}`) {
         actor.$sisterCaldra2 = true;
         room.items = new Set();
-        // actor.on('pre:execute', noop);
         actor.once('post:death', () => {
           delete actor.$sisterCaldra2;
-          // actor.offFunction(noop);
         });
         await APP.timeout(3000);
         actor.send('text', APP.styleText('boost', `${npc.name} makes a sweeping gesture...`));

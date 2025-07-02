@@ -1,4 +1,5 @@
 module.exports = {
   name: 'PowerShot',
-  description: 'Highly focused magical arrow; high damanage and crit chance',
+  description: 'Focus a blistering arrow with increased damage and critical chance',
+  range: 5,
 };

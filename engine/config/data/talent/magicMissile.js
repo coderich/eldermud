@@ -1,4 +1,5 @@
 module.exports = {
   name: 'MagicMissile',
-  description: 'Fires an arcane bolt at a target',
+  description: 'Fire concentrated arcane bolts at your target',
+  range: 5,
 };

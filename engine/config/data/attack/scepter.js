@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'Sword',
+  name: 'Scepter',
   dmg: '1d3',
   acc: 0,
   crits: 0,

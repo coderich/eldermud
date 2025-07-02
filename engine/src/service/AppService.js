@@ -38,7 +38,9 @@ exports.castValue = (value) => {
 
 exports.styleBlockText = (base, styles = [], blocktext) => {
   return styles.reduce((prev, { text, style, limit = Infinity }) => {
-    const re = new RegExp(`\\b${text}(?=$|\\W)`, 'g');
+    const escapedText = text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // const re = new RegExp(`\\b${text}(?=$|\\W)`, 'g');
+    const re = new RegExp(`(?<=^|\\W)${escapedText}(?=$|\\W)`, 'g');
     return prev.replace(re, (match) => {
       return limit-- > 0 ? exports.styleText(style, text).concat(CONFIG.get(`app.styles.${base}`)) : match;
     });
@@ -49,6 +51,15 @@ exports.target = (list, args, by = 'name') => {
   const result = { rest: [] };
   const arr = list instanceof Set ? Array.from(list.values()) : list; // Ensure array
   const $args = [...args]; // Shallow copy
+
+  // Sort the array by length of what you're searching by to improve accuracy
+  arr.sort((a, b) => {
+    const alen = a[by]?.length || 0;
+    const blen = b[by]?.length || 0;
+    return alen - blen;
+  });
+
+  // The find function
   const fn = (el, text) => {
     text = text.replace(/[^a-zA-Z]/g, ''); // Sanitize match to be alpha only
     return text.length && el[by]?.match(new RegExp(`\\b${text}`, 'gi'));
@@ -116,26 +127,33 @@ exports.roll = (dice) => {
   }
 };
 
+exports.stripColorTags = str => str.replace(/<[^>]+>(.*?)<reset>/g, '$1');
+
 exports.table = (rows, options = {}) => {
+  rows = rows.filter(Boolean);
   let table = '', startIndex = 0;
   const sep = options.sep ?? '| ';
 
   // Determine the maximum width for each column
-  const colWidths = rows[0].map((_, i) => Math.max(...rows.map(row => String(row[i]).length)));
+  const colWidths = rows[0].map((_, i) => Math.max(...rows.map(row => exports.stripColorTags(String(row[i])).length)));
 
   // Generate header
   if (options.header) {
     startIndex = 1;
     const headers = rows[0];
     table = table.concat(headers.reduce((prev, header, i, arr) => {
-      return prev.concat(`${header.toString().padEnd(colWidths[i])} | `);
+      header = header.toString();
+      const extra = header.length - exports.stripColorTags(header).length;
+      return prev.concat(`${header.padEnd(colWidths[i] + extra)} | `);
     }, '| '), '\n').concat('|', headers.map((_, i) => `${'-'.repeat(colWidths[i] + 2)}|`).join(''), '\n');
   }
 
   // Generate data
   table = table.concat(rows.slice(startIndex).reduce((prev, row) => {
     return prev.concat(sep, row.map((data, i, arr) => {
-      const value = i <= arr.length - 2 ? `${data.toString().padEnd(colWidths[i])} ${sep}` : `${data.toString()} ${sep}`;
+      data = data.toString();
+      const extra = data.length - exports.stripColorTags(data).length;
+      const value = i <= arr.length - 2 ? `${data.padEnd(colWidths[i] + extra)} ${sep}` : `${data} ${sep}`;
       return value;
     }).join(''), '\n');
   }, ''));
@@ -152,3 +170,8 @@ exports.to2DParty = (party) => {
   return `[${arr}]`;
 };
 
+exports.targetHelp = (args) => {
+  const $config = CONFIG.toObject();
+  const things = Object.values($config.data).map(el => Object.values(el)).flat().filter(Boolean);
+  return APP.target(things, args);
+};

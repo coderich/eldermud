@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'touch',
+  name: 'Touch',
   dmg: '1d5+1',
   acc: 5,
   crits: 0,

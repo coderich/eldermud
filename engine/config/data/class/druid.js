@@ -9,14 +9,19 @@ module.exports = {
   con: 10,
   cha: 8,
   gains: { str: 0, dex: 0, int: 1, wis: 2, con: 1, cha: 1 },
+  gear: {
+    armor: '${self:armor.gambeson}',
+    weapon: '${self:attack.staff}',
+    armorset: '${self:armorset.rawhide}',
+  },
   attacks: [
-    '${self:attack.polearm}',
+    '${self:attack.staff}',
   ],
   traits: [
     '${self:trait.naturalist}',
   ],
   talents: [
-    '${self:talent.entangle}',
+    '${self:talent.thornWhip}',
   ],
   progression: [
     'Druid ▶ shape-shifting forms, healing over time, entangling roots',

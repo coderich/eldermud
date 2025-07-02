@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'fist',
+  name: 'Fist',
   dmg: '1d5',
   acc: 10,
   crits: 0,

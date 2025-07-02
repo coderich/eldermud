@@ -1,5 +1,5 @@
 module.exports = {
-  name: 'teeth',
+  name: 'Teeth',
   dmg: '1d5+1',
   acc: 5,
   crits: 5,

@@ -1,4 +1,4 @@
 module.exports = {
   name: 'Bash',
-  description: 'Bash target; deals damage and stuns',
+  description: 'Deliver a crushing blow that deals damage and stuns',
 };

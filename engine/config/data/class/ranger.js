@@ -9,6 +9,11 @@ module.exports = {
   con: 8,
   cha: 8,
   gains: { str: 1, dex: 2, int: 0, wis: 1, con: 1, cha: 0 },
+  gear: {
+    armor: '${self:armor.gambeson}',
+    weapon: '${self:attack.bow}',
+    armorset: '${self:armorset.leather}',
+  },
   attacks: [
     '${self:attack.bow}',
   ],

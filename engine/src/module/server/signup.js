@@ -17,8 +17,5 @@ Action.define('signup', async (_, { actor }) => {
   actor.name = username;
 
   // Set password
-  await actor.perform('setPassword');
-
-  // Onboard new player
-  return actor.perform('onboard');
+  return actor.perform('setPassword');
 });

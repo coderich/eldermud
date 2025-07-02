@@ -99,9 +99,11 @@ SYSTEM.on('*', async (event, context) => {
         return Object.assign(data, APP.target(inventory.concat(roomItems), args));
       }
       case 'help': {
-        const $config = CONFIG.toObject();
-        const things = Object.values($config.data).map(el => Object.values(el)).flat().filter(Boolean);
-        Object.assign(data, APP.target(things, args));
+        if (!args.length) {
+          Object.assign(data, { target: { type: 'help' } });
+        } else {
+          Object.assign(data, APP.targetHelp(args));
+        }
         break;
       }
       default: {

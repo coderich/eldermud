@@ -34,11 +34,11 @@ Action.define('room', [
         units: $units,
       };
 
-      actor.send('text', $room.name);
-      actor.send('text', $room.description);
-      if ($room.items.length) actor.send('text', APP.styleText('item', `You notice ${$room.items.join(', ')} here.`));
-      if ($room.units.length) actor.send('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
-      actor.send('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
+      await actor.send('text', $room.name);
+      await actor.send('text', $room.description);
+      if ($room.items.length) await actor.send('text', APP.styleText('item', `You notice ${$room.items.join(', ')} here.`));
+      if ($room.units.length) await actor.send('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
+      await actor.send('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
     }
   },
 ]);

@@ -70,7 +70,7 @@ module.exports = class ActorWrapper extends Actor {
   }
 
   query(...messages) {
-    return this.socket.query('query', APP.styleText('dialog', '>', messages.flat().join(' ')));
+    return this.socket.query('query', APP.styleText('muted', '>>>').concat(' ', APP.styleText('dialog', messages.flat().join(' ')), APP.styleText('dialog', ':')));
   }
 
   async realm(...args) {
