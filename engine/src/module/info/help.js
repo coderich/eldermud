@@ -29,7 +29,7 @@ Action.define('help', [
           [description],
           [APP.table([
             ['Stats:', stats.join(' | ').concat(APP.styleText('muted', ' (+ is per-level gain)'))],
-            gear && ['Gear:', APP.styleText('keyword', gear.weapon.name, '+', gear.armor.name, APP.styleText('muted', `(${gear.armorset.name} Armor Progression)`))],
+            gear && ['Gear:', APP.styleText('keyword', gear.weapon.name, '+', gear.armor.name)],
             ['Traits:', APP.styleText('keyword', traits.map(el => el.name).join(', '))],
             ['Talents:', APP.styleText('keyword', talents.map(el => el.name).join(', '))],
           ], { sep: '' })],

@@ -1,6 +1,6 @@
 module.exports = {
-  name: 'Staff',
-  dmg: '1d3',
+  name: 'Greatsword',
+  dmg: '2d5+2',
   acc: 0,
   crits: 0,
   range: 2,

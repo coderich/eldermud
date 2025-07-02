@@ -10,12 +10,11 @@ module.exports = {
   cha: 8,
   gains: { str: 1, dex: 2, int: 0, wis: 1, con: 1, cha: 0 },
   gear: {
-    armor: '${self:armor.gambeson}',
-    weapon: '${self:attack.bow}',
-    armorset: '${self:armorset.leather}',
+    armor: '${self:armor.tunic}',
+    weapon: '${self:attack.sling}',
   },
   attacks: [
-    '${self:attack.bow}',
+    '${self:attack.sling}',
   ],
   traits: [
     '${self:trait.marksman}',

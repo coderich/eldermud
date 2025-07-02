@@ -10,12 +10,11 @@ module.exports = {
   cha: 8,
   gains: { str: 1, dex: 0, int: 1, wis: 2, con: 0, cha: 1 },
   gear: {
-    armor: '${self:armor.gambeson}',
-    weapon: '${self:attack.mace}',
-    armorset: '${self:armorset.scalemail}',
+    armor: '${self:armor.tabard}',
+    weapon: '${self:attack.club}',
   },
   attacks: [
-    '${self:attack.mace}',
+    '${self:attack.club}',
   ],
   traits: [
     '${self:trait.devotist}',
