@@ -176,7 +176,7 @@ module.exports = {
       status: 'open',
       durability: 100,
       picklock: 100,
-      traits: ['${self:trait.door}']
+      traits: ['${self:trait.door}'],
     },
   },
   // spawns: [

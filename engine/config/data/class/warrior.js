@@ -17,7 +17,7 @@ module.exports = {
     '${self:attack.cestus}',
   ],
   traits: [
-    '${self:trait.weaponmaster}',
+    '${self:trait.weaponsmaster}',
   ],
   talents: [
     '${self:talent.bash}',

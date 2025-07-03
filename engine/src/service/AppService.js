@@ -105,11 +105,12 @@ exports.roll = (dice) => {
   if (exports.isNumeric(dice)) return Number(dice);
 
   const input = dice.match(/\S+/g).join('');
-  const [, rolls, sides, op = '+', mod = 0] = input.match(/(\d+)d(\d+)([+-\\*\\/]?)(\d*)/);
+  const [, neg, rolls, sides, op = '+', mod = 0] = input.match(/(-?)(\d+)d(\d+)(\*\*|[%+\-*\\/]?)(\d*)/);
+  // const [, neg, rolls, sides, op = '+', mod = 0] = input.match(/(-?)(\d+)d(\d+)([+-\\*\\/]?)(\d*)/);
   if (Number.parseInt(sides, 10) <= 0) return 0;
 
   // Dice roll value
-  const value = Array.from(Array(Number.parseInt(rolls, 10))).reduce((prev, curr) => {
+  let value = Array.from(Array(Number.parseInt(rolls, 10))).reduce((prev, curr) => {
     return prev + chance.integer({ min: 1, max: sides });
   }, 0);
 
@@ -117,14 +118,16 @@ exports.roll = (dice) => {
   const val = parseInt(mod, 10);
 
   switch (op) {
-    case '+': return value + val;
-    case '-': return value - val;
-    case '*': return value * val;
-    case '/': return value / val;
-    case '%': return value % val;
-    case '**': return value ** val; // Power of
-    default: return value;
+    case '+': { value += val; break; }
+    case '-': { value -= val; break; }
+    case '*': { value *= val; break; }
+    case '/': { value /= val; break; }
+    case '%': { value %= val; break; }
+    case '**': { value **= val; break; } // Power of
+    default: break;
   }
+
+  return neg ? -value : value;
 };
 
 exports.stripColorTags = str => str.replace(/<[^>]+>(.*?)<reset>/g, '$1');

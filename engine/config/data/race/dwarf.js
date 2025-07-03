@@ -13,6 +13,6 @@ module.exports = {
     // '${self:trait.stoneResilience}', // passive: take 10% less physical damage when below 50% HP
   ],
   talents: [
-    // '${self:talent.battlecry}', // active: rally allies, granting +2 STR for 10s, costs 5 MP
+    '${self:talent.battlecry}', // active: rally allies, granting +2 STR for 10s, costs 5 MP
   ],
 };

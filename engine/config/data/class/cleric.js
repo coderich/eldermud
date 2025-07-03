@@ -20,7 +20,7 @@ module.exports = {
     '${self:trait.devotist}',
   ],
   talents: [
-    '${self:talent.heal}',
+    '${self:talent.minorHeal}',
   ],
   progression: [
     'Templar ▶ shield bashes, holy retaliation, party auras',

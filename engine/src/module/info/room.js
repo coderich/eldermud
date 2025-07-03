@@ -7,9 +7,9 @@ Action.define('room', [
 
       const $loners = Array.from(room.units.values()).filter(unit => unit !== actor && unit.$party.size <= 1);
       const $groups = Array.from(new Set(Array.from(room.units.values()).filter(unit => unit.$party.size > 1).map(u => u.$party)));
-      const $npcs = $loners.filter(el => el.type === 'npc').map(unit => APP.styleText(unit.type, unit.name))
-      const $creatures = $loners.filter(el => el.type === 'creature').map(unit => APP.styleText(unit.type, unit.name))
-      const $players = $loners.filter(el => el.type === 'player').map(unit => APP.styleText(unit.type, unit.name))
+      const $npcs = $loners.filter(el => el.type === 'npc').map(unit => APP.styleText(unit.type, unit.name));
+      const $creatures = $loners.filter(el => el.type === 'creature').map(unit => APP.styleText(unit.type, unit.name));
+      const $players = $loners.filter(el => el.type === 'player').map(unit => APP.styleText(unit.type, unit.name));
       const $units = [
         ...$npcs,
         ...$creatures,

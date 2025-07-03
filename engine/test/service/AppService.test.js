@@ -1,6 +1,16 @@
 const AppService = require('../../src/service/AppService');
 
 describe('AppService', () => {
+  test('roll', () => {
+    expect(AppService.roll('5')).toBe(5);
+    expect(AppService.roll('0d5')).toBe(0);
+    expect(AppService.roll('-5')).toBe(-5);
+    expect(AppService.roll('-1d1')).toBe(-1);
+    expect(AppService.roll('1d1*5')).toBe(5);
+    expect(AppService.roll('2d1/2')).toBe(1);
+    expect(AppService.roll('3d1**3')).toBe(27);
+  });
+
   test('isNumeric', () => {
     expect(AppService.isNumeric()).toBe(false);
     expect(AppService.isNumeric(null)).toBe(false);
@@ -14,13 +24,13 @@ describe('AppService', () => {
     expect(AppService.fibStat(undefined)).toBe(0);
     expect(AppService.fibStat(0)).toBe(0);
     expect(AppService.fibStat('0')).toBe(0);
-    expect(AppService.fibStat(1)).toBe(3);
-    expect(AppService.fibStat(3)).toBe(9);
-    expect(AppService.fibStat('3')).toBe(9);
-    expect(AppService.fibStat(10)).toBe(30);
-    expect(AppService.fibStat(11)).toBe(35);
-    expect(AppService.fibStat(20)).toBe(80);
-    expect(AppService.fibStat(21)).toBe(88);
+    expect(AppService.fibStat(1)).toBe(1);
+    expect(AppService.fibStat(3)).toBe(3);
+    expect(AppService.fibStat('3')).toBe(3);
+    expect(AppService.fibStat(10)).toBe(10);
+    expect(AppService.fibStat(11)).toBe(13);
+    expect(AppService.fibStat(20)).toBe(40);
+    expect(AppService.fibStat(21)).toBe(45);
   });
 
   test('instantiate', async () => {
@@ -29,7 +39,7 @@ describe('AppService', () => {
     // Data checks
     expect(rat).toMatchObject({ name: 'rat', test: 'test' });
     expect(dorian).toMatchObject({ name: 'Dorian', test: 'test' });
-    expect(rope).toMatchObject({ name: 'rope & grapple', test: 'test' });
+    expect(rope).toMatchObject({ name: 'Rope & Grapple', test: 'test' });
 
     // Redis keys
     expect(`${rat}`).toEqual('creature.rat.1');

@@ -49,7 +49,7 @@ SYSTEM.on('post:death', async ({ actor }) => {
         // });
 
         // Create corpse
-        await APP.instantiate('item.corpse', { room, lvl, mhp, name: `${name} corpse`}).then(corpse => corpse.perform('spawn'));
+        await APP.instantiate('item.corpse', { room, lvl, mhp, name: `${name} corpse` }).then(corpse => corpse.perform('spawn'));
 
         // Destroy actor
         await actor.perform('destroy');

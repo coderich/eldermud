@@ -1,3 +1,5 @@
 const { getBabelConfig } = require('@coderich/dev');
 
-module.exports = getBabelConfig();
+module.exports = getBabelConfig({
+  ignore: null,
+});

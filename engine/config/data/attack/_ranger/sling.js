@@ -1,10 +1,12 @@
 module.exports = {
   name: 'Sling',
-  dmg: '2d5+2',
-  acc: 0,
+  depiction: 'A braided leather strap about two feet long, with a small leather pouch at one end.',
+  description: 'A simple strap used to hurl stones or small projectiles, lightweight and silent for quick, improvised ranged attacks.',
+  dmg: '1d6',
+  acc: 4,
   crits: 0,
-  range: 2,
-  scale: { str: 1, dex: 0.3 },
-  hits: ['scratch', 'rip', 'dig', 'tear'],
-  misses: ['swipe', 'swing', 'paw'],
+  range: 5,
+  scale: { str: 0.6, dex: 0.4 },
+  hits: ['thud', 'ping', 'smack'],
+  misses: ['shatter', 'drop', 'whiff'],
 };

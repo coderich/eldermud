@@ -17,7 +17,7 @@ module.exports = {
     '${self:attack.shiv}',
   ],
   traits: [
-    '${self:trait.trickster}',
+    '${self:trait.shadowdancer}',
   ],
   talents: [
     '${self:talent.quickstab}',
