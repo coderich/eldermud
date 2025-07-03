@@ -9,13 +9,8 @@ module.exports = {
   con: 10,
   cha: 8,
   gains: { str: 0, dex: 0, int: 1, wis: 2, con: 1, cha: 1 },
-  gear: {
-    armor: '${self:armor.furs}',
-    weapon: '${self:attack.stick}',
-  },
-  attacks: [
-    '${self:attack.stick}',
-  ],
+  armor: '${self:armor.furs}',
+  weapon: '${self:attack.stick}',
   traits: [
     '${self:trait.naturalist}',
   ],

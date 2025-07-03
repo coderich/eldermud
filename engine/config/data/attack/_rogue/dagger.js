@@ -12,14 +12,14 @@
 // };
 
 module.exports = {
-  name: 'Honed Dagger',
+  name: 'Dagger',
   depiction: 'A combat dagger with a gleaming steel blade honed to a razor-sharp edge.',
   description: 'A finely crafted dagger that delivers deeper wounds with superior craftsmanship.',
-  dmg: '2d6',
-  acc: 6,
-  crits: 1,
+  dmg: '1d6',
+  acc: 3,
+  crits: 2,
   range: 1,
-  scale: { str: 0.3, dex: 0.6 },
+  scale: { str: 0.25, dex: 0.25 },
   hits: ['pierce', 'slice', 'stab'],
   misses: ['fumble', 'slip', 'miss'],
 };

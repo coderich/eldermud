@@ -9,13 +9,8 @@ module.exports = {
   con: 8,
   cha: 8,
   gains: { str: 0, dex: 0, int: 3, wis: 2, con: 0, cha: 0 },
-  gear: {
-    armor: '${self:armor.cloth}',
-    weapon: '${self:attack.wand}',
-  },
-  attacks: [
-    '${self:attack.wand}',
-  ],
+  armor: '${self:armor.cloth}',
+  weapon: '${self:attack.wand}',
   traits: [
     '${self:trait.arcanist}',
   ],

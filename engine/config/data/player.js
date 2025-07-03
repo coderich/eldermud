@@ -1,8 +1,12 @@
 module.exports = {
-  room: '${self:map.purgatory.rooms.purgatory}',
-  // room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
-  deathpoint: '${self:map.purgatory.rooms.purgatory}',
-  checkpoint: '${self:map.eldenfortSanatorium.rooms.triageRoom}',
+  // room: '${self:map.purgatory.rooms.purgatory}',
+  // deathpoint: '${self:map.purgatory.rooms.purgatory}',
+  // checkpoint: '${self:map.eldenfortSanatorium.rooms.triageRoom}',
+
+  room: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
+  deathpoint: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
+  checkpoint: '${self:map.eldenfortCountryside.rooms.hermitHaven}',
+
   lvl: 1,
   exp: 0,
   str: 1,
@@ -15,8 +19,6 @@ module.exports = {
   traits: [
     '${self:trait.lifeforce}',
     '${self:trait.manaforce}',
-    '${self:trait.banding}',
   ],
   talents: [],
-  attacks: ['${self:attack.fist}'],
 };

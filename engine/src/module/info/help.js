@@ -21,19 +21,19 @@ Action.define('help', [
         ], { sep: '' })));
       }
       case 'race': case 'class': {
-        const { name, str, dex, int, wis, con, cha, gains, description, talents, traits, gear } = target;
+        const { name, str, dex, int, wis, con, cha, gains, description, talents, traits, weapon, armor } = target;
         const stats = Object.entries({ str, dex, int, wis, con, cha }).map(([key, value]) => APP.styleText('stat', `${ucFirst(key)}:`).concat(' ', APP.styleText('keyword', value), APP.styleText('muted', gains[key] ? `+${gains[key]}` : '')));
 
-        return actor.send('text', APP.table([
-          [APP.styleText('highlight', name)],
-          [description],
-          [APP.table([
+        return Promise.all([
+          actor.send('text', APP.styleText('highlight', name)),
+          actor.send('text', description),
+          actor.send('text', APP.table([
             ['Stats:', stats.join(' | ').concat(APP.styleText('muted', ' (+ is per-level gain)'))],
-            gear && ['Gear:', APP.styleText('keyword', gear.weapon.name, '+', gear.armor.name)],
+            weapon && armor && ['Equip:', APP.styleText('keyword', weapon.name, '+', armor.name)],
             ['Traits:', APP.styleText('keyword', traits.map(el => el.name).join(', '))],
             ['Talents:', APP.styleText('keyword', talents.map(el => el.name).join(', '))],
-          ], { sep: '' })],
-        ], { sep: '' }));
+          ], { sep: '' })),
+        ]);
       }
       default: {
         return Promise.all([

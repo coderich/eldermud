@@ -5,6 +5,7 @@ const { Action } = require('@coderich/gameflow');
  */
 Action.define('spawn', async (_, { actor }) => {
   await actor.calcStats?.();
+  await actor.save(actor, true);
 
   // Assign actors to world
   const room = CONFIG.get(await actor.get('room'));

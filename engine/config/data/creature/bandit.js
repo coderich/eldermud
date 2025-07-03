@@ -30,15 +30,15 @@ module.exports = {
   },
 
   attacks: [
-    '${self:attack.scimitar}',
+    // '${self:attack.scimitar}',
     '${self:attack.dagger}',
-    '${self:attack.lightCrossbow}',
+    '${self:attack.sling}',
   ],
 
   traits: [
     '${self:trait.lifeforce}',
     '${self:trait.manaforce}',
-    '${self:trait.banding}',
+    // '${self:trait.banding}',
     // '${self:trait.tactical}',
     '${self:trait.vagabond}',
     '${self:trait.territorial}',

@@ -7,7 +7,7 @@ Action.define('stats', [
       ...['dodge', 'parry', 'stealth', 'crits', 'riposte', 'perception'],
       ...['thievery', 'traps', 'lockpicks', 'tracking'],
       ...['str', 'dex', 'int', 'wis', 'con', 'cha', 'talents', 'traits'],
-      ...['exp', 'lvl', 'class', 'race', 'heritage', 'leadership'],
+      ...['exp', 'lvl', 'class', 'race', 'heritage', 'leadership', 'weapon', 'armor'],
     );
 
     const data = Object.entries({
@@ -38,7 +38,7 @@ Action.define('stats', [
       Traps: `${stats.traps}`,
       Lockpicks: `${stats.lockpicks}`,
       Tracking: `${stats.tracking}`,
-      Weapon: 'Sword',
+      Equip: `${CONFIG.get(stats.weapon).name} + ${CONFIG.get(stats.armor).name}`,
       Talents: stats.talents.map(talent => talent.name).join(', ') || '<none>',
       Traits: stats.traits.map(trait => trait.name).join(', ') || '<none>',
     }).reduce((prev, [key, value]) => {
@@ -48,25 +48,23 @@ Action.define('stats', [
     const Empty = [APP.styleText('stat', ''), APP.styleText('keyword', '')];
 
     const table1 = APP.table([
-      [...data.Name, ...data.Level, ...data.Dodge],
+      [...data.Name, ...data.Leadership, ...data.Dodge],
       [...data.Race, ...data['AC/DR/MR'], ...data.Parry],
       [...data.Class, ...data.Health, ...data.Riposte],
-      [...data.Heritage, ...data.Mana, ...data.Stealth],
+      [...data.Level, ...data.Mana, ...data.Stealth],
       [...Empty, ...Empty, ...data.Crits],
-      [...data.Strength, ...data.Dexterity, ...data.Leadership],
-      [...data.Intellect, ...data.Wisdom, ...data.Tracking],
-      [...data.Constitution, ...data.Charisma, ...data.Traps],
-      [...Empty, ...Empty, ...data.Lockpicks],
-      [...Empty, ...Empty, ...data.Perception],
-      [],
+      [...Empty, ...Empty, ...data.Tracking],
+      [...data.Strength, ...data.Dexterity, ...data.Traps],
+      [...data.Intellect, ...data.Wisdom, ...data.Lockpicks],
+      [...data.Constitution, ...data.Charisma, ...data.Perception],
     ], { sep: '' });
 
     const table2 = APP.table([
-      [...data.Weapon],
+      [...data.Equip],
       [...data.Traits],
       [...data.Talents],
     ], { sep: '' });
 
-    actor.send('text', `\n${table1}\n\n${table2}\n`);
+    actor.send('text', `\n${table1}\n\n\n${table2}\n`);
   },
 ]);

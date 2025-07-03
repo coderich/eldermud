@@ -8,6 +8,7 @@ module.exports = class ConfigClient extends Config {
   constructor() {
     super({}, {
       in: (a, ...arr) => arr.includes(a),
+      concat: (a, ...b) => a.split(',').concat(b),
     });
     this.merge(Config.parseFile(`${appRootPath}/app.config.yml`));
     this.merge(Config.parseFile(`${appRootPath}/app.secrets.yml`));

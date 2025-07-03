@@ -14,7 +14,7 @@ Action.define('mainMenu', [
 
     switch (selection.toLowerCase()) {
       case 'e': return actor.perform('onboard');
-      case '?': return actor.perform('learnMore').then(() => actor.perform('mainMenu'));
+      // case '?': return actor.perform('tutorial').then(() => actor.perform('mainMenu'));
       case 'x': return actor.disconnect('exit');
       default: return actor.perform('mainMenu');
     }

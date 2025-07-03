@@ -6,7 +6,7 @@ module.exports = {
   acc: 3,
   crits: 1,
   range: 1,
-  scale: { str: 0.2, dex: 0.6 },
+  scale: { str: 0.25, dex: 0.25 },
   hits: ['cut', 'jab', 'scratch'],
-  misses: ['slip', 'break', 'miss'],
+  misses: ['slip', 'lunge', 'thrust'],
 };

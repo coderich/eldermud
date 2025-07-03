@@ -8,5 +8,5 @@ module.exports = {
   range: 1,
   scale: { str: 0.5, dex: 0.5 },
   hits: ['slash', 'slice', 'cleave'],
-  misses: ['whoosh', 'miss', 'glancing blow'],
+  misses: ['whoosh', 'swing'],
 };

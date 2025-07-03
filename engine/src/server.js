@@ -7,19 +7,13 @@ const server = new Server({
 });
 
 server.on('connect', async ({ socket }) => {
-  const player = new Player({ socket, ...CONFIG.get('player') });
-  Actor[socket.id] = player; // Add them to the list of Actors to respond to (server.on('cmd') below)
+  const player = Actor[socket.id] = new Player({ socket, ...CONFIG.get('player') });
   await player.send('text', APP.styleText('highlight', 'Welcome Adventurer!'));
   await player.perform('authenticate');
   await player.perform('mainMenu');
-
-  // player.once('post:authenticate', async () => {
-  //   player.$authenticated = true;
-  //   await player.send('cls');
-  //   await player.save(player, true);
-  //   await player.perform('spawn');
-  //   await player.realm('text', `${APP.styleText(player.type, player.name)} enters the realm.`);
-  // });
+  await player.realm('text', `${APP.styleText(player.type, player.name)} enters the realm.`);
+  await player.perform('spawn');
+  player.$ready$ = true;
 });
 
 server.on('disconnect', async ({ socket, reason }) => {
@@ -29,7 +23,7 @@ server.on('disconnect', async ({ socket, reason }) => {
 
 server.on('cmd', async ({ socket, data }) => {
   const player = Actor[socket.id];
-  if (player.$authenticated) await Actor[socket.id].perform('cmd', data.text);
+  if (player.$ready$) await Actor[socket.id].perform('cmd', data.text);
 });
 
 module.exports = server;

@@ -59,41 +59,32 @@ const commands = [
     { backrank: { args: [0], code: 'backrank', channel: 'realm', stream: 'tactic' } },
     // { lock: { args: [1], code: 'lock', stream: 'action' } },
     // { unlock: { args: [1], code: 'unlock', channel: 'realm', stream: 'action' } },
-    // { remove: { args: [1, 2, 3], code: 'remove', stream: 'action' } },
     { gossip: { args: channelArgs, code: 'gossip', channel, stream: 'info' } },
     { auction: { args: channelArgs, code: 'auction', channel, stream: 'info' } },
+    { talents: { args: [0], code: 'talents', channel, stream: 'info' } },
   ],
   [
-    // { push: { args: [1, 2, 3, 4, 5], code: 'push', stream: 'action' } },
     // { lock: { args: [1], code: 'lock', stream: 'action' } },
     // { rest: { args: [0], code: 'rest', channel: 'realm', stream: 'action' } },
     { stand: { args: [0], code: 'stand', channel: 'realm', stream: 'action' } },
-    // { help: { args: [0], code: 'help', channel: 'realm', stream: 'info' } },
     { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'gesture', tags: ['other'] } },
     { harvest: { args: [1, 2, 3, 4, 5], code: 'harvest', channel: 'realm', stream: 'action', tags: ['corpse'] } },
 
     // Talents
-    // { dble: { args: [1], code: 'talent.dble', stream: 'talent' } },
-    // { hail: { args: [0], code: 'talent.hail', stream: 'talent' } },
     { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action', tags: ['talent', 'player'] } },
-    // { rage: { args: [0], code: 'talent.rage', stream: 'talent' } },
     { stab: { args: [0], code: 'stab', channel: 'realm', stream: 'tactic', tags: ['talent'] } },
-    // { tote: { args: [1], code: 'talent.tote', stream: 'talent' } },
     { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action', tags: ['talent', 'other'] } },
-
-    // Channels
-    // { '/gos': { args: channelArgs, name: 'gos', code: 'gos', channel, stream: 'info' } },
-    // { '/auc': { args: channelArgs, name: 'auc', code: 'auc', channel, stream: 'info' } },
-    // { '/help': { args: channelArgs, name: 'help', code: 'auc', channel, stream: 'info' } },
   ],
   [
     { greet: { args: [0, 1, 2, 3, 4, 5], code: 'greet', channel: 'realm', stream: 'voice', tags: ['other'] } },
     { train: { args: [1], code: 'train', channel: 'realm', stream: 'action' } },
-    // { learn: { args: [1], code: 'learn', stream: 'action' } },
   ],
 ];
 
 const translateArray = (arr, input, cmd, args) => {
+  if (cmd.startsWith('/')) return { name: 'telepath', input, args: [cmd.substring(1), ...args], code: 'tele', channel: 'realm', stream: 'info', tags: ['realm'] };
+  if (cmd.startsWith('@')) return { name: 'at', input, args: [cmd.substring(1), ...args], code: 'at', channel: 'realm', stream: 'info', tags: ['other'] };
+
   for (let i = 0; i < cmd.length; i++) {
     const tier = arr[i];
 
@@ -113,8 +104,6 @@ const translateArray = (arr, input, cmd, args) => {
     }
   }
 
-  if (cmd.startsWith('/')) return { name: 'telepath', input, args: [cmd.substring(1), ...args], code: 'tele', channel: 'realm', stream: 'info', tags: ['realm'] };
-  if (cmd.startsWith('@')) return { name: 'at', input, args: [cmd.substring(1), ...args], code: 'at', channel: 'realm', stream: 'info', tags: ['other'] };
   return { name: 'unknown', input, args, code: 'unk', channel: 'realm' };
 };
 

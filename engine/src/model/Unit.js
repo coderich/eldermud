@@ -11,7 +11,21 @@ module.exports = class Unit extends Actor {
   }
 
   async calcStats() {
-    const stats = await this.mGet('lvl', 'str', 'dex', 'con', 'int', 'wis', 'cha', 'class');
+    const attrs = ['str', 'int', 'wis', 'con', 'dex', 'cha'];
+    const stats = await this.mGet('lvl', 'race', 'class', ...attrs);
+
+    if (stats.race && stats.class) {
+      const race = CONFIG.get(`${stats.race}`);
+      const clas = CONFIG.get(`${stats.class}`);
+      const player = CONFIG.get('player');
+      this.armor = clas.armor;
+      this.weapon = clas.weapon;
+      this.attacks = [this.weapon];
+      this.traits = player.traits.concat(clas.traits).concat(race.traits);
+      this.talents = player.talents.concat(clas.talents).concat(race.talents);
+      attrs.forEach((attr) => { this[attr] = stats[attr] = race[attr] + clas[attr]; });
+    }
+
     this.hp = this.mhp = APP.fibStat(stats.lvl) + APP.fibStat(stats.con) + stats.str;
     this.ma = this.mma = APP.fibStat(stats.lvl) + Math.floor((APP.fibStat(stats.int) + APP.fibStat(stats.wis)) / 2);
     this.ac = this.acc = stats.lvl + Math.floor(stats.dex / 10);

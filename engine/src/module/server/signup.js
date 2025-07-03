@@ -1,9 +1,9 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('signup', async (_, { actor }) => {
-  let { text: username } = await actor.query('Enter a username for yourself');
+  let { text: username } = await actor.query('Enter a new username');
   username = APP.ucFirst(username.toLowerCase());
-  const { text: yn } = await actor.query('Username', APP.styleText('keyword', username), APP.styleText('dialog', 'does that look ok? (y/n)'));
+  const { text: yn } = await actor.query('Username', APP.styleText('keyword', username), APP.styleText('dialog', 'is that correct? (y/n)'));
   if (!yn.toLowerCase('y').startsWith('y')) return actor.perform('signup');
 
   // Username check

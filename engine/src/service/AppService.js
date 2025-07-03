@@ -156,7 +156,8 @@ exports.table = (rows, options = {}) => {
     return prev.concat(sep, row.map((data, i, arr) => {
       data = data.toString();
       const extra = data.length - exports.stripColorTags(data).length;
-      const value = i <= arr.length - 2 ? `${data.padEnd(colWidths[i] + extra)} ${sep}` : `${data} ${sep}`;
+      const value = `${data.padEnd(colWidths[i] + extra)} ${sep}`;
+      // const value = i <= arr.length - 2 ? `${data.padEnd(colWidths[i] + extra)} ${sep}` : `${data} ${sep}`;
       return value;
     }).join(''), '\n');
   }, ''));
