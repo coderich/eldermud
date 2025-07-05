@@ -8,7 +8,7 @@ module.exports = {
   wis: 0,
   con: 0,
   cha: 0,
-  gains: { str: 1, dex: 1, int: 1, wis: 1, con: 1, cha: 1 },
+  gains: { str: 0, dex: 1, int: 1, wis: 1, con: 0, cha: 1 },
   traits: [
     // '${self:trait.adaptable}', // passive: once per day, reassign your free level-up point to a different stat
   ],

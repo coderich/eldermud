@@ -2,7 +2,7 @@ module.exports = {
   name: 'Orc',
   depiction: 'A hulking warrior with greenish skin, tusks protruding from a fierce maw, clad in rough but sturdy armor.',
   description: 'Orcs hail from harsh wastelands, renowned for their brutal strength, ferocity in battle, and enduring constitution.',
-  str: 2,
+  str: 1,
   dex: 0,
   int: -2,
   wis: -2,

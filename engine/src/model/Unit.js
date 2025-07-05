@@ -24,8 +24,13 @@ module.exports = class Unit extends Actor {
       this.attacks = [this.weapon];
       this.traits = player.traits.concat(clas.traits).concat(race.traits);
       this.talents = player.talents.concat(clas.talents).concat(race.talents);
+      this.gains = Object.entries(race.gains).reduce((prev, [key, value]) => {
+        prev[key] += value;
+        return prev;
+      }, { ...clas.gains });
       attrs.forEach((attr) => {
-        this[attr] = stats[attr] = race[attr] + clas[attr] + (race.gains[attr] * (stats.lvl - 1)) + (clas.gains[attr] * (stats.lvl - 1));
+        // this[attr] = stats[attr] = race[attr] + clas[attr] + (race.gains[attr] * (stats.lvl - 1)) + (clas.gains[attr] * (stats.lvl - 1));
+        this[attr] = stats[attr] = race[attr] + clas[attr] + (this.gains[attr] * (stats.lvl - 1));
       });
       levels.forEach((attr) => {
         this[attr] = stats[attr] = this[attr] + 1;
@@ -33,7 +38,7 @@ module.exports = class Unit extends Actor {
     }
 
     this.hp = this.mhp = (stats.lvl * 5) + APP.fibStat(stats.con);
-    this.ma = this.mma = (stats.lvl * 3) + Math.floor((APP.fibStat(stats.int) + APP.fibStat(stats.wis)) / 2);
+    this.ma = this.mma = (stats.lvl * 3) + Math.floor((APP.fibStat(stats.int) + APP.fibStat(stats.wis, 15)) / 2);
     this.ac = this.acc = stats.lvl + Math.floor(stats.dex / 10);
     this.sc = this.mma; // Spellcasting
     this.dr = Math.floor((stats.str / 5)); // Damage Reduction + Poise

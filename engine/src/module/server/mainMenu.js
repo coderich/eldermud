@@ -7,7 +7,8 @@ Action.define('mainMenu', [
     await actor.send('text', APP.table([
       ['[E]', 'Enter the Realm!'],
       ['[T]', 'Tutorial'],
-      ['[X]', 'Logout'],
+      ['[A]', 'About'],
+      ['[X]', 'Exit'],
     ], { sep: '' }));
 
     const { text: selection } = await actor.query('Please make a selection');
@@ -15,6 +16,7 @@ Action.define('mainMenu', [
     switch (selection.toLowerCase()) {
       case 'e': return actor.perform('onboard');
       // case 't': return actor.perform('tutorial').then(() => actor.perform('mainMenu'));
+      // case 'a': return actor.perform('about').then(() => actor.perform('mainMenu'));
       case 'x': return actor.disconnect('exit');
       default: return actor.perform('mainMenu');
     }

@@ -6,9 +6,13 @@ Action.define('stats', [
       ...['name', 'hp', 'ma', 'mhp', 'mma', 'ac', 'dr', 'mr', 'enc'],
       ...['dodge', 'parry', 'stealth', 'crits', 'riposte', 'perception'],
       ...['thievery', 'traps', 'lockpicks', 'tracking'],
-      ...['str', 'dex', 'int', 'wis', 'con', 'cha', 'talents', 'traits'],
+      ...['str', 'dex', 'int', 'wis', 'con', 'cha', 'talents', 'traits', 'gains'],
       ...['exp', 'lvl', 'class', 'race', 'heritage', 'leadership', 'weapon', 'armor'],
     );
+
+    const $gains = Object.entries(stats.gains).reduce((prev, [key, value]) => {
+      return Object.assign(prev, { [key]: APP.styleText('muted', value ? `+${value}` : '') });
+    }, {});
 
     const data = Object.entries({
       Name: stats.name,
@@ -21,12 +25,12 @@ Action.define('stats', [
       Mana: `${stats.ma}/${stats.mma}`,
       'AC/DR/MR': `${stats.ac}/${stats.dr}/${stats.mr}`,
       Remnants: `${stats.exp}`,
-      Strength: `${stats.str}`,
-      Dexterity: `${stats.dex}`,
-      Intellect: `${stats.int}`,
-      Wisdom: `${stats.wis}`,
-      Constitution: `${stats.con}`,
-      Charisma: `${stats.cha}`,
+      Strength: `${stats.str}${$gains.str}`,
+      Dexterity: `${stats.dex}${$gains.dex}`,
+      Intellect: `${stats.int}${$gains.int}`,
+      Wisdom: `${stats.wis}${$gains.wis}`,
+      Constitution: `${stats.con}${$gains.con}`,
+      Charisma: `${stats.cha}${$gains.cha}`,
       Armor: `${stats.ac}/${stats.dr}`,
       Dodge: `${stats.dodge}`,
       Parry: `${stats.parry}`,
@@ -45,7 +49,8 @@ Action.define('stats', [
       return Object.assign(prev, { [key]: [APP.styleText('stat', `${key}:`), APP.styleText('keyword', `${value}  `)] });
     }, {});
 
-    const Empty = [APP.styleText('stat', ''), APP.styleText('keyword', '')];
+    const Empty = ['', ''];
+    // const Empty = [APP.styleText('stat', ''), APP.styleText('keyword', '')];
 
     const table1 = APP.table([
       [...data.Name, ...data.Leadership, ...data.Dodge],

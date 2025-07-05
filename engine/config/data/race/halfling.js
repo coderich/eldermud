@@ -4,7 +4,7 @@ module.exports = {
   description: 'Halflings are known for their luck, agility, and cheerful resilience, thriving in both urban and rural environments.',
   str: -1,
   dex: 1,
-  int: 1,
+  int: 0,
   wis: 0,
   con: -1,
   cha: 1,

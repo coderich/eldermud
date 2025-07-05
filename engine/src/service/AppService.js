@@ -130,7 +130,8 @@ exports.roll = (dice) => {
   return neg ? -value : value;
 };
 
-exports.stripColorTags = str => str.replace(/<[^>]+>(.*?)<reset>/g, '$1');
+// exports.stripColorTags = str => str.replace(/<[^>]+>(.*?)<reset>/g, '$1');
+exports.stripColorTags = str => str.replace(/<[^>]+>/g, '');
 
 exports.table = (rows, options = {}) => {
   rows = rows.filter(Boolean);

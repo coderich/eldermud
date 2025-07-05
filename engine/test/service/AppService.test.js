@@ -11,6 +11,11 @@ describe('AppService', () => {
     expect(AppService.roll('3d1**3')).toBe(27);
   });
 
+  test('stripColorTags', () => {
+    expect(AppService.stripColorTags('<LightSeaGreen>Random  <reset>')).toBe('Random  ');
+    expect(AppService.stripColorTags('<LightSeaGreen>12<DimGrey>+2<reset>  <reset>')).toBe('12+2  ');
+  });
+
   test('isNumeric', () => {
     expect(AppService.isNumeric()).toBe(false);
     expect(AppService.isNumeric(null)).toBe(false);

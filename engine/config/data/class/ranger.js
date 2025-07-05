@@ -8,7 +8,7 @@ module.exports = {
   wis: 10,
   con: 8,
   cha: 8,
-  gains: { str: 0, dex: 1, int: 0, wis: 1, con: 1, cha: 0 },
+  gains: { str: 0, dex: 1, int: 0, wis: 0, con: 1, cha: 1 },
   armor: '${self:armor.tunic}',
   weapon: '${self:attack.sling}',
   traits: [
