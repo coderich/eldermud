@@ -8,6 +8,7 @@
 - talents
 - creature re-targeting
 - draw creature aggression
+- select a discipline?
 
 - give => accept?
 - talent: cooldown, limited uses (until rest)?

@@ -18,7 +18,7 @@ Action.define('engage', [
 
     stream.once('add', abort);
     target.once('post:move', abort);
-    target.once('post:dead', abort); // They may die before we get to duel
+    target.once('start:death', abort); // They may die before we get to duel
     if (stream.length()) abort();
   },
 

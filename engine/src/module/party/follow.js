@@ -30,11 +30,11 @@ Action.define('follow', [
     const unable = ({ promise }) => promise.$follow && promise.reason !== '$source' && leave();
     const notice = ({ data }) => actor.send('text', `--- Following ${APP.styleText(target.type, target.name)} ${APP.direction[data]} ---`);
 
-    actor.once('post:death', leave);
+    actor.once('start:death', leave);
     actor.once('post:logout', leave);
     actor.on('abort:move', unable); // Are you personally unable to follow?
     actor.prependListener('start:move', stray); // Did you stray off on your own?
-    target.prependOnceListener('post:death', leave);
+    target.prependOnceListener('start:death', leave);
     target.prependOnceListener('post:logout', leave);
 
     // Follow
