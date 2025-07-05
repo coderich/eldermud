@@ -10,5 +10,7 @@ Action.define('destroy', async (_, { actor }) => {
   room.items.delete(actor);
 
   // Redis cleanup
-  return REDIS.del(await REDIS.keys(`${actor}.*`));
+  const keys = await REDIS.keys(`${actor}.*`);
+  console.log(`destroying ${actor} keys:`, keys);
+  return REDIS.del(keys);
 });

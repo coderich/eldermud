@@ -8,7 +8,7 @@ module.exports = {
   wis: 1,
   con: 0,
   cha: 0,
-  gains: { str: 0, dex: 0, int: 2, wis: 1, con: 0, cha: 0 },
+  gains: { str: 0, dex: 0, int: 1, wis: 1, con: 0, cha: 0 },
   traits: [
     // '${self:trait.tinkersIngenuity}', // passive: once per rest, create a minor gadget (illumination orb, clockwork spider, or minor toolkit)
   ],

@@ -8,7 +8,7 @@ module.exports = {
   wis: 0,
   con: -1,
   cha: 1,
-  gains: { str: 0, dex: 2, int: 1, wis: 0, con: 0, cha: 0 },
+  gains: { str: 0, dex: 1, int: 1, wis: 0, con: 0, cha: 0 },
   traits: [
     // '${self:trait.nightsGrace}', // passive: once per short rest, become invisible for 10s in dim light areas
   ],

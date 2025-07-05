@@ -8,7 +8,7 @@ module.exports = {
   wis: -2,
   con: 1,
   cha: -1,
-  gains: { str: 2, dex: 0, int: 0, wis: 0, con: 1, cha: 0 },
+  gains: { str: 1, dex: 0, int: 0, wis: 0, con: 1, cha: 0 },
   traits: [
     // '${self:trait.bloodFury}', // passive: when HP falls below 30%, gain +20% melee damage for 5s (120s cooldown)
   ],

@@ -15,7 +15,7 @@ Action.define('look', [
         return actor.perform('room', target);
       }
       default: {
-        actor.send('text', `[${APP.styleText('room.name', `${target.name}`)}]`);
+        actor.send('text', `[${APP.styleText('room.name', `${target.name} (${target})`)}]`);
         return actor.send('text', target.depiction);
       }
     }

@@ -6,7 +6,7 @@ Action.define('mainMenu', [
 
     await actor.send('text', APP.table([
       ['[E]', 'Enter the Realm!'],
-      ['[?]', 'Tutorial'],
+      ['[T]', 'Tutorial'],
       ['[X]', 'Logout'],
     ], { sep: '' }));
 
@@ -14,7 +14,7 @@ Action.define('mainMenu', [
 
     switch (selection.toLowerCase()) {
       case 'e': return actor.perform('onboard');
-      // case '?': return actor.perform('tutorial').then(() => actor.perform('mainMenu'));
+      // case 't': return actor.perform('tutorial').then(() => actor.perform('mainMenu'));
       case 'x': return actor.disconnect('exit');
       default: return actor.perform('mainMenu');
     }

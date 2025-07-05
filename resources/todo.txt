@@ -4,6 +4,11 @@
   - Moments of opportunity? Player off-balance?
 
 **
+- train
+- talents
+- creature re-targeting
+- draw creature aggression
+
 - give => accept?
 - talent: cooldown, limited uses (until rest)?
 - rest: limited uses? tent? tavern/inn?
@@ -13,10 +18,7 @@
 - corpse limitations
 - hired help; telepath @do heal rand
 - room visibility (dark, torch, etc)
-- train
 - REDIS: sMembers, sAdd, sRem, incrBy, incr, sIsMember (inventory)
-- draw creature aggression
-- creature re-targeting
 - party ranks effect combat...
 - main menu: enter, about, help?
 - item progression matrix

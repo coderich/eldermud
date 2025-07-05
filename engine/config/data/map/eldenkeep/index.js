@@ -146,7 +146,7 @@ module.exports = {
       status: 'locked',
       durability: 100,
       picklock: 100,
-      key: '${self:key.eldenkeep.ladyElethor}',
+      key: '${self:map.eldenkeep.key.ladyElethor}',
     },
     archive: {
       name: 'Archive Door',

@@ -7,8 +7,8 @@ module.exports = {
   int: 10,
   wis: 8,
   con: 8,
-  cha: 10,
-  gains: { str: 0, dex: 3, int: 2, wis: 0, con: 0, cha: 0 },
+  cha: 8,
+  gains: { str: 0, dex: 2, int: 1, wis: 0, con: 0, cha: 0 },
   armor: '${self:armor.rags}',
   weapon: '${self:attack.shiv}',
   traits: [

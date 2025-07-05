@@ -6,7 +6,7 @@ module.exports = {
       name: 'Gateway to the Countryside',
       terrain: 'cobblestone road',
       description: 'An old cobblestone road marks the beginning of the countryside. Here, the hustle of Eldenfort fades into the tranquil sounds of nature. To the north, the towering gates of Eldenfort stand as silent guardians to history.',
-      items: ['${self:sign.eldenfortCountryside.welcome}'],
+      items: ['${self:map.eldenfortCountryside.sign.welcome}'],
       exits: {
         s: '${self:map.eldenfortCountryside.rooms.southernMeadow}',
         n: '${self:map.eldenfort.rooms.southRoad}',

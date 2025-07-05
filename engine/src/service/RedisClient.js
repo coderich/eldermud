@@ -29,6 +29,7 @@ module.exports = class RedisClient {
     return new Proxy(client, {
       get(target, method) {
         return (...args) => connection.then(() => {
+          if (!client[method]) console.log(method);
           return client[method](...args).catch((e) => {
             console.log(method, ...args);
             throw e;

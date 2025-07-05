@@ -13,20 +13,14 @@ module.exports = {
   cha: 10,
 
   // Combat parameters
-  exp: 1,
-  lvl: 1,
-  // exp: 25,                    // Experience awarded when defeated
-  // lvl: 2,                     // Challenge level
-  // size: 1,                    // Medium creature
+  lvl: 3,
+  exp: 15,
 
   // Random flavor tables for variety
   random: {
     ranks: ['Thug', 'Highwayman', 'Raider', 'Cutthroat'],
     impressions: ['Gruff', 'Scarred', 'Wary', 'Greedy'],
     movements: ['Lurk', 'Pounce', 'Ambush', 'Flee'],
-    // ranks: ['Thug', 'Outlaw', 'Highwayman', 'Raider'],
-    // impressions: ['Scraggly', 'Filthy', 'Menacing', 'Cunning'],
-    // movements: ['Lurk', 'Pounce', 'Ambush', 'Flee'],
   },
 
   attacks: [

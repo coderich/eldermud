@@ -1,6 +1,7 @@
 module.exports = {
   name: 'QuickStab',
   description: 'Quickly strike your opponent with increased critical chance',
+  code: 'stab',
   cost: 5,
   crits: 5,
   effects: [
