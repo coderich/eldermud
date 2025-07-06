@@ -4,6 +4,6 @@ module.exports = {
   code: 'bcry',
   cost: 5,
   effects: [
-    { type: 'buff', target: 'party', affect: { str: 2 }, duration: 10000 },
+    { type: 'buff', target: 'party', affect: { str: 2, dex: 1 }, duration: 10000 },
   ],
 };

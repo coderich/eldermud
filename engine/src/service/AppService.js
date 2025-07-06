@@ -5,17 +5,19 @@ const NPC = require('../model/NPC');
 const Item = require('../model/Item');
 const Room = require('../model/Room');
 const Actor = require('../model/Actor');
+const Talent = require('../model/Talent');
 const Player = require('../model/Player');
 const Creature = require('../model/Creature');
 
 const chance = new Chance();
-const models = { npc: NPC, player: Player, item: Item, creature: Creature, key: Item, room: Room };
+const models = { npc: NPC, player: Player, item: Item, creature: Creature, key: Item, room: Room, talent: Talent };
 
 exports.chance = chance;
 exports.pluralize = Pluralize;
 exports.timeout = Util.timeout;
 exports.ucFirst = Util.ucFirst;
 exports.mapPromise = Util.mapPromise;
+exports.promiseChain = Util.promiseChain;
 exports.fib = [1, 3, 5, 8, 13, 21, 34, 55, 89];
 exports.direction = { n: 'north', s: 'south', e: 'east', w: 'west', ne: 'northeast', nw: 'northwest', se: 'southeast', sw: 'southwest', u: 'up', d: 'down' };
 exports.rdirection = { n: 'south', s: 'north', e: 'west', w: 'east', ne: 'southwest', nw: 'southeast', se: 'northwest', sw: 'northeast', u: 'down', d: 'up' };

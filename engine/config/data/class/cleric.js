@@ -10,12 +10,12 @@ module.exports = {
   cha: 8,
   gains: { str: 1, dex: 0, int: 0, wis: 1, con: 1, cha: 0 },
   armor: '${self:armor.tabard}',
-  weapon: '${self:attack.club}',
+  weapon: '${self:attack.club-1}',
   traits: [
     '${self:trait.devotist}',
   ],
   talents: [
-    '${self:talent.minorHeal}',
+    '${self:talent.bless-1}',
   ],
   progression: [
     'Templar ▶ shield bashes, holy retaliation, party auras',

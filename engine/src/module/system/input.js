@@ -11,46 +11,43 @@ SYSTEM.on('*', async (event, context) => {
   // Normalize input for actions
   if (type === 'pre' && data && translate) {
     const { args, tags = [], input } = data;
+    const room = CONFIG.get(await actor.get('room')); // Consider adding this to "data" for downstream
 
     if (tags.includes('talent')) {
-      if (!actor.talents.find(t => t.id === action)) {
-        abort();
-        actor.perform('say', input);
-      }
+      const talent = actor.talents.find(t => t.id.startsWith(action));
+      if (!talent) { abort(); actor.perform('say', input); }
+      Object.assign(data, { talent: CONFIG.get(`${talent}`) });
     }
 
     // Tag based targeting...
     if (tags.includes('unit')) {
-      const { units } = CONFIG.get(await actor.get('room'));
-      Object.assign(data, APP.target([...units], args));
+      Object.assign(data, APP.target([...room.units], args));
     } else if (tags.includes('other')) {
-      const { units } = CONFIG.get(await actor.get('room'));
-      Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
+      Object.assign(data, APP.target([...room.units].filter(unit => unit !== actor), args));
     } else if (tags.includes('player')) {
-      const { units } = CONFIG.get(await actor.get('room'));
-      Object.assign(data, APP.target([...units].filter(unit => unit.type === 'player'), args));
+      Object.assign(data, APP.target([...room.units].filter(unit => unit.type === 'player'), args));
     } else if (tags.includes('npc')) {
-      const { units } = CONFIG.get(await actor.get('room'));
-      Object.assign(data, APP.target([...units].filter(unit => unit.type === 'npc'), args));
+      Object.assign(data, APP.target([...room.units].filter(unit => unit.type === 'npc'), args));
     } else if (tags.includes('corpse')) {
-      const { items } = CONFIG.get(await actor.get('room'));
-      Object.assign(data, APP.target([...items].filter(item => item.id === 'corpse'), args));
+      Object.assign(data, APP.target([...room.items].filter(item => item.id === 'corpse'), args));
     } else if (tags.includes('realm')) {
       Object.assign(data, APP.target(Object.values(Game.Actor), args));
+    } else if (tags.includes('party')) {
+      Object.assign(data, APP.target([...actor.$party.values()].filter(unit => unit !== actor), args));
+    } else if (tags.includes('ally')) {
+      const units = [...room.units.values().filter(unit => unit.type === 'player'), ...actor.$party];
+      Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
     }
 
     // Specific action handling...
     switch (action) {
       case 'get': {
-        const room = CONFIG.get(await actor.get('room'));
         const roomItems = Array.from(room.items.values()).filter(item => item instanceof Actor);
         const searchItems = Array.from(actor.$search.values());
         Object.assign(data, APP.target(roomItems.concat(searchItems), args));
         break;
       }
       case 'open': case 'close': {
-        const room = CONFIG.get(await actor.get('room'));
-
         // Door check
         const cmd = await actor.perform('translate', args.join(' '));
         if (cmd.tags?.includes('direction')) return Object.assign(data, { target: room.paths?.[cmd.code] });
@@ -66,13 +63,12 @@ SYSTEM.on('*', async (event, context) => {
         break;
       }
       case 'list': case 'buy': case 'sell': {
-        const { shop } = CONFIG.get(await actor.get('room'));
+        const { shop } = room;
         Object.assign(data, { shop });
         break;
       }
       case 'look': case 'search': {
         let target;
-        const room = CONFIG.get(await actor.get('room'));
 
         // Current room
         if (!args.length) return Object.assign(data, { target: room });

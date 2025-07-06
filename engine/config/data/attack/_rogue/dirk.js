@@ -6,6 +6,7 @@ module.exports = {
   acc: 5,
   crits: 1,
   range: 1,
+  speed: 2000,
   scale: { str: 0.35, dex: 0.55 },
   hits: ['thrust', 'impale', 'nick'],
   misses: ['misfire', 'slip', 'miss'],

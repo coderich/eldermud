@@ -55,6 +55,10 @@ module.exports = class Unit extends Actor {
     this.leadership = Math.floor(stats.cha / 10);
     this.perception = stats.lvl + stats.int + stats.dex;
     this.depiction ??= CONFIG.get(`${stats.class}.depiction`);
+
+    // Speeds
+    this.moveSpeed = 2000;
+    this.engageSpeed = 2000 - (stats.dex * 10);
     return this;
   }
 };

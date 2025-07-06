@@ -1,17 +1,18 @@
-* Combat Mechanics
-  - I like the idea of combat tactics; how many things you can perform in a given round (ie swing and use potion)
-  - How about channeling abilities?
-  - Moments of opportunity? Player off-balance?
-
-**
+- "a" retarget $target
 - train
 - talents
 - creature re-targeting
 - draw creature aggression
 - select a discipline?
 - "mana" rebranded "willpower"?
+- rest at checkpoints (becomes new checkpoint); ability to warp to known checkpoints
+- upgrade talents:
+  * mmis a bolt per level
+  * scaling
+- After death, corpse, recover half XP + items or recall items and forfiet XP
 
 - disband party
+- uninvite player
 - give => accept?
 - talent: cooldown, limited uses (until rest)?
 - rest: limited uses? tent? tavern/inn?

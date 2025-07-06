@@ -71,6 +71,7 @@ const commands = [
     { harvest: { args: [1, 2, 3, 4, 5], code: 'harvest', channel: 'realm', stream: 'action', tags: ['corpse'] } },
 
     // Talents
+    { bles: { args: [0, 1, 2, 3, 4, 5], name: 'bless', code: 'bles', channel: 'realm', stream: 'action', tags: ['talent', 'ally'] } },
     { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action', tags: ['talent', 'player'] } },
     { stab: { args: [0], code: 'stab', channel: 'realm', stream: 'tactic', tags: ['talent'] } },
     { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action', tags: ['talent', 'other'] } },

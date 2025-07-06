@@ -4,7 +4,8 @@ const { Action, Loop } = require('@coderich/gameflow');
  * Will wander around aimlessly but remain confined to a map/city
  */
 Action.define('vagabond', new Loop([
-  () => APP.timeout(APP.roll('7d1000+8000')),
+  () => APP.timeout(5000),
+  // () => APP.timeout(APP.roll('7d1000+8000')),
 
   async (_, { actor }) => {
     if (!actor.$target && !actor.$following) {

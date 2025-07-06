@@ -8,6 +8,7 @@ app:
     item: ['room', 'name', 'hidden', 'durability', 'owner', 'echo']
     stats: ['str', 'dex', 'int', 'wis', 'con', 'cha']
     user: ['race', 'class', 'lvl', 'exp', 'checkpoint']
+    talent: ['target', 'lvl', 'duration']
     key: ${self:app.spawn.item}
     npc: ${self:app.spawn.unit}
     creature: ${self:app.spawn.unit}
