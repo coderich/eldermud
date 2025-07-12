@@ -1,4 +1,4 @@
-const { Actor, Action } = require('@coderich/gameflow');
+const { Action } = require('@coderich/gameflow');
 
 Action.define('actions', [
   async (_, { actor }) => {

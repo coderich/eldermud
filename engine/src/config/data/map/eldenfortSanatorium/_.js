@@ -3,7 +3,7 @@ const Path = require('path');
 const { randomUUID } = require('crypto');
 const Get = require('lodash.get');
 // const Item = require('../../../../src/model/Item');
-const NPC = require('../../../../src/model/NPC');
+const NPC = require('../../../../model/NPC');
 
 // const noop = ({ abort }) => abort();
 const startRoom = 'triageRoom';

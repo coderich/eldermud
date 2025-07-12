@@ -18,8 +18,13 @@ const confirmCharacter = async (actor, selection) => {
   const clas = Object.values(CONFIG.get('class'))[`${b}`.charCodeAt(0) - 97];
 
   if (race && clas) {
-    const yn = await actor.query(APP.styleText('keyword', race.name, clas.name), APP.styleText('dialog', 'is that right? (y/n)')).then(({ text }) => text.toLowerCase().trim());
-    if (yn === 'y') return actor.save({ race, class: clas });
+    const yn = await actor.query(APP.styleText('keyword', race.name, clas.name), APP.styleText('dialog', 'is that correct? (y/n)')).then(({ text }) => text.toLowerCase().trim());
+    if (yn === 'y') {
+      const { weapon, armor } = clas;
+      const traits = new Set([...race.traits, ...clas.traits]);
+      const talents = new Set([...race.talents, ...clas.talents]);
+      return actor.save({ race, class: clas, weapon, armor, traits, talents });
+    }
   }
 
   return actor.perform('onboard');

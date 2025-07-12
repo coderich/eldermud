@@ -43,8 +43,8 @@ Action.define('stats', [
       Lockpicks: `${stats.lockpicks}`,
       Tracking: `${stats.tracking}`,
       Equip: `${CONFIG.get(stats.weapon).name} + ${CONFIG.get(stats.armor).name}`,
-      Talents: stats.talents.map(talent => talent.name).join(', ') || '<none>',
-      Traits: stats.traits.map(trait => trait.name).join(', ') || '<none>',
+      Talents: Array.from(stats.talents.values()).map(talent => CONFIG.get(`${talent}.name`)).join(', ') || '<none>',
+      Traits: Array.from(stats.traits.values()).map(trait => CONFIG.get(`${trait}.name`)).join(', ') || '<none>',
     }).reduce((prev, [key, value]) => {
       return Object.assign(prev, { [key]: [APP.styleText('stat', `${key}:`), APP.styleText('keyword', `${value}  `)] });
     }, {});

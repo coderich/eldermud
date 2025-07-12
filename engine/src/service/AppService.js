@@ -34,7 +34,7 @@ exports.castValue = (value) => {
   if (value instanceof Actor) return `${value}`;
   if (typeof value === 'object') return value.__proto === 'action' ? `${value}` : value;
   if (APP.isNumeric(value)) return parseInt(value, 10);
-  if (APP.isBoolean(value)) return Boolean(`${value.toLowerCase()}` === 'true');
+  if (APP.isBoolean(value)) return Boolean(`${value}`.toLowerCase() === 'true');
   return value;
 };
 

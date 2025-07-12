@@ -77,8 +77,9 @@ const commands = [
     { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action', tags: ['talent', 'other'] } },
   ],
   [
-    { greet: { args: [0, 1, 2, 3, 4, 5], code: 'greet', channel: 'realm', stream: 'voice', tags: ['other'] } },
-    { train: { args: [1], code: 'train', channel: 'realm', stream: 'action' } },
+    { greet: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'voice', tags: ['other'] } },
+    { train: { args: [1], channel: 'realm', stream: 'action' } },
+    { upgrade: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'action' } },
   ],
 ];
 

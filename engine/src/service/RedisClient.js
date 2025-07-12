@@ -3,7 +3,7 @@ const Redis = require('redis');
 module.exports = class RedisClient {
   constructor({ url, namespace }) {
     const client = Redis.createClient({ url });
-    const connection = client.connect();
+    client.connect();
 
     // Listeners (error is mandatory!)
     client.on('error', (e) => {
@@ -28,13 +28,13 @@ module.exports = class RedisClient {
 
     return new Proxy(client, {
       get(target, method) {
-        return (...args) => connection.then(() => {
+        return (...args) => {
           if (!client[method]) console.log(method);
           return client[method](...args).catch((e) => {
             console.log(method, ...args);
             throw e;
           });
-        });
+        };
       },
     });
   }

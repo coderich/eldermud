@@ -33,9 +33,6 @@ module.exports = class ConfigClient extends Config {
         const id = $paths[$paths.length - 1];
         const type = $paths[$paths.length - 2];
         const ns = $paths.filter(p => !p.startsWith('_')).join('.');
-        // const root = $paths[$paths.length - 3];
-        // const ns = [type, root, id].filter(Boolean).join('.');
-        // console.log($paths, ns);
         this.merge({ [ns]: Config.parseFile(filepath) });
         this.set(`${ns}.id`, id);
         this.set(`${ns}.type`, type);

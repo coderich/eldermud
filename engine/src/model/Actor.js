@@ -47,19 +47,33 @@ module.exports = class ActorWrapper extends Actor {
   }
 
   save(data = {}, NX = false) {
-    this.assign(data, NX);
+    this.assign(data);
 
     return Promise.all(Object.entries(data).map(async ([key, value]) => {
       if (CONFIG.get(`app.spawn.${this.type}`).includes(key)) {
-        await REDIS.set(`${this}.${key}`, this[key], { NX });
+        const $key = `${this}.${key}`;
+        const $value = this[key];
+
+        if (Array.isArray($value)) {
+          await REDIS.del($key);
+          if ($value.length) await Promise.all($value.map(v => REDIS.rPush($key, APP.castValue(v))));
+        } else if ($value instanceof Set) {
+          await REDIS.del($key);
+          if ($value.size) await Promise.all($value.values().map(v => REDIS.sAdd($key, APP.castValue(v))));
+        } else if (typeof $value === 'object') {
+          await REDIS.hSet($key, $value);
+        } else {
+          await REDIS.set($key, $value, { NX });
+        }
       }
     })).then(() => this);
   }
 
   assign(data, NX = false) {
     Object.entries(data).forEach(([key, value]) => {
-      if (NX) this[key] ??= APP.castValue(value);
-      else this[key] = APP.castValue(value);
+      this[key] = APP.castValue(value);
+      // if (NX) this[key] ??= APP.castValue(value);
+      // else this[key] = APP.castValue(value);
     });
     return this;
   }

@@ -12,24 +12,23 @@ module.exports = class Unit extends Actor {
 
   async calcStats() {
     const attrs = ['str', 'int', 'wis', 'con', 'dex', 'cha'];
-    const stats = await this.mGet('lvl', 'race', 'class', ...attrs);
+    const stats = await this.mGet('lvl', 'race', 'class', 'weapon', 'armor', ...attrs);
 
     if (stats.race && stats.class) {
-      const race = CONFIG.get(`${stats.race}`);
-      const clas = CONFIG.get(`${stats.class}`);
-      const player = CONFIG.get('player');
+      const race = CONFIG.get(stats.race);
+      const clas = CONFIG.get(stats.class);
+      // const player = CONFIG.get('player');
       const levels = await REDIS.lRange(`${this}.levels`, 0, -1);
-      this.armor = clas.armor;
-      this.weapon = clas.weapon;
+      this.armor = CONFIG.get(stats.armor);
+      this.weapon = CONFIG.get(stats.weapon);
       this.attacks = [this.weapon];
-      this.traits = player.traits.concat(clas.traits).concat(race.traits);
-      this.talents = player.talents.concat(clas.talents).concat(race.talents);
+      this.traits = await REDIS.sMembers(`${this}.traits`).then(arr => new Set(arr.map(t => CONFIG.get(t))));
+      this.talents = await REDIS.sMembers(`${this}.talents`).then(arr => new Set(arr.map(t => CONFIG.get(t))));
       this.gains = Object.entries(race.gains).reduce((prev, [key, value]) => {
         prev[key] += value;
         return prev;
       }, { ...clas.gains });
       attrs.forEach((attr) => {
-        // this[attr] = stats[attr] = race[attr] + clas[attr] + (race.gains[attr] * (stats.lvl - 1)) + (clas.gains[attr] * (stats.lvl - 1));
         this[attr] = stats[attr] = race[attr] + clas[attr] + (this.gains[attr] * (stats.lvl - 1));
       });
       levels.forEach((attr) => {

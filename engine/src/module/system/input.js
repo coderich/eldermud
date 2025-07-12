@@ -14,7 +14,7 @@ SYSTEM.on('*', async (event, context) => {
     const room = CONFIG.get(await actor.get('room')); // Consider adding this to "data" for downstream
 
     if (tags.includes('talent')) {
-      const talent = actor.talents.find(t => t.id.startsWith(action));
+      const talent = actor.talents.values().find(t => t.id.startsWith(action));
       if (!talent) { abort(); actor.perform('say', input); }
       Object.assign(data, { talent: CONFIG.get(`${talent}`) });
     }
