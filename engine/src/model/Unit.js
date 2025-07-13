@@ -7,6 +7,7 @@ module.exports = class Unit extends Actor {
     this.$search = new Set();
     this.$killers = new Set();
     this.$invited = new Set();
+    this.$affects = new Map();
     this.$partyRank = 1;
   }
 
@@ -36,28 +37,35 @@ module.exports = class Unit extends Actor {
       });
     }
 
-    this.hp = this.mhp = (stats.lvl * 5) + APP.fibStat(stats.con);
-    this.ma = this.mma = (stats.lvl * 3) + Math.floor((APP.fibStat(stats.int) + APP.fibStat(stats.wis, 15)) / 2);
-    this.ac = this.acc = stats.lvl + Math.floor(stats.dex / 10);
+    // Apply dynamic effects
+    this.$affects.forEach((affect) => {
+      Object.entries(affect).forEach(([key, value]) => {
+        this[key] += value;
+      });
+    });
+
+    this.hp = this.mhp = (stats.lvl * 5) + APP.fibStat(this.con);
+    this.ma = this.mma = (stats.lvl * 3) + Math.floor((APP.fibStat(this.int) + APP.fibStat(this.wis, 15)) / 2);
+    this.ac = this.acc = stats.lvl + Math.floor(this.dex / 10);
     this.sc = this.mma; // Spellcasting
-    this.dr = Math.floor((stats.str / 5)); // Damage Reduction + Poise
-    this.mr = Math.floor((stats.wis / 5)); // Magic Reduction
-    this.enc = 600 + ((stats.lvl + stats.str) * 20);
-    this.crits = Math.floor(stats.dex / 10);
-    this.dodge = Math.floor(stats.dex / 10);
-    this.parry = Math.floor(stats.dex / 10);
-    this.riposte = Math.floor(stats.dex / 10);
-    this.stealth = Math.floor(stats.dex / 10);
-    this.traps = Math.floor(stats.int / 10);
-    this.lockpicks = Math.floor(stats.int / 10);
-    this.tracking = Math.floor(stats.wis / 10);
-    this.leadership = Math.floor(stats.cha / 10);
-    this.perception = stats.lvl + stats.int + stats.dex;
+    this.dr = Math.floor((this.str / 5)); // Damage Reduction + Poise
+    this.mr = Math.floor((this.wis / 5)); // Magic Reduction
+    this.enc = 600 + ((stats.lvl + this.str) * 20);
+    this.crits = Math.floor(this.dex / 10);
+    this.dodge = Math.floor(this.dex / 10);
+    this.parry = Math.floor(this.dex / 10);
+    this.riposte = Math.floor(this.dex / 10);
+    this.stealth = Math.floor(this.dex / 10);
+    this.traps = Math.floor(this.int / 10);
+    this.lockpicks = Math.floor(this.int / 10);
+    this.tracking = Math.floor(this.wis / 10);
+    this.leadership = Math.floor(this.cha / 10);
+    this.perception = stats.lvl + this.int + this.dex;
     this.depiction ??= CONFIG.get(`${stats.class}.depiction`);
 
     // Speeds
     this.moveSpeed = 2000;
-    this.engageSpeed = 2000 - (stats.dex * 10);
+    this.engageSpeed = 2000 - (this.dex * 10);
     return this;
   }
 };

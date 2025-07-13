@@ -24,6 +24,7 @@ module.exports = class ActorWrapper extends Actor {
       touch: new Stream('touch'),
       gesture: new Stream('gesture'),
       trait: new Stream('trait').chained(false), // Passive traits
+      effect: new Stream('effect').chained(false), // Active effects
       tactic: new Stream('tactic'), // Immediate combat tactics
       action: new Stream('action'), // Active actions
       preAction: new Stream('preAction'), // Used to await/delay the current action

@@ -21,8 +21,8 @@ const confirmCharacter = async (actor, selection) => {
     const yn = await actor.query(APP.styleText('keyword', race.name, clas.name), APP.styleText('dialog', 'is that correct? (y/n)')).then(({ text }) => text.toLowerCase().trim());
     if (yn === 'y') {
       const { weapon, armor } = clas;
-      const traits = new Set([...race.traits, ...clas.traits]);
-      const talents = new Set([...race.talents, ...clas.talents]);
+      const traits = new Set([...actor.traits, ...race.traits, ...clas.traits]);
+      const talents = new Set([...actor.talents, ...race.talents, ...clas.talents]);
       return actor.save({ race, class: clas, weapon, armor, traits, talents });
     }
   }

@@ -24,7 +24,6 @@
 - room visibility (dark, torch, etc)
 - REDIS: sMembers, sAdd, sRem, incrBy, incr, sIsMember (inventory)
 - party ranks effect combat...
-- main menu: enter, about, help?
 - item progression matrix
 - target range vs source range - distance can be up to 5 (out of range!)
 - Terrain (buffs, debuffs, movement, off-balance-checks, etc)

@@ -45,15 +45,8 @@ exports.setup = async () => {
     REDIS.keys('item.*'),
     REDIS.keys('creature.*'),
   ]).then(async (results) => {
-    // Unique set of keys (up until the numeric segment)
-    const keys = new Set(results.flat(2).map((key) => {
-      const arr = key.split('.');
-      const index = arr.findIndex(el => APP.isNumeric(el));
-      return arr.slice(0, index + 1).join('.');
-    }));
-
-    // Hydrate and spawn instances
-    const actors = await APP.hydrate(Array.from(keys.values().filter(Boolean)));
+    const keys = APP.uniqIdKeys(...results); // Unique keys based on instance/id value
+    const actors = await APP.hydrate(keys);
     return Promise.all(actors.map(actor => actor.perform('spawn')));
   });
 };

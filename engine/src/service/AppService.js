@@ -76,6 +76,14 @@ exports.target = (list, args, by = 'name') => {
   return result;
 };
 
+exports.uniqIdKeys = (...keys) => {
+  return Array.from(new Set(keys.flat().map((key) => {
+    const arr = key.split('.');
+    const index = arr.findIndex(el => APP.isNumeric(el));
+    return arr.slice(0, index + 1).join('.');
+  })).values()).filter(Boolean);
+};
+
 /**
  * Given a set of configuration keys; will instantiate a new model and save to disk
  */

@@ -5,7 +5,6 @@ app:
   # Attrs to persist to DB
   spawn:
     # stats: ['str', 'dex', 'int', 'wis', 'con', 'cha']
-    # talent: ['target', 'lvl', 'duration']
     unit: ['room', 'name', 'hp', 'ma', 'rank']
     item: ['room', 'name', 'hidden', 'durability', 'owner', 'echo']
     user: ['race', 'class', 'weapon', 'armor', 'traits', 'talents', 'lvl', 'exp', 'checkpoint']

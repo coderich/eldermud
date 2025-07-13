@@ -12,7 +12,9 @@ Action.define('bless', [
     const name = target === actor ? 'yourself' : target.name;
     if (await actor.get('ma') < talent.cost) return abort('Insufficient resources!');
     await actor.perform('affect', { ma: -talent.cost });
-    await APP.instantiate(talent, { target, lvl: 1, duration: 20000 });
+    const effect = { source: `${talent}`, actor: `${actor}`, target: `${target}`, apply: 'dynamic', affect: { wis: 5, dex: 5 }, loops: 1, interval: 0, duration: 20000 };
+    await REDIS.set(`${talent}.${target}`, JSON.stringify(effect));
+    target.stream('effect', 'effect', effect);
     return actor.send('text', APP.styleText('boost', `You cast ${talent.name} on ${name}!`));
   },
 ]);
