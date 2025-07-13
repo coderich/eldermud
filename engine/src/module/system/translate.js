@@ -2,6 +2,9 @@ const { Action, Stream } = require('@coderich/gameflow');
 
 const channel = new Stream(); // Global Stream (no need for one per Unit)
 const channelArgs = Array.from(new Array(100)).map((el, i) => i);
+const argsMap = {
+  ally: [0, 1, 2, 3, 4, 5],
+};
 
 /**
  * Each set of commands is ordered by "tier"; the first tier can match cmds with 1 letter, tier 2 letters, etc.
@@ -71,10 +74,21 @@ const commands = [
     { harvest: { args: [1, 2, 3, 4, 5], code: 'harvest', channel: 'realm', stream: 'action', tags: ['corpse'] } },
 
     // Talents
-    { bles: { args: [0, 1, 2, 3, 4, 5], name: 'bless', code: 'bles', channel: 'realm', stream: 'action', tags: ['talent', 'ally'] } },
-    { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action', tags: ['talent', 'player'] } },
-    { stab: { args: [0], code: 'stab', channel: 'realm', stream: 'tactic', tags: ['talent'] } },
-    { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action', tags: ['talent', 'other'] } },
+    ...Object.entries(CONFIG.get('talent')).map(([key, talent]) => {
+      return {
+        [talent.code]: {
+          args: argsMap[talent.target],
+          name: 'talent',
+          code: talent.code,
+          channel: 'realm',
+          stream: 'action',
+          tags: ['talent', talent.target],
+        },
+      };
+    }),
+    // { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action', tags: ['talent', 'player'] } },
+    // { stab: { args: [0], code: 'stab', channel: 'realm', stream: 'tactic', tags: ['talent'] } },
+    // { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action', tags: ['talent', 'other'] } },
   ],
   [
     { greet: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'voice', tags: ['other'] } },

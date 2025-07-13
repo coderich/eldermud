@@ -10,11 +10,11 @@ SYSTEM.on('*', async (event, context) => {
 
   // Normalize input for actions
   if (type === 'pre' && data && translate) {
-    const { args, tags = [], input } = data;
+    const { args, code, tags = [], input } = data;
     const room = CONFIG.get(await actor.get('room')); // Consider adding this to "data" for downstream
 
     if (tags.includes('talent')) {
-      const talent = actor.talents.values().find(t => t.id.startsWith(action));
+      const talent = actor.talents.values().find(t => t.code === code);
       if (!talent) { abort(); actor.perform('say', input); }
       Object.assign(data, { talent: CONFIG.get(`${talent}`) });
     }
@@ -35,8 +35,12 @@ SYSTEM.on('*', async (event, context) => {
     } else if (tags.includes('party')) {
       Object.assign(data, APP.target([...actor.$party.values()].filter(unit => unit !== actor), args));
     } else if (tags.includes('ally')) {
-      const units = [...room.units.values().filter(unit => unit.type === 'player'), ...actor.$party];
-      Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
+      if (!args.length) {
+        data.target = actor;
+      } else {
+        const units = [...room.units.values().filter(unit => unit.type === 'player'), ...actor.$party];
+        Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
+      }
     }
 
     // Specific action handling...

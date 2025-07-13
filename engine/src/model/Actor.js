@@ -111,10 +111,16 @@ module.exports = class ActorWrapper extends Actor {
     return super.stream(stream, ...args);
   }
 
-  disconnect(...args) {
+  async exit(reason) {
     this.removeAllPossibleListeners();
-    this.socket.disconnect(...args);
+    const exit = CONFIG.get(await this.get('room'));
+    exit?.units.delete(this);
     return this;
+  }
+
+  disconnect(reason) {
+    this.socket.disconnect(reason);
+    return this.exit(reason);
   }
 
   abortAllStreams() {

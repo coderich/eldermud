@@ -1,8 +1,14 @@
 /**
  */
-SYSTEM.on('*', (event, context) => {
+SYSTEM.on('*', async (event, context) => {
   const { actor, result, promise } = context;
   const [type] = event.split(':');
+
+  // Posture
+  if (['pre:move', 'pre:open', 'pre:close', 'pre:attack'].includes(event)) {
+    const posture = await actor.get('posture');
+    if (posture !== 'stand') await actor.stream('preAction', 'stand');
+  }
 
   if (type === 'abort' && promise.reason && promise.reason !== '$source') {
     actor.send('text', promise.reason);
@@ -15,6 +21,13 @@ SYSTEM.on('*', (event, context) => {
 
   if (['post:engage', 'abort:engage'].includes(event)) {
     actor.send('text', APP.styleText('engaged', '*combat off*'));
+  }
+
+  // Status
+  if (['post:affect', 'post:effect', 'post:spawn', 'post:stand', 'post:rest'].includes(event)) {
+    if (actor.type === 'player') {
+      actor.perform('status');
+    }
   }
 
   if (type === 'enter') {

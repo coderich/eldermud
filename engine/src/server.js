@@ -11,13 +11,11 @@ server.on('connect', async ({ socket }) => {
   await player.send('text', APP.styleText('highlight', 'Welcome Adventurer!'));
   await player.perform('authenticate');
   await player.perform('mainMenu');
-  await player.realm('text', `${APP.styleText(player.type, player.name)} enters the realm.`);
-  await player.perform('spawn');
   player.$ready$ = true;
 });
 
 server.on('disconnect', async ({ socket, reason }) => {
-  await Actor[socket.id].perform('logout', { reason });
+  await Actor[socket.id].disconnect(reason);
   delete Actor[socket.id];
 });
 

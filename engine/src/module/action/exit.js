@@ -7,10 +7,8 @@ Action.define('exit', [
 
   () => APP.timeout(3000),
 
-  async (_, { actor }) => {
-    const exit = CONFIG.get(await actor.get('room'));
-    exit.units.delete(actor);
-    actor.disconnect('exit');
-    return { exit };
+  async ({ reason }, { actor }) => {
+    await actor.exit('exit');
+    return actor.perform('mainMenu');
   },
 ]);

@@ -1,15 +1,15 @@
 module.exports = {
+  code: 'bles',
   name: 'Bless',
   description: '',
-  code: 'bles',
   cost: 5,
   range: 5,
+  delay: 1000,
   target: 'ally',
-  // pipeline: [
-  //   { type: 'actor', cmd: 'send', args: [] },
-  //   { type: 'actor', cmd: 'broadcast', args: [] },
-  //   { type: 'effect', target: 'target', affect: { wis: 5, dex: 5 }, duration: 20000 },
-  // ],
+  gesture: 'focus energy in prayer',
+  effects: [
+    { style: 'buff', target: 'target', apply: 'dynamic', affect: { wis: 5, dex: 5 }, duration: 20000 },
+  ],
   upgrade: {
     cost: 1000,
     next: '${self:talent.bless-2}',

@@ -14,7 +14,7 @@ Action.define('mainMenu', [
     const { text: selection } = await actor.query('Please make a selection');
 
     switch (selection.toLowerCase()) {
-      case 'e': return actor.perform('onboard');
+      case 'e': return actor.perform('enter');
       // case 't': return actor.perform('tutorial').then(() => actor.perform('mainMenu'));
       // case 'a': return actor.perform('about').then(() => actor.perform('mainMenu'));
       case 'x': return actor.disconnect('exit');
