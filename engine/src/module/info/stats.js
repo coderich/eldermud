@@ -59,9 +59,9 @@ Action.define('stats', [
       [...data.Level, ...data.Mana, ...data.Stealth],
       [...Empty, ...Empty, ...data.Crits],
       [...Empty, ...Empty, ...data.Tracking],
-      [...data.Strength, ...data.Dexterity, ...data.Traps],
-      [...data.Intellect, ...data.Wisdom, ...data.Lockpicks],
-      [...data.Constitution, ...data.Charisma, ...data.Perception],
+      [...data.Strength, ...data.Wisdom, ...data.Traps],
+      [...data.Intellect, ...data.Charisma, ...data.Lockpicks],
+      [...data.Dexterity, ...data.Constitution, ...data.Perception],
     ], { sep: '' });
 
     const table2 = APP.table([

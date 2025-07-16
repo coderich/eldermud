@@ -34,6 +34,8 @@ SYSTEM.on('*', async (event, context) => {
       Object.assign(data, APP.target(Object.values(Game.Actor), args));
     } else if (tags.includes('party')) {
       Object.assign(data, APP.target([...actor.$party.values()].filter(unit => unit !== actor), args));
+    } else if (tags.includes('creature')) {
+      Object.assign(data, APP.target([...room.units].filter(unit => unit.type === 'creature'), args));
     } else if (tags.includes('ally')) {
       if (!args.length) {
         data.target = actor;

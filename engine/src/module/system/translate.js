@@ -4,6 +4,8 @@ const channel = new Stream(); // Global Stream (no need for one per Unit)
 const channelArgs = Array.from(new Array(100)).map((el, i) => i);
 const argsMap = {
   ally: [0, 1, 2, 3, 4, 5],
+  enemy: [1, 2, 3, 4, 5],
+  creature: [1, 2, 3, 4, 5],
 };
 
 /**

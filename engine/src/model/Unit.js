@@ -7,7 +7,7 @@ module.exports = class Unit extends Actor {
     this.$search = new Set();
     this.$killers = new Set();
     this.$invited = new Set();
-    this.$affects = new Map();
+    this.$effects = new Map();
     this.$partyRank = 1;
   }
 
@@ -38,7 +38,7 @@ module.exports = class Unit extends Actor {
     }
 
     // Apply dynamic effects
-    this.$affects.forEach((affect) => {
+    this.$effects.forEach((affect) => {
       Object.entries(affect).forEach(([key, value]) => {
         this[key] += value;
       });

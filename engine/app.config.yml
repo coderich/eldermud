@@ -42,6 +42,9 @@ app:
     debuff: '<red>'
     item: '<LightSeaGreen>'
     muted: '<DimGrey>'
+    status:
+      mhp: '<ansiGreen>'
+      mma: '<SkyBlue>'
     room:
       name: '<cyan>'
       description: ''

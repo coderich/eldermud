@@ -188,6 +188,7 @@ end);
 });
 
 status:setStyleSheet([[
+  font-size: 16px;
   border-top: none;
   border-bottom: 1px solid white;
 ]]);
@@ -198,10 +199,11 @@ local sep = '&amp;nbsp;&amp;nbsp;&amp;nbsp;';
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.status', 'gmcp.eldermud.status', function()
   local data = gmcp.eldermud.status;
+  -- status:cecho(data);
   status:echo(
-    'Health: &lt;span style="color:green"&gt;' .. data.hp .. '&lt;/span&gt;'
+    'Health: &lt;span style="color:green"&gt;' .. data.hp .. ' / ' .. data.mhp .. '&lt;/span&gt;'
     .. sep
-    .. 'Mana: &lt;span style="color:SkyBlue"&gt;' .. data.ma .. '&lt;/span&gt;'
+    .. 'Mana: &lt;span style="color:SkyBlue"&gt;' .. data.ma .. ' / ' .. data.mma .. '&lt;/span&gt;'
     .. sep
     .. 'Remnants: &lt;span style="color:LightSeaGreen"&gt;' .. data.exp .. '&lt;/span&gt;'
     .. sep

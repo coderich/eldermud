@@ -56,11 +56,12 @@ Action.define('engage', [
       if (actor.$target) {
         // Swing(s)
         await APP.promiseChain(swings.map(swing => async () => {
-          // Resource check
+          // Resource cost check
           if (attack.cost) {
             const resources = await actor.mGet(Object.keys(attack.cost));
-            if (Object.entries(attack.cost).some(([key, value]) => resources[key] + value < 0)) abort('Insufficient resources');
-            await actor.perform('affect', attack.cost);
+            const cost = Object.entries(attack.cost).reduce((prev, [key, value]) => Object.assign(prev, { [key]: APP.roll(value) }), {});
+            if (Object.entries(cost).some(([key, value]) => resources[key] + value < 0)) abort('Insufficient resources');
+            await actor.perform('affect', cost);
           }
 
           // To hit roll
