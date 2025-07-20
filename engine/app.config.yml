@@ -7,7 +7,7 @@ app:
     # stats: ['str', 'dex', 'int', 'wis', 'con', 'cha']
     unit: ['room', 'name', 'hp', 'ma', 'rank']
     item: ['room', 'name', 'hidden', 'durability', 'owner', 'echo']
-    user: ['race', 'class', 'weapon', 'armor', 'traits', 'talents', 'lvl', 'exp', 'checkpoint']
+    user: ['race', 'class', 'weapon', 'armor', 'traits', 'talents', 'exp', 'checkpoint']
     key: ${self:app.spawn.item}
     npc: ${self:app.spawn.unit}
     creature: ${self:app.spawn.unit}
@@ -24,6 +24,7 @@ app:
     keyword: '<LightSeaGreen>'
     highlight: '<yellow>'
     engaged: '<goldenrod>'
+    exp: '<wheat>'
     npc: ''
     # player: '<DarkTurquoise>'
     # player: '<violet>'
@@ -44,7 +45,9 @@ app:
     muted: '<DimGrey>'
     status:
       mhp: '<ansiGreen>'
-      mma: '<SkyBlue>'
+      midhp: '<violet>'
+      lowhp: '<OrangeRed>'
+      mma: '<LightSeaGreen>'
     room:
       name: '<cyan>'
       description: ''

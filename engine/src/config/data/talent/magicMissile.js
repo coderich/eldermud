@@ -5,8 +5,8 @@ module.exports = {
   cost: 0,
   range: 5,
   speed: 0,
+  cooldown: 10000,
   target: 'creature',
-  // gesture: 'focus blistering arrow',
   effects: [
     {
       target: 'target',

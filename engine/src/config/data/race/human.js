@@ -10,7 +10,7 @@ module.exports = {
   cha: 0,
   gains: { str: 0, dex: 1, int: 1, wis: 1, con: 0, cha: 1 },
   traits: [
-    // '${self:trait.adaptable}', // passive: once per day, reassign your free level-up point to a different stat
+    '${self:trait.proficient}',
   ],
   talents: [
     // '${self:talent.jackOfAllTrades}', // active: gain +1 to all core stats for 10s, costs 5 MP, 60s cooldown

@@ -22,11 +22,23 @@ Action.define('talent', [
     else await actor.perform('affect', { ma: -talent.cost });
   },
 
-  // Execute talent (effects)
+  // Message
+  ({ talent, target }, { actor }) => {
+    if (talent.message) {
+      const [verb, ...rest] = talent.message.split(' ');
+      const target1 = actor === target ? 'yourself' : target.name;
+      const target2 = actor === target ? 'themself' : target.name;
+      actor.send('text', APP.styleText(talent.style, ['You', verb, ...rest, target1].join(' ')));
+      actor.broadcast('text', APP.styleText(talent.style, [actor.name, APP.pluralize(verb), ...rest, target2].join(' ')));
+    }
+  },
+
+  // Manifestation (effects)
   ({ talent, target }, { actor }) => {
     return talent.effects.map(async (effect) => {
-      effect = { ...effect, source: `${talent}`, actor: `${actor}`, target: `${target}` };
-      return target.stream('effect', 'effect', effect);
+      const $target = effect.target === 'self' ? actor : target;
+      effect = { ...effect, source: `${talent}`, actor: `${actor}`, target: `${$target}` };
+      return $target.stream('effect', 'effect', effect);
     });
   },
 ]);

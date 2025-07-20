@@ -14,6 +14,8 @@ Action.define('stats', [
       return Object.assign(prev, { [key]: APP.styleText('muted', value ? `+${value}` : '') });
     }, {});
 
+    const effects = Array.from(actor.$effects.values()).map(el => APP.styleText(el.style, el.message)).filter(Boolean);
+
     const data = Object.entries({
       Name: stats.name,
       Level: `${stats.lvl}`,
@@ -70,6 +72,9 @@ Action.define('stats', [
       [...data.Talents],
     ], { sep: '' });
 
+    //
+
     actor.send('text', `\n${table1}\n\n\n${table2}\n`);
+    if (effects.length) actor.send('text', `${effects.join('\n')}\n`);
   },
 ]);

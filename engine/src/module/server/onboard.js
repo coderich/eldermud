@@ -8,7 +8,7 @@ const displayMenu = async (actor) => {
 
   await actor.send('text', APP.table([
     ...races.map((el, i) => [`[${i + 1}]`, el.name, ' ', `[${String.fromCharCode(i + 65)}]`, classes[i].name]),
-    ['[X]', 'Exit Menu', '', ''],
+    ['[X]', '<exit menu>', '', ''],
   ], { sep: '' }));
 };
 
@@ -32,8 +32,9 @@ const confirmCharacter = async (actor, selection) => {
 
 const resolveSelection = async (actor) => {
   const selection = await actor.query(APP.styleBlockText('dialog', [
+    { text: '1A', style: 'keyword' },
     { text: '? <topic>', style: 'keyword' },
-  ], 'Select a race/class (eg. "1C") or "? <topic>" to learn more')).then(({ text }) => text.toLowerCase().trim());
+  ], 'Select a race/class (eg. 1A) or enter ? <topic> to learn more')).then(({ text }) => text.toLowerCase().trim());
   if (selection === 'x') return actor.perform('mainMenu');
   if (selection.startsWith('?')) return actor.perform('translate', selection).then(cmd => actor.perform('help', APP.targetHelp(cmd.args))).then(() => resolveSelection(actor));
   return confirmCharacter(actor, selection);

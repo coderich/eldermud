@@ -1,10 +1,11 @@
 module.exports = {
+  code: 'stab',
   name: 'QuickStab',
   description: 'Quickly strike your opponent with increased critical chance',
-  code: 'stab',
   cost: 5,
   crits: 5,
+  target: 'target',
   effects: [
-    { type: 'debuff', target: 'target', affect: { hp: '-2d8' }, duration: 10000 },
+    { type: 'debuff', target: 'target', affect: { hp: '-2d8' } },
   ],
 };

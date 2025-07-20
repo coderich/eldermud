@@ -5,8 +5,13 @@ Action.define('train', [
     const [stat] = args;
     const stats = ['str', 'dex', 'int', 'wis', 'con', 'cha'];
     if (!stats.includes(stat)) return abort(`Invalid stat specified; must be one of ${stats}`);
+
+    const info = await actor.mGet(['exp', 'lvl']);
+    const tnl = APP.tnl(info.lvl);
+    if (info.exp < tnl) return abort(`You need ${APP.styleText('exp', `^${tnl}`)} in order to reach the next level!`);
+
     await actor.send('text', APP.styleText('boost', 'You reach the next level!'));
     await REDIS.rPush(`${actor}.levels`, stat);
-    return actor.perform('affect', { lvl: 1 });
+    return actor.perform('affect', { exp: -tnl });
   },
 ]);

@@ -28,6 +28,7 @@ exports.styleText = (style, ...text) => `${CONFIG.get(`app.styles.${style}`)}${t
 exports.isNumeric = str => !Number.isNaN(Number(`${str}`));
 exports.isBoolean = str => ['true', 'false'].includes(`${str}`.toLowerCase());
 exports.fibStat = (val, every = 10) => Array.from(new Array(parseInt(val ?? 0, 10))).reduce((prev, el, i) => prev + exports.fib[Math.floor(i / every)], 0);
+exports.tnl = lvl => lvl * 100 * exports.fibStat(lvl, 2);
 
 exports.castValue = (value) => {
   if (value == null) return value;

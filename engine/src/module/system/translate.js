@@ -3,6 +3,8 @@ const { Action, Stream } = require('@coderich/gameflow');
 const channel = new Stream(); // Global Stream (no need for one per Unit)
 const channelArgs = Array.from(new Array(100)).map((el, i) => i);
 const argsMap = {
+  none: [0],
+  target: [0],
   ally: [0, 1, 2, 3, 4, 5],
   enemy: [1, 2, 3, 4, 5],
   creature: [1, 2, 3, 4, 5],
@@ -17,7 +19,7 @@ const argsMap = {
  */
 const commands = [
   [
-    { attack: { args: [1, 2, 3], code: 'a', channel: 'realm', stream: 'action', tags: ['other'] } },
+    { attack: { args: [1, 2, 3], code: 'a', channel: 'realm', stream: 'action', target: 'other' } },
     { down: { args: [0], code: 'd', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { east: { args: [0], code: 'e', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { get: { args: [1, 2, 3, 4, 5], code: 'get', channel: 'realm', stream: 'action' } },
@@ -47,15 +49,17 @@ const commands = [
     { exit: { args: [0], code: 'x', channel: 'realm', stream: 'action' } },
   ],
   [
-    { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', channel: 'realm', stream: 'voice', tags: ['npc'] } },
+    { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], code: 'ask', channel: 'realm', stream: 'voice', target: 'npc' } },
     { who: { args: [0], code: 'who', channel: 'realm', stream: 'info' } },
     // { exp: { args: [0], code: 'exp', stream: 'action' } },
     { use: { args: [1, 2, 3, 4, 5], code: 'use', channel: 'realm', stream: 'action' } },
     { buy: { args: [1, 2, 3, 4, 5], code: 'buy', channel: 'realm', stream: 'action' } },
+    { exp: { args: [0], channel: 'realm', stream: 'action' } },
+    { tnl: { args: [0], name: 'exp', channel: 'realm', stream: 'action' } },
     { sell: { args: [1, 2, 3, 4, 5], code: 'sell', channel: 'realm', stream: 'action' } },
     { break: { args: [0], code: 'break', channel: 'info', stream: 'info' } },
     { search: { args: [0, 1, 2, 3, 4, 5], code: 'search', channel: 'realm', stream: 'action' } },
-    { follow: { args: [1, 2], code: 'follow', channel: 'realm', stream: 'gesture', tags: ['other'] } },
+    { follow: { args: [1, 2], code: 'follow', channel: 'realm', stream: 'gesture', target: 'other' } },
     { leave: { args: [0], code: 'leave', channel: 'realm', stream: 'gesture' } },
     { inventory: { args: [0], code: 'i', channel: 'realm', stream: 'info' } },
     { party: { args: [0], code: 'party', channel: 'realm', stream: 'info' } },
@@ -72,8 +76,8 @@ const commands = [
     // { lock: { args: [1], code: 'lock', stream: 'action' } },
     // { rest: { args: [0], code: 'rest', channel: 'realm', stream: 'action' } },
     { stand: { args: [0], code: 'stand', channel: 'realm', stream: 'action' } },
-    { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'gesture', tags: ['other'] } },
-    { harvest: { args: [1, 2, 3, 4, 5], code: 'harvest', channel: 'realm', stream: 'action', tags: ['corpse'] } },
+    { invite: { args: [1, 2], code: 'invite', channel: 'realm', stream: 'gesture', target: 'other' } },
+    { harvest: { args: [1, 2, 3, 4, 5], code: 'harvest', channel: 'realm', stream: 'action', target: 'corpse' } },
 
     // Talents
     ...Object.entries(CONFIG.get('talent')).map(([key, talent]) => {
@@ -83,25 +87,23 @@ const commands = [
           name: 'talent',
           code: talent.code,
           channel: 'realm',
-          stream: 'action',
-          tags: ['talent', talent.target],
+          stream: 'tactic',
+          target: talent.target,
+          tags: ['talent'],
         },
       };
     }),
-    // { mend: { args: [0, 1], code: 'mend', channel: 'realm', stream: 'action', tags: ['talent', 'player'] } },
-    // { stab: { args: [0], code: 'stab', channel: 'realm', stream: 'tactic', tags: ['talent'] } },
-    // { vamp: { args: [1], code: 'vamp', channel: 'realm', stream: 'action', tags: ['talent', 'other'] } },
   ],
   [
-    { greet: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'voice', tags: ['other'] } },
+    { greet: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'voice', target: 'other' } },
     { train: { args: [1], channel: 'realm', stream: 'action' } },
     { upgrade: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'action' } },
   ],
 ];
 
 const translateArray = (arr, input, cmd, args) => {
-  if (cmd.startsWith('/')) return { name: 'telepath', input, args: [cmd.substring(1), ...args], code: 'tele', channel: 'realm', stream: 'info', tags: ['realm'] };
-  if (cmd.startsWith('@')) return { name: 'at', input, args: [cmd.substring(1), ...args], code: 'at', channel: 'realm', stream: 'info', tags: ['other'] };
+  if (cmd.startsWith('/')) return { name: 'telepath', input, args: [cmd.substring(1), ...args], code: 'tele', channel: 'realm', stream: 'info', target: 'realm' };
+  if (cmd.startsWith('@')) return { name: 'at', input, args: [cmd.substring(1), ...args], code: 'at', channel: 'realm', stream: 'info', target: 'other' };
 
   for (let i = 0; i < cmd.length; i++) {
     const tier = arr[i];

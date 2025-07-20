@@ -28,10 +28,10 @@ Action.define('help', [
           actor.send('text', APP.styleText('highlight', name)),
           actor.send('text', description),
           actor.send('text', APP.table([
-            ['Stats:', stats.join(' | ').concat(APP.styleText('muted', ' (+ is per-level gain)'))],
+            ['Stats:', stats.join('  ').concat(APP.styleText('muted', ' (+ is per-level gain)'))],
             weapon && armor && ['Equip:', APP.styleText('keyword', weapon.name, '+', armor.name)],
-            ['Traits:', APP.styleText('keyword', ...traits.map(el => el.name).join(', '))],
-            ['Talents:', APP.styleText('keyword', ...talents.map(el => el.name).join(', '))],
+            ['Traits:', APP.styleText('keyword', traits.map(el => el.name).join(', '))],
+            ['Talents:', APP.styleText('keyword', talents.map(el => el.name).join(', '))],
           ], { sep: '' })),
         ]);
       }

@@ -6,11 +6,13 @@ Action.define('effect', [
     const source = CONFIG.get(`${effect.source}`);
     const attack = CONFIG.get(`${effect.attack}`);
     const abortMessage = `The effects of ${source.name} wear off`;
+    const { duration } = effect;
 
     // Setup the effect
-    if (effect.duration) REDIS.set(key, JSON.stringify(effect));
-    if (effect.effect) actor.$effects.set(key, effect.effect);
+    if (duration) REDIS.set(key, JSON.stringify(effect));
+    if (effect.effect) actor.$effects.set(key, effect);
     if (effect.affect) actor.perform('affect', effect.affect);
+    if (effect.strike) Object.values(Actor).find(a => `${a}` === `${effect.actor}`).perform('strike', { target: actor, attack: effect.strike });
     if (effect.attack) Object.values(Actor).find(a => `${a}` === `${effect.actor}`).stream('action', 'engage', { target: actor, attack });
     actor.calcStats();
 
@@ -24,7 +26,7 @@ Action.define('effect', [
       actor.$effects.delete(key);
       actor.calcStats();
 
-      if (effect.duration) {
+      if (duration) {
         if (promise.reason === abortMessage) {
           REDIS.del(key);
         } else if (promise.reason !== false) {

@@ -1,14 +1,17 @@
 module.exports = {
   code: 'bles',
   name: 'Bless',
-  description: '',
+  description: 'Bestoy a blessing upon you or an ally; increasing stats',
   cost: 5,
-  range: 5,
-  speed: 1000,
+  style: 'buff',
   target: 'ally',
-  gesture: 'focus energy in prayer',
+  speed: 2000,
+  cooldown: 10000,
+  gesture: 'focus mind in prayer',
+  message: 'cast Bless on',
   effects: [
-    { style: 'buff', target: 'target', effect: { wis: 5, dex: 5 }, duration: 20000 },
+    { style: 'buff', target: 'target', affect: { hp: 5 } },
+    { style: 'buff', target: 'target', effect: { wis: 5, dex: 5 }, duration: 20000, message: 'You are blessed' },
   ],
   upgrade: {
     cost: 1000,

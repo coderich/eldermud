@@ -10,7 +10,7 @@ module.exports = {
   cha: -1,
   gains: { str: 1, dex: 0, int: 0, wis: 1, con: 0, cha: 0 },
   traits: [
-    // '${self:trait.stoneResilience}', // passive: take 10% less physical damage when below 50% HP
+    '${self:trait.resilient}',
   ],
   talents: [
     '${self:talent.battlecry-1}',

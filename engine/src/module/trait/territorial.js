@@ -10,6 +10,7 @@ Action.define('territorial', new Loop([
     actor.once('post:move', abort);
     actor.once('post:engage', abort);
     actor.once('abort:engage', abort);
+    actor.once('abort:attack', abort);
     SYSTEM.once(`enter:${room}`, idleResolvers.resolve);
     actor.streams.action.once('abort', combatResolvers.resolve);
 
