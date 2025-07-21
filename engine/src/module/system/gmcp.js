@@ -24,7 +24,7 @@ SYSTEM.on('*', async (event, context) => {
   }
 
   // Status
-  if (['post:affect', 'post:effect', 'post:spawn', 'post:stand', 'post:rest'].includes(event)) {
+  if (['post:affect', 'post:effect', 'post:spawn', 'post:stand', 'post:rest', 'post:talent', 'abort:countdown'].includes(event)) {
     if (actor.type === 'player') {
       actor.perform('status');
     }

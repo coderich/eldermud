@@ -41,14 +41,13 @@ Action.define('fallen', [
 
 Action.define('death', [
   async (_, { actor }) => {
-    actor.removeAllPossibleListeners();
+    actor.removeAllPossibleListeners(null);
     const room = CONFIG.get(await actor.get('room'));
     room.units.delete(actor);
 
     if (actor.type === 'player') {
       const { deathpoint, mhp, mma } = await actor.mGet('deathpoint', 'mhp', 'mma');
       await actor.save({ hp: mhp, ma: mma, room: deathpoint, exp: 0, posture: 'rest' });
-      // await REDIS.del(await REDIS.keys(`talent.`));
       actor.send('text', 'You have fallen...');
       return actor.perform('spawn');
     }

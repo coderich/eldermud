@@ -27,7 +27,7 @@ Action.define('effect', [
       actor.calcStats();
 
       if (duration) {
-        if (promise.reason === abortMessage) {
+        if (promise.reason === abortMessage || promise.reason === null) { // null means death
           REDIS.del(key);
         } else if (promise.reason !== false) {
           REDIS.set(key, JSON.stringify(effect));

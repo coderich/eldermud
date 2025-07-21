@@ -24,6 +24,7 @@ module.exports = class ActorWrapper extends Actor {
       touch: new Stream('touch'),
       gesture: new Stream('gesture'),
       spatial: new Stream('spatial'), // Things that must happen in sequence (eg. hits)
+      countdown: new Stream('countdown').chained(false), // IDK..
       effect: new Stream('effect').chained(false), // Active effects
       trait: new Stream('trait').chained(false), // Passive traits
       tactic: new Stream('tactic'), // Immediate combat tactics
@@ -113,7 +114,7 @@ module.exports = class ActorWrapper extends Actor {
   }
 
   async exit(reason) {
-    this.removeAllPossibleListeners();
+    this.removeAllPossibleListeners(reason);
     const exit = CONFIG.get(await this.get('room'));
     exit?.units.delete(this);
     return this;
@@ -124,14 +125,14 @@ module.exports = class ActorWrapper extends Actor {
     return this.exit(reason);
   }
 
-  abortAllStreams() {
-    Object.values(this.streams).forEach(stream => stream.abort());
+  abortAllStreams(reason) {
+    Object.values(this.streams).forEach(stream => stream.abort(reason));
     return this;
   }
 
-  removeAllPossibleListeners() {
+  removeAllPossibleListeners(reason) {
     this.removeAllListeners();
-    Object.values(this.streams).forEach(stream => stream.abort() && stream.removeAllListeners());
+    Object.values(this.streams).forEach(stream => stream.abort(reason) && stream.removeAllListeners());
     return this;
   }
 };

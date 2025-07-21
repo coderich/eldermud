@@ -1,10 +1,20 @@
 const { Action } = require('@coderich/gameflow');
 
-Action.define('talent', [
-  ({ talent, target }, { abort, actor }) => {
-    if (!target) abort('You dont see that here!');
-  },
+SYSTEM.on('post:enter', ({ actor }) => {
+  // Talent cooldowns
+  REDIS.keys(`talent.*.${actor}.cooldown`).then(async (keys) => {
+    const values = keys.length ? await REDIS.mGet(keys) : keys;
+    keys.forEach((key, i) => actor.stream('effect', 'countdown', { key, value: Number(values[i]) }));
+  });
 
+  // Talent effects
+  REDIS.keys(`talent.*.${actor}`).then(async (keys) => {
+    const values = keys.length ? await REDIS.mGet(keys) : keys;
+    keys.forEach((key, i) => actor.stream('effect', 'effect', JSON.parse(values[i])));
+  });
+});
+
+Action.define('talent', [
   // Gesture
   ({ talent }, { actor }) => {
     if (talent.gesture) {
@@ -18,7 +28,8 @@ Action.define('talent', [
 
   // Resource check
   async ({ talent }, { actor, abort }) => {
-    if (await actor.get('ma') < talent.cost) abort('Insufficient resources!');
+    if (await REDIS.get(`${talent}.${actor}.cooldown`)) abort(`${talent.name} is on cooldown!`);
+    else if (await actor.get('ma') < talent.cost) abort('Insufficient resources!');
     else await actor.perform('affect', { ma: -talent.cost });
   },
 
@@ -34,7 +45,13 @@ Action.define('talent', [
   },
 
   // Manifestation (effects)
-  ({ talent, target }, { actor }) => {
+  async ({ talent, target }, { actor }) => {
+    actor.stream('effect', 'countdown', {
+      key: `${talent}.${actor}.cooldown`,
+      value: talent.cooldown,
+      save: true,
+    });
+
     return talent.effects.map(async (effect) => {
       const $target = effect.target === 'self' ? actor : target;
       effect = { ...effect, source: `${talent}`, actor: `${actor}`, target: `${$target}` };
