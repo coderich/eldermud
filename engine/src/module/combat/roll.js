@@ -19,7 +19,7 @@ Action.define('roll', [
     const critroll = APP.roll(`1d${actorStats.crits + APP.roll(attack.crits)}`);
     const dodgeroll = APP.roll(`1d${targetStats.dodge}`); // default
 
-    // // This must be based on posture
+    // // This must be based on stance
     // const parryroll = APP.roll(`1d${target.parry}`);
     // const riposteroll = APP.roll(`1d${target.riposte}`);
 

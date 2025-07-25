@@ -13,6 +13,34 @@ app:
     creature: ${self:app.spawn.unit}
     player: '@{concat:${self:app.spawn.unit}, ${self:app.spawn.user}}'
 
+  stance:
+    ready: '✥'
+    fallen: '🔻'
+    # ready: '👟'
+    # engaged: '⌖'
+    engaged: '⚔'
+    running: '🏃'
+    sneaking: '👣'
+    resting: '💤'
+    # resting: '🛌'
+    blocking: '🛡'
+    riposte: '🤺'
+    mounted: '♞'
+    alert: '👁'
+
+  char:
+    health: '♥'
+    mana: '♦'
+    exp: '†'
+    bullet: '•'
+    divider: '¦'
+    blessed: '✚'
+    chilled: '❄'
+    poisoned: '☠'
+    negative: '✕'
+    stunned: '💫'
+    bleeding: '🩸'
+
   styles:
     reset: '<reset>'
     stat: '<ansiGreen>'

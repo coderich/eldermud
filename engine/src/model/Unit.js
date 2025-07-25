@@ -54,6 +54,7 @@ module.exports = class Unit extends Actor {
     this.enc = 600 + ((this.lvl + this.str) * 20);
     this.crits = Math.floor(this.dex / 10);
     this.dodge = Math.floor(this.dex / 10);
+    this.block = Math.floor(this.dex / 10);
     this.parry = Math.floor(this.dex / 10);
     this.riposte = Math.floor(this.dex / 10);
     this.stealth = Math.floor(this.dex / 10);

@@ -11,7 +11,7 @@ module.exports = {
   message: 'cast Bless on',
   effects: [
     { style: 'buff', target: 'target', affect: { hp: 5 } },
-    { style: 'buff', target: 'target', effect: { wis: 5, dex: 5 }, duration: 20000, message: 'You are blessed' },
+    { style: 'buff', target: 'target', effect: { wis: 5, dex: 5 }, duration: 20000, status: 'blessed' },
   ],
   upgrade: {
     cost: 1000,

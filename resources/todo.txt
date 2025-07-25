@@ -22,7 +22,6 @@
 - corpse limitations
 - hired help; telepath @do heal rand
 - room visibility (dark, torch, etc)
-- REDIS: sMembers, sAdd, sRem, incrBy, incr, sIsMember (inventory)
 - party ranks effect combat...
 - item progression matrix
 - target range vs source range - distance can be up to 5 (out of range!)
@@ -31,4 +30,4 @@
 - actions/gestures list
 - blockades/paths as first-class citizens with attached behavior...
 - drop when below zero hp, bleeding?, aid command? drag command? death hp a % of your max hp?
--
+- REDIS: sMembers, sAdd, sRem, incrBy, incr, sIsMember (inventory)

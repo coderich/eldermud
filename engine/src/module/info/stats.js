@@ -4,7 +4,7 @@ Action.define('stats', [
   async (_, { actor }) => {
     const stats = await actor.mGet(
       ...['name', 'hp', 'ma', 'mhp', 'mma', 'ac', 'dr', 'mr', 'enc'],
-      ...['dodge', 'parry', 'stealth', 'crits', 'riposte', 'perception'],
+      ...['dodge', 'block', 'parry', 'riposte', 'stealth', 'crits', 'perception'],
       ...['thievery', 'traps', 'lockpicks', 'tracking'],
       ...['str', 'dex', 'int', 'wis', 'con', 'cha', 'talents', 'traits', 'gains'],
       ...['exp', 'lvl', 'class', 'race', 'heritage', 'leadership', 'weapon', 'armor'],
@@ -13,8 +13,6 @@ Action.define('stats', [
     const $gains = Object.entries(stats.gains).reduce((prev, [key, value]) => {
       return Object.assign(prev, { [key]: APP.styleText('muted', value ? `+${value}` : '') });
     }, {});
-
-    const effects = Array.from(actor.$effects.values()).map(el => APP.styleText(el.style, el.message)).filter(Boolean);
 
     const data = Object.entries({
       Name: stats.name,
@@ -35,10 +33,11 @@ Action.define('stats', [
       Charisma: `${stats.cha}${$gains.cha}`,
       Armor: `${stats.ac}/${stats.dr}`,
       Dodge: `${stats.dodge}`,
+      Block: `${stats.block}`,
       Parry: `${stats.parry}`,
+      Riposte: `${stats.riposte}`,
       Stealth: `${stats.stealth}`,
       Crits: `${stats.crits}`,
-      Riposte: `${stats.riposte}`,
       Encumbrance: `${stats.enc}`,
       Perception: `${stats.perception}`,
       Traps: `${stats.traps}`,
@@ -46,7 +45,7 @@ Action.define('stats', [
       Tracking: `${stats.tracking}`,
       Equip: `${CONFIG.get(stats.weapon).name} + ${CONFIG.get(stats.armor).name}`,
       Talents: Array.from(stats.talents.values()).map(talent => CONFIG.get(`${talent}.name`)).join(', ') || '<none>',
-      Traits: Array.from(stats.traits.values()).map(trait => CONFIG.get(`${trait}.name`)).join(', ') || '<none>',
+      Traits: Array.from(stats.traits.values()).filter(el => !['trait.lifeforce', 'trait.manaforce'].includes(`${el}`)).map(trait => CONFIG.get(`${trait}.name`)).join(', ') || '<none>',
     }).reduce((prev, [key, value]) => {
       return Object.assign(prev, { [key]: [APP.styleText('stat', `${key}:`), APP.styleText('keyword', `${value}  `)] });
     }, {});
@@ -56,12 +55,12 @@ Action.define('stats', [
 
     const table1 = APP.table([
       [...data.Name, ...data.Leadership, ...data.Dodge],
-      [...data.Race, ...data['AC/DR/MR'], ...data.Parry],
-      [...data.Class, ...data.Health, ...data.Riposte],
-      [...data.Level, ...data.Mana, ...data.Stealth],
-      [...Empty, ...Empty, ...data.Crits],
-      [...Empty, ...Empty, ...data.Tracking],
-      [...data.Strength, ...data.Wisdom, ...data.Traps],
+      [...data.Race, ...data['AC/DR/MR'], ...data.Block],
+      [...data.Class, ...data.Health, ...data.Parry],
+      [...data.Level, ...data.Mana, ...data.Crits],
+      [...Empty, ...Empty, ...data.Traps],
+      [...Empty, ...Empty, ...data.Stealth],
+      [...data.Strength, ...data.Wisdom, ...data.Tracking],
       [...data.Intellect, ...data.Charisma, ...data.Lockpicks],
       [...data.Dexterity, ...data.Constitution, ...data.Perception],
     ], { sep: '' });
@@ -73,8 +72,6 @@ Action.define('stats', [
     ], { sep: '' });
 
     //
-
     actor.send('text', `\n${table1}\n\n\n${table2}\n`);
-    if (effects.length) actor.send('text', `${effects.join('\n')}\n`);
   },
 ]);

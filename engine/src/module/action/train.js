@@ -8,7 +8,7 @@ Action.define('train', [
 
     const info = await actor.mGet(['exp', 'lvl']);
     const tnl = APP.tnl(info.lvl);
-    if (info.exp < tnl) return abort(`You need ${APP.styleText('exp', `^${tnl}`)} in order to reach the next level!`);
+    if (info.exp < tnl) return actor.perform('tnl');
 
     await actor.send('text', APP.styleText('boost', 'You reach the next level!'));
     await REDIS.rPush(`${actor}.levels`, stat);

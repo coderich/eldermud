@@ -1,5 +1,13 @@
 const { Actor, Action, Loop } = require('@coderich/gameflow');
 
+const performAffect = async (actor, affect) => {
+  const $affect = { ...affect };
+  const stats = await actor.mGet('hp', 'mhp', 'ma', 'mma');
+  if ($affect.hp !== undefined) $affect.hp = Math.min(stats.mhp - stats.hp, $affect.hp);
+  if ($affect.ma !== undefined) $affect.ma = Math.min(stats.mma - stats.ma, $affect.ma);
+  actor.perform('affect', $affect);
+};
+
 Action.define('effect', [
   (effect, { actor, promise, stream, abort }) => {
     const key = `${effect.source}.${effect.target}`;
@@ -11,7 +19,7 @@ Action.define('effect', [
     // Setup the effect
     if (duration) REDIS.set(key, JSON.stringify(effect));
     if (effect.effect) actor.$effects.set(key, effect);
-    if (effect.affect) actor.perform('affect', effect.affect);
+    if (effect.affect) performAffect(actor, effect.affect);
     if (effect.strike) Object.values(Actor).find(a => `${a}` === `${effect.actor}`).perform('strike', { target: actor, attack: effect.strike });
     if (effect.attack) Object.values(Actor).find(a => `${a}` === `${effect.actor}`).stream('action', 'engage', { target: actor, attack });
     actor.calcStats();
@@ -43,7 +51,7 @@ Action.define('effect', [
     effect.duration -= 1000;
 
     // if (effect.tick && effect.duration % effect.tick === 0) {
-    //   if (effect.affect) actor.perform('affect', effect.affect);
+    //   if (effect.affect) actor.perform('affect', sanitizeAffect(effect.affect));
     // }
 
     if (effect.duration <= 0) abort(abortMessage);

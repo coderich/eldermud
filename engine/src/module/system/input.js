@@ -15,7 +15,7 @@ SYSTEM.on('*', async (event, context) => {
 
     if (tags.includes('talent')) {
       const talent = actor.talents.values().find(t => t.code === code);
-      if (!talent) { abort(); actor.perform('say', input); }
+      if (!talent) { abort(); return actor.perform('say', input); }
       Object.assign(data, { talent: CONFIG.get(`${talent}`) });
     }
 
@@ -41,35 +41,8 @@ SYSTEM.on('*', async (event, context) => {
         default: break;
       }
 
-      if (!data.target) abort(APP.styleText('error', 'No valid target found!'));
+      if (!data.target) return abort(APP.styleText('error', 'No valid target found!'));
     }
-
-    // if (tags.includes('unit')) {
-    //   Object.assign(data, APP.target([...room.units], args));
-    // } else if (tags.includes('other')) {
-    //   Object.assign(data, APP.target([...room.units].filter(unit => unit !== actor), args));
-    // } else if (tags.includes('player')) {
-    //   Object.assign(data, APP.target([...room.units].filter(unit => unit.type === 'player'), args));
-    // } else if (tags.includes('npc')) {
-    //   Object.assign(data, APP.target([...room.units].filter(unit => unit.type === 'npc'), args));
-    // } else if (tags.includes('corpse')) {
-    //   Object.assign(data, APP.target([...room.items].filter(item => item.id === 'corpse'), args));
-    // } else if (tags.includes('realm')) {
-    //   Object.assign(data, APP.target(Object.values(Game.Actor), args));
-    // } else if (tags.includes('party')) {
-    //   Object.assign(data, APP.target([...actor.$party.values()].filter(unit => unit !== actor), args));
-    // } else if (tags.includes('creature')) {
-    //   Object.assign(data, APP.target([...room.units].filter(unit => unit.type === 'creature'), args));
-    // } else if (tags.includes('target')) {
-    //   data.target = actor.$target;
-    // } else if (tags.includes('ally')) {
-    //   if (!args.length) {
-    //     data.target = actor;
-    //   } else {
-    //     const units = [...room.units.values().filter(unit => unit.type === 'player'), ...actor.$party];
-    //     Object.assign(data, APP.target([...units].filter(unit => unit !== actor), args));
-    //   }
-    // }
 
     // Specific action handling...
     switch (action) {

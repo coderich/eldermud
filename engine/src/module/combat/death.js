@@ -21,7 +21,7 @@ Action.define('fallen', [
     const killers = Object.values(Actor).filter(el => el.$target === actor);
 
     if (actor.type !== 'player') {
-      actor.perform('death');
+      actor.abortAllStreams(null);
       const info = await actor.mGet('name', 'lvl', 'exp');
       const killerCount = killers.length || 1;
       const exp = Math.ceil((info.lvl * info.exp) / killerCount);
@@ -33,9 +33,9 @@ Action.define('fallen', [
         killer.perform('affect', { exp });
         killer.send('text', `You collect ${APP.styleText('keyword', exp)} remnants of the dead.`);
       });
-    } else {
-      actor.perform('death');
     }
+
+    actor.perform('death');
   },
 ]);
 
@@ -47,7 +47,7 @@ Action.define('death', [
 
     if (actor.type === 'player') {
       const { deathpoint, mhp, mma } = await actor.mGet('deathpoint', 'mhp', 'mma');
-      await actor.save({ hp: mhp, ma: mma, room: deathpoint, exp: 0, posture: 'rest' });
+      await actor.save({ hp: mhp, ma: mma, room: deathpoint, exp: 0 });
       actor.send('text', 'You have fallen...');
       return actor.perform('spawn');
     }

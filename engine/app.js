@@ -11,11 +11,12 @@ const server = require('./src/server');
 exports.init = (datadir) => {
   // Yep, globals
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
-  global.CONFIG = new ConfigClient().mergeConfig(datadir);
+  global.CONFIG = new ConfigClient();
   global.REDIS = new RedisClient(CONFIG.get('app.redis'));
   global.APP = AppService;
 
   // Load the game (Actions)
+  CONFIG.mergeConfig(datadir);
   Util.requireDir(`${__dirname}/src/module`);
 };
 

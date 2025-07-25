@@ -15,7 +15,7 @@ module.exports = {
   wis: 1,
   con: 1,
   cha: 1,
-  posture: 'rest',
+  stance: CONFIG.get('app.stance.ready'),
   traits: [
     '${self:trait.lifeforce}',
     '${self:trait.manaforce}',
