@@ -30,6 +30,7 @@ module.exports = class RedisClient {
       get(target, method) {
         return (...args) => {
           if (!client[method]) console.log(method);
+          if (method === 'mGet' && !args.flat().length) return [];
           return client[method](...args).catch((e) => {
             console.log(method, ...args);
             throw e;

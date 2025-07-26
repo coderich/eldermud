@@ -8,6 +8,7 @@ module.exports = {
   range: 1,
   speed: 2000,
   recoil: 2000,
+  weight: 100,
   scale: { str: 0.25, dex: 0.25 },
   hits: ['smash', 'wallop', 'slam'],
   misses: ['whiff', 'swing', 'swoop'],

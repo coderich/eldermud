@@ -13,16 +13,11 @@ module.exports = class Unit extends Actor {
   async calcStats() {
     const attrs = ['str', 'int', 'wis', 'con', 'dex', 'cha'];
     const stats = await this.mGet('race', 'class', 'weapon', 'armor', ...attrs);
+    // const derived = ['ac', 'acc', 'sc', 'dr', 'mr', 'carry', 'crits', 'dodge', 'block', 'parry', 'riposte', 'stealth', 'tracking', 'lockpicks'];
 
     if (stats.race && stats.class) {
       const race = CONFIG.get(stats.race);
       const clas = CONFIG.get(stats.class);
-      // const player = CONFIG.get('player');
-      const levels = await REDIS.lRange(`${this}.levels`, 0, -1);
-      this.lvl = levels.length + 1;
-      this.armor = CONFIG.get(stats.armor);
-      this.weapon = CONFIG.get(stats.weapon);
-      this.attacks = [this.weapon];
       this.traits = await REDIS.sMembers(`${this}.traits`).then(arr => new Set(arr.map(t => CONFIG.get(t))));
       this.talents = await REDIS.sMembers(`${this}.talents`).then(arr => new Set(arr.map(t => CONFIG.get(t))));
       this.gains = Object.entries(race.gains).reduce((prev, [key, value]) => {
@@ -32,9 +27,16 @@ module.exports = class Unit extends Actor {
       attrs.forEach((attr) => {
         this[attr] = stats[attr] = race[attr] + clas[attr] + (this.gains[attr] * (this.lvl - 1));
       });
-      levels.forEach((attr) => {
-        this[attr] = stats[attr] = this[attr] + 1;
-      });
+    }
+
+    if (this.type === 'player') {
+      const levels = await REDIS.lRange(`${this}.levels`, 0, -1);
+      levels.forEach((attr) => { this[attr] = stats[attr] = this[attr] + 1; });
+      this.lvl = levels.length + 1;
+      this.armor = CONFIG.get(stats.armor);
+      this.weapon = CONFIG.get(stats.weapon);
+      this.enc = this.armor.weight + this.weapon.weight;
+      this.attacks = [this.weapon];
     }
 
     // Apply dynamic effects (for calculations)
@@ -47,11 +49,12 @@ module.exports = class Unit extends Actor {
     // Derived/Calculated stats
     this.hp = this.mhp = (this.lvl * 5) + APP.fibStat(this.con);
     this.ma = this.mma = (this.lvl * 3) + Math.floor((APP.fibStat(this.int) + APP.fibStat(this.wis, 15)) / 2);
-    this.ac = this.acc = this.lvl + Math.floor(this.dex / 10);
+    this.ac = this.lvl + Math.floor(this.dex / 10);
+    this.acc = this.lvl + Math.floor(this.dex / 10);
     this.sc = this.mma; // Spellcasting
     this.dr = Math.floor((this.str / 5)); // Damage Reduction + Poise
     this.mr = Math.floor((this.wis / 5)); // Magic Reduction
-    this.enc = 600 + ((this.lvl + this.str) * 20);
+    this.carry = 600 + ((this.lvl + this.str) * 20);
     this.crits = Math.floor(this.dex / 10);
     this.dodge = Math.floor(this.dex / 10);
     this.block = Math.floor(this.dex / 10);

@@ -10,8 +10,12 @@ Action.define('open', [
     switch (target.type) {
       case 'door': {
         CONFIG.set(`${target}.status`, 'open');
-        actor.perform('map');
-        return actor.send('text', `You open the ${target.name}`);
+        const room = CONFIG.get(await actor.get('room'));
+        room.units.forEach(unit => unit.perform('map'));
+        return Promise.all([
+          actor.send('text', `You open the ${target.name}`),
+          actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} opens the ${target.name}`),
+        ]);
       }
       case 'chest': {
         if (target instanceof Actor) {

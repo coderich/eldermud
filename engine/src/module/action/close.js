@@ -5,12 +5,16 @@ Action.define('close', [
     if (!target) abort('There is nothing to close!');
     else if (target.status !== 'open') abort(`The ${target.name} is not open!`);
   },
-  ({ target }, { actor, abort }) => {
+  async ({ target }, { actor, abort }) => {
     switch (target.type) {
       case 'door': {
         CONFIG.set(`${target}.status`, 'closed');
-        actor.perform('map');
-        return actor.send('text', `You close the ${target.name}`);
+        const room = CONFIG.get(await actor.get('room'));
+        room.units.forEach(unit => unit.perform('map'));
+        return Promise.all([
+          actor.send('text', `You close the ${target.name}`),
+          actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} closes the ${target.name}`),
+        ]);
       }
       case 'chest': {
         return null;

@@ -20,14 +20,13 @@ Action.define('follow', [
     target.$party.forEach(el => el !== actor && el.send('text', `${APP.styleText(actor.type, actor.name)} has joined your party`));
 
     // Keep track following listeners so you can unfollow/leave
-    actor.$follow = ({ promise, data }) => {
+    const follow = ({ promise, data }) => {
       actor.streams.action.emit('add');
       actor.follow(promise, data);
     };
-
     const leave = () => actor.perform('leave');
-    const stray = ({ promise }) => !promise.$follow && leave();
-    const unable = ({ promise }) => promise.$follow && promise.reason !== '$source' && leave();
+    const stray = ({ followPromise }) => !followPromise && leave();
+    const unable = ({ promise, followPromise }) => followPromise && promise.reason !== '$source' && leave();
     const notice = ({ data }) => actor.send('text', `--- Following ${APP.styleText(target.type, target.name)} ${APP.direction[data]} ---`);
 
     actor.once('pre:death', leave);
@@ -38,13 +37,13 @@ Action.define('follow', [
     target.prependOnceListener('post:logout', leave);
 
     // Follow
-    target.on('pre:move', actor.$follow);
-    target.prependListener('post:move', notice);
+    target.on('pre:move', follow);
+    target.on('start:move', notice);
 
     // Unfollow
     actor.once('post:leave', () => {
-      actor.offFunction(leave, stray, unable, notice);
-      target.offFunction(leave, stray, unable, notice);
+      actor.offFunction(leave, stray, unable, notice, follow);
+      target.offFunction(leave, stray, unable, notice, follow);
     });
   },
 ]);

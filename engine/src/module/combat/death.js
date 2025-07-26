@@ -22,20 +22,23 @@ Action.define('fallen', [
 
     if (actor.type !== 'player') {
       actor.abortAllStreams(null);
-      const info = await actor.mGet('name', 'lvl', 'exp');
+      const info = await actor.mGet('exp');
       const killerCount = killers.length || 1;
-      const exp = Math.ceil((info.lvl * info.exp) / killerCount);
+      const exp = Math.ceil(info.exp / killerCount);
 
       // Broadcast to room that actor is dead
       await actor.broadcast('text', actor.slain);
 
-      killers.forEach(async (killer) => {
-        killer.perform('affect', { exp });
-        killer.send('text', `You collect ${APP.styleText('keyword', exp)} remnants of the dead.`);
-      });
+      // Award XP
+      await Promise.all(killers.map((killer) => {
+        return Promise.all([
+          killer.perform('affect', { exp }),
+          killer.send('text', `You collect ${APP.styleText('keyword', exp)} remnants of the dead.`),
+        ]);
+      }));
     }
 
-    actor.perform('death');
+    return actor.perform('death');
   },
 ]);
 
@@ -48,7 +51,7 @@ Action.define('death', [
     if (actor.type === 'player') {
       const { deathpoint, mhp, mma } = await actor.mGet('deathpoint', 'mhp', 'mma');
       await actor.save({ hp: mhp, ma: mma, room: deathpoint, exp: 0 });
-      actor.send('text', 'You have fallen...');
+      await actor.send('text', 'You have fallen...');
       return actor.perform('spawn');
     }
 

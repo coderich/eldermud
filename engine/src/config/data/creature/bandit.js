@@ -14,7 +14,7 @@ module.exports = {
 
   // Combat parameters
   lvl: 3,
-  exp: 15,
+  exp: 45,
 
   // Random flavor tables for variety
   random: {

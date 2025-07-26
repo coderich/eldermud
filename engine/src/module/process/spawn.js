@@ -32,8 +32,8 @@ Action.define('spawn', async (_, { actor }) => {
   });
 
   if (['player', 'npc', 'creature'].includes(actor.type)) {
-    actor.perform('map');
-    actor.perform('room', room);
+    await actor.perform('map');
+    await actor.perform('room', room);
   }
 
   return { room, target: actor };

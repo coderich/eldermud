@@ -42,6 +42,7 @@ app:
     bleeding: '🩸'
 
   styles:
+    text: ''
     reset: '<reset>'
     stat: '<ansiGreen>'
     value: '<LightSeaGreen>'
@@ -53,7 +54,7 @@ app:
     highlight: '<yellow>'
     engaged: '<goldenrod>'
     exp: '<wheat>'
-    npc: ''
+    npc: '<wheat>'
     # player: '<DarkTurquoise>'
     # player: '<violet>'
     player: '<CadetBlue>'

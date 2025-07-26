@@ -3,8 +3,8 @@ const { Actor, Action, Loop } = require('@coderich/gameflow');
 const performAffect = async (actor, affect) => {
   const $affect = { ...affect };
   const stats = await actor.mGet('hp', 'mhp', 'ma', 'mma');
-  if ($affect.hp !== undefined) $affect.hp = Math.min(stats.mhp - stats.hp, $affect.hp);
-  if ($affect.ma !== undefined) $affect.ma = Math.min(stats.mma - stats.ma, $affect.ma);
+  if ($affect.hp !== undefined) $affect.hp = Math.min(stats.mhp - stats.hp, APP.roll($affect.hp));
+  if ($affect.ma !== undefined) $affect.ma = Math.min(stats.mma - stats.ma, APP.roll($affect.ma));
   actor.perform('affect', $affect);
 };
 

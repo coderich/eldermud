@@ -27,21 +27,13 @@ SYSTEM.on('*', async (event, context) => {
     actor.save({ stance: CONFIG.get('app.stance.ready') }).then(() => actor.perform('status'));
   }
 
-  // Movement GMCP
-  if (['post:move'].includes(event)) {
-    actor.perform('map');
-    actor.perform('room', result.to);
-  }
-
   if (['post:engage', 'abort:engage'].includes(event)) {
     actor.send('text', APP.styleText('engaged', '*combat off*'));
   }
 
   // Status
   if (['post:affect', 'post:effect', 'post:spawn', 'start:effect', 'abort:effect', 'abort:countdown'].includes(event)) {
-    if (actor.type === 'player') {
-      actor.perform('status');
-    }
+    actor.perform('status');
   }
 
   // Enter room

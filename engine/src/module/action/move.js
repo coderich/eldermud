@@ -37,5 +37,7 @@ Action.define('move', [
     exit.units.delete(actor);
     room.units.add(actor);
     actor.$search.clear();
+    actor.perform('map');
+    await actor.perform('room', room);
   },
 ]);

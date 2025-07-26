@@ -17,6 +17,7 @@ SYSTEM.on('*', async (event, context) => {
       switch (action) {
         case 'spawn': { // Enter the realm
           if (actor instanceof Unit) actor.emit(`enter:${result.room}`, context);
+          Array.from(CONFIG.get(`${result.room}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitEntered', { actor }));
           break;
         }
         case 'exit': { // Exit realm
