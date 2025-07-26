@@ -38,7 +38,6 @@ module.exports = {
         s: '${self:map.eldenfort.rooms.southernWash}',
       },
     },
-
     northGatePlaza: {
       name: 'North Gate Plaza',
       terrain: 'urban',
@@ -48,7 +47,6 @@ module.exports = {
         n: '${self:map.eldenfort.rooms.eldenkeepEntrance}',
       },
     },
-
     eldenkeepEntrance: {
       name: 'Elden Keep Entrance',
       terrain: 'urban',
@@ -58,7 +56,6 @@ module.exports = {
         u: '${self:map.eldenkeep.rooms.entrance}',
       },
     },
-
     southernWash: {
       name: 'Southern Wash',
       terrain: 'urban',
@@ -71,7 +68,6 @@ module.exports = {
         s: '${self:map.eldenfort.rooms.southGate}',
       },
     },
-
     southGate: {
       name: 'South Gate',
       terrain: 'urban',
@@ -84,7 +80,6 @@ module.exports = {
         s: '${self:map.eldenfort.doors.southGate}',
       },
     },
-
     southRoad: {
       name: 'South Road',
       terrain: 'urban',
@@ -97,7 +92,6 @@ module.exports = {
         n: '${self:map.eldenfort.doors.southGate}',
       },
     },
-
     westAlley: {
       name: 'West Alley',
       terrain: 'urban',
@@ -171,7 +165,7 @@ module.exports = {
       exits: {
         w: '${self:map.eldenfort.rooms.eastAlley}',
         e: '${self:map.eldenfort.rooms.chapelSquare}',
-        s: '${self:map.eldenfort.rooms.thePit}',
+        s: '${self:map.eldenfort.rooms.archeryRange}',
       },
     },
     chapelSquare: {
