@@ -22,6 +22,7 @@ module.exports = {
   con: 9,
   cha: 12,
   lvl: 4,
+  class: '${self:class.cleric}',
   traits: [
     '${self:trait.sanctuary}',
   ],

@@ -5,7 +5,7 @@ const Get = require('lodash.get');
 // const Item = require('../../../../src/model/Item');
 // const NPC = require('../../../../model/NPC');
 
-const noop = ({ abort }) => abort();
+// const noop = ({ abort }) => abort();
 const startRoom = 'triageRoom';
 const onboardRoom = 'wardingChamber';
 
@@ -57,7 +57,6 @@ SYSTEM.on('post:spawn', async (context) => {
         await npc.perform('invite', { target: actor });
 
         actor.once(`follow:${npc}`, async () => {
-          // actor.on('*', noop);
           const target = CONFIG.get(`${map}.rooms.quarantineHall`);
 
           if (!target.units.size) {
@@ -74,6 +73,7 @@ SYSTEM.on('post:spawn', async (context) => {
 
           await APP.timeout(1500);
           await npc.stream('action', 'move', 'w');
+          await APP.timeout(1500);
           await npc.stream('action', 'move', 'w');
         });
       }

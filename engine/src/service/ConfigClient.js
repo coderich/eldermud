@@ -57,7 +57,8 @@ module.exports = class ConfigClient extends Config {
 
       Object.entries(map.rooms).forEach(([id, room], j) => {
         room.id = id;
-        room.mapId = (i * 1000) + j + 1;
+        room.uid = (i * 1000) + j + 1;
+        room.map = `${map}`;
         room.type = 'room';
         room.name = `${map.name}, ${room.name}`;
         room.items = new Set(room.items);

@@ -1,3 +1,5 @@
+const trainingGrounds = require('./area/trainingGrounds');
+
 module.exports = {
   name: 'Eldenfort',
   description: 'An ancient town with cobblestone paths leading through vibrant markets and quiet residential alleys. In the heart of the town stands the majestic Elden Keep, guarding the secrets of the past.',
@@ -24,38 +26,65 @@ module.exports = {
     As the town prepares for the unknown, the residents of Eldenfort must decide whether to embrace the truth or continue living in the shadow of their own history.
   `,
   rooms: {
+    ...trainingGrounds.rooms,
     marketSquare: {
       name: 'Market Square',
       terrain: 'urban',
       description: 'The Market Square is a hive of activity, where vendors from all around come to sell their wares. The scent of fresh bread and herbs permeates the air, and the sound of haggling fills the ears. The Elden Keep can be glimpsed to the north.',
       exits: {
-        n: '${self:map.eldenfort.rooms.eldenkeepEntrance}',
+        n: '${self:map.eldenfort.rooms.northGatePlaza}',
         w: '${self:map.eldenfort.rooms.westAlley}',
         e: '${self:map.eldenfort.rooms.eastAlley}',
-        s: '${self:map.eldenfort.rooms.southGate}',
+        s: '${self:map.eldenfort.rooms.southernWash}',
       },
     },
+
+    northGatePlaza: {
+      name: 'North Gate Plaza',
+      terrain: 'urban',
+      description: 'A broad plaza paved with worn cobblestones, serving as the main approach to Elden Keep’s gates. Merchants hawk shields and souvenirs along the walls, while guards stand in quiet vigil.',
+      exits: {
+        s: '${self:map.eldenfort.rooms.marketSquare}',
+        n: '${self:map.eldenfort.rooms.eldenkeepEntrance}',
+      },
+    },
+
     eldenkeepEntrance: {
       name: 'Elden Keep Entrance',
       terrain: 'urban',
       description: "The entrance to the Elden Keep is guarded by stone gargoyles, silent watchers of the town's comings and goings. The heavy oak doors are adorned with ironwork, speaking to the stronghold's might and the secrets it holds within.",
       exits: {
-        s: '${self:map.eldenfort.rooms.marketSquare}',
+        s: '${self:map.eldenfort.rooms.northGatePlaza}',
         u: '${self:map.eldenkeep.rooms.entrance}',
       },
     },
+
+    southernWash: {
+      name: 'Southern Wash',
+      terrain: 'urban',
+      description: 'A shallow drainage channel runs through here, collecting rainwater from the rooftops. Slippery stones and puddles make footing treacherous.',
+      features: {
+        wash: 'A half-submerged stone grate leading to the town drain system.',
+      },
+      exits: {
+        n: '${self:map.eldenfort.rooms.marketSquare}',
+        s: '${self:map.eldenfort.rooms.southGate}',
+      },
+    },
+
     southGate: {
       name: 'South Gate',
       terrain: 'urban',
       description: 'The South Gate stands as the main artery through which the life of the town flows. Merchants, travelers, and adventurers pass under its shadow, guarded by vigilant town watch.',
       exits: {
-        n: '${self:map.eldenfort.rooms.marketSquare}',
+        n: '${self:map.eldenfort.rooms.southernWash}',
         s: '${self:map.eldenfort.rooms.southRoad}',
       },
       paths: {
         s: '${self:map.eldenfort.doors.southGate}',
       },
     },
+
     southRoad: {
       name: 'South Road',
       terrain: 'urban',
@@ -68,6 +97,7 @@ module.exports = {
         n: '${self:map.eldenfort.doors.southGate}',
       },
     },
+
     westAlley: {
       name: 'West Alley',
       terrain: 'urban',
@@ -82,9 +112,7 @@ module.exports = {
       name: 'West End',
       terrain: 'urban',
       description: "The aptly named West End is a cul-de-sac bordered by the town's ancient walls, offering a moment of tranquility and a touch of greenery with its overgrown ivy.",
-      exits: {
-        e: '${self:map.eldenfort.rooms.westAlley}',
-      },
+      exits: { e: '${self:map.eldenfort.rooms.westAlley}' },
     },
     westCorner: {
       name: 'West Corner',
@@ -108,9 +136,7 @@ module.exports = {
       name: 'Western Dead End',
       terrain: 'urban',
       description: 'A small, forgotten corner of the town, where old toys and broken furniture hint at stories untold.',
-      exits: {
-        e: '${self:map.eldenfort.rooms.westernResidences}',
-      },
+      exits: { e: '${self:map.eldenfort.rooms.westernResidences}' },
       paths: {
         w: {
           name: 'Residence',
@@ -136,9 +162,7 @@ module.exports = {
       name: 'East End',
       terrain: 'urban',
       description: "The road culminates here, with an impressive view of the Elden Keep to the northwest, and a sun-warmed brick wall that's a popular resting spot for the local cats.",
-      exits: {
-        s: '${self:map.eldenfort.rooms.eastAlley}',
-      },
+      exits: { s: '${self:map.eldenfort.rooms.eastAlley}' },
     },
     chapelRoad: {
       name: 'Chapel Road',
@@ -147,6 +171,7 @@ module.exports = {
       exits: {
         w: '${self:map.eldenfort.rooms.eastAlley}',
         e: '${self:map.eldenfort.rooms.chapelSquare}',
+        s: '${self:map.eldenfort.rooms.thePit}',
       },
     },
     chapelSquare: {
@@ -168,6 +193,7 @@ module.exports = {
       },
     },
   },
+
   doors: {
     southGate: {
       name: 'South Gate of Eldenfort',
@@ -179,6 +205,7 @@ module.exports = {
       traits: ['${self:trait.door}'],
     },
   },
+
   // spawns: [
   //   { num: 1, max: 3, units: ['${self:creature.cat}'] },
   //   { num: 1, max: 3, units: ['${self:creature.rat}'] },
