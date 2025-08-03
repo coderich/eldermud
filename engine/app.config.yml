@@ -14,9 +14,10 @@ app:
     player: '@{concat:${self:app.spawn.unit}, ${self:app.spawn.user}}'
 
   stance:
-    ready: '✥'
+    ready: '⚡'
+    # ready: '⊕'
+    # ready: '✥'
     fallen: '🔻'
-    # ready: '👟'
     # engaged: '⌖'
     engaged: '⚔'
     running: '🏃'
@@ -31,7 +32,8 @@ app:
   char:
     health: '♥'
     mana: '♦'
-    exp: '†'
+    # exp: '†'
+    exp: '∴'
     bullet: '•'
     divider: '¦'
     blessed: '✚'
@@ -40,6 +42,7 @@ app:
     negative: '✕'
     stunned: '💫'
     bleeding: '🩸'
+    armor: '🛡️'
 
   styles:
     text: ''

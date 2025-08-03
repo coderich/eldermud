@@ -10,7 +10,16 @@ const Player = require('../model/Player');
 const Creature = require('../model/Creature');
 
 const chance = new Chance();
-const models = { npc: NPC, player: Player, item: Item, creature: Creature, key: Item, room: Room, talent: Talent };
+
+const models = {
+  npc: NPC,
+  player: Player,
+  item: Item,
+  creature: Creature,
+  key: Item,
+  room: Room,
+  talent: Talent,
+};
 
 exports.chance = chance;
 exports.pluralize = Pluralize;
@@ -53,7 +62,7 @@ exports.styleBlockText = (base, styles = [], blocktext) => {
 exports.target = (list, args, by = 'name') => {
   const result = { rest: [] };
   const arr = list instanceof Set ? Array.from(list.values()) : list; // Ensure array
-  const $args = [...args]; // Shallow copy
+  const $args = [...args].map(el => el.toLowerCase()); // Shallow copy
 
   // Sort the array by length of what you're searching by to improve accuracy
   arr.sort((a, b) => {
@@ -63,13 +72,14 @@ exports.target = (list, args, by = 'name') => {
   });
 
   // The find function
-  const fn = (el, text) => {
-    text = text.replace(/[^a-zA-Z]/g, ''); // Sanitize match to be alpha only
-    return text.length && el[by]?.match(new RegExp(`\\b${text}`, 'gi'));
+  const fn = (subject, words) => {
+    const $labels = subject[by].toLowerCase().split(' ');
+    return words.every((w, i) => $labels[i].startsWith(w));
   };
 
+  // Traverse to find target and the rest of the saying
   args.forEach(() => {
-    result.target = arr.find(el => fn(el, $args.join(' ')));
+    result.target = arr.find(el => fn(el, $args));
     if (result.target) return; // break
     result.rest.unshift($args.pop());
   });

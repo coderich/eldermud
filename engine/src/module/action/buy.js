@@ -3,8 +3,8 @@ const { Action } = require('@coderich/gameflow');
 Action.define('buy', [
   ({ shop, args }, { abort }) => {
     if (!shop) return abort('You are not in a shop!');
-    const { items } = shop;
-    const { target } = APP.target(items, args);
+    const { inventory } = shop;
+    const { target } = APP.target(inventory, args);
     if (!target) return abort('You cannot buy that item here!');
     return target;
   },

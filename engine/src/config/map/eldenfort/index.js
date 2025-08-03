@@ -1,5 +1,3 @@
-const trainingGrounds = require('./area/trainingGrounds');
-
 module.exports = {
   name: 'Eldenfort',
   description: 'An ancient town with cobblestone paths leading through vibrant markets and quiet residential alleys. In the heart of the town stands the majestic Elden Keep, guarding the secrets of the past.',
@@ -26,7 +24,6 @@ module.exports = {
     As the town prepares for the unknown, the residents of Eldenfort must decide whether to embrace the truth or continue living in the shadow of their own history.
   `,
   rooms: {
-    ...trainingGrounds.rooms,
     marketSquare: {
       name: 'Market Square',
       terrain: 'urban',
@@ -37,6 +34,7 @@ module.exports = {
         e: '${self:map.eldenfort.rooms.eastAlley}',
         s: '${self:map.eldenfort.rooms.southernWash}',
       },
+      shop: '${self:map.eldenfort.shop.marketSquare}',
     },
     northGatePlaza: {
       name: 'North Gate Plaza',

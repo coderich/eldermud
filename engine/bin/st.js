@@ -12,7 +12,7 @@ program.name('ST').description('Story Teller');
 // Setup
 program.hook('preAction', (thisCommand, actionCommand) => {
   global.SYSTEM = new EventEmitter().setMaxListeners(5);
-  global.CONFIG = new ConfigClient(`${__dirname}/../config/data`);
+  global.CONFIG = new ConfigClient(`${__dirname}/../config`);
   global.CONFIG.merge(ConfigClient.parseFile(`${__dirname}/../config/database.json`));
   global.APP = AppService;
   const { apiKey, storyTeller } = CONFIG.get('secrets.openai');

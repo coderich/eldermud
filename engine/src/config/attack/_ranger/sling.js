@@ -6,6 +6,7 @@ module.exports = {
   acc: 3,
   crits: 0,
   range: 5,
+  weight: 150,
   speed: 2000,
   scale: { str: 0.15, dex: 0.35 },
   hits: ['thud', 'ping', 'smack', 'bop'],

@@ -58,7 +58,7 @@ SYSTEM.on('*', async (event, context) => {
   }
 
   // Leave room
-  if (type === 'leave') {
+  if (type === 'exit') {
     const { exit } = result;
 
     // Broadcast to room that actor left

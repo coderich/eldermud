@@ -87,7 +87,7 @@ const commands = [
           name: 'talent',
           code: talent.code,
           channel: 'realm',
-          stream: 'tactic',
+          stream: talent.stream || 'tactic',
           target: talent.target,
           tags: ['talent'],
         },

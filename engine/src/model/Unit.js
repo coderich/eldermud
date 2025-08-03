@@ -20,6 +20,12 @@ module.exports = class Unit extends Actor {
       const clas = CONFIG.get(stats.class);
       this.traits = await REDIS.sMembers(`${this}.traits`).then(arr => new Set(arr.map(t => CONFIG.get(t))));
       this.talents = await REDIS.sMembers(`${this}.talents`).then(arr => new Set(arr.map(t => CONFIG.get(t))));
+      const levels = await REDIS.lRange(`${this}.levels`, 0, -1);
+      this.lvl = levels.length + 1;
+      this.armor = CONFIG.get(stats.armor);
+      this.weapon = CONFIG.get(stats.weapon);
+      this.enc = this.armor.weight + this.weapon.weight;
+      this.attacks = [this.weapon];
       this.gains = Object.entries(race.gains).reduce((prev, [key, value]) => {
         prev[key] += value;
         return prev;
@@ -27,16 +33,7 @@ module.exports = class Unit extends Actor {
       attrs.forEach((attr) => {
         this[attr] = stats[attr] = race[attr] + clas[attr] + (this.gains[attr] * (this.lvl - 1));
       });
-    }
-
-    if (this.type === 'player') {
-      const levels = await REDIS.lRange(`${this}.levels`, 0, -1);
       levels.forEach((attr) => { this[attr] = stats[attr] = this[attr] + 1; });
-      this.lvl = levels.length + 1;
-      this.armor = CONFIG.get(stats.armor);
-      this.weapon = CONFIG.get(stats.weapon);
-      this.enc = this.armor.weight + this.weapon.weight;
-      this.attacks = [this.weapon];
     }
 
     // Apply dynamic effects (for calculations)

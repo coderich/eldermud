@@ -1,6 +1,14 @@
 /**
  * Responsible for spawning map creatures
  */
+// SYSTEM.on('server', () => {
+//   Object.values(CONFIG.get('map')).forEach(({ rooms, spawns }) => {
+//     Object.values(rooms).filter(room => room.spawns).forEach((room) => {
+//       console.log(room);
+//     });
+//   });
+// });
+
 SYSTEM.on('server', () => {
   setInterval(async () => {
     Object.values(CONFIG.get('map')).forEach(({ spawns, rooms }) => {

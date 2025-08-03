@@ -1,7 +1,7 @@
 module.exports = {
   name: 'Fist',
-  dmg: '1d5',
-  acc: 10,
+  dmg: '1d3',
+  acc: 5,
   crits: 0,
   range: 1,
   weight: 0,

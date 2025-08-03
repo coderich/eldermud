@@ -59,7 +59,7 @@ exports.setup = async () => {
     });
 
     console.log('Before load:', process.memoryUsage().heapUsed);
-    exports.init(`${__dirname}/src/config/data`);
+    exports.init(`${__dirname}/src/config`);
     // CONFIG.merge(ConfigClient.parseFile(`${__dirname}/src/database.json`));
     CONFIG.decorate();
     await exports.setup();

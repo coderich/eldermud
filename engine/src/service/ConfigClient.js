@@ -20,6 +20,10 @@ module.exports = class ConfigClient extends Config {
     return super.get(key, ...rest);
   }
 
+  /**
+   * Folders that begin with "_" are ignored and used for organizational purposes only
+   * Folders that begin with "*" indicate the root/type so that you can co-locate data (mostly used inside of maps)
+   */
   mergeConfig(dir, paths = []) {
     FS.readdirSync(dir).forEach((filename) => {
       const { name } = Path.parse(filename);
@@ -30,9 +34,10 @@ module.exports = class ConfigClient extends Config {
       if (stat?.isDirectory()) {
         this.mergeConfig(filepath, $paths);
       } else if (!name.startsWith('.')) {
-        const id = $paths[$paths.length - 1];
-        const type = $paths[$paths.length - 2];
-        const ns = $paths.filter(p => !p.startsWith('_')).join('.');
+        const rootIndex = Math.max($paths.findIndex(p => p.startsWith('@')), 0);
+        const id = $paths.at(-1);
+        const type = $paths.at(rootIndex).replace('@', '');
+        const ns = $paths.slice(rootIndex).filter(p => !p.startsWith('_')).join('.').replaceAll('@', '');
         this.merge({ [ns]: Config.parseFile(filepath) });
         this.set(`${ns}.id`, id);
         this.set(`${ns}.type`, type);

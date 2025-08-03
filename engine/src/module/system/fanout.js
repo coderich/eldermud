@@ -16,26 +16,29 @@ SYSTEM.on('*', async (event, context) => {
 
       switch (action) {
         case 'spawn': { // Enter the realm
-          if (actor instanceof Unit) actor.emit(`enter:${result.room}`, context);
-          Array.from(CONFIG.get(`${result.room}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitEntered', { actor }));
+          if (actor instanceof Unit) {
+            actor.emit(`enter:${result.room}`, context);
+            Array.from(CONFIG.get(`${result.room}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitEntered', { actor }));
+          }
           break;
         }
         case 'exit': { // Exit realm
-          actor.emit(`leave:${result.exit}`, context);
+          actor.emit(`exit:${result.exit}`, context);
+          Array.from(CONFIG.get(`${result.exit}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitExited', { actor }));
           break;
         }
         case 'teleport': {
           actor.emit(`enter:${result.room}`, context);
-          actor.emit(`leave:${result.exit}`, context);
+          actor.emit(`exit:${result.exit}`, context);
           break;
         }
         case 'move': {
           actor.emit(`path:${result.exit.paths?.[result.dir]}`, context);
           actor.emit(`enter:${result.room}`, context);
-          actor.emit(`leave:${result.exit}`, context);
+          actor.emit(`exit:${result.exit}`, context);
           //
           Array.from(CONFIG.get(`${result.room}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitEntered', { actor }));
-          Array.from(CONFIG.get(`${result.exit}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitLeft', { actor }));
+          Array.from(CONFIG.get(`${result.exit}.units`).values()).filter(unit => unit !== actor).forEach(unit => unit.emit('unitExited', { actor }));
           break;
         }
         default: {

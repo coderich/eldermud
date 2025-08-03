@@ -5,6 +5,7 @@ module.exports = {
   cost: 5,
   style: 'buff',
   target: 'ally',
+  stream: 'action',
   cooldown: 5000,
   // gesture: 'focus mind in prayer',
   message: 'cast minorheal on',
