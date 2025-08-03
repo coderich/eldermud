@@ -21,14 +21,17 @@ SYSTEM.on('*', async (event, context) => {
 
     // Tag based targeting...
     if (data.target) {
-      switch (data.target) {
+      const { target } = data;
+
+      switch (target) {
         case 'unit': Object.assign(data, APP.target([...room.units], args)); break;
         case 'other': Object.assign(data, APP.target([...room.units].filter(unit => unit !== actor), args)); break;
-        case 'player': case 'npc': case 'creature': Object.assign(data, APP.target([...room.units].filter(unit => unit.type === data.target), args)); break;
+        case 'player': case 'npc': case 'creature': Object.assign(data, APP.target([...room.units].filter(unit => unit.type === target), args)); break;
         case 'corpse': Object.assign(data, APP.target([...room.items].filter(item => item.id === 'corpse'), args)); break;
         case 'realm': Object.assign(data, APP.target(Object.values(Game.Actor), args)); break;
         case 'party': Object.assign(data, APP.target([...actor.$party.values()].filter(unit => unit !== actor), args)); break;
         case 'target': data.target = actor.$target; break;
+        case 'shop': data.target = room.shop; break;
         case 'ally': {
           if (!args.length) {
             data.target = actor;
@@ -41,7 +44,7 @@ SYSTEM.on('*', async (event, context) => {
         default: break;
       }
 
-      if (!data.target) return abort(APP.styleText('error', 'No valid target found!'));
+      if (!data.target) return abort(APP.styleText('error', `No valid target (${target}) was found!`));
     }
 
     // Specific action handling...
@@ -65,11 +68,6 @@ SYSTEM.on('*', async (event, context) => {
       case 'drop': case 'use': {
         const inventory = await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
         Object.assign(data, APP.target(inventory, args));
-        break;
-      }
-      case 'list': case 'buy': case 'sell': {
-        const { shop } = room;
-        Object.assign(data, { shop });
         break;
       }
       case 'look': case 'search': {

@@ -71,15 +71,9 @@ exports.target = (list, args, by = 'name') => {
     return alen - blen;
   });
 
-  // The find function
-  const fn = (subject, words) => {
-    const $labels = subject[by].toLowerCase().split(' ');
-    return words.every((w, i) => $labels[i].startsWith(w));
-  };
-
   // Traverse to find target and the rest of the saying
   args.forEach(() => {
-    result.target = arr.find(el => fn(el, $args));
+    result.target = arr.find(subject => $args.every(word => new RegExp(`\\b${word}\\w*`, 'i').test(subject[by])));
     if (result.target) return; // break
     result.rest.unshift($args.pop());
   });
