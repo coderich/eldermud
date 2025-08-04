@@ -115,12 +115,15 @@ module.exports = class ActorWrapper extends Actor {
 
   async exit(reason) {
     this.removeAllPossibleListeners(reason);
+    if (!reason) await this.realm('text', APP.styleText('gesture', `${this.name} just hung up!`));
+    else this.realm('text', `${this.name} has left the realm.`);
     const exit = CONFIG.get(await this.get('room'));
     exit?.units.delete(this);
     return this;
   }
 
   disconnect(reason) {
+    this.removeAllPossibleListeners(reason);
     this.socket.disconnect(reason);
     return this.exit(reason);
   }

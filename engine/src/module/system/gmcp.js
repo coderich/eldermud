@@ -1,3 +1,5 @@
+const { Actor } = require('@coderich/gameflow');
+
 /**
  */
 SYSTEM.on('*', async (event, context) => {
@@ -34,6 +36,12 @@ SYSTEM.on('*', async (event, context) => {
   // Status
   if (['post:affect', 'post:effect', 'post:spawn', 'start:effect', 'abort:effect', 'abort:countdown'].includes(event)) {
     actor.perform('status');
+  }
+
+  // Enter realm
+  if (['post:enter'].includes(event)) {
+    const duplicate = Object.values(Actor).find(a => a !== actor && a.id === actor.id);
+    if (duplicate) duplicate.disconnect('duplicate');
   }
 
   // Enter room

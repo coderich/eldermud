@@ -30,7 +30,7 @@ SYSTEM.on('*', async (event, context) => {
         case 'corpse': Object.assign(data, APP.target([...room.items].filter(item => item.id === 'corpse'), args)); break;
         case 'realm': Object.assign(data, APP.target(Object.values(Game.Actor), args)); break;
         case 'party': Object.assign(data, APP.target([...actor.$party.values()].filter(unit => unit !== actor), args)); break;
-        case 'target': data.target = actor.$target; break;
+        case 'target': data.target = actor.$target || actor.$retarget; break;
         case 'shop': data.target = room.shop; break;
         case 'ally': {
           if (!args.length) {

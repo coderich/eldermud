@@ -5,7 +5,7 @@ const { Action, Loop } = require('@coderich/gameflow');
  */
 Action.define('engage', [
   async ({ target }, { actor, stream, abort, promise }) => {
-    actor.$target = target;
+    actor.$target = actor.$retarget = target;
     const $abort = () => abort();
 
     promise.finally(() => {

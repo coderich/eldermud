@@ -19,6 +19,7 @@ const argsMap = {
  */
 const commands = [
   [
+    { attack: { args: [0], code: 'a', channel: 'realm', stream: 'action', target: 'target' } },
     { attack: { args: [1, 2, 3], code: 'a', channel: 'realm', stream: 'action', target: 'other' } },
     { down: { args: [0], code: 'd', channel: 'realm', stream: 'action', tags: ['direction'] } },
     { east: { args: [0], code: 'e', channel: 'realm', stream: 'action', tags: ['direction'] } },
