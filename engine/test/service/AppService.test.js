@@ -42,7 +42,7 @@ describe('AppService', () => {
     const [rat, dorian, rope] = await AppService.instantiate(['creature.rat', 'npc.dorian', 'item.rope'], { test: 'test' });
 
     // Data checks
-    expect(rat).toMatchObject({ name: 'rat', test: 'test' });
+    expect(rat).toMatchObject({ name: 'Rat', test: 'test' });
     expect(dorian).toMatchObject({ name: 'Dorian', test: 'test' });
     expect(rope).toMatchObject({ name: 'Rope & Grapple', test: 'test' });
 
@@ -50,5 +50,9 @@ describe('AppService', () => {
     expect(`${rat}`).toEqual('creature.rat.1');
     expect(`${dorian}`).toEqual('npc.dorian.1');
     expect(`${rope}`).toEqual('item.rope.1');
+  });
+
+  test('interpolate', () => {
+    expect(AppService.interpolate('Hello {actor.name}, you are {actor.age} *. Congrats!', { actor: { age: 100, name: 'Rich' } })).toBe('Hello Rich, you are 100 *. Congrats!');
   });
 });
