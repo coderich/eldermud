@@ -1,11 +1,10 @@
 const { Actor, Action, Loop } = require('@coderich/gameflow');
 
-const performAffect = async (actor, affect) => {
-  const $affect = { ...affect };
+const performAffect = async (actor, $affect) => {
   const stats = await actor.mGet('hp', 'mhp', 'ma', 'mma');
-  if ($affect.hp !== undefined) $affect.hp = Math.min(stats.mhp - stats.hp, APP.roll($affect.hp));
-  if ($affect.ma !== undefined) $affect.ma = Math.min(stats.mma - stats.ma, APP.roll($affect.ma));
-  actor.perform('affect', $affect);
+  if ($affect.hp !== undefined) $affect.hp = Math.min(stats.mhp - stats.hp, $affect.hp);
+  if ($affect.ma !== undefined) $affect.ma = Math.min(stats.mma - stats.ma, $affect.ma);
+  return actor.perform('affect', $affect);
 };
 
 Action.define('effect', [
@@ -16,13 +15,24 @@ Action.define('effect', [
     const abortMessage = `The effects of ${source.name} wear off`;
     const { duration } = effect;
 
+    //
+    const $target = actor;
+    const $actor = Object.values(Actor).find(a => `${a}` === `${effect.actor}`);
+    const $affect = Object.entries(effect.affect || {}).reduce((prev, [k, v]) => Object.assign(prev, { [k]: APP.roll(v) }), {});
+    // const $effect = Object.entries(effect.effect || {}).reduce((prev, [k, v]) => Object.assign(prev, { [k]: APP.roll(v) }), {});
+
     // Setup the effect
     if (duration) REDIS.set(key, JSON.stringify(effect));
     if (effect.effect) actor.$effects.set(key, effect);
-    if (effect.affect) performAffect(actor, effect.affect);
-    if (effect.strike) Object.values(Actor).find(a => `${a}` === `${effect.actor}`).perform('strike', { target: actor, attack: effect.strike });
-    if (effect.attack) Object.values(Actor).find(a => `${a}` === `${effect.actor}`).stream('action', 'engage', { target: actor, attack });
+    if (effect.affect) performAffect(actor, $affect);
+    if (effect.strike) $actor.perform('strike', { target: $target, attack: effect.strike });
+    if (effect.attack) $actor.stream('action', 'engage', { target: $target, attack });
     actor.calcStats();
+
+    // Effect notifications
+    if (effect.message) {
+      $actor.interpolate(APP.styleText(effect.style, effect.message), { actor: $actor, target: $target, affect: $affect });
+    }
 
     // Abort silently duplicate effect
     const preEffect = ({ data }) => `${data.source}.${data.target}` === key && abort(false);

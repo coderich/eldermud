@@ -6,6 +6,7 @@ const argsMap = {
   none: [0],
   target: [0],
   ally: [0, 1, 2, 3, 4, 5],
+  other: [0, 1, 2, 3, 4, 5],
   enemy: [1, 2, 3, 4, 5],
   creature: [1, 2, 3, 4, 5],
 };

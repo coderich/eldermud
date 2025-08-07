@@ -7,10 +7,13 @@ module.exports = {
   target: 'ally',
   stream: 'action',
   cooldown: 5000,
-  // gesture: 'focus mind in prayer',
-  message: 'cast minorheal on',
   effects: [
-    { style: 'buff', target: 'target', affect: { hp: '1d8+2' } },
+    {
+      style: 'buff',
+      target: 'target',
+      affect: { hp: '1d8+2' },
+      message: '{actor.name} {heal} {target.name} of minor wounds',
+    },
   ],
   upgrade: {
     cost: 1000,

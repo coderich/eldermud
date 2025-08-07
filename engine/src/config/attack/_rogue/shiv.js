@@ -7,6 +7,7 @@ module.exports = {
   crits: 1,
   range: 1,
   speed: 2000,
+  weight: 150,
   scale: { str: 0.25, dex: 0.25 },
   hits: ['cut', 'jab', 'scratch'],
   misses: ['slip', 'lunge', 'thrust'],

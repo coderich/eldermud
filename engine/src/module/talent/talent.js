@@ -16,13 +16,8 @@ SYSTEM.on('post:enter', ({ actor }) => {
 
 Action.define('talent', [
   // Gesture
-  ({ talent }, { actor }) => {
-    if (talent.gesture) {
-      const [verb, ...rest] = talent.gesture.split(' ');
-      actor.send('text', APP.styleText('gesture', ['You', verb, 'your', ...rest].join(' ')));
-      actor.broadcast('text', APP.styleText('gesture', [actor.name, APP.pluralize(verb), 'their', ...rest].join(' ')));
-    }
-
+  async ({ talent, target }, { actor }) => {
+    if (talent.message) await actor.interpolate(APP.styleText(talent.style, talent.message), { actor, target, talent });
     return APP.timeout(talent.speed);
   },
 
@@ -31,17 +26,6 @@ Action.define('talent', [
     if (await REDIS.get(`${talent}.${actor}.cooldown`)) abort(`${talent.name} is on cooldown!`);
     else if (await actor.get('ma') < talent.cost) abort('Insufficient resources!');
     else await actor.perform('affect', { ma: -talent.cost });
-  },
-
-  // Message
-  ({ talent, target }, { actor }) => {
-    if (talent.message) {
-      const [verb, ...rest] = talent.message.split(' ');
-      const target1 = actor === target ? 'yourself' : target.name;
-      const target2 = actor === target ? 'themself' : target.name;
-      actor.send('text', APP.styleText(talent.style, ['You', verb, ...rest, target1].join(' ')));
-      actor.broadcast('text', APP.styleText(talent.style, [actor.name, APP.pluralize(verb), ...rest, target2].join(' ')));
-    }
   },
 
   // Manifestation (effects)

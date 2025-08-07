@@ -16,7 +16,7 @@ server.on('connect', async ({ socket }) => {
 
 server.on('disconnect', async ({ socket, reason }) => {
   await Actor[socket.id].disconnect(reason);
-  await Actor[socket.id].perform('logout');
+  await Actor[socket.id].perform('logout', {});
   delete Actor[socket.id];
 });
 

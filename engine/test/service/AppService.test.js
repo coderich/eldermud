@@ -54,5 +54,7 @@ describe('AppService', () => {
 
   test('interpolate', () => {
     expect(AppService.interpolate('Hello {actor.name}, you are {actor.age} *. Congrats!', { actor: { age: 100, name: 'Rich' } })).toBe('Hello Rich, you are 100 *. Congrats!');
+    expect(AppService.interpolate('{actor} {heal} {target} of minor wounds', { actor: 'Rich', target: 'Anne' })).toBe('Rich heal Anne of minor wounds');
+    expect(AppService.interpolate('{actor} {heal} {target} of minor wounds', { actor: 'Rich', target: 'Anne' }, true)).toBe('Rich heals Anne of minor wounds');
   });
 });

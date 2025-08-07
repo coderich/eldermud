@@ -1,15 +1,9 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('strike', [
-  ({ target }, { actor, promise }) => {
-    const { $target } = actor;
-    actor.$target = target;
-    promise.finally(() => {
-      if (!$target) delete actor.$target;
-    });
-  },
   async (data, { actor, abort }) => {
     const { target } = data;
+    actor.$target = target;
     const attack = typeof data.attack === 'function' ? data.attack() : data.attack;
     const swings = Array.from(new Array(attack.swings || 1));
     const recoil = attack.recoil || 2000;

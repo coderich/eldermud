@@ -96,6 +96,16 @@ module.exports = class ActorWrapper extends Actor {
     }));
   }
 
+  async interpolate(msg, data) {
+    const room = CONFIG.get(await this.get('room'));
+
+    return Promise.all([
+      this.send('text', APP.interpolate(msg, { ...data, actor: { name: 'You' } })),
+      this !== data.target && data.target.send('text', APP.interpolate(msg, { ...data, target: { name: 'you' } }, true)),
+      Array.from(room.units.values()).filter(el => ![this, data.target].includes(el)).forEach(el => el.send('text', APP.interpolate(msg, data, true))),
+    ]);
+  }
+
   async broadcast(...args) {
     const room = CONFIG.get(await this.get('room'));
     room.units.forEach(unit => unit !== this && unit.send(...args));

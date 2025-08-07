@@ -39,7 +39,7 @@ exports.isNumeric = str => !Number.isNaN(Number(`${str}`));
 exports.isBoolean = str => ['true', 'false'].includes(`${str}`.toLowerCase());
 exports.fibStat = (val, every = 10) => Array.from(new Array(parseInt(val ?? 0, 10))).reduce((prev, el, i) => prev + exports.fib[Math.floor(i / every)], 0);
 exports.tnl = lvl => lvl * 100 * exports.fibStat(lvl, 2);
-exports.interpolate = (template, data) => template.replace(/{([^}]+)}/g, (_, key) => Get(data, key, ''));
+exports.interpolate = (template, data, pluralize) => template.replace(/{([^}]+)}/g, (_, key) => Get(data, key, pluralize ? exports.pluralize(key) : key));
 
 exports.castValue = (value) => {
   if (value == null) return value;
@@ -62,7 +62,7 @@ exports.styleBlockText = (base, styles = [], blocktext) => {
 };
 
 exports.target = (list, args, by = 'name') => {
-  const result = { rest: [] };
+  const result = { rest: [], target: undefined };
   const arr = list instanceof Set ? Array.from(list.values()) : list; // Ensure array
   const $args = [...args].map(el => el.toLowerCase()); // Shallow copy
 
