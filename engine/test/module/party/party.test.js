@@ -8,6 +8,14 @@ describe('party', () => {
     await leader.perform('spawn');
     follower = new Player({ ...CONFIG.get('player'), name: 'follower' });
     await follower.perform('spawn');
+  });
+
+  afterAll(() => {
+    leader.removeAllPossibleListeners();
+    follower.removeAllPossibleListeners();
+  });
+
+  test('self party', () => {
     expect(leader.$party.has(leader)).toBe(true);
     expect(follower.$party.has(follower)).toBe(true);
   });
@@ -23,6 +31,21 @@ describe('party', () => {
     expect(leader.$party.has(leader)).toBe(true);
     expect(leader.$party.has(follower)).toBe(true);
     expect(leader.$party).toBe(follower.$party);
+  });
+
+  test('movement', async () => {
+    // Leader moves
+    await leader.perform('cmd', 's');
+    expect(leader.$party.has(follower)).toBe(true);
+
+    // Follower moves
+    await follower.perform('cmd', 'n');
+    expect(leader.$party.has(follower)).toBe(false);
+
+    // Reunite
+    await follower.perform('cmd', 's');
+    await leader.perform('cmd', 'invite follower');
+    await follower.perform('cmd', 'follow leader');
   });
 
   test('leave ok', async () => {

@@ -8,7 +8,7 @@ Action.define('sanctuary', [
     const moveHandler = async ({ actor, data, abort }) => {
       if (actor.type === 'creature') {
         const actorRoom = CONFIG.get(await actor.get('room'));
-        const toRoom = actorRoom.exits[data];
+        const toRoom = actorRoom.exits[data.code];
         if (`${toRoom}` === `${room}`) abort();
       }
     };

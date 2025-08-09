@@ -17,7 +17,10 @@ Action.define('use', [
         return actor.send('text', 'You unlock the door');
       }
       default: {
-        return null;
+        return target.effects.map((effect) => {
+          effect = { ...effect, source: `${target.type}.${target.id}`, actor: `${actor}`, target: `${actor}` };
+          return actor.stream('effect', 'effect', effect);
+        });
       }
     }
   },

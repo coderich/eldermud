@@ -2,10 +2,7 @@ const FS = require('fs');
 const Path = require('path');
 const { randomUUID } = require('crypto');
 const Get = require('lodash.get');
-// const Item = require('../../../../src/model/Item');
-// const NPC = require('../../../../model/NPC');
 
-// const noop = ({ abort }) => abort();
 const startRoom = 'triageRoom';
 const onboardRoom = 'wardingChamber';
 
@@ -46,15 +43,15 @@ SYSTEM.on('post:spawn', async (context) => {
         if (!actor.$sisterCaldra) {
           actor.$sisterCaldra = true;
           await APP.timeout(1000);
-          await actor.send('text', `${APP.styleText(npc.type, npc.name)}:`, "You... you're awake? Saints preserve us!");
+          await npc.perform('cmd', "You... you're awake? Saints preserve us!");
           await APP.timeout(3000);
-          await actor.send('text', `${APP.styleText(npc.type, npc.name)}:`, 'The Plague, it eats more than flesh, it devours identity...');
+          await npc.perform('cmd', 'The Plague, it eats more than flesh, it devours identity...');
           await APP.timeout(2000);
-          await actor.send('text', `${APP.styleText(npc.type, npc.name)}:`, "We don't have much time, come,", APP.styleText('keyword', 'follow'), 'me!');
+          await npc.perform('cmd', `We don't have much time, ${APP.styleText('keyword', 'follow')} me!`);
         }
 
         await APP.timeout(1500);
-        await npc.perform('invite', { target: actor });
+        await npc.perform('cmd', `invite ${actor.name}`);
 
         actor.once(`follow:${npc}`, async () => {
           const target = CONFIG.get(`${map}.rooms.quarantineHall`);
@@ -95,6 +92,8 @@ SYSTEM.on('post:spawn', async (context) => {
         actor.send('text', APP.styleText('debuff', 'The runes on the floor begin to glow bright red!'));
         await APP.timeout(2000);
         await actor.perform('onboard');
+        CONFIG.set(`${map}.rooms.entryDoor.exits.w`, CONFIG.get('map.eldenfortChapel.rooms.altar'));
+        await actor.perform('map');
         // await actor.perform('selectClass');
         // await Promise.all(Object.values(CONFIG.get('class')).map((echo) => {
         //   return new NPC({ ...CONFIG.get('npc.archetype'), name: `${echo.name}`, room, echo }).perform('spawn');

@@ -1,5 +1,4 @@
 module.exports = {
-  map: '${self:map.town}',
   room: '${self:map.town.rooms.start}',
   checkpoint: '${self:map.town.rooms.start}',
   str: 8,

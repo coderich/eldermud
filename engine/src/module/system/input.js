@@ -24,6 +24,8 @@ SYSTEM.on('*', async (event, context) => {
       const { target } = data;
 
       switch (target) {
+        case 'self': data.target = actor; break;
+        case 'exit': data.target = room?.exits?.[code]; break;
         case 'unit': Object.assign(data, APP.target([...room.units], args)); break;
         case 'other': Object.assign(data, APP.target([...room.units].filter(unit => unit !== actor), args)); break;
         case 'player': case 'npc': case 'creature': Object.assign(data, APP.target([...room.units].filter(unit => unit.type === target), args)); break;

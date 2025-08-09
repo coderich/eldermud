@@ -6,18 +6,18 @@ SYSTEM.on('enter:map.town.rooms.supplies', async ({ actor }) => {
   actor.perform('map');
 });
 
-SYSTEM.on('post:spawn', async ({ actor }) => {
-  if (actor.type === 'player') {
-    const room = 'map.town.rooms.supplies';
-    const isNew = await REDIS.sAdd(`${room}.players`, `${actor}`);
+// SYSTEM.on('post:spawn', async ({ actor }) => {
+//   if (actor.type === 'player') {
+//     const room = 'map.town.rooms.supplies';
+//     const isNew = await REDIS.sAdd(`${room}.players`, `${actor}`);
 
-    if (isNew) {
-      await APP.instantiate([CONFIG.get('item.rope'), CONFIG.get('item.canteen')], { room, hidden: true, owner: `${actor}` }).then((items) => {
-        return Promise.all(items.map(item => item.perform('spawn')));
-      });
-    }
-  }
-});
+//     if (isNew) {
+//       await APP.instantiate([CONFIG.get('item.rope'), CONFIG.get('item.canteen')], { room, hidden: true, owner: `${actor}` }).then((items) => {
+//         return Promise.all(items.map(item => item.perform('spawn')));
+//       });
+//     }
+//   }
+// });
 
 module.exports = {
   name: 'Town',
@@ -49,7 +49,7 @@ module.exports = {
     supplies: {
       char: '$',
       name: 'Supplies',
-      shop: '${self:shop.general}',
+      shop: '${self:shops.general}',
       exits: { e: $room('tunnel2') },
     },
   },

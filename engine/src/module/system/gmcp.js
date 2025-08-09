@@ -50,7 +50,7 @@ SYSTEM.on('*', async (event, context) => {
 
     // Broadcast to room that you have arrived
     Array.from(room.units.values()).filter(unit => unit !== actor && !actor.$party.has(unit)).forEach((unit) => {
-      const direction = APP.theRDirection[result.dir] || 'nowhere!';
+      const direction = APP.theRDirection[result.code] || 'nowhere!';
       unit.send('text', `${APP.styleText(actor.type, actor.name)} enters the room from ${direction}`);
     });
 
@@ -71,7 +71,7 @@ SYSTEM.on('*', async (event, context) => {
 
     // Broadcast to room that actor left
     Array.from(exit.units.values()).filter(unit => unit !== actor && !actor.$party.has(unit)).forEach((unit) => {
-      unit.send('text', `${APP.styleText(actor.type, actor.name)} leaves the room heading ${APP.direction[result.dir]}`);
+      unit.send('text', `${APP.styleText(actor.type, actor.name)} leaves the room heading ${APP.direction[result.code]}`);
     });
   }
 });

@@ -13,6 +13,6 @@ module.exports = {
     '${self:trait.proficient}',
   ],
   talents: [
-    // '${self:talent.jackOfAllTrades}', // active: gain +1 to all core stats for 10s, costs 5 MP, 60s cooldown
+    '${self:talent.jack}',
   ],
 };

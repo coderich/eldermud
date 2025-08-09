@@ -30,12 +30,7 @@ Action.define('fallen', [
       await actor.broadcast('text', actor.slain);
 
       // Award XP
-      await Promise.all(killers.map((killer) => {
-        return Promise.all([
-          killer.perform('affect', { exp }),
-          killer.send('text', `You collect ${APP.styleText('keyword', exp)} remnants of the dead.`),
-        ]);
-      }));
+      await Promise.all(killers.map(killer => killer.perform('expGain', { exp })));
     }
 
     return actor.perform('death');

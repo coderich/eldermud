@@ -36,7 +36,7 @@ app:
     exp: '∴'
     bullet: '•'
     divider: '¦'
-    blessed: '✚'
+    buffed: '✚'
     chilled: '❄'
     poisoned: '☠'
     negative: '✕'

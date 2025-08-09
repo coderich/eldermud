@@ -13,6 +13,6 @@ module.exports = {
     // '${self:trait.nightsGrace}', // passive: once per short rest, become invisible for 10s in dim light areas
   ],
   talents: [
-    // '${self:talent.feyStep}', // active: teleport up to 3 meters instantly, costs 4 MP, 20s cooldown
+    '${self:talent.feyStep}',
   ],
 };

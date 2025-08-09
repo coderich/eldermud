@@ -17,7 +17,7 @@ SYSTEM.on('post:enter', ({ actor }) => {
 Action.define('talent', [
   // Gesture
   async ({ talent, target }, { actor }) => {
-    if (talent.message) await actor.interpolate(APP.styleText(talent.style, talent.message), { actor, target, talent });
+    if (talent.gesture) await actor.interpolate(APP.styleText('gesture', talent.gesture), { actor, target, talent });
     return APP.timeout(talent.speed);
   },
 
@@ -26,6 +26,12 @@ Action.define('talent', [
     if (await REDIS.get(`${talent}.${actor}.cooldown`)) abort(`${talent.name} is on cooldown!`);
     else if (await actor.get('ma') < talent.cost) abort('Insufficient resources!');
     else await actor.perform('affect', { ma: -talent.cost });
+  },
+
+  // Message
+  async ({ talent, target }, { actor }) => {
+    if (talent.message) await actor.interpolate(APP.styleText(talent.style, talent.message), { actor, target, talent });
+    return APP.timeout(talent.speed);
   },
 
   // Manifestation (effects)

@@ -14,7 +14,6 @@ Action.define('inventory', [
     }, {});
 
     const description = items.length ? Object.values(inventory).map(item => APP.styleText('keyword', item.name).concat(`(${item.num})`)).join(', ') : 'nothing!';
-    // actor.send('text', 'You are carrying:', description);
     await actor.send('text', APP.styleText('stat', 'Gear:'), APP.styleText('keyword', weapon.name, '+', armor.name));
     await actor.send('text', APP.styleText('stat', 'Inventory:'), description);
     await actor.send('text', APP.styleText('stat', 'Encumbrance:'), APP.styleText('value', `${info.enc}/${info.carry}`));

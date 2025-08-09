@@ -10,7 +10,7 @@ module.exports = {
   cooldown: 10000,
   effects: [
     { style: 'buff', target: 'target', affect: { hp: 5 } },
-    { style: 'buff', target: 'target', effect: { wis: 5, dex: 5 }, duration: 20000, status: 'blessed' },
+    { style: 'buff', target: 'target', effect: { wis: 5, dex: 5 }, duration: 20000, status: 'buffed' },
   ],
   upgrade: {
     cost: 1000,

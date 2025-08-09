@@ -11,8 +11,8 @@ Action.define('party', [
         '  ',
         unit.name,
         `(${CONFIG.get(unit.class).name})`,
-        `[MA:${Math.floor((unit.ma / unit.mma) * 100)}%]`,
         `[HP:${Math.floor((unit.hp / unit.mhp) * 100)}%]`,
+        `[MA:${Math.floor((unit.ma / unit.mma) * 100)}%]`,
         `- ${ranks[unit.$partyRank - 1]}`,
       ]),
     ], { sep: '' }));

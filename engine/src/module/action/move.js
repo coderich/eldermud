@@ -1,16 +1,16 @@
 const { Action } = require('@coderich/gameflow');
 
 Action.define('move', [
-  async (dir, context) => {
+  async ({ code }, context) => {
     const { actor, abort, promise } = context;
 
     // Exit check
     const exit = CONFIG.get(await actor.get('room'));
-    const room = exit?.exits?.[dir];
+    const room = exit?.exits?.[code];
     if (!room) return abort('There is no exit in that direction!');
 
     // Pathway check
-    const path = exit.paths?.[dir];
+    const path = exit.paths?.[code];
     if (path) {
       switch (path.type) {
         case 'door': {
@@ -26,12 +26,12 @@ Action.define('move', [
       }
     }
 
-    return { dir, room, exit };
+    return { code, room, exit };
   },
 
-  () => APP.timeout(1000),
+  (_, { actor }) => APP.timeout(actor.moveSpeed),
 
-  async ({ dir, room, exit }, { actor }) => {
+  async ({ room, exit }, { actor }) => {
     // Leave
     await actor.save({ room });
     exit.units.delete(actor);

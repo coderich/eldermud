@@ -123,7 +123,6 @@ exports.roll = (dice) => {
 
   const input = dice.match(/\S+/g).join('');
   const [, neg, rolls, sides, op = '+', mod = 0] = input.match(/(-?)(\d+)d(\d+)(\*\*|[%+\-*\\/]?)(\d*)/);
-  // const [, neg, rolls, sides, op = '+', mod = 0] = input.match(/(-?)(\d+)d(\d+)([+-\\*\\/]?)(\d*)/);
   if (Number.parseInt(sides, 10) <= 0) return 0;
 
   // Dice roll value

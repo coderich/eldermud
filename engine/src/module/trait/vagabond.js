@@ -14,7 +14,7 @@ Action.define('vagabond', new Loop([
       const exit = room.exits[dir];
       const [roomMap] = `${room}`.split('.rooms');
       const [exitMap] = `${exit}`.split('.rooms');
-      if (roomMap === exitMap) await actor.stream('action', 'move', dir);
+      if (roomMap === exitMap) await actor.perform('cmd', dir);
     }
   },
 ]));

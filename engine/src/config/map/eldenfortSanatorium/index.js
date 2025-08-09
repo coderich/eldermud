@@ -15,7 +15,11 @@ module.exports = {
       description: 'A heavy iron door, bolted shut from the outside. The walls are slick with condensation, and faded plague symbols are carved into the stone.',
       exits: {
         e: '${self:map.eldenfortSanatorium.rooms.sealedVestibule}',
+        // w: '${self:map.eldenfortChapel.rooms.altar}',
       },
+      // paths: {
+      //   w: '${self:map.eldenfortSanatorium.doors.entryDoor}',
+      // },
     },
     sealedVestibule: {
       name: 'Sealed Vestibule',
@@ -124,4 +128,15 @@ module.exports = {
     //   },
     // },
   },
+  // doors: {
+  //   entryDoor: {
+  //     name: 'South Gate of Eldenfort',
+  //     depiction: 'A monumental structure that serves as the town\'s lifeblood. It is constructed from sturdy oak timbers, reinforced with iron bands, and adorned with intricate carvings that tell tales of the town\'s history. The gate is flanked by towering stone pillars, each bearing the crest of Eldenfort, and is surmounted by a grand archway that allows for the passage of wagons and mounted troops.',
+  //     label: '${self:self:map.eldenfortSanatorium.doors.entryDoor.status} iron door',
+  //     status: 'locked',
+  //     durability: 100,
+  //     picklock: 100,
+  //     traits: ['${self:trait.door}'],
+  //   },
+  // },
 };

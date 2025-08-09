@@ -1,7 +1,7 @@
 const { Action, Force } = require('@coderich/gameflow');
 
 Action.define('manaforce', new Force([
-  () => APP.timeout(10000),
+  (_, { actor }) => APP.timeout(actor.manaforce),
 
   async (_, { actor }) => {
     const { ma, mma, wis } = await actor.mGet('ma', 'mma', 'wis');

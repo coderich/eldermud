@@ -27,7 +27,7 @@ Action.define('follow', [
     const leave = () => actor.perform('leave');
     const stray = ({ followPromise }) => !followPromise && leave();
     const unable = ({ promise, followPromise }) => followPromise && promise.reason !== '$source' && leave();
-    const notice = ({ data }) => actor.send('text', `--- Following ${APP.styleText(target.type, target.name)} ${APP.direction[data]} ---`);
+    const notice = ({ data }) => actor.send('text', `--- Following ${APP.styleText(target.type, target.name)} ${APP.direction[data.code]} ---`);
 
     actor.once('pre:death', leave);
     actor.once('post:logout', leave);

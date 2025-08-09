@@ -64,8 +64,10 @@ module.exports = class Unit extends Actor {
     this.leadership = Math.floor(this.cha / 10);
     this.perception = this.lvl + this.int + this.dex;
     this.depiction ??= CONFIG.get(`${stats.class}.depiction`);
-    this.engageSpeed = 2000 - (this.dex * 10);
-    this.moveSpeed = 2000;
+    this.engageSpeed = 1500 - (this.dex * 10);
+    this.moveSpeed = 1500;
+    this.manaforce = 10000;
+    this.lifeforce = 10000;
     this.dmg = 0;
 
     // Apply dynamic effects (for bonuses)
