@@ -66,7 +66,7 @@ module.exports = class ActorWrapper extends Actor {
         } else if (typeof $value === 'object') {
           await REDIS.hSet($key, $value);
         } else {
-          await REDIS.set($key, $value, { NX });
+          await REDIS.set($key, `${$value}`, { NX });
         }
       }
     })).then(() => this);

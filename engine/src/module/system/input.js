@@ -4,7 +4,7 @@ const Actor = require('../../model/Actor');
 /**
  * Responsible for normalizing input that comes from the command line before reaching actions
  */
-SYSTEM.on('*', async (event, context) => {
+SYSTEM.prependListener('*', async (event, context) => {
   const { actor, data, translate, abort } = context;
   const [type, action] = event.split(':');
 

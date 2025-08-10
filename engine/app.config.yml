@@ -7,7 +7,7 @@ app:
     # stats: ['str', 'dex', 'int', 'wis', 'con', 'cha']
     unit: ['room', 'name', 'hp', 'ma', 'rank']
     item: ['room', 'name', 'hidden', 'durability', 'owner', 'echo']
-    user: ['race', 'class', 'weapon', 'armor', 'traits', 'talents', 'exp', 'checkpoint']
+    user: ['race', 'class', 'weapon', 'armor', 'traits', 'talents', 'exp', 'checkpoint', 'warn']
     key: ${self:app.spawn.item}
     npc: ${self:app.spawn.unit}
     creature: ${self:app.spawn.unit}

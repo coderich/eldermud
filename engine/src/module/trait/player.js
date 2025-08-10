@@ -1,10 +1,9 @@
 const { Action } = require('@coderich/gameflow');
 
-Action.define('guardsman', [
+Action.define('player', [
   (_, { actor }) => {
     actor.stream('trait', 'warning');
     actor.stream('trait', 'lifeforce');
-    // actor.stream('trait', 'vagabond');
-    actor.stream('trait', 'wary');
+    actor.stream('trait', 'manaforce');
   },
 ]);

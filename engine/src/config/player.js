@@ -19,6 +19,6 @@ module.exports = {
   stance: CONFIG.get('app.stance.ready'),
   armor: '${self:armor.cloth}',
   weapon: '${self:attack.fist}',
-  traits: ['${self:trait.lifeforce}', '${self:trait.manaforce}'],
+  traits: ['${self:trait.player}'],
   talents: [],
 };

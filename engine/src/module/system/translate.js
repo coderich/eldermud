@@ -55,6 +55,7 @@ const commands = [
     { ask: { args: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], channel: 'realm', stream: 'voice', target: 'npc' } },
     { who: { args: [0], channel: 'realm', stream: 'info' } },
     // { exp: { args: [0], stream: 'action' } },
+    { set: { args: [2], channel: 'realm', stream: 'info' } },
     { use: { args: [1, 2, 3, 4, 5], channel: 'realm', stream: 'action' } },
     { buy: { args: [1, 2, 3, 4, 5], channel: 'realm', stream: 'action', target: 'shop' } },
     { tnl: { args: [0], channel: 'realm', stream: 'info' } },
