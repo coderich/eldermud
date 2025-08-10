@@ -26,6 +26,13 @@ Action.define('move', [
       }
     }
 
+    // Map check
+    if (actor.type !== 'player') {
+      const [map] = `${actor.room}`.split('.rooms');
+      const [toMap] = `${room}`.split('.rooms');
+      if (map !== toMap) abort('Cannot cross maps');
+    }
+
     return { code, room, exit };
   },
 

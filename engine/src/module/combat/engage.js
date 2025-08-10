@@ -22,12 +22,17 @@ Action.define('engage', [
 
   // Engage with the target
   async ({ target }, { actor }) => {
+    // No penalty for re-engaging the same target
     const info = await actor.mGet('room', 'engageSpeed');
     const room = CONFIG.get(info.room);
     actor.send('text', APP.styleText('engaged', `*combat engaged (${target.name})*`));
     target.send('text', APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText('highlight', 'you')}!`);
     Array.from(room.units.values()).filter(unit => unit !== actor && unit !== target).forEach(unit => unit.send('text', APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText(target.type, target.name)}!`));
-    await APP.timeout(info.engageSpeed);
+
+    if (target !== actor.$engageTarget) {
+      actor.$engageTarget = target;
+      await APP.timeout(info.engageSpeed);
+    }
   },
 
   // Duel

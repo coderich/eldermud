@@ -12,6 +12,9 @@ SYSTEM.on('*', async (event, context) => {
   //   if (posture !== 'stand') await actor.stream('preAction', 'stand');
   // }
 
+  // Must await pre-action cannot be aborted
+  if (type === 'pre' && stream?.id === 'action') await actor.stream(actor.preActionStream, 'noop');
+
   // Abort GMCP
   if (type === 'abort' && promise.reason && promise.reason !== '$source') {
     actor.send('text', promise.reason);

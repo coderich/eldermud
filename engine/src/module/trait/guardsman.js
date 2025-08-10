@@ -5,6 +5,7 @@ Action.define('guardsman', [
     actor.stream('trait', 'warning');
     actor.stream('trait', 'lifeforce');
     // actor.stream('trait', 'vagabond');
+    actor.stream('trait', 'chase');
     actor.stream('trait', 'wary');
   },
 ]);
