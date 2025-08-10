@@ -4,4 +4,12 @@ module.exports = {
   description: 'A sturdy rope designed for climbing and traversing vertical surfaces.',
   value: 50,
   weight: 20,
+  effects: [
+    {
+      style: 'buff',
+      target: 'target',
+      affect: { ma: '1d10+2' },
+      message: '{actor.name} {restore} {affect.ma} mana',
+    },
+  ],
 };

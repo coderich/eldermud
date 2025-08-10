@@ -8,7 +8,7 @@ module.exports = {
   cooldown: 5000,
   target: 'other',
   stream: 'action',
-  gesture: '{actor.name} {focus} an arcane bolt...',
+  gesture: '{actor.name} {focus} an arcane bolt at {target.name}...',
   effects: [
     {
       style: 'hit',

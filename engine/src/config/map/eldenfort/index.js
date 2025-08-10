@@ -199,8 +199,7 @@ module.exports = {
     },
   },
 
-  // spawns: [
-  //   { num: 1, max: 3, units: ['${self:creature.cat}'] },
-  //   { num: 1, max: 3, units: ['${self:creature.rat}'] },
-  // ],
+  spawns: [
+    { num: 20, max: 20, units: ['${self:creature.guardsman}'] },
+  ],
 };

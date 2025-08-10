@@ -20,7 +20,7 @@ Action.define('spawn', async (_, { actor }) => {
   }
 
   // Attach traits
-  actor.traits?.forEach((trait) => {
+  actor.traits?.forEach(async (trait) => {
     if (Action[trait?.id]) actor.stream('trait', trait.id);
   });
 

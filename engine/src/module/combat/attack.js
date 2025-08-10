@@ -11,6 +11,7 @@ Action.define('attack', [
   },
 
   async ({ target }, { actor, stream }) => {
+    actor.$target = actor.$retarget = target;
     const attacks = await actor.get('attacks');
     const attack = () => APP.randomElement(attacks);
     actor.stream(stream, 'engage', { target, attack });

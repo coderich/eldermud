@@ -8,7 +8,7 @@ module.exports = {
   target: 'other',
   stream: 'action',
   cooldown: 10000,
-  gesture: '{actor.name} {focus} a blistering arrow...',
+  gesture: '{actor.name} {focus} a magic arrow at {target.name}...',
   effects: [
     {
       style: 'hit',

@@ -31,7 +31,7 @@ module.exports = {
 
   traits: [
     '${self:trait.lifeforce}',
-    '${self:trait.manaforce}',
+    // '${self:trait.manaforce}',
     // '${self:trait.banding}',
     // '${self:trait.tactical}',
     '${self:trait.vagabond}',
