@@ -1,9 +1,9 @@
 module.exports = {
+  cost: 10,
   code: 'feys',
   name: 'FeyStep',
   description: 'Move blindingly fast with increased dexterity',
   message: '{actor.name} {move} much faster!',
-  cost: 10,
   target: 'self',
   style: 'buff',
   cooldown: 60000,

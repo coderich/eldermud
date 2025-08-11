@@ -1,30 +1,26 @@
 module.exports = {
   name: 'Guardsman',
-  // depiction: 'A rogue human in worn leather armor, dagger at the belt and eyes sharp for an opportunity.',
-  // description: 'Bandits roam wild roads and forests, ambushing travelers for coin and goods. Agile and cunning, they rely on stealth and quick strikes.',
-  slain: 'The rat takes its final breath, succumbing to the inevitable grasp of mortality.',
+  depiction: "A formidable guardsman in scuffed mail and tabard bearing the town's crest; wielding a spear in hand and a ring of keys/whistle at his belt.",
+  description: 'Disciplined town guards, trained to hold lines with spear and shield, and to uphold law and order.',
+  slain: 'The guardsman staggers as their tabard blooms dark; the spear slips from numb fingers as they collapse.',
 
-  // Ability scores
-  str: 2,
-  dex: 4,
-  int: 2,
-  wis: 2,
-  con: 5,
-  cha: 1,
-
-  // Combat parameters
-  lvl: 1,
-  exp: 8,
+  lvl: 5,
+  exp: 100,
+  str: 20,
+  dex: 18,
+  int: 10,
+  wis: 10,
+  con: 25,
+  cha: 10,
 
   // Random flavor tables for variety
   random: {
     impressions: ['small', 'giant', 'huge', 'fat', 'skinny', 'angry'],
-    movements: ['creep', 'scuttle', 'wobble'],
+    movements: ['walk', 'strut', 'stride'],
   },
 
   attacks: [
-    '${self:attack.claw}',
-    '${self:attack.teeth}',
+    '${self:attack.spear}',
   ],
 
   traits: [

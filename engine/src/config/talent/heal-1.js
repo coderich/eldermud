@@ -1,8 +1,8 @@
 module.exports = {
+  cost: 5,
   code: 'mihe',
   name: 'MinorHeal',
   description: 'Heal minor wounds',
-  cost: 5,
   style: 'buff',
   target: 'ally',
   stream: 'action',

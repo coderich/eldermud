@@ -7,7 +7,7 @@ Action.define('roll', [
     const targetStats = await target.mGet(stats);
 
     // To hit roll
-    const roll = APP.roll('1d100');
+    const roll = APP.roll('10d10');
     const cover = Math.max(0, (target.$partyRank - attack.range) * 2);
     const hitroll = (roll + actorStats.acc + APP.roll(attack.acc) - cover - targetStats.ac);
 

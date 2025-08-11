@@ -68,6 +68,7 @@ exports.target = (list, args, by = 'name') => {
 
   // Sort the array by length of what you're searching by to improve accuracy
   arr.sort((a, b) => {
+    if (a.type !== b.type && [a.type, b.type].includes('player')) return a.type === 'player' ? 1 : -1;
     const alen = a[by]?.length || 0;
     const blen = b[by]?.length || 0;
     return alen - blen;

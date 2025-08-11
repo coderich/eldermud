@@ -11,5 +11,5 @@ Action.define('miss', async ({ attack, target, crit }, { actor }) => {
 
   actor.send('text', APP.styleText('youMiss', `You ${verb} at ${target.name}!`));
   target.send('text', APP.styleText('missYou', `${source} ${verbs} at you!`));
-  Array.from(room.units.values()).filter(el => ![actor, target].includes(el)).forEach(el => el.send('text', APP.styleText('miss', `${source} ${verbs} at ${target.name}!`)));
+  Array.from(room.units.values()).filter(el => ![actor, target].includes(el)).forEach(el => el.send('text', APP.styleText('muted', `${source} ${verbs} at ${target.name}!`)));
 });

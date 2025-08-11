@@ -6,22 +6,18 @@ SYSTEM.on('*', async (event, context) => {
   const { actor, result, promise, stream, abort } = context;
   const [type] = event.split(':');
 
-  // // Posture
-  // if (['pre:move', 'pre:open', 'pre:close', 'pre:attack'].includes(event)) {
-  //   const posture = await actor.get('posture');
-  //   if (posture !== 'stand') await actor.stream('preAction', 'stand');
-  // }
-
-  // Must await pre-action cannot be aborted
-  if (type === 'pre' && stream?.id === 'action') await actor.stream(actor.preActionStream, 'noop');
+  // Must await mandatory stream cannot be aborted
+  if (type === 'pre' && ['action', 'tactic'].includes(stream?.id)) {
+    await actor.stream(actor.mandatoryStream, 'noop');
+  }
 
   // Abort GMCP
   if (type === 'abort' && promise.reason && promise.reason !== '$source') {
     actor.send('text', promise.reason);
   }
 
-  // Dropped logic
-  if (['action', 'preAction'].includes(stream?.id)) {
+  // Fallen logic
+  if (['action'].includes(stream?.id)) {
     if (await actor.get('hp') <= 0) abort(`You are too weak to ${promise.id}!`);
   }
 
@@ -30,10 +26,6 @@ SYSTEM.on('*', async (event, context) => {
     actor.save({ stance: CONFIG.get('app.stance.engaged') }).then(() => actor.perform('status'));
   } else if (['post:engage', 'abort:engage', 'post:death'].includes(event)) {
     actor.save({ stance: CONFIG.get('app.stance.ready') }).then(() => actor.perform('status'));
-  }
-
-  if (['post:engage', 'abort:engage'].includes(event)) {
-    actor.send('text', APP.styleText('engaged', '*combat off*'));
   }
 
   // Status

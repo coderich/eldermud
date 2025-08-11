@@ -1,19 +1,27 @@
 module.exports = {
+  cost: 10,
   code: 'mmis',
   name: 'MagicMissile',
   description: 'Fire concentrated arcane bolts at your target',
-  cost: 5,
+  gesture: '{actor.name} {focus} an arcane bolt at {target.name}...',
   range: 5,
   speed: 1000,
-  cooldown: 5000,
+  cooldown: 10000,
   target: 'other',
   stream: 'action',
-  gesture: '{actor.name} {focus} an arcane bolt at {target.name}...',
   effects: [
     {
-      style: 'hit',
       target: 'target',
-      strike: { acc: 1000, crits: 5, dmg: '2d8+3', range: 5, hits: ['blast'], misses: ['swoosh'] },
+      strike: {
+        range: 5,
+        crits: 5,
+        acc: 1000,
+        recoil: 1000,
+        dmg: '2d8+3',
+        hits: ['blast'],
+        misses: ['misfire'],
+        scale: { int: 0.35, wis: 0.15 },
+      },
     },
   ],
 };

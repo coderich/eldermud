@@ -1,9 +1,15 @@
 const { Action, Loop } = require('@coderich/gameflow');
 
-Action.define('wary', [
+Action.define('vengeful', [
   (_, { actor, promise }) => {
     const foes = new Set();
-    const addFoe = event => foes.add(event.actor);
+
+    const addFoe = (event) => {
+      foes.add(event.actor);
+      setTimeout(() => foes.delete(event.actor), 60 * 1000 * 2); // 2 min
+      event.actor.once('pre:death', () => foes.delete(event.actor));
+    };
+
     SYSTEM.on(`attack:${actor}`, addFoe);
     promise.finally(() => SYSTEM.off(`attack:${actor}`, addFoe));
     return foes;

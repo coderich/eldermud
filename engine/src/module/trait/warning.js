@@ -13,6 +13,6 @@ Action.define('warning', [
     };
 
     SYSTEM.on('pre:attack', warning);
-    actor.on('post:death', () => SYSTEM.off('pre:attack', warning));
+    actor.on('pre:death', () => SYSTEM.off('pre:attack', warning));
   },
 ]);

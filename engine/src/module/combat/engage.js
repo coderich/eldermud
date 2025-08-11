@@ -6,12 +6,19 @@ const { Action, Loop } = require('@coderich/gameflow');
 Action.define('engage', [
   // Listeners/Aborts
   async ({ target }, { actor, stream, abort, promise }) => {
-    const $abort = () => abort();
+    const $abort = (event) => {
+      abort();
+      if (event.reason === null) {
+        delete actor.$retarget;
+        delete actor.$engageTarget;
+      }
+    };
 
     promise.finally(() => {
       delete actor.$target;
       target.offFunction($abort);
       stream.offFunction($abort);
+      actor.send('text', APP.styleText('engaged', '*combat off*'));
     });
 
     stream.once('add', $abort);

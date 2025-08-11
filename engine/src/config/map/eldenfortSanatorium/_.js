@@ -36,7 +36,7 @@ SYSTEM.on('post:spawn', async (context) => {
       room = CONFIG.get(await npc.get('room'));
 
       if (`${room}` === `${map}.rooms.${startRoom}`) {
-        actor.once('post:death', () => {
+        actor.once('pre:death', () => {
           delete actor.$sisterCaldra;
         });
 
@@ -83,7 +83,7 @@ SYSTEM.on('post:spawn', async (context) => {
       if (actor.type === 'player' && !actor.$sisterCaldra2 && `${room}` === `${map}.rooms.${onboardRoom}`) {
         actor.$sisterCaldra2 = true;
         room.items = new Set();
-        actor.once('post:death', () => {
+        actor.once('pre:death', () => {
           delete actor.$sisterCaldra2;
         });
         await APP.timeout(3000);

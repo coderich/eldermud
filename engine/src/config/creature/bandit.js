@@ -4,17 +4,14 @@ module.exports = {
   description: 'Bandits roam wild roads and forests, ambushing travelers for coin and goods. Agile and cunning, they rely on stealth and quick strikes.',
   slain: 'The bandit staggers back, dropping their weapon before collapsing with a final breath.',
 
-  // Ability scores
+  lvl: 3,
+  exp: 45,
   str: 10,
   dex: 12,
   int: 10,
   wis: 10,
   con: 10,
   cha: 10,
-
-  // Combat parameters
-  lvl: 3,
-  exp: 45,
 
   // Random flavor tables for variety
   random: {

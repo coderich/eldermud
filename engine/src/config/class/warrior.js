@@ -15,7 +15,7 @@ module.exports = {
     '${self:trait.weaponsmaster}',
   ],
   talents: [
-    '${self:talent.bash}',
+    '${self:talent.smash}',
   ],
   progression: [
     'Berserker ▶ trades defense for burst damage and Fury gains at low HP',

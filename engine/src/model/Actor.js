@@ -12,7 +12,7 @@ module.exports = class ActorWrapper extends Actor {
     super();
     this.assign(data);
     this.socket ??= socket;
-    this.preActionStream = new Stream('preAction'); // Pre-action stream
+    this.mandatoryStream = new Stream('mandatory'); // Mandatory wait stream
 
     // Streams
     this.streams = {
@@ -28,7 +28,7 @@ module.exports = class ActorWrapper extends Actor {
       countdown: new Stream('countdown').chained(false), // IDK..
       effect: new Stream('effect').chained(false), // Active effects
       trait: new Stream('trait').chained(false), // Passive traits
-      tactic: new Stream('tactic'), // Immediate combat tactics
+      tactic: new Stream('tactic'), // Combat tactics
       action: new Stream('action'), // Active actions
     };
   }

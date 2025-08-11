@@ -200,6 +200,6 @@ module.exports = {
   },
 
   spawns: [
-    { num: 20, max: 20, units: ['${self:creature.guardsman}'] },
+    { num: 4, max: 4, units: ['${self:creature.guardsman}'] },
   ],
 };

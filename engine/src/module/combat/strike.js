@@ -22,11 +22,11 @@ Action.define('strike', [
         const dmg = crit ? Math.ceil(roll.dmgroll * 2) : roll.dmgroll;
         await actor.perform('hit', { attack, target, dmg, crit });
       } else {
-        await actor.perform('miss', { attack, target, glance: true });
+        await actor.perform('hit', { attack, target, glance: true });
       }
     }));
 
     // Recoil
-    await actor.stream(actor.preActionStream, new Action('recoil', () => APP.timeout(recoil)));
+    await actor.stream(actor.mandatoryStream, new Action('recoil', () => APP.timeout(recoil)));
   },
 ]);

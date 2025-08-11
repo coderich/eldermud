@@ -1,8 +1,9 @@
 module.exports = {
+  cost: 10,
   code: 'jack',
   name: 'JackOfTrades',
   description: 'Bestoy a blessing upon you or an ally; increasing stats',
-  cost: 10,
+  message: '{actor.name} {cast} JackOfTrades',
   style: 'buff',
   target: 'self',
   cooldown: 60000,
@@ -10,10 +11,9 @@ module.exports = {
     {
       style: 'buff',
       target: 'target',
-      message: '{actor.name} {cast} JackOfTrades',
+      status: 'buffed',
       effect: { str: 5, int: 5, wis: 5, dex: 5, con: 5, cha: 5 },
       duration: 30000,
-      status: 'buffed',
     },
   ],
 };

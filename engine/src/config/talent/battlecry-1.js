@@ -1,8 +1,8 @@
 module.exports = {
+  cost: 10,
   code: 'bcry',
   name: 'BattleCry',
   description: 'Rally all party members; gain HP+5 and boost { STR+5 DEX+3 } for it\'s duration',
-  cost: 10,
   target: 'none',
   style: 'buff',
   speed: 500,

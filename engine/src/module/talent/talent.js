@@ -31,7 +31,6 @@ Action.define('talent', [
   // Message
   async ({ talent, target }, { actor }) => {
     if (talent.message) await actor.interpolate(APP.styleText(talent.style, talent.message), { actor, target, talent });
-    return APP.timeout(talent.speed);
   },
 
   // Manifestation (effects)

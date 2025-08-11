@@ -63,13 +63,15 @@ app:
     player: '<CadetBlue>'
     creature: '<violet>'
     boss: '<yellow>'
-    hit: '<red>'
-    error: '<OrangeRed>'
+
+    # hit: '<red>'
+    # miss: '<LightSeaGreen>'
     youHit: '<OrangeRed>'
     hitYou: '<firebrick>'
-    miss: '<LightSeaGreen>'
     youMiss: '<LightSeaGreen>'
     missYou: '<aquamarine>'
+
+    error: '<OrangeRed>'
     boost: '<SlateBlue>'
     buff: '<SlateBlue>'
     debuff: '<red>'
