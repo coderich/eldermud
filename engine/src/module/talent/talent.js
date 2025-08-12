@@ -24,7 +24,7 @@ Action.define('talent', [
   // Resource check
   async ({ talent }, { actor, abort }) => {
     if (await REDIS.get(`${talent}.${actor}.cooldown`)) abort(`${talent.name} is on cooldown!`);
-    else if (await actor.get('ma') < talent.cost) abort('Insufficient resources!');
+    else if (await actor.get('ma') < talent.cost) abort('Insufficient power!');
     else await actor.perform('affect', { ma: -talent.cost });
   },
 

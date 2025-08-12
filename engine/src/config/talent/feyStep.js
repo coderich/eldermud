@@ -11,9 +11,9 @@ module.exports = {
     {
       style: 'buff',
       target: 'target',
-      effect: { dex: 10, moveSpeed: -500 },
-      duration: 20000,
       status: 'buffed',
+      effect: { dex: 10, moveSpeed: -500 },
+      duration: 30000,
     },
   ],
 };

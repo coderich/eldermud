@@ -12,10 +12,10 @@ module.exports = {
   armor: '${self:armor.gambeson}',
   weapon: '${self:attack.cestus}',
   traits: [
-    '${self:trait.weaponsmaster}',
+    '${self:trait.weaponmaster}',
   ],
   talents: [
-    '${self:talent.smash}',
+    '${self:talent.charge}',
   ],
   progression: [
     'Berserker ▶ trades defense for burst damage and Fury gains at low HP',

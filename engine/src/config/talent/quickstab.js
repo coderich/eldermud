@@ -1,5 +1,5 @@
 module.exports = {
-  cost: 10,
+  cost: 5,
   code: 'stab',
   name: 'QuickStab',
   description: 'Quickly strike your opponent with increased critical chance',
@@ -11,15 +11,19 @@ module.exports = {
   effects: [
     {
       target: 'target',
-      strike: {
-        range: 5,
-        acc: 1000,
-        crits: 1000,
-        recoil: 500,
-        dmg: '2d8',
-        hits: ['stab'],
-        misses: ['stab'],
-        scale: { str: 0.25, dex: 0.25 },
+      action: {
+        attack: {
+          strike: {
+            range: 1,
+            acc: 1000,
+            crits: 10,
+            recoil: 500,
+            dmg: '2d8+3',
+            hits: ['stab'],
+            misses: ['stab'],
+            scale: { str: 0.25, dex: 0.25 },
+          },
+        },
       },
     },
   ],

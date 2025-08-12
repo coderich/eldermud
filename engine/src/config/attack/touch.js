@@ -1,7 +1,7 @@
 module.exports = {
   name: 'Touch',
   dmg: '1d5+1',
-  acc: 5,
+  acc: 2,
   crits: 0,
   range: 1,
   speed: 2000,

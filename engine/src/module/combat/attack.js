@@ -10,10 +10,17 @@ Action.define('attack', [
     if (!Array.from(room.units).includes(target)) abort('You dont see that here!');
   },
 
-  async ({ target }, { actor, stream }) => {
+  async ({ target, strike }, { actor, stream }) => {
     actor.$target = actor.$retarget = target;
-    const attacks = await actor.get('attacks');
-    const attack = () => APP.randomElement(attacks);
-    actor.stream(stream, 'engage', { target, attack });
+
+    if (strike) {
+      APP.timeout(strike.speed).then(() => {
+        actor.perform('strike', { target, strike });
+      });
+    } else {
+      const attacks = await actor.get('attacks');
+      const attack = () => APP.randomElement(attacks);
+      actor.stream(stream, 'engage', { target, attack });
+    }
   },
 ]);

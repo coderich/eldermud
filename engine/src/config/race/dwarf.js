@@ -13,6 +13,6 @@ module.exports = {
     '${self:trait.resilient}',
   ],
   talents: [
-    '${self:talent.battlecry-1}',
+    '${self:talent.warcall-1}',
   ],
 };

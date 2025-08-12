@@ -5,7 +5,6 @@ SYSTEM.on('enter:map.purgatory.rooms.purgatory', async ({ actor }) => {
   actor.once('pre:move', async ({ abort }) => {
     abort();
     clearTimeout(id);
-    actor.abortAllStreams();
     actor.perform('teleport', { room: checkpoint });
   });
 });

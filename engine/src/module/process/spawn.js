@@ -31,6 +31,8 @@ Action.define('spawn', async (_, { actor }) => {
     if (Action[trait?.id]) actor.stream('trait', trait.id);
   });
 
+  await actor.calcStats?.();
+
   if (['player', 'npc', 'creature'].includes(actor.type)) {
     await actor.perform('map');
     await actor.perform('room', room);

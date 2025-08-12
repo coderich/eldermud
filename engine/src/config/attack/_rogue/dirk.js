@@ -9,5 +9,5 @@ module.exports = {
   speed: 2000,
   scale: { str: 0.35, dex: 0.55 },
   hits: ['thrust', 'impale', 'nick'],
-  misses: ['misfire', 'slip', 'miss'],
+  misses: ['stab', 'thrust', 'miss'],
 };

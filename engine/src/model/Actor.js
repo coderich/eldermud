@@ -96,7 +96,7 @@ module.exports = class ActorWrapper extends Actor {
     }));
   }
 
-  async interpolate(msg, data) {
+  async interpolate(msg, data, styles) {
     const room = CONFIG.get(await this.get('room'));
 
     return Promise.all([

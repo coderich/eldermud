@@ -7,7 +7,8 @@ module.exports = {
   crits: 0,
   range: 1,
   speed: 2000,
+  weight: 100,
   scale: { str: 0.25, dex: 0.25 },
   hits: ['punch', 'jab', 'knock'],
-  misses: ['swing', 'slip', 'lunge'],
+  misses: ['swing', 'swipe', 'lunge'],
 };

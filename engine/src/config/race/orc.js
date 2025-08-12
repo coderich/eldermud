@@ -4,15 +4,15 @@ module.exports = {
   description: 'Orcs hail from harsh wastelands, renowned for their brutal strength, ferocity in battle, and enduring constitution.',
   str: 1,
   dex: 0,
-  int: -2,
-  wis: -2,
+  int: -1,
+  wis: -1,
   con: 1,
   cha: -1,
   gains: { str: 1, dex: 0, int: 0, wis: 0, con: 1, cha: 0 },
   traits: [
-    // '${self:trait.bloodFury}', // passive: when HP falls below 30%, gain +20% melee damage for 5s (120s cooldown)
+    '${self:trait.bloodlust}',
   ],
   talents: [
-    // '${self:talent.berserkerCharge}', // active: charge an enemy, stun for 1s and deal melee damage, costs 6 MP, 20s cooldown
+    '${self:talent.primalRoar}',
   ],
 };

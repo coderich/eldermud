@@ -45,7 +45,7 @@ Action.define('stats', [
       Tracking: `${stats.tracking}`,
       Equip: `${CONFIG.get(stats.weapon).name} + ${CONFIG.get(stats.armor).name}`,
       Talents: Array.from(stats.talents.values()).map(talent => CONFIG.get(`${talent}.name`)).join(', ') || '<none>',
-      Traits: Array.from(stats.traits.values()).filter(el => !['trait.lifeforce', 'trait.manaforce'].includes(`${el}`)).map(trait => CONFIG.get(`${trait}.name`)).join(', ') || '<none>',
+      Traits: Array.from(stats.traits.values()).filter(el => !['trait.player'].includes(`${el}`)).map(trait => CONFIG.get(`${trait}.name`)).join(', ') || '<none>',
     }).reduce((prev, [key, value]) => {
       return Object.assign(prev, { [key]: [APP.styleText('stat', `${key}:`), APP.styleText('keyword', `${value}  `)] });
     }, {});

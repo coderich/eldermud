@@ -21,7 +21,6 @@ module.exports = {
   },
 
   attacks: [
-    // '${self:attack.scimitar}',
     '${self:attack.dagger}',
     '${self:attack.sling}',
   ],

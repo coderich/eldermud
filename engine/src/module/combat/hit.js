@@ -1,9 +1,8 @@
 const { Action } = require('@coderich/gameflow');
 
-Action.define('hit', async (data, { actor }) => {
-  const { attack, target, dmg, crit, glance } = data;
+Action.define('hit', async ({ strike, target, dmg, crit, glance }, { actor }) => {
   const room = CONFIG.get(await actor.get('room'));
-  const hit = APP.randomElement(attack.hits);
+  const hit = APP.randomElement(strike.hits);
   const hits = APP.pluralize(hit);
   const adverb = crit ? 'critically' : '';
   const result = glance ? "- but it's a glancing blow!" : `for ${dmg} damage!`;

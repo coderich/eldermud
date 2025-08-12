@@ -42,12 +42,12 @@ Action.define('engage', [
     }
   },
 
-  // Duel
+  // Striking Duel
   new Loop([
     // Prepare attack
     (data, { attack }) => {
-      attack = typeof data.attack === 'function' ? data.attack() : data.attack;
-      return APP.timeout(attack.speed);
+      data.strike = typeof data.attack === 'function' ? data.attack() : data.attack;
+      return APP.timeout(data.strike.speed);
     },
 
     // Perform strike

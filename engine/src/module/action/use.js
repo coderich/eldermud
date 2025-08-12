@@ -16,6 +16,13 @@ Action.define('use', [
         CONFIG.set(`${door}.status`, 'closed');
         return actor.send('text', 'You unlock the door');
       }
+      case 'item': {
+        await REDIS.sRem(`${actor}.inventory`, `${target}`);
+        return target.effects.map((effect) => {
+          effect = { ...effect, source: `${target.type}.${target.id}`, actor: `${actor}`, target: `${actor}` };
+          return actor.stream('effect', 'effect', effect);
+        });
+      }
       default: {
         return target.effects.map((effect) => {
           effect = { ...effect, source: `${target.type}.${target.id}`, actor: `${actor}`, target: `${actor}` };

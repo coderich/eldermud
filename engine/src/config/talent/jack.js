@@ -2,7 +2,7 @@ module.exports = {
   cost: 10,
   code: 'jack',
   name: 'JackOfTrades',
-  description: 'Bestoy a blessing upon you or an ally; increasing stats',
+  description: 'Temporarily increase all stats',
   message: '{actor.name} {cast} JackOfTrades',
   style: 'buff',
   target: 'self',

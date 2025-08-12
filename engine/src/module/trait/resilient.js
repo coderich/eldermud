@@ -9,7 +9,7 @@ Action.define('resilient', new Loop([
         if (actor === data.target) {
           const { hp, mhp } = await actor.mGet(['hp', 'mhp']);
           const pct = ((hp - data.dmg) / mhp) * 100;
-          if (pct <= 50) data.dmg = Math.floor(data.dmg * 0.9);
+          if (pct <= 50) data.dmg = Math.max(Math.floor(data.dmg * 0.9), 1);
         }
       });
     });

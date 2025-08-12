@@ -11,7 +11,6 @@ Action.define('effect', [
   (effect, { actor, promise, stream, abort }) => {
     const key = `${effect.source}.${effect.target}`;
     const source = CONFIG.get(`${effect.source}`);
-    const attack = CONFIG.get(`${effect.attack}`);
     const abortMessage = `The effects of ${source.name} wear off`;
     const { duration } = effect;
 
@@ -25,8 +24,7 @@ Action.define('effect', [
     if (duration) REDIS.set(key, JSON.stringify(effect));
     if (effect.effect) actor.$effects.set(key, effect);
     if (effect.affect) performAffect(actor, $affect);
-    if (effect.strike) $actor.perform('strike', { target: $target, attack: effect.strike });
-    if (effect.attack) $actor.stream('action', 'engage', { target: $target, attack });
+    if (effect.action) Object.entries(effect.action).forEach(([action, data]) => $actor.perform(action, { ...data, target: $target }));
     actor.calcStats();
 
     // Effect notifications
@@ -56,14 +54,10 @@ Action.define('effect', [
     if (!effect.duration) abort(false);
     return { effect, abortMessage };
   },
-  new Loop(async ({ effect, abortMessage }, { actor, abort }) => {
+  new Loop(async ({ $affect, effect, abortMessage }, { actor, abort }) => {
     await APP.timeout(1000);
     effect.duration -= 1000;
-
-    // if (effect.tick && effect.duration % effect.tick === 0) {
-    //   if (effect.affect) actor.perform('affect', sanitizeAffect(effect.affect));
-    // }
-
+    if (effect.duration && $affect) performAffect(actor, $affect);
     if (effect.duration <= 0) abort(abortMessage);
   }),
 ]);
