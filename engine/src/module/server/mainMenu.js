@@ -6,6 +6,7 @@ Action.define('mainMenu', [
 
     await actor.send('text', APP.table([
       ['[E]', 'Enter the Realm!'],
+      ['[I]', 'Intro to MUDs'],
       ['[T]', 'Tutorial'],
       ['[A]', 'About'],
       ['[X]', 'Exit'],

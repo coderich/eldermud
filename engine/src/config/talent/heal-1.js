@@ -7,7 +7,6 @@ module.exports = {
   speed: 500,
   cooldown: 10000,
   target: 'ally',
-  stream: 'action',
   effects: [
     {
       style: 'buff',

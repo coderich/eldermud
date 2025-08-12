@@ -7,7 +7,6 @@ module.exports = {
   range: 5,
   cooldown: 10000,
   target: 'other',
-  stream: 'action',
   effects: [
     {
       target: 'target',

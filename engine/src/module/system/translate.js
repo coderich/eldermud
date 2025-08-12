@@ -87,11 +87,11 @@ const commands = [
     ...Object.entries(CONFIG.get('talent')).map(([key, talent]) => {
       return {
         [talent.code]: {
-          args: argsMap[talent.target],
           name: 'talent',
-          code: talent.code,
           channel: 'realm',
-          stream: talent.stream || 'tactic',
+          code: talent.code,
+          args: argsMap[talent.target],
+          stream: talent.stream || 'action',
           target: talent.target,
           tags: ['talent'],
         },

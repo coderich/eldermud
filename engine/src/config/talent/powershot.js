@@ -8,7 +8,6 @@ module.exports = {
   speed: 1500,
   cooldown: 10000,
   target: 'other',
-  stream: 'action',
   effects: [
     {
       target: 'target',

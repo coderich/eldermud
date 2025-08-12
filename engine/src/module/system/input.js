@@ -27,12 +27,12 @@ SYSTEM.prependListener('*', async (event, context) => {
         case 'self': data.target = actor; break;
         case 'exit': data.target = room?.exits?.[code]; break;
         case 'unit': Object.assign(data, APP.target([...room.units], args)); break;
+        case 'realm': Object.assign(data, APP.target(Object.values(Game.Actor), args)); break;
         case 'other': Object.assign(data, APP.target([...room.units].filter(unit => unit !== actor), args)); break;
         case 'player': case 'npc': case 'creature': Object.assign(data, APP.target([...room.units].filter(unit => unit.type === target), args)); break;
         case 'corpse': Object.assign(data, APP.target([...room.items].filter(item => item.id === 'corpse'), args)); break;
-        case 'realm': Object.assign(data, APP.target(Object.values(Game.Actor), args)); break;
         case 'party': Object.assign(data, APP.target([...actor.$party.values()].filter(unit => unit !== actor), args)); break;
-        case 'target': data.target = actor.$target || (room.units.has(actor.$retarget) && actor.$retarget); break;
+        case 'target': data.target = actor.$target || (room.units.has(actor.$retarget) && actor.$retarget) || (room.units.has(actor.$attacker) && actor.$attacker); break;
         case 'shop': data.target = room.shop; break;
         case 'ally': {
           if (!args.length) {

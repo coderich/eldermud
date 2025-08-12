@@ -11,6 +11,7 @@ Action.define('attack', [
   },
 
   async ({ target, strike }, { actor, stream }) => {
+    target.$attacker = actor;
     actor.$target = actor.$retarget = target;
 
     if (strike) {
