@@ -11,7 +11,7 @@ module.exports = {
     {
       style: 'buff',
       target: 'target',
-      affect: { hp: '1d6+2' },
+      affect: { hp: '2d4+2' },
       message: '{target.name} recovers {affect.hp} health',
     },
   ],

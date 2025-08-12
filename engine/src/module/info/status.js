@@ -8,8 +8,7 @@ Action.define('status', [
       const levels = ['status.lowhp', 'status.midhp', 'status.mhp', 'status.mhp'];
       const level = levels[Math.ceil(pctHP / 33) - 1] || 'status.mhp';
       const talents = Array.from(status.talents.values());
-      const cooldowns = await REDIS.mGet(talents.map(t => `${t}.${actor}.cooldown`));
-      const $talents = talents.map((t, i) => APP.styleText(cooldowns[i] ? 'muted' : 'keyword', t.code)).join(' ✦ ');
+      const $talents = talents.map(t => APP.styleText(actor.$countdowns.has(`${t}`) ? 'muted' : 'keyword', t.code)).join(' ✦ ');
       const effects = Array.from(actor.$effects.values()).filter(el => el.status).map(el => APP.styleText(el.style, CONFIG.get(`app.char.${el.status}`))).filter(Boolean);
       const $status = [status.stance, ...effects].join(' ');
       const hp = `${status.hp}`.padStart(`${status.mhp}`.length, '0');

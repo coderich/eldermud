@@ -1,24 +1,37 @@
 const { Action, Loop } = require('@coderich/gameflow');
 
-// SYSTEM.on('post:enter', ({ actor }) => {
-//   REDIS.keys(`talent.*.${actor}.cooldown`).then(async (keys) => {
-//     const values = keys.length ? await REDIS.mGet(keys) : keys;
-//     keys.forEach((key, i) => actor.stream('effect', 'countdown', { key, value: Number(values[i]) }));
-//   });
-// });
+SYSTEM.on('start:spawn', ({ actor }) => {
+  actor.$countdowns = new Map();
+
+  REDIS.keys(`countdown:${actor}*`).then(async (keys) => {
+    const values = keys.length ? await REDIS.mGet(keys) : keys;
+    keys.forEach((key, i) => actor.stream('effect', 'countdown', {
+      save: false,
+      key: key.split(':')[2],
+      value: Number(values[i]),
+    }));
+  });
+});
 
 Action.define('countdown', [
-  async (data, { promise }) => {
-    if (data.save) await REDIS.set(data.key, data.value);
+  ({ key, value, save = true }, { actor, promise }) => {
+    actor.$countdowns.set(key, value);
+    const redisKey = `countdown:${actor}:${key}`;
+    if (save) REDIS.set(redisKey, value);
 
     promise.finally(() => {
-      if (promise.reason === null) REDIS.del(data.key); // null includes death
-      else REDIS.set(data.key, data.value);
+      if (promise.reason === null) { // null includes death
+        actor.$countdowns.delete(key);
+        REDIS.del(redisKey);
+      } else {
+        REDIS.set(redisKey, actor.$countdowns.get(key));
+      }
     });
   },
-  new Loop(async (data, { abort }) => {
+
+  new Loop(async ({ key }, { actor, abort }) => {
     await APP.timeout(1000);
-    data.value -= 1000;
-    if (data.value <= 0) abort(null);
+    actor.$countdowns.set(key, actor.$countdowns.get(key) - 1000);
+    if (actor.$countdowns.get(key) <= 0) abort(null);
   }),
 ]);

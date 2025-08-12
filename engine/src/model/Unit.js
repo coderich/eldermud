@@ -7,7 +7,6 @@ module.exports = class Unit extends Actor {
     this.$search = new Set();
     this.$invited = new Set();
     this.$effects = new Map();
-    this.$cooldowns = new Map();
     this.$partyRank = 1;
   }
 

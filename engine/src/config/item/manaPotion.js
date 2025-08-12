@@ -8,7 +8,7 @@ module.exports = {
     {
       style: 'buff',
       target: 'target',
-      affect: { ma: '1d10+2' },
+      affect: { ma: '2d5+2' },
       message: '{actor.name} {restore} {affect.ma} mana',
     },
   ],

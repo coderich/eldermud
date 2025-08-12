@@ -8,7 +8,7 @@ module.exports = {
     {
       style: 'buff',
       target: 'target',
-      affect: { hp: '1d10+2' },
+      affect: { hp: '2d5+2' },
       message: '{actor.name} {restore} {affect.hp} health',
     },
   ],
