@@ -6,7 +6,7 @@ module.exports = {
   gesture: '{actor.name} {focus} an arcane bolt at {target.name}...',
   range: 5,
   cooldown: 10000,
-  target: 'other',
+  target: 'unit:$>',
   effects: [
     {
       target: 'target',

@@ -6,7 +6,7 @@ module.exports = {
   gesture: '{actor.name} {lay} hands on {target.name}...',
   speed: 500,
   cooldown: 10000,
-  target: 'unit',
+  target: 'unit:<',
   effects: [
     {
       style: 'buff',

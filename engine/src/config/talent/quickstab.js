@@ -6,7 +6,7 @@ module.exports = {
   gesture: '{actor.name} quickly {sidestep} {target.name}...',
   speed: 500,
   cooldown: 10000,
-  target: 'target',
+  target: 'unit:$>',
   effects: [
     {
       target: 'target',

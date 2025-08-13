@@ -30,11 +30,11 @@ Action.define('follow', [
     const notice = ({ data }) => actor.send('text', `--- Following ${APP.styleText(target.type, target.name)} ${APP.direction[data.code]} ---`);
 
     actor.once('pre:death', leave);
-    actor.once('post:logout', leave);
+    actor.once('pre:exit', leave);
     actor.on('abort:move', unable); // Are you personally unable to follow?
     actor.prependListener('start:move', stray); // Did you stray off on your own?
     target.prependOnceListener('pre:death', leave);
-    target.prependOnceListener('post:logout', leave);
+    target.prependOnceListener('pre:exit', leave);
 
     // Follow
     target.on('pre:move', follow);

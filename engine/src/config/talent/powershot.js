@@ -7,7 +7,7 @@ module.exports = {
   range: 5,
   speed: 1500,
   cooldown: 10000,
-  target: 'other',
+  target: 'unit:$>',
   effects: [
     {
       target: 'target',

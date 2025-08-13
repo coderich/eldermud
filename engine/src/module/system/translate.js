@@ -13,7 +13,7 @@ const channelArgs = Array.from(new Array(100)).map((el, i) => i);
 const commands = [
   [
     { attack: { args: [0], channel: 'realm', stream: 'action', target: 'target' } },
-    { attack: { args: [1, 2, 3], channel: 'realm', stream: 'action', target: 'other' } },
+    { attack: { args: [1, 2, 3], channel: 'realm', stream: 'action', target: 'unit:$>' } },
     { down: { args: [0], name: 'move', code: 'd', channel: 'realm', stream: 'action', tags: ['direction'], target: 'exit' } },
     { east: { args: [0], name: 'move', code: 'e', channel: 'realm', stream: 'action', tags: ['direction'], target: 'exit' } },
     { north: { args: [0], name: 'move', code: 'n', channel: 'realm', stream: 'action', tags: ['direction'], target: 'exit' } },
@@ -54,7 +54,7 @@ const commands = [
     { sell: { args: [1, 2, 3, 4, 5], channel: 'realm', stream: 'action', target: 'shop' } },
     { break: { args: [0], channel: 'info', stream: 'info' } },
     { search: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'action' } },
-    { follow: { args: [1, 2], channel: 'realm', stream: 'gesture', target: 'other' } },
+    { follow: { args: [1, 2], channel: 'realm', stream: 'gesture', target: 'friendly:>' } },
     { leave: { args: [0], channel: 'realm', stream: 'gesture' } },
     { inventory: { args: [0], channel: 'realm', stream: 'info' } },
     { party: { args: [0], channel: 'realm', stream: 'info' } },
@@ -71,7 +71,7 @@ const commands = [
     // { lock: { args: [1], stream: 'action' } },
     // { rest: { args: [0], channel: 'realm', stream: 'action' } },
     { stand: { args: [0], channel: 'realm', stream: 'action' } },
-    { invite: { args: [1, 2], channel: 'realm', stream: 'gesture', target: 'other' } },
+    { invite: { args: [1, 2], channel: 'realm', stream: 'gesture', target: 'friendly:>' } },
     { harvest: { args: [1, 2, 3, 4, 5], channel: 'realm', stream: 'action', target: 'corpse' } },
 
     // Talents
@@ -90,7 +90,7 @@ const commands = [
     }),
   ],
   [
-    { greet: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'voice', target: 'other' } },
+    { greet: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'voice', target: 'unit:>?' } },
     { train: { args: [1], channel: 'realm', stream: 'action' } },
     { upgrade: { args: [0, 1, 2, 3, 4, 5], channel: 'realm', stream: 'action' } },
   ],
@@ -98,7 +98,7 @@ const commands = [
 
 const translateArray = (arr, input, cmd, args) => {
   if (cmd.startsWith('/')) return { name: 'telepath', input, args: [cmd.substring(1), ...args], channel: 'realm', stream: 'info', target: 'realm' };
-  if (cmd.startsWith('@')) return { name: 'at', input, args: [cmd.substring(1), ...args], channel: 'realm', stream: 'info', target: 'other' };
+  if (cmd.startsWith('@')) return { name: 'at', input, args: [cmd.substring(1), ...args], channel: 'realm', stream: 'info', target: 'unit:>' };
 
   for (let i = 0; i < cmd.length; i++) {
     const tier = arr[i];

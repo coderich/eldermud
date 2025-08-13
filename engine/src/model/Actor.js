@@ -96,13 +96,11 @@ module.exports = class ActorWrapper extends Actor {
     }));
   }
 
-  async interpolate(msg, data, styles) {
-    const room = CONFIG.get(await this.get('room'));
-
+  async interpolate(msg, data, toRoom = true) {
     return Promise.all([
       this.send('text', APP.interpolate(msg, { ...data, actor: { name: 'You' } })),
       this !== data.target && data.target.send('text', APP.interpolate(msg, { ...data, target: { name: 'you' } }, true)),
-      Array.from(room.units.values()).filter(el => ![this, data.target].includes(el)).forEach(el => el.send('text', APP.interpolate(msg, data, true))),
+      toRoom && Array.from(CONFIG.get(await this.get('room')).units.values()).filter(el => ![this, data.target].includes(el)).forEach(el => el.send('text', APP.interpolate(msg, data, true))),
     ]);
   }
 
@@ -127,8 +125,8 @@ module.exports = class ActorWrapper extends Actor {
     this.removeAllPossibleListeners(reason);
     if (!reason) await this.realm('text', APP.styleText('gesture', `${this.name} just hung up!`));
     else this.realm('text', `${this.name} has left the realm.`);
-    const exit = CONFIG.get(await this.get('room'));
-    exit?.units.delete(this);
+    const room = CONFIG.get(await this.get('room'));
+    room?.units.delete(this);
     return this;
   }
 

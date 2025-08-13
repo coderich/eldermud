@@ -22,40 +22,38 @@ SYSTEM.prependListener('*', async (event, context) => {
     // Tag based targeting...
     if (data.target) {
       data.rest = args;
-      const { target } = data;
-      const units = Array.from(room.units.values());
+      const [target, mods = ''] = data.target.split(':');
+      const filter = unit => !mods.includes('>') || unit !== actor;
+      const units = Array.from(room.units.values()).filter(filter);
+      const party = Array.from(actor.$party.values()).filter(filter);
       const [$target] = [actor.$target, actor.$retarget, ...actor.$attackers.keys()].filter(el => room.units.has(el));
 
       if (!args.length) {
-        switch (target) {
-          case 'unit': case 'friendly': args.push(actor.name); break;
-          case 'other': if ($target) args.push($target.name); break;
-          default: break;
-        }
+        if (mods.includes('<')) args.push(actor.name);
+        else if ($target && mods.includes('$')) args.push($target.name);
       }
 
       switch (target) {
         case 'self': data.target = actor; break;
         case 'shop': data.target = room.shop; break;
-        case 'room': data.target = room.units; break;
+        case 'room': data.target = units; break;
         case 'target': data.target = $target; break;
-        case 'party': data.target = actor.$party; break;
+        case 'party': data.target = party; break;
         case 'exit': data.target = room?.exits?.[code]; break;
         case 'unit': Object.assign(data, APP.target(units, args)); break;
-        case 'partyMember': Object.assign(data, APP.target(actor.$party, args)); break;
+        case 'partyMember': Object.assign(data, APP.target(party, args)); break;
         // case 'ally': break; // Take into account gang?
-        case '!party': data.target = units.filter(unit => !actor.$party.has(unit)); break;
+        // case '!party': data.target = units.filter(unit => !actor.$party.has(unit)); break;
         case 'realm': Object.assign(data, APP.target(Object.values(Game.Actor), args)); break;
-        case 'other': Object.assign(data, APP.target(units.filter(unit => unit !== actor), args)); break;
-        case 'friendly': Object.assign(data, APP.target([...units.filter(u => u.type === 'player'), ...actor.$party.values()], args)); break;
+        case 'friendly': Object.assign(data, APP.target([...units.filter(u => u.type === 'player'), ...party], args)); break;
         // case 'hostile': break;
         case 'enemies': data.target = units.filter(unit => unit.type === 'creature').concat(...actor.$attackers.keys()); break;
         case 'corpse': Object.assign(data, APP.target([...room.items].filter(item => item.id === 'corpse'), args)); break;
         default: Object.assign(data, APP.target(units.filter(unit => unit.type === target), args)); break;
       }
 
-      if (!data.target) {
-        return abort(APP.styleText('error', `No valid target (${target}) was found!`));
+      if (!data.target && !mods.includes('?')) {
+        return abort(APP.styleText('error', `No valid target (${target}) found!`));
       }
     }
 
