@@ -3,7 +3,7 @@ module.exports = {
   code: 'call',
   name: 'WarCall',
   description: 'Rally all party members; gain HP+5 and boost { STR+5 DEX+3 } for it\'s duration',
-  target: 'none',
+  target: 'self',
   style: 'buff',
   speed: 500,
   cooldown: 60000,

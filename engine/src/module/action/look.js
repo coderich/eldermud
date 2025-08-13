@@ -10,7 +10,7 @@ Action.define('look', [
           actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} looks around the room`);
         } else {
           actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} looks ${APP.direction[cmd.code]}`);
-          actor.perimeter('text', `${APP.styleText(actor.type, actor.name)} peeks in from ${APP.theRDirection[cmd.code]}!`);
+          target.units.forEach(unit => unit.send('text', `${APP.styleText(actor.type, actor.name)} peeks in from ${APP.theRDirection[cmd.code]}!`));
         }
         return actor.perform('room', target);
       }

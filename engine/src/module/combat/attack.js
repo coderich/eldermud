@@ -11,8 +11,9 @@ Action.define('attack', [
   },
 
   async ({ target, strike }, { actor, stream }) => {
-    target.$attacker = actor;
     actor.$target = actor.$retarget = target;
+    clearTimeout(target.$attackers.get(actor));
+    target.$attackers.set(actor, setTimeout(() => target.$attackers.delete(actor), 60 * 1000 * 2));
 
     if (strike) {
       APP.timeout(strike.speed).then(() => {

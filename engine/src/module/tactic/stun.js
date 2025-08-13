@@ -2,8 +2,9 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('stun', [
   ({ target, duration }, { actor }) => {
-    target.abortAllStreams();
+    target.streams.realm.abort();
+    target.streams.action.abort();
     target.stream(target.mandatoryStream, new Action('stun', () => APP.timeout(duration)));
-    actor.interpolate(APP.styleText('gesture', '{actor.name} {stun} {target.name}!'), { actor, target });
+    actor.interpolate(APP.styleText('gesture', '{target.name} is stunned!'), { actor, target });
   },
 ]);

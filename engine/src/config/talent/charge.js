@@ -6,7 +6,7 @@ module.exports = {
   gesture: '{actor.name} {charge} {target.name}...',
   speed: 1000,
   cooldown: 20000,
-  target: 'target',
+  target: 'other',
   effects: [
     {
       target: 'target',
@@ -23,6 +23,11 @@ module.exports = {
             scale: { str: 0.50 },
           },
         },
+      },
+    },
+    {
+      target: 'target',
+      action: {
         stun: {
           duration: 2500,
         },

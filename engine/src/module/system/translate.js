@@ -2,15 +2,6 @@ const { Action, Stream } = require('@coderich/gameflow');
 
 const channel = new Stream(); // Global Stream (no need for one per Unit)
 const channelArgs = Array.from(new Array(100)).map((el, i) => i);
-const argsMap = {
-  self: [0],
-  none: [0],
-  target: [0],
-  ally: [0, 1, 2, 3, 4, 5],
-  other: [0, 1, 2, 3, 4, 5],
-  enemy: [1, 2, 3, 4, 5],
-  creature: [1, 2, 3, 4, 5],
-};
 
 /**
  * Each set of commands is ordered by "tier"; the first tier can match cmds with 1 letter, tier 2 letters, etc.
@@ -90,7 +81,7 @@ const commands = [
           name: 'talent',
           channel: 'realm',
           code: talent.code,
-          args: argsMap[talent.target],
+          args: ['self'].includes(talent.target) ? [0] : [0, 1, 2, 3, 4, 5],
           stream: talent.stream || 'action',
           target: talent.target,
           tags: ['talent'],
