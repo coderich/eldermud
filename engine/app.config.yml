@@ -45,6 +45,7 @@ app:
     armor: '🛡️'
 
   styles:
+    none: ''
     text: ''
     reset: '<reset>'
     stat: '<ansiGreen>'

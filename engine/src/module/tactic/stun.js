@@ -5,6 +5,6 @@ Action.define('stun', [
     target.streams.realm.abort();
     target.streams.action.abort();
     target.stream(target.mandatoryStream, new Action('stun', () => APP.timeout(duration)));
-    actor.interpolate(APP.styleText('gesture', '{target.name} is stunned!'), { actor, target });
+    actor.interpolate('{target.name} is stunned!', { actor, target }, { style: 'gesture' });
   },
 ]);

@@ -6,13 +6,13 @@ module.exports = {
   gesture: '{actor.name} {lay} hands on {target.name}...',
   speed: 500,
   cooldown: 10000,
-  target: 'unit:<',
+  target: 'unit',
   effects: [
     {
       style: 'buff',
       target: 'target',
       affect: { hp: '2d4+2' },
-      message: '{target.name} recovers {affect.hp} health',
+      message: '{target.name} {recover} {affect.hp} health',
     },
   ],
   upgrade: {

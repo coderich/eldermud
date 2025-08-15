@@ -7,6 +7,6 @@ Action.define('invite', [
   },
   ({ target }, { actor }) => {
     actor.$invited.add(target);
-    actor.interpolate(APP.styleText('boost', '{actor.name} {invite} {target.name} to follow'), { actor, target }, false);
+    actor.interpolate('{actor.name} {invite} {target.name} to follow', { actor, target }, { toRoom: false, style: 'boost' });
   },
 ]);

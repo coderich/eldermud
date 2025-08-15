@@ -11,7 +11,7 @@ SYSTEM.on('post:enter', ({ actor }) => {
 Action.define('talent', [
   // Gesture
   async ({ talent, target }, { actor }) => {
-    if (talent.gesture) await actor.interpolate(APP.styleText('gesture', talent.gesture), { actor, target, talent });
+    if (talent.gesture) await actor.interpolate(talent.gesture, { actor, target, talent }, { style: 'gesture' });
     return APP.timeout(talent.speed);
   },
 
@@ -24,7 +24,7 @@ Action.define('talent', [
 
   // Message
   async ({ talent, target }, { actor }) => {
-    if (talent.message) await actor.interpolate(APP.styleText(talent.style, talent.message), { actor, target, talent });
+    if (talent.message) await actor.interpolate(talent.message, { actor, target, talent }, { style: effect.style });
   },
 
   // Manifestation (effects)

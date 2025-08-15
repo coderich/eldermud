@@ -5,7 +5,7 @@ module.exports = {
   message: '{actor.name} {cast} bless on {target.name}',
   description: 'Bestoy a blessing upon you or an ally; increasing stats',
   style: 'buff',
-  target: 'friendly:<',
+  target: 'friendly',
   cooldown: 10000,
   effects: [
     { style: 'buff', target: 'target', affect: { hp: 5 } },

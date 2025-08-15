@@ -96,11 +96,26 @@ module.exports = class ActorWrapper extends Actor {
     }));
   }
 
-  async interpolate(msg, data, toRoom = true) {
+  async interpolate(msg, data, opts = {}) {
+    opts.style ??= 'none';
+    opts.toRoom ??= true;
+
+    const actor = { name: 'you' };
+    const actorIndex = msg.indexOf('{actor.name}');
+    const targetIndex = msg.indexOf('{target.name}');
+    const actorFirst = actorIndex !== -1 && (targetIndex === -1 || actorIndex < targetIndex);
+    const targetFirst = targetIndex !== -1 && (actorIndex === -1 || targetIndex < actorIndex);
+    const shouldPluralizeActor = !actorFirst && targetFirst && this !== data.target;
+    const shouldPluralizeTarget = !targetFirst && (!actorFirst || (data.actor !== data.target));
+    const target = this === data.target ? { name: 'you' } : data.target;
+    const roomMsg = APP.styleText(opts.style, APP.interpolate(msg, data, true));
+    const actorMsg = APP.styleText(opts.style, APP.ucFirst(APP.interpolate(msg, { ...data, actor, target }, shouldPluralizeActor)));
+    const targetMsg = APP.styleText(opts.style, APP.ucFirst(APP.interpolate(msg, { ...data, target: { name: 'you' } }, shouldPluralizeTarget)));
+
     return Promise.all([
-      this.send('text', APP.interpolate(msg, { ...data, actor: { name: 'You' } })),
-      this !== data.target && data.target.send('text', APP.interpolate(msg, { ...data, target: { name: 'you' } }, true)),
-      toRoom && Array.from(CONFIG.get(await this.get('room')).units.values()).filter(el => ![this, data.target].includes(el)).forEach(el => el.send('text', APP.interpolate(msg, data, true))),
+      this.send('text', actorMsg),
+      this !== data.target && data.target.send('text', targetMsg),
+      opts.toRoom && Array.from(CONFIG.get(await this.get('room')).units.values()).filter(el => ![this, data.target].includes(el)).forEach(el => el.send('text', roomMsg)),
     ]);
   }
 

@@ -29,7 +29,7 @@ Action.define('effect', [
 
     // Effect notifications
     if (effect.message) {
-      $actor.interpolate(APP.styleText(effect.style, effect.message), { actor: $actor, target: $target, affect: $affect });
+      $actor.interpolate(effect.message, { actor: $actor, target: $target, affect: $affect }, { style: effect.style });
     }
 
     // Abort silently duplicate effect
