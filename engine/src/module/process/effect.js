@@ -8,13 +8,14 @@ const performAffect = async (target, $affect) => {
 };
 
 Action.define('effect', [
-  (effect, { promise, stream, abort }) => {
+  (effect, context) => {
     const { duration } = effect;
+    const { promise, abort } = context;
     const key = `${effect.source}.${effect.target}`;
 
     //
+    const target = context.actor;
     const actor = Object.values(Actor).find(a => `${a}` === `${effect.actor}`);
-    const target = Object.values(Actor).find(a => `${a}` === `${effect.target}`);
     const $affect = Object.entries(effect.affect || {}).reduce((prev, [k, v]) => Object.assign(prev, { [k]: APP.roll(v) }), {});
     // const $effect = Object.entries(effect.effect || {}).reduce((prev, [k, v]) => Object.assign(prev, { [k]: APP.roll(v) }), {});
 

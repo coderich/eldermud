@@ -2,7 +2,6 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('use', [
   async ({ target, rest }, { actor, abort }) => {
-    if (!target) return abort('You dont see that here!');
     const room = CONFIG.get(await actor.get('room'));
 
     switch (target.type) {
@@ -24,9 +23,8 @@ Action.define('use', [
     }
 
     // Default behavior
-    return target.effects.map((effect) => {
-      effect = { ...effect, source: `${target.type}.${target.id}`, actor: `${actor}`, target: `${actor}` };
-      return actor.stream('effect', 'effect', effect);
-    });
+    const data = { target: target.target, args: rest };
+    await actor.perform('target', data, { $abort: abort });
+    return actor.perform('invoke', { invocation: target, target: data.target });
   },
 ]);

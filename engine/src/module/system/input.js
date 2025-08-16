@@ -19,10 +19,7 @@ SYSTEM.prependListener('*', async (event, context) => {
     }
 
     // Target handling...
-    if (data.target) {
-      const err = await actor.perform('target', data);
-      if (err) return abort(err);
-    }
+    if (data.target) await actor.perform('target', data, { $abort: abort });
 
     // Specific action handling...
     switch (action) {
@@ -41,11 +38,6 @@ SYSTEM.prependListener('*', async (event, context) => {
         const inventory = await REDIS.sMembers(`${actor}.inventory`).then(keys => keys.map(key => CONFIG.get(key.split('.').slice(0, -1).join('.'))));
         const roomItems = Array.from(room.items.values());
         return Object.assign(data, APP.target(inventory.concat(roomItems), args));
-      }
-      case 'drop': case 'use': {
-        const inventory = await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
-        Object.assign(data, APP.target(inventory, args));
-        break;
       }
       case 'look': case 'search': {
         let target;

@@ -1,7 +1,7 @@
 const { Actor, Action } = require('@coderich/gameflow');
 
 Action.define('target', [
-  (data, { actor }) => {
+  async (data, { actor, $abort }) => {
     const { args = [], code } = data;
     const { room } = actor;
 
@@ -46,15 +46,16 @@ Action.define('target', [
       // case 'ally': break; // Take into account gang?
       // case '!party': data.target = units.filter(unit => !actor.$party.has(unit)); break;
       case 'corpse': Object.assign(data, APP.target([...room.items].filter(item => item.id === 'corpse'), args)); break;
+      case 'inventory': Object.assign(data, APP.target(await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`)), args)); break;
+        // const inventory = await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
+        // Object.assign(data, APP.target(inventory, args));
       default: Object.assign(data, APP.target(units.filter(unit => unit.type === target), args)); break;
     }
 
     if (data.target) {
       actor.$$target = data.target;
-    } else if (!mods.includes('?')) {
-      return APP.styleText('error', `No valid ${target} found!`);
+    } else if ($abort && !mods.includes('?')) {
+      $abort(APP.styleText('error', `No valid ${target} found!`));
     }
-
-    return null;
   },
 ]);
