@@ -12,8 +12,8 @@ module.exports = {
       style: 'buff',
       target: 'target',
       status: 'buffed',
-      effect: { str: 5, int: 5, wis: 5, dex: 5, con: 5, cha: 5 },
       duration: 30000,
+      effect: { str: 5, int: 5, wis: 5, dex: 5, con: 5, cha: 5 },
     },
   ],
 };

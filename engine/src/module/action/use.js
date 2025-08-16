@@ -18,17 +18,15 @@ Action.define('use', [
       }
       case 'item': {
         await REDIS.sRem(`${actor}.inventory`, `${target}`);
-        return target.effects.map((effect) => {
-          effect = { ...effect, source: `${target.type}.${target.id}`, actor: `${actor}`, target: `${actor}` };
-          return actor.stream('effect', 'effect', effect);
-        });
+        break;
       }
-      default: {
-        return target.effects.map((effect) => {
-          effect = { ...effect, source: `${target.type}.${target.id}`, actor: `${actor}`, target: `${actor}` };
-          return actor.stream('effect', 'effect', effect);
-        });
-      }
+      default: break;
     }
+
+    // Default behavior
+    return target.effects.map((effect) => {
+      effect = { ...effect, source: `${target.type}.${target.id}`, actor: `${actor}`, target: `${actor}` };
+      return actor.stream('effect', 'effect', effect);
+    });
   },
 ]);

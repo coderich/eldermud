@@ -2,17 +2,17 @@ module.exports = {
   cost: 5,
   code: 'mihe',
   name: 'MinorHeal',
-  description: 'Heal minor wounds',
-  gesture: '{actor.name} {lay} hands on {target.name}...',
-  speed: 500,
-  cooldown: 10000,
   target: 'unit',
+  description: 'Heal minor wounds',
+  message: '{actor.name} {cast} MinorHeal on {target.name}!',
+  style: 'gesture',
+  cooldown: 10000,
   effects: [
     {
       style: 'buff',
       target: 'target',
       affect: { hp: '2d4+2' },
-      message: '{target.name} {recover} {affect.hp} health',
+      message: 'You recover {affect.hp} health',
     },
   ],
   upgrade: {

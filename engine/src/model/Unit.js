@@ -40,7 +40,7 @@ module.exports = class Unit extends Actor {
     // Apply dynamic effects (for calculations)
     this.$effects.forEach(({ effect }) => {
       Object.entries(effect).forEach(([key, value]) => {
-        if (attrs.includes(key)) this[key] += APP.roll(value);
+        if (attrs.includes(key)) this[key] = Math.max(0, this[key] + APP.roll(value));
       });
     });
 
@@ -74,7 +74,7 @@ module.exports = class Unit extends Actor {
     // Apply dynamic effects (for bonuses)
     this.$effects.forEach(({ effect }) => {
       Object.entries(effect).forEach(([key, value]) => {
-        if (!attrs.includes(key)) this[key] += APP.roll(value);
+        if (!attrs.includes(key)) this[key] = Math.max(0, this[key] + APP.roll(value));
       });
     });
 

@@ -12,7 +12,7 @@ const channelArgs = Array.from(new Array(100)).map((el, i) => i);
  */
 const commands = [
   [
-    { attack: { args: [0], channel: 'realm', stream: 'action', target: 'target' } },
+    { attack: { args: [0], channel: 'realm', stream: 'action', target: 'opponent' } },
     { attack: { args: [1, 2, 3], channel: 'realm', stream: 'action', target: 'unit:$>' } },
     { down: { args: [0], name: 'move', code: 'd', channel: 'realm', stream: 'action', tags: ['direction'], target: 'exit' } },
     { east: { args: [0], name: 'move', code: 'e', channel: 'realm', stream: 'action', tags: ['direction'], target: 'exit' } },

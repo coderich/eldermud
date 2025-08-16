@@ -9,9 +9,9 @@ SYSTEM.on('post:enter', ({ actor }) => {
 });
 
 Action.define('talent', [
-  // Gesture
+  // Actor preparations...
   async ({ talent, target }, { actor }) => {
-    if (talent.gesture) await actor.interpolate(talent.gesture, { actor, target, talent }, { style: 'gesture' });
+    if (talent.message) await actor.interpolate(talent.message, { actor, target, talent }, { style: talent.style });
     return APP.timeout(talent.speed);
   },
 
@@ -22,19 +22,19 @@ Action.define('talent', [
     else await actor.perform('affect', { ma: -talent.cost });
   },
 
-  // Message
-  async ({ talent, target }, { actor }) => {
-    if (talent.message) await actor.interpolate(talent.message, { actor, target, talent }, { style: effect.style });
-  },
-
   // Manifestation (effects)
-  async ({ talent, target }, { actor }) => {
+  async ({ talent }, { actor }) => {
     actor.stream('effect', 'countdown', { key: `${talent}`, value: talent.cooldown });
 
-    return talent.effects.map(async (effect) => {
-      const $target = effect.target === 'self' ? actor : target;
-      effect = { ...effect, source: `${talent}`, actor: `${actor}`, target: `${$target}` };
-      return $target.stream('effect', 'effect', effect);
+    return talent.effects.map(async (effect, index) => {
+      const data = { target: effect.target };
+      await actor.perform('target', data);
+
+      // Loop over target(s)
+      return Promise.all([data.target].flat().map((target) => {
+        effect = { ...effect, source: `${talent}:${index}`, actor: `${actor}`, target: `${target}` };
+        return target.stream('effect', 'effect', effect);
+      }));
     });
   },
 ]);
