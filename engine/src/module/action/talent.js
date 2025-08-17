@@ -9,7 +9,7 @@ SYSTEM.on('post:enter', ({ actor }) => {
 });
 
 Action.define('talent', [
-  ({ talent, target }, { actor }) => {
-    return actor.perform('invoke', { invocation: talent, target });
+  ({ talent, target }, { actor, stream }) => {
+    actor.unshift(stream, 'invoke', { invocation: talent, target });
   },
 ]);

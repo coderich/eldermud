@@ -26,10 +26,10 @@ module.exports = class ActorWrapper extends Actor {
       gesture: new Stream('gesture'),
       spatial: new Stream('spatial'), // Things that must happen in sequence (eg. hits)
       countdown: new Stream('countdown').chained(false), // IDK..
-      effect: new Stream('effect').chained(false), // Active effects
       trait: new Stream('trait').chained(false), // Passive traits
-      tactic: new Stream('tactic'), // Combat tactics
+      effect: new Stream('effect').chained(false), // Active effects
       action: new Stream('action'), // Active actions
+      tactic: new Stream('tactic'), // Combat tactics
     };
   }
 

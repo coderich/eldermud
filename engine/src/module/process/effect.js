@@ -24,6 +24,7 @@ Action.define('effect', [
     if (effect.effect) target.$effects.set(key, effect);
     if (effect.affect) performAffect(target, $affect);
     if (effect.action) Object.entries(effect.action).forEach(([action, data]) => actor.perform(action, { ...data, target }));
+    // if (effect.action) Promise.all(Object.entries(effect.action).map(([action, data]) => actor.perform(action, { ...data, target })));
     target.calcStats();
 
     // Effect notifications

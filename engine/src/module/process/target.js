@@ -5,9 +5,11 @@ Action.define('target', [
     const { args = [], code } = data;
     const { room } = actor;
 
+    // Targeting should use bitwise ops instead of .includes
     data.rest = args;
     const [target, mods = ''] = data.target.split(':');
     const isOther = mods.includes('>');
+    const isAggressive = mods.includes('$');
     // const isTargeted = mods.includes('@');
     const filter = unit => !isOther || unit !== actor;
     const units = Array.from(room.units.values()).filter(filter);
@@ -15,7 +17,7 @@ Action.define('target', [
     const [$opponent] = [actor.$target, actor.$retarget, ...actor.$attackers.keys()].filter(el => room.units.has(el));
 
     if (!args.length) {
-      if ($opponent && mods.includes('$')) args.push($opponent.name);
+      if ($opponent && isAggressive) args.push($opponent.name);
       else if (!isOther) args.push(actor.name);
     }
 
@@ -54,6 +56,7 @@ Action.define('target', [
 
     if (data.target) {
       actor.$$target = data.target;
+      if (isAggressive) actor.$target = data.target;
     } else if ($abort && !mods.includes('?')) {
       $abort(APP.styleText('error', `No valid ${target} found!`));
     }

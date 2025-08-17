@@ -18,15 +18,26 @@ Action.define('invoke', [
   async ({ invocation }, { actor }) => {
     if (invocation.cooldown) actor.stream('effect', 'countdown', { key: `${invocation}`, value: invocation.cooldown });
 
-    return invocation.effects.map(async (effect, index) => {
+    // return Promise.all(invocation.effects.map(async (effect, index) => {
+    //   const data = { target: effect.target };
+    //   await actor.perform('target', data);
+
+    //   // Loop over target(s)
+    //   return Promise.all([data.target].flat().filter(Boolean).map((target) => {
+    //     effect = { ...effect, source: `${invocation}:${index}`, actor: `${actor}`, target: `${target}` };
+    //     return target.stream('effect', 'effect', effect);
+    //   }));
+    // }));
+
+    invocation.effects.forEach(async (effect, index) => {
       const data = { target: effect.target };
       await actor.perform('target', data);
 
       // Loop over target(s)
-      return Promise.all([data.target].flat().filter(Boolean).map((target) => {
+      [data.target].flat().filter(Boolean).forEach((target) => {
         effect = { ...effect, source: `${invocation}:${index}`, actor: `${actor}`, target: `${target}` };
-        return target.stream('effect', 'effect', effect);
-      }));
+        target.stream('effect', 'effect', effect);
+      });
     });
   },
 ]);

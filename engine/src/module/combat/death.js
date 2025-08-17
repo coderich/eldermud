@@ -1,7 +1,3 @@
-/**
- * Death can be a process (for player) or instant (for creatures)
- */
-
 const { Actor, Action } = require('@coderich/gameflow');
 
 SYSTEM.on('post:spawn', async ({ actor }) => {
