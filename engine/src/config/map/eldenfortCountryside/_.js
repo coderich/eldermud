@@ -26,7 +26,6 @@ SYSTEM.on('pre:execute', async ({ actor, abort, data }) => {
               message: '{actor.name} {touch} the {target.name}',
               effects: [
                 {
-                  once: true,
                   style: 'buff',
                   target: 'self',
                   permanent: true,

@@ -1,5 +1,4 @@
 module.exports = {
-  cost: 5,
   code: 'char',
   name: 'Charge',
   description: 'Charge an opponent with a crushing blow that deals damage and stuns',
@@ -8,6 +7,7 @@ module.exports = {
   speed: 1000,
   cooldown: 20000,
   target: 'unit:$>',
+  affect: { ma: -5 },
   effects: [
     {
       target: 'target',

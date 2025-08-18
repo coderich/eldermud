@@ -1,20 +1,21 @@
 module.exports = {
-  cost: 10,
   code: 'psho',
   name: 'PowerShot',
   description: 'Focus a blistering arrow with increased damage and critical chance',
-  gesture: '{actor.name} {focus} a magic arrow at {target.name}...',
-  range: 5,
+  message: '{actor.name} {focus} a magic arrow at {target.name}...',
+  style: 'gesture',
+  // range: 5,
   speed: 1500,
   cooldown: 10000,
   target: 'unit:$>',
+  affect: { ma: -5 },
   effects: [
     {
       target: 'target',
       action: {
         attack: {
           strike: {
-            range: 5,
+            // range: 5,
             acc: 1000,
             crits: 1000,
             recoil: 1500,

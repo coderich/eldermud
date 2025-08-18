@@ -1,5 +1,4 @@
 module.exports = {
-  cost: 5,
   code: 'bles',
   name: 'Bless',
   message: '{actor.name} {cast} bless on {target.name}',
@@ -7,6 +6,7 @@ module.exports = {
   style: 'buff',
   target: 'friendly',
   cooldown: 10000,
+  affect: { ma: -5 },
   effects: [
     { style: 'buff', target: 'target', affect: { hp: 5 } },
     { style: 'buff', target: 'target', effect: { wis: 5, dex: 5 }, duration: 20000, status: 'buffed' },

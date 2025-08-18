@@ -1,10 +1,10 @@
 module.exports = {
-  cost: 10,
   code: 'feys',
   name: 'FeyStep',
   target: 'self',
   description: 'Move blindingly fast with increased dexterity',
   cooldown: 60000,
+  affect: { ma: -5 },
   effects: [
     {
       style: 'buff',

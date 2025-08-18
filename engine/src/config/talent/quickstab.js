@@ -1,12 +1,13 @@
 module.exports = {
-  cost: 5,
   code: 'stab',
   name: 'QuickStab',
   description: 'Quickly strike your opponent with increased critical chance',
-  gesture: '{actor.name} quickly {sidestep} {target.name}...',
+  message: '{actor.name} quickly {sidestep} {target.name}...',
+  style: 'gesture',
   speed: 500,
   cooldown: 10000,
   target: 'unit:$>',
+  affect: { ma: -5 },
   effects: [
     {
       target: 'target',

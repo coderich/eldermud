@@ -1,5 +1,4 @@
 module.exports = {
-  cost: 10,
   code: 'jack',
   name: 'JackOfTrades',
   description: 'Temporarily increase all stats',
@@ -7,6 +6,7 @@ module.exports = {
   style: 'buff',
   target: 'self',
   cooldown: 60000,
+  affect: { ma: -5 },
   effects: [
     {
       style: 'buff',
