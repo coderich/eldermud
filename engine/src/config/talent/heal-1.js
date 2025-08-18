@@ -1,7 +1,8 @@
 module.exports = {
-  cost: 5,
+  // cost: 5,
   code: 'mihe',
   name: 'MinorHeal',
+  affect: { ma: -5 },
   target: 'unit',
   description: 'Heal minor wounds',
   message: '{actor.name} {cast} MinorHeal on {target.name}!',

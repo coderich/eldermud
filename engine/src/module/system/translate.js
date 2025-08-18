@@ -108,22 +108,17 @@ const translateArray = (arr, input, cmd, args) => {
         const [[key, data]] = Object.entries(tier[j]);
 
         if (key.indexOf(cmd) === 0 && data.args.includes(args.length)) {
-          return {
-            ...data,
-            name: data.name || key,
-            input,
-            args,
-          };
+          return { ...data, name: data.name || key, input, args };
         }
       }
     }
   }
 
-  return { name: 'unknown', input, args, code: 'unk', channel: 'realm' };
+  return { name: 'unknown', input, args, channel: 'realm' };
 };
 
 Action.define('translate', (input, { actor }) => {
   input = input.trim();
   const [cmd, ...args] = input.match(/\S+/g) || [];
-  return cmd ? translateArray(commands, input, cmd.toLowerCase(), args) : { name: 'none', input, args, code: null, channel: 'realm' };
+  return cmd ? translateArray(commands, input, cmd.toLowerCase(), args) : { name: 'none', input, args, channel: 'realm' };
 });

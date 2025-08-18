@@ -9,8 +9,8 @@ SYSTEM.prependListener('*', async (event, context) => {
 
   // Normalize input for actions
   if (type === 'pre' && data && translate) {
+    const room = CONFIG.get(actor.room);
     const { args, code, tags = [], input } = data;
-    const room = actor.room = CONFIG.get(await actor.get('room')); // Consider adding this to "data" for downstream
 
     if (tags.includes('talent')) {
       const talent = actor.talents.values().find(t => t.code === code);

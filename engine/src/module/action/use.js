@@ -25,6 +25,6 @@ Action.define('use', [
     // Default behavior
     const data = { target: target.target, args: rest };
     await actor.perform('target', data, { $abort: abort });
-    return actor.perform('invoke', { invocation: target, target: data.target });
+    return actor.perform('act', { act: target, target: data.target });
   },
 ]);

@@ -72,13 +72,10 @@ module.exports = class ActorWrapper extends Actor {
     })).then(() => this);
   }
 
-  assign(data, NX = false) {
-    Object.entries(data).forEach(([key, value]) => {
-      this[key] = APP.castValue(value);
-      // if (NX) this[key] ??= APP.castValue(value);
-      // else this[key] = APP.castValue(value);
-    });
-    return this;
+  assign(data) {
+    return Object.entries(data).reduce((prev, [key, value]) => {
+      return Object.assign(prev, { [key]: APP.castValue(value) });
+    }, this);
   }
 
   send(event, message, ...rest) {
@@ -114,7 +111,7 @@ module.exports = class ActorWrapper extends Actor {
 
     return Promise.all([
       this.send('text', actorMsg),
-      this !== data.target && data.target.send('text', targetMsg),
+      this !== data.target && data.target.send?.('text', targetMsg), // The "target" isn't always another unit/player
       opts.toRoom && Array.from(CONFIG.get(await this.get('room')).units.values()).filter(el => ![this, data.target].includes(el)).forEach(el => el.send('text', roomMsg)),
     ]);
   }

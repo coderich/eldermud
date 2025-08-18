@@ -20,6 +20,7 @@ Action.define('spawn', [
 
     // Assign actors to world
     const room = CONFIG.get(await actor.get('room'));
+    actor.room = `${room}`;
 
     if (['item', 'key'].includes(actor.type)) {
       if (room) room.items.add(actor);

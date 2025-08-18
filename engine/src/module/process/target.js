@@ -3,7 +3,7 @@ const { Actor, Action } = require('@coderich/gameflow');
 Action.define('target', [
   async (data, { actor, $abort }) => {
     const { args = [], code } = data;
-    const { room } = actor;
+    const room = CONFIG.get(`${actor.room}`);
 
     // Targeting should use bitwise ops instead of .includes
     data.rest = args;

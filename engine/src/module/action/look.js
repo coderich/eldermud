@@ -29,7 +29,6 @@ Action.define('look', [
         return Promise.all([
           actor.send('text', `[${APP.styleText('room.name', target.name)}] (${wounded})`),
           actor.send('text', target.depiction),
-          // actor !== target ? actor.send('text', `${target.name} appears to be ${wounded}.`) : Promise.resolve(),
         ]);
       }
       default: {
