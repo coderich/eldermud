@@ -51,7 +51,8 @@ Action.define('target', [
       case 'inventory': Object.assign(data, APP.target(await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`)), args)); break;
         // const inventory = await APP.hydrate(await REDIS.sMembers(`${actor}.inventory`));
         // Object.assign(data, APP.target(inventory, args));
-      default: Object.assign(data, APP.target(units.filter(unit => unit.type === target), args)); break;
+      case 'player': case 'npc': case 'creature': Object.assign(data, APP.target(units.filter(unit => unit.type === target), args)); break;
+      default: Object.assign(data, APP.target([{ name: target }], args)); break;
     }
 
     if (data.target) {

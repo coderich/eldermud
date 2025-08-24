@@ -1,4 +1,3 @@
-- "a" retarget $target
 - train
 - talents
 - creature re-targeting
@@ -26,7 +25,6 @@
 - item progression matrix
 - target range vs source range - distance can be up to 5 (out of range!)
 - Terrain (buffs, debuffs, movement, off-balance-checks, etc)
-- room points-of-interest (eg. fountain); touch fountain +1 str etc
 - actions/gestures list
 - blockades/paths as first-class citizens with attached behavior...
 - drop when below zero hp, bleeding?, aid command? drag command? death hp a % of your max hp?

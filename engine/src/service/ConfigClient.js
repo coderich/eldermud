@@ -11,6 +11,7 @@ module.exports = class ConfigClient extends Config {
       concat: (a, ...b) => a.split(',').concat(b),
     });
     this.merge(Config.parseFile(`${appRootPath}/app.config.yml`));
+    this.merge(Config.parseFile(`${appRootPath}/app-objective.config.yml`));
     this.merge(Config.parseFile(`${appRootPath}/app.secrets.yml`));
     this.merge(Config.parseEnv({ pick: ['app__redis__url'] }));
   }

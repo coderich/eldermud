@@ -1,0 +1,33 @@
+objective:
+  # firstBattle:
+  # trainWithTrainer:
+  # rememberWhoYouAre:
+  # reachLevel3:
+  # obtainEldenkeepMedallion:
+  # talkToLadyElethor:
+  # collectEldricIngredients:
+  # deliverEldricIngredients:
+  
+  angeloaktree:
+    when:
+      cmd: 'touch'
+      room: 'map.eldenfortCountryside.rooms.orchards'
+      target: 'Angel Oak Tree'
+    act:
+      target: 'self'
+      message: '{actor.name} {touch} the {target.name}'
+      effects:
+        - style: 'buff'
+          target: 'self'
+          permanent: true
+          effect: { wis: 1 }
+          message: 'You gain wisdom!'
+
+  greetEldricTheWise:
+    when:
+      cmd: 'greet'
+      target: 'npc'
+      targetCheck: { id: 'eldricTheWise' }
+    act:
+      target: 'self'
+      message: '{actor.name} {pee} on {target.name}'
