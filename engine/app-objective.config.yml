@@ -16,8 +16,9 @@ objective:
     act:
       target: 'self'
       message: '{actor.name} {touch} the {target.name}'
-      effects:
-        - style: 'buff'
+      pipeline:
+        - action: 'effect'
+          style: 'buff'
           target: 'self'
           permanent: true
           effect: { wis: 1 }

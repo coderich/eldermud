@@ -11,6 +11,7 @@ Action.define('engage', [
       if (event.reason === null) {
         delete actor.$retarget;
         delete actor.$engageTarget;
+        actor.$attackers.delete(target);
       }
     };
 

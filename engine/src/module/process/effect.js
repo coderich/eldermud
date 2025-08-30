@@ -2,12 +2,11 @@ const { Actor, Action, Loop } = require('@coderich/gameflow');
 
 SYSTEM.on('post:enter', ({ actor }) => {
   REDIS.keys(`effect:*.${actor}`).then(async (keys) => {
-    const values = keys.length ? await REDIS.mGet(keys) : keys;
-    keys.forEach((key, i) => {
-      const value = JSON.parse(values[i]);
-      value.restored = true; // Restored from DB after connect
-      actor.stream('effect', 'effect', value);
-    });
+    Promise.all(keys.map(async (key) => {
+      const effect = JSON.parse(await REDIS.get(key));
+      actor.$effects.set(key, effect);
+      return actor.stream('effect', 'effect', effect);
+    })).then(() => actor.calcStats());
   });
 });
 
@@ -20,31 +19,15 @@ const performAffect = async (target, $affect) => {
 
 Action.define('effect', [
   (effect, context) => {
-    const { duration, permanent, once } = effect;
+    const { duration, permanent } = effect;
     const { promise, abort } = context;
     const key = `effect:${effect.source}.${effect.target}`;
-
-    // Prevent one-time effects from being repeated
-    if (once && (effect.restored || context.actor.$effects.has(key))) return abort();
 
     // Normalize
     const target = context.actor;
     const actor = Object.values(Actor).find(a => `${a}` === `${effect.actor}`);
     const $affect = Object.entries(effect.affect || {}).reduce((prev, [k, v]) => Object.assign(prev, { [k]: APP.roll(v) }), {});
     // const $effect = Object.entries(effect.effect || {}).reduce((prev, [k, v]) => Object.assign(prev, { [k]: APP.roll(v) }), {});
-
-    // Effect message
-    if (effect.message && !effect.restored) {
-      const msg = APP.interpolate(effect.message, { actor, target, affect: $affect });
-      target.send('text', APP.styleText(effect.style, msg));
-    }
-
-    // Perform the effect
-    if ((duration || permanent) && !effect.restored) REDIS.set(key, JSON.stringify(effect));
-    if (effect.effect) target.$effects.set(key, effect);
-    if (effect.affect) performAffect(target, $affect);
-    if (effect.action) Object.entries(effect.action).forEach(([action, data]) => actor.perform(action, { ...data, target }));
-    target.calcStats();
 
     // Abort silently duplicate effect
     const preEffect = ({ data }) => `effect:${data.source}.${data.target}` === key && abort(false);
@@ -69,6 +52,21 @@ Action.define('effect', [
         }
       }
     });
+
+    if (!target.$effects.has(key)) {
+      // Effect message
+      if (effect.message) {
+        const msg = APP.interpolate(effect.message, { actor, target, affect: $affect });
+        target.send('text', APP.styleText(effect.style, msg));
+      }
+
+      // Perform the effect
+      if (duration || permanent) REDIS.set(key, JSON.stringify(effect));
+      if (effect.effect) target.$effects.set(key, effect);
+      if (effect.affect) performAffect(target, $affect);
+      // if (effect.action) Object.entries(effect.action).forEach(([action, data]) => actor.perform(action, { ...data, target }));
+      target.calcStats();
+    }
 
     return effect.duration ? { $affect, effect, target } : abort(false);
   },

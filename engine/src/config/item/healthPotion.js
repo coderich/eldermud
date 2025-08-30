@@ -3,14 +3,15 @@ module.exports = {
   depiction: 'This sturdy rope is made from braided nylon fibers, offering exceptional strength and durability. Each end of the rope is equipped with a metal hook, allowing it to be attached to anchors or other fixed points.',
   description: 'A sturdy rope designed for climbing and traversing vertical surfaces.',
   target: 'self',
-  value: 50,
+  value: 1,
   weight: 20,
-  effects: [
+  pipeline: [
     {
-      style: 'buff',
       target: 'target',
+      action: 'effect',
+      style: 'buff',
       affect: { hp: '2d5+2' },
-      message: 'You gain {affect.hp} health',
+      message: 'You recover {affect.hp} health',
     },
   ],
 };

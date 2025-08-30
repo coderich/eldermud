@@ -7,9 +7,9 @@ module.exports = {
   speed: 500,
   cooldown: 60000,
   affect: { ma: -5 },
-  effects: [
-    { type: 'buff', target: 'party', affect: { hp: 5 } }, // Bolstered
-    { type: 'buff', target: 'party', effect: { str: 5, dex: 3 }, duration: 20000 }, // Bolstered
-    { type: 'debuff', target: 'enemies', effect: { str: -2, dex: -5 }, duration: 10000 }, // Startled
+  pipeline: [
+    { action: 'effect', type: 'buff', target: 'party', affect: { hp: 5 } }, // Bolstered
+    { action: 'effect', type: 'buff', target: 'party', effect: { str: 5, dex: 3 }, duration: 20000 }, // Bolstered
+    { action: 'effect', type: 'debuff', target: 'enemies', effect: { str: -2, dex: -5 }, duration: 10000 }, // Startled
   ],
 };

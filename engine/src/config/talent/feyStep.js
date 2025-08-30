@@ -5,10 +5,11 @@ module.exports = {
   description: 'Move blindingly fast with increased dexterity',
   cooldown: 60000,
   affect: { ma: -5 },
-  effects: [
+  pipeline: [
     {
-      style: 'buff',
+      action: 'effect',
       target: 'target',
+      style: 'buff',
       status: 'buffed',
       duration: 30000,
       effect: { dex: 10, moveSpeed: -500 },

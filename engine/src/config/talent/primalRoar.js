@@ -8,8 +8,9 @@ module.exports = {
   speed: 100,
   cooldown: 30000,
   affect: { ma: -5 },
-  effects: [
+  pipeline: [
     {
+      action: 'effect',
       target: 'self',
       style: 'debuff',
       status: 'buffed',
@@ -19,6 +20,7 @@ module.exports = {
       cooloff: 'You calm down',
     },
     {
+      action: 'effect',
       target: 'enemies',
       style: 'debuff',
       status: 'negative',

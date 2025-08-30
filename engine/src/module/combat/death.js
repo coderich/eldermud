@@ -8,28 +8,30 @@ SYSTEM.on('post:spawn', async ({ actor }) => {
 
 SYSTEM.on('post:affect', (context) => {
   const { actor, result } = context;
-  if (result.hp <= 0 && !actor.$fallen) actor.perform('fallen');
+  if (result.hp <= 0) actor.perform('fallen');
 });
 
 Action.define('fallen', [
   async (_, { actor }) => {
-    actor.$fallen = true;
-    const killers = Object.values(Actor).filter(el => el.$target === actor);
+    if (!actor.$fallen) {
+      actor.$fallen = true;
+      const killers = Object.values(Actor).filter(el => el.$target === actor);
 
-    if (actor.type !== 'player') {
-      actor.abortAllStreams(null);
-      const info = await actor.mGet('exp');
-      const killerCount = killers.length || 1;
-      const exp = Math.ceil(info.exp / killerCount);
+      if (actor.type !== 'player') {
+        actor.abortAllStreams(null);
+        const info = await actor.mGet('exp');
+        const killerCount = killers.length || 1;
+        const exp = Math.ceil(info.exp / killerCount);
 
-      // Broadcast to room that actor is dead
-      await actor.broadcast('text', actor.slain);
+        // Broadcast to room that actor is dead
+        await actor.broadcast('text', actor.slain);
 
-      // Award XP
-      await Promise.all(killers.map(killer => killer.perform('expGain', { exp })));
+        // Award XP
+        await Promise.all(killers.map(killer => killer.perform('expGain', { exp })));
+      }
+
+      await actor.perform('death');
     }
-
-    return actor.perform('death');
   },
 ]);
 

@@ -13,5 +13,9 @@ Action.define('hit', async ({ strike, target, dmg, crit, glance }, { actor }) =>
   actor.send('text', APP.styleText('youHit', `You ${verb} ${target.name} ${result}`));
   target.send('text', APP.styleText('hitYou', `${source} ${verbs} you ${result}`));
   Array.from(room.units.values()).filter(el => ![actor, target].includes(el)).forEach(el => el.send('text', APP.styleText('muted', `${source} ${verbs} ${target.name} ${result}`)));
-  if (dmg) await target.stream('spatial', 'affect', { hp: -dmg });
+
+  if (dmg) {
+    const { hp } = await target.stream('spatial', 'affect', { hp: -dmg });
+    if (hp <= 0) await target.perform('fallen');
+  }
 });

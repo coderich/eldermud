@@ -7,8 +7,9 @@ module.exports = {
   target: 'self',
   cooldown: 60000,
   affect: { ma: -5 },
-  effects: [
+  pipeline: [
     {
+      action: 'effect',
       style: 'buff',
       target: 'target',
       status: 'buffed',

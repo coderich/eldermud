@@ -25,6 +25,6 @@ Action.define('strike', [
     }));
 
     // Recoil
-    await actor.stream(actor.mandatoryStream, new Action('recoil', () => APP.timeout(recoil)));
+    actor.stream(actor.mandatoryStream, new Action('recoil', () => APP.timeout(recoil)));
   },
 ]);

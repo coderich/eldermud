@@ -5,12 +5,13 @@ module.exports = {
   target: 'self',
   value: 50,
   weight: 20,
-  effects: [
+  pipeline: [
     {
-      style: 'buff',
       target: 'target',
+      action: 'effect',
+      style: 'buff',
       affect: { ma: '2d5+2' },
-      message: 'You gain {affect.ma} mana',
+      message: 'You recover {affect.ma} mana',
     },
   ],
 };

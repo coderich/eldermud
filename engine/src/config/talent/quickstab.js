@@ -8,22 +8,20 @@ module.exports = {
   cooldown: 10000,
   target: 'unit:$>',
   affect: { ma: -5 },
-  effects: [
+  pipeline: [
     {
       target: 'target',
-      action: {
-        attack: {
-          strike: {
-            range: 1,
-            acc: 1000,
-            crits: 10,
-            recoil: 500,
-            dmg: '2d8+3',
-            hits: ['stab'],
-            misses: ['stab'],
-            scale: { str: 0.25, dex: 0.25 },
-          },
-        },
+      action: 'attack',
+      stream: 'action',
+      strike: {
+        range: 1,
+        acc: 1000,
+        crits: 10,
+        recoil: 500,
+        dmg: '2d8+3',
+        hits: ['stab'],
+        misses: ['stab'],
+        scale: { str: 0.25, dex: 0.25 },
       },
     },
   ],

@@ -7,10 +7,11 @@ module.exports = {
   style: 'gesture',
   cooldown: 10000,
   affect: { ma: -5 },
-  effects: [
+  pipeline: [
     {
       style: 'buff',
       target: 'target',
+      action: 'effect',
       affect: { hp: '2d4+2' },
       message: 'You recover {affect.hp} health',
     },
