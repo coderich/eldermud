@@ -24,9 +24,8 @@ Action.define('attack', [
 
     if (strike) {
       await APP.timeout(strike.speed);
-      await actor.perform('strike', { target, strike }).finally(() => {
-        setTimeout(() => target.offFunction(abort), 500);
-      });
+      await actor.perform('strike', { target, strike });
+      target.offFunction(abort);
     } else {
       const attacks = await actor.get('attacks');
       const attack = () => APP.randomElement(attacks);

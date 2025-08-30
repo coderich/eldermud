@@ -22,9 +22,9 @@
   },
   "dependencies": {
     "@coderich/config": "2.0.0",
-    "@coderich/gameflow": "1.7.0",
-    "@coderich/gameserver": "1.1.2",
-    "@coderich/util": "2.0.1",
+    "@coderich/gameflow": "2.0.0",
+    "@coderich/gameserver": "2.0.0",
+    "@coderich/util": "2.1.3",
     "chance": "1.1.11",
     "lodash.get": "4.4.2",
     "lodash.merge": "4.6.2",
@@ -34,7 +34,7 @@
     "redis": "4.6.11"
   },
   "devDependencies": {
-    "@coderich/dev": "0.5.2",
+    "@coderich/dev": "0.5.3",
     "commander": "11.1.0",
     "nodemon": "3.0.2",
     "redis-memory-server": "0.10.0"

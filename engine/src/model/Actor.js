@@ -133,6 +133,11 @@ module.exports = class ActorWrapper extends Actor {
     return super.stream(stream, ...args);
   }
 
+  unshift(stream, ...args) {
+    if (!(stream instanceof Stream)) stream = this.streams[stream];
+    return super.unshift(stream, ...args);
+  }
+
   async exit(reason) {
     this.removeAllPossibleListeners(reason);
     if (!reason) await this.realm('text', APP.styleText('gesture', `${this.name} just hung up!`));

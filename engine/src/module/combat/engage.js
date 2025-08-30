@@ -46,14 +46,15 @@ Action.define('engage', [
   // Striking Duel
   new Loop([
     // Prepare attack
-    (data, { attack }) => {
+    (data, { actor }) => {
       data.strike = typeof data.attack === 'function' ? data.attack() : data.attack;
-      return APP.timeout(data.strike.speed);
+      return actor.stream('tactic', new Action('prepare', () => APP.timeout(data.strike.speed)));
     },
 
     // Perform strike
-    async (data, { actor }) => {
-      if (actor.$target) await actor.perform('strike', data);
+    async (data, { actor, abort }) => {
+      if (actor.$target) return actor.stream('tactic', 'strike', data);
+      return abort();
     },
   ]),
 ]);
