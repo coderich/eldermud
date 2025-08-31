@@ -77,10 +77,19 @@ setFontSize(15);
 setFont('Bitstream Vera Sans Mon');
 -- display(getAvailableFonts());
 
+eldermud.leftContainer = Geyser.Container:new({
+  name = 'leftContainer',
+  x = 0, y = 0, width = '25%', height = -30,
+});
+
+eldermud.centerContainer = Geyser.Container:new({
+  name = 'centerContainer',
+  x = '25%', y = 0, width = '50%', height = -30,
+});
+
 eldermud.rightContainer = Geyser.Container:new({
   name = 'rightContainer',
-  styleSheet = 'border-left: 1px solid white;',
-  x = '60%', y = 0, width = '40%', height = '100%',
+  x = '75%', y = 0, width = '25%', height = -30,
 });
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.cls', 'eldermud.cls', function (event, reverse)
@@ -101,8 +110,8 @@ setCustomEnvColor(1, 255, 0, 0, 255);
 
 Geyser.Mapper:new({
   name = 'mapper',
-  x = 0, y = 0, width = '100%', height = '40%',
-}, eldermud.rightContainer);
+  x = 0, y = '60%', width = '100%', height = '40%',
+}, eldermud.leftContainer);
 
 registerNamedEventHandler('Eldermud', 'eldermud.event.map', 'gmcp.eldermud.map', function()
   local data = gmcp.eldermud.map;
@@ -140,14 +149,40 @@ end);
 			<Script isActive="yes" isFolder="no">
 				<name>console</name>
 				<packageName></packageName>
-				<script>clearCmdLine('main')
-enableCommandLine('main');
+				<script>eldermud = eldermud or {};
+
+clearCmdLine('main');
 setCmdLineStyleSheet('main', [[
-  QPlainTextEdit {
-    color: white;
-    font: Arial;
-  }
+  QPlainTextEdit { height:0px; min-height:0px; max-height:0px; margin:0; padding:0; border: none; }
+]])
+
+local console = Geyser.MiniConsole:new({
+  name = 'console',
+  x = 10, y = 10, width = -10, height = -75,
+  autoWrap = true, scrollBar = false,
+  color = 'black',
+  fontSize = 15,
+}, eldermud.centerContainer);
+
+local cmdLine = Geyser.CommandLine:new({
+  name = 'cmdLine',
+  x = 10, y = -35, width = -10, height = '30px',
+}, eldermud.centerContainer)
+
+setCmdLineStyleSheet('cmdLine', [[
+  font-size: 14px;
+  color: #ddd;
+  background: rgba(0,0,110,0.5);
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  padding: 5px, 1px;
 ]]);
+
+-- console:setCmdAction(function(txt)
+  -- if txt == "" then send("\r\n", false)
+  -- else send(txt, false) end
+-- end)
+
 
 local cmd = 'cmd';
 
@@ -160,20 +195,19 @@ registerNamedEventHandler('Eldermud', 'eldermud.event.query', 'gmcp.eldermud.que
   cmd = 'query';
 end);
 
-
 registerNamedEventHandler('Eldermud', 'eldermud.event.console', 'gmcp.eldermud', function (event, ns)
   local name = string.sub(ns, 15);
   local data = gmcp.eldermud[name];
 
   if (name == 'query' or name == 'text' or name == 'cmd') then
-    cecho(data .. '\n')
+    console:cecho(data .. '\n')
   elseif (name == 'room') then
-    cecho(data.name .. '\n');
-    if (#data.items &gt; 0) then cecho(data.itemsLabel .. table.concat(data.items, ', ') .. '\n'); end
-    if (#data.units &gt; 0) then cecho(data.unitsLabel .. table.concat(data.units, ', ') .. '\n'); end
-    cecho(data.exitsLabel .. table.concat(data.exits, ', ') .. '\n');
+    console:cecho(data.name .. '\n');
+    if (#data.items &gt; 0) then console:cecho(data.itemsLabel .. table.concat(data.items, ', ') .. '\n'); end
+    if (#data.units &gt; 0) then console:cecho(data.unitsLabel .. table.concat(data.units, ', ') .. '\n'); end
+    console:cecho(data.exitsLabel .. table.concat(data.exits, ', ') .. '\n');
   elseif (name == 'cls') then
-    clearWindow();
+    clearWindow('console');
   end;
 end);
 </script>
@@ -182,18 +216,32 @@ end);
 			<Script isActive="yes" isFolder="no">
 				<name>status</name>
 				<packageName></packageName>
-				<script>local status = Geyser.Label:new({
+				<script>eldermud = eldermud or {};
+
+local status = Geyser.Label:new({
   name = 'statusContainer',
-  x = 0, y = '-35px', width = '60%', height = '35px',
-});
+  x = 10, y = -75, width = -10, height = 35,
+}, eldermud.centerContainer);
 
 status:setStyleSheet([[
   font-size: 18px;
-  border-top: 1px dashed grey;
-  border-bottom: none;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
 ]]);
 
--- status:setFontSize(18);
+-- status:setStyleSheet([[
+  -- font-size: 18px;
+  -- color: #e5e5e5;
+  -- background: qlineargradient(x1:0,y1:0,x2:0,y2:1,
+    -- stop:0  #121315,
+    -- stop:0.5#0d0f12,
+    -- stop:1  #0a0c0f);
+  -- border-top:    1px solid rgba(255,255,255,0.14); /* subtle highlight */
+  -- border-bottom: 1px solid rgba(0,0,0,0.85);       /* shadow */
+  -- border-radius: 6px;
+-- ]])
+
+
 
 -- local sep = '&amp;nbsp;&amp;nbsp;&amp;nbsp;';
 
@@ -241,11 +289,11 @@ local EMCO = require('MDK.emco');
 
 local menu = EMCO:new({
   name = 'menu',
-  x = 0, y = '40%', width = '100%', height = '60%',
+  x = 0, y = 0, width = '100%', height = '60%',
   consoles = { 'GOSSIP', 'AUCTION', 'HELP' },
   activeTabCSS = [[background-color: black; border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
   inactiveTabCSS = [[background-color: rgb(60,60,60,255); border-width: 1px; border-style: solid; border-color: gold; border-radius: 0px;]],
-}, eldermud.rightContainer);
+}, eldermud.leftContainer);
 
 menu:clearAll();
 menu:setGap(10);
