@@ -12,8 +12,8 @@ Action.define('close', [
         const room = CONFIG.get(await actor.get('room'));
         room.units.forEach(unit => unit.perform('map'));
         return Promise.all([
-          actor.send('text', `You close the ${target.name}`),
-          actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} closes the ${target.name}`),
+          actor.writeln(`You close the ${target.name}`),
+          actor.broadcast(`${APP.styleText(actor.type, actor.name)} closes the ${target.name}`),
         ]);
       }
       case 'chest': {

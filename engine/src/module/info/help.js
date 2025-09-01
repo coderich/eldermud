@@ -8,8 +8,8 @@ Action.define('help', [
   async ({ target }, { actor }) => {
     switch (target.type) {
       case 'help': {
-        await actor.send('text', '\nType', APP.styleText('highlight', '? <topic>'), 'for specific help on that topic; for example:\n');
-        return actor.send('text', APP.styleBlockText('reset', [
+        await actor.writeln('\nType', APP.styleText('highlight', '? <topic>'), 'for specific help on that topic; for example:\n');
+        return actor.writeln(APP.styleBlockText('reset', [
           { text: '"?"', style: 'highlight' },
           { text: 'tips', style: 'highlight' },
           { text: 'commands', style: 'highlight' },
@@ -25,9 +25,9 @@ Action.define('help', [
         const stats = Object.entries({ str, dex, int, wis, con, cha }).map(([key, value]) => APP.styleText('stat', `${ucFirst(key)}:`).concat(' ', APP.styleText('keyword', value), APP.styleText('muted', gains[key] ? `+${gains[key]}` : '')));
 
         return Promise.all([
-          actor.send('text', APP.styleText('highlight', name)),
-          actor.send('text', description),
-          actor.send('text', APP.table([
+          actor.writeln(APP.styleText('highlight', name)),
+          actor.writeln(description),
+          actor.writeln(APP.table([
             ['Stats:', stats.join('  ').concat(APP.styleText('muted', ' (+ is per-level gain)'))],
             weapon && armor && ['Equip:', APP.styleText('keyword', weapon.name, '+', armor.name)],
             ['Traits:', APP.styleText('keyword', traits.map(el => el.name).join(', '))],
@@ -37,8 +37,8 @@ Action.define('help', [
       }
       default: {
         return Promise.all([
-          actor.send('text', APP.styleText('highlight', target.name)),
-          actor.send('text', `${target.description}`),
+          actor.writeln(APP.styleText('highlight', target.name)),
+          actor.writeln(`${target.description}`),
         ]);
       }
     }

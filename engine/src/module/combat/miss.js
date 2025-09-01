@@ -10,7 +10,7 @@ Action.define('miss', async ({ strike, target, crit, dodge }, { actor }) => {
   const verbs = [adverb, misses].filter(Boolean).join(' ');
   const source = actor.type === 'creature' ? `The ${actor.name}` : actor.name;
 
-  actor.send('text', APP.styleText('youMiss', `You ${verb} at ${target.name}${result}`));
-  target.send('text', APP.styleText('missYou', `${source} ${verbs} at you${result}`));
-  Array.from(room.units.values()).filter(el => ![actor, target].includes(el)).forEach(el => el.send('text', APP.styleText('muted', `${source} ${verbs} at ${target.name}${result}`)));
+  actor.writeln(APP.styleText('youMiss', `You ${verb} at ${target.name}${result}`));
+  target.writeln(APP.styleText('missYou', `${source} ${verbs} at you${result}`));
+  Array.from(room.units.values()).filter(el => ![actor, target].includes(el)).forEach(el => el.writeln(APP.styleText('muted', `${source} ${verbs} at ${target.name}${result}`)));
 });

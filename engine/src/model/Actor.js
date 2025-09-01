@@ -78,19 +78,43 @@ module.exports = class ActorWrapper extends Actor {
     }, this);
   }
 
+  write(...args) {
+    return this.socket.write(args.join(' '));
+  }
+
+  writeln(...args) {
+    return this.socket.writeln(args.join(' '));
+  }
+
+  prompt(...messages) {
+    return this.socket.prompt(APP.styleText('muted', '>>>').concat(' ', APP.styleText('dialog', messages.flat().join(' ')), APP.styleText('dialog', ':'))).then(text => ({ text }));
+  }
+
   send(event, message, ...rest) {
     if (rest.length) message = message.concat(' ', rest.flat().join(' '));
     return this.socket.emit(event, message);
   }
 
   query(...messages) {
-    return this.socket.query('query', APP.styleText('muted', '>>>').concat(' ', APP.styleText('dialog', messages.flat().join(' ')), APP.styleText('dialog', ':')));
+    return this.socket.query(APP.styleText('muted', '>>>').concat(' ', APP.styleText('dialog', messages.flat().join(' ')), APP.styleText('dialog', ':'))).then(text => ({ text }));
   }
 
   async realm(...args) {
     return Promise.all(Object.values(Actor).map(async (actor) => {
-      if (actor !== this) await actor.send(...args);
+      if (actor !== this) await actor.writeln(...args);
     }));
+  }
+
+  async broadcast(...args) {
+    const room = CONFIG.get(await this.get('room'));
+    room.units.forEach(unit => unit !== this && unit.writeln(...args));
+  }
+
+  async perimeter(...args) {
+    const room = CONFIG.get(await this.get('room'));
+    Object.values(room.exits).forEach((exit) => {
+      exit.units.forEach(unit => unit !== this && unit.writeln(...args));
+    });
   }
 
   async interpolate(msg, data, opts = {}) {
@@ -110,22 +134,10 @@ module.exports = class ActorWrapper extends Actor {
     const targetMsg = APP.styleText(opts.style, APP.ucFirst(APP.interpolate(msg, { ...data, target: { name: 'you' } }, shouldPluralizeTarget)));
 
     return Promise.all([
-      this.send('text', actorMsg),
-      this !== data.target && data.target.send?.('text', targetMsg), // The "target" isn't always another unit/player
-      opts.toRoom && Array.from(CONFIG.get(await this.get('room')).units.values()).filter(el => ![this, data.target].includes(el)).forEach(el => el.send('text', roomMsg)),
+      this.writeln(actorMsg),
+      this !== data.target && data.target.writeln?.(targetMsg), // The "target" isn't always another unit/player
+      opts.toRoom && Array.from(CONFIG.get(await this.get('room')).units.values()).filter(el => ![this, data.target].includes(el)).forEach(el => el.writeln(roomMsg)),
     ]);
-  }
-
-  async broadcast(...args) {
-    const room = CONFIG.get(await this.get('room'));
-    room.units.forEach(unit => unit !== this && unit.send(...args));
-  }
-
-  async perimeter(...args) {
-    const room = CONFIG.get(await this.get('room'));
-    Object.values(room.exits).forEach((exit) => {
-      exit.units.forEach(unit => unit !== this && unit.send(...args));
-    });
   }
 
   stream(stream, ...args) {
@@ -140,8 +152,8 @@ module.exports = class ActorWrapper extends Actor {
 
   async exit(reason) {
     this.removeAllPossibleListeners(reason);
-    if (!reason) await this.realm('text', APP.styleText('gesture', `${this.name} just hung up!`));
-    else this.realm('text', `${this.name} has left the realm.`);
+    if (!reason) await this.realm(APP.styleText('gesture', `${this.name} just hung up!`));
+    else this.realm(`${this.name} has left the realm.`);
     const room = CONFIG.get(await this.get('room'));
     room?.units.delete(this);
     return this;

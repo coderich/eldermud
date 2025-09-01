@@ -17,7 +17,7 @@ Action.define('telepath', [
     if (!target) return abort('Cannot find player!');
     const label = APP.styleText(actor.type, `${actor.name} telepaths:`);
     const text = rest.join(' ');
-    actor.send('text', `--- Telepath sent to ${target.name} ---`);
-    return target.send('text', `${label} ${text}`);
+    actor.writeln(`--- Telepath sent to ${target.name} ---`);
+    return target.writeln(`${label} ${text}`);
   },
 ]);

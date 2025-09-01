@@ -12,7 +12,7 @@ Action.define('get', [
     await REDIS.del(`${target}.hidden`);
     // await REDIS.sRem(`${target.container}.inventory`, `${target}`); // This needed?
     await REDIS.sAdd(`${actor}.inventory`, `${target}`);
-    actor.send('text', `You took ${target.name}`);
-    actor.broadcast('text', `${actor.name} took ${target.name}`);
+    actor.writeln(`You took ${target.name}`);
+    actor.broadcast(`${actor.name} took ${target.name}`);
   },
 ]);

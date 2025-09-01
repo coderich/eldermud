@@ -13,7 +13,7 @@ Action.define('set', [
       case 'warn': {
         return Promise.all([
           actor.save({ [key]: value }),
-          actor.send('text', 'You set', APP.styleText('keyword', key), 'to', APP.styleText('highlight', value)),
+          actor.writeln('You set', APP.styleText('keyword', key), 'to', APP.styleText('highlight', value)),
         ]);
       }
       default: {

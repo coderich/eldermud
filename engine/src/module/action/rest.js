@@ -7,7 +7,7 @@
 //   // },
 //   async (_, { actor }) => {
 //     await actor.save({ stance: 'resting' });
-//     await actor.send('text', 'You stop to rest.');
+//     await actor.writeln('You stop to rest.');
 
 //     const interval = setInterval(async () => {
 //       const hp = await actor.get('hp').then(v => parseInt(v, 10));

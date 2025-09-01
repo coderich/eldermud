@@ -138,7 +138,7 @@ module.exports = {
     sunflowerFields: {
       name: 'Sunflower Fields',
       terrain: 'sunflower fields',
-      description: 'The road diverges into an expanse of vibrant sunflower fields. These towering blooms turn their faces to follow the sun’s path across the sky, a golden sea of petals.',
+      description: 'The road diverges into an expanse of vibrant sunflower fields. These towering blooms turn their faces to follow the sun\'s path across the sky, a golden sea of petals.',
       exits: {
         sw: '${self:map.eldenfortCountryside.rooms.crossroads}',
       },
@@ -153,7 +153,7 @@ module.exports = {
       },
     },
     hermitHaven: {
-      name: 'Hermit’s Haven',
+      name: 'Hermit\'s Haven',
       terrain: 'secluded',
       description: 'Tucked away in the embrace of the lavender fields lies a small hermitage. This place of solitude is home to an old sage, rumored to be a keeper of ancient knowledge and stories of Eldenfort.',
       exits: {

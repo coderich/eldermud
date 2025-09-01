@@ -24,7 +24,7 @@ Action.define('fallen', [
         const exp = Math.ceil(info.exp / killerCount);
 
         // Broadcast to room that actor is dead
-        await actor.broadcast('text', actor.slain);
+        await actor.broadcast(actor.slain);
 
         // Award XP
         await Promise.all(killers.map(killer => killer.perform('expGain', { exp })));
@@ -44,7 +44,7 @@ Action.define('death', [
     if (actor.type === 'player') {
       const { deathpoint, mhp, mma } = await actor.mGet('deathpoint', 'mhp', 'mma');
       await actor.save({ hp: mhp, ma: mma, room: deathpoint, exp: 0 });
-      await actor.send('text', 'You have fallen...');
+      await actor.writeln('You have fallen...');
       return actor.perform('spawn');
     }
 

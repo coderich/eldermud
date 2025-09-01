@@ -8,7 +8,7 @@ module.exports = Action.define('execute', async (command, { actor, abort, promis
   const { name, input, stream } = command;
 
   // Echo back actions...
-  // if (stream === 'action') actor.stream(stream, new Action('echo', () => actor.send('text', input)));
+  // if (stream === 'action') actor.stream(stream, new Action('echo', () => actor.writeln(input)));
 
   switch (name) {
     case 'unknown': {

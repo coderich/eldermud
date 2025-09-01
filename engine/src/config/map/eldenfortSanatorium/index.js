@@ -6,7 +6,7 @@ module.exports = {
     Over time, it became less a place of healing and more a tomb. Wardens sealed its gates, prayers were whispered, and then forgotten.
 
     You awaken inside it, touched by the fever, yet alive. Something is different. You do not remember who you were.
-    The answers lie within the depths—and your path forward begins with a choice of identity among the memories of the dead.
+    The answers lie within the depths - and your path forward begins with a choice of identity among the memories of the dead.
   `,
   rooms: {
     entryDoor: {
@@ -122,7 +122,7 @@ module.exports = {
     // surfaceBreach: {
     //   name: 'Surface Breach',
     //   terrain: 'underground',
-    //   description: 'Roots and earth spill through a collapsed ceiling. A sliver of daylight beckons from above—a rough but climbable exit.',
+    //   description: 'Roots and earth spill through a collapsed ceiling. A sliver of daylight beckons from above - a rough but climbable exit.',
     //   exits: {
     //     w: '${self:map.eldenfortSanatorium.rooms.hiddenFissure}',
     //   },

@@ -2,23 +2,23 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('authenticate', [
   async (_, { actor }) => {
-    const { text: username } = await actor.query('Login with your username or type', APP.styleText('keyword', 'new'));
+    const { text: username } = await actor.prompt('Login with your username or type', APP.styleText('keyword', 'new'));
     if (username.toLowerCase() === 'new') return actor.perform('signup');
     if (await REDIS.sIsMember('users', username)) return actor.perform('login', username);
-    actor.send('text', 'Sorry, that username does not exist');
+    actor.writeln('Sorry, that username does not exist');
     return actor.perform('authenticate');
   },
 ]);
 
 Action.define('signup', async (_, { actor }) => {
-  let { text: username } = await actor.query('Create a new username');
+  let { text: username } = await actor.prompt('Create a new username');
   username = APP.ucFirst(username.toLowerCase());
-  const { text: yn } = await actor.query(APP.styleText('keyword', username), APP.styleText('dialog', 'is that correct? (y/n)'));
+  const { text: yn } = await actor.prompt(APP.styleText('keyword', username), APP.styleText('dialog', 'is that correct? (y/n)'));
   if (!yn.toLowerCase('y').startsWith('y')) return actor.perform('signup');
 
   // Username check
   if (!await REDIS.sAdd('users', username)) {
-    actor.socket.emit('text', 'Sorry, that username already exists');
+    actor.writeln('Sorry, that username already exists');
     return actor.perform('signup');
   }
 
@@ -31,12 +31,12 @@ Action.define('signup', async (_, { actor }) => {
 });
 
 Action.define('setPassword', async (_, { actor }) => {
-  const { text: password } = await actor.query('Enter a password for', APP.styleText('keyword', actor.name));
-  const { text: confirm } = await actor.query('Re-enter password (confirmation)');
+  const { text: password } = await actor.prompt('Enter a password for', APP.styleText('keyword', actor.name));
+  const { text: confirm } = await actor.prompt('Re-enter password (confirmation)');
 
   // Password check
   if (password !== confirm) {
-    actor.send('text', 'Oops, passwords do not match');
+    actor.writeln('Oops, passwords do not match');
     return actor.perform('setPassword');
   }
 
@@ -56,10 +56,10 @@ Action.define('login', async (username, { actor, abort }) => {
   if (!password) return actor.perform('setPassword');
 
   // Query for password + check
-  return actor.query('Enter existing password for', APP.styleText('keyword', actor.name)).then(({ text: passphrase }) => {
+  return actor.prompt('Enter existing password for', APP.styleText('keyword', actor.name)).then(({ text: passphrase }) => {
     if (password === passphrase) return Promise.resolve();
     if (++actor.loginAttempts >= 3) return abort(actor.disconnect());
-    actor.send('text', 'That password is incorrect');
+    actor.writeln('That password is incorrect');
     return actor.perform('login', username);
   });
 });

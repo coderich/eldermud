@@ -147,8 +147,8 @@ exports.roll = (dice) => {
   return neg ? -value : value;
 };
 
-// exports.stripColorTags = str => str.replace(/<[^>]+>(.*?)<reset>/g, '$1');
 exports.stripColorTags = str => str.replace(/<[^>]+>/g, '');
+exports.stripAnsi = str => str.replace(/\x1b\[[0-9;]*m/g, ''); // eslint-disable-line no-control-regex
 
 exports.table = (rows, options = {}) => {
   rows = rows.filter(Boolean);
@@ -156,7 +156,7 @@ exports.table = (rows, options = {}) => {
   const sep = options.sep ?? '| ';
 
   // Determine the maximum width for each column
-  const colWidths = rows[0].map((_, i) => Math.max(...rows.map(row => exports.stripColorTags(String(row[i])).length)));
+  const colWidths = rows[0].map((_, i) => Math.max(...rows.map(row => exports.stripAnsi(String(row[i])).length)));
 
   // Generate header
   if (options.header) {
@@ -164,7 +164,7 @@ exports.table = (rows, options = {}) => {
     const headers = rows[0];
     table = table.concat(headers.reduce((prev, header, i, arr) => {
       header = header.toString();
-      const extra = header.length - exports.stripColorTags(header).length;
+      const extra = header.length - exports.stripAnsi(header).length;
       return prev.concat(`${header.padEnd(colWidths[i] + extra)} | `);
     }, '| '), '\n').concat('|', headers.map((_, i) => `${'-'.repeat(colWidths[i] + 2)}|`).join(''), '\n');
   }
@@ -173,7 +173,7 @@ exports.table = (rows, options = {}) => {
   table = table.concat(rows.slice(startIndex).reduce((prev, row) => {
     return prev.concat(sep, row.map((data, i, arr) => {
       data = data.toString();
-      const extra = data.length - exports.stripColorTags(data).length;
+      const extra = data.length - exports.stripAnsi(data).length;
       const value = `${data.padEnd(colWidths[i] + extra)} ${sep}`;
       // const value = i <= arr.length - 2 ? `${data.padEnd(colWidths[i] + extra)} ${sep}` : `${data} ${sep}`;
       return value;

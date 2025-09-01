@@ -40,7 +40,7 @@ module.exports = {
     northGatePlaza: {
       name: 'North Gate Plaza',
       terrain: 'urban',
-      description: 'A broad plaza paved with worn cobblestones, serving as the main approach to Elden Keep’s gates. Merchants hawk shields and souvenirs along the walls, while guards stand in quiet vigil.',
+      description: 'A broad plaza paved with worn cobblestones, serving as the main approach to Elden Keep\'s gates. Merchants hawk shields and souvenirs along the walls, while guards stand in quiet vigil.',
       exits: {
         s: '${self:map.eldenfort.rooms.marketSquare}',
         n: '${self:map.eldenfort.rooms.eldenkeepEntrance}',

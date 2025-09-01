@@ -13,7 +13,7 @@ Action.define('use', [
         if (door.status !== 'locked') return abort('The door is not locked');
         if (`${door.key.id}` !== `${target.id}`) return abort('You turn the key, but nothing happens');
         CONFIG.set(`${door}.status`, 'closed');
-        return actor.send('text', 'You unlock the door');
+        return actor.writeln('You unlock the door');
       }
       case 'item': {
         await REDIS.sRem(`${actor}.inventory`, `${target}`);

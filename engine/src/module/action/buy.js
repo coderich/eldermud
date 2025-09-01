@@ -12,6 +12,6 @@ Action.define('buy', [
     const $item = await APP.instantiate(item);
     await REDIS.sAdd(`${actor}.inventory`, `${$item}`);
     await actor.perform('affect', { exp: -item.value });
-    return actor.send('text', 'You obtain', item.name);
+    return actor.writeln('You obtain', item.name);
   },
 ]);

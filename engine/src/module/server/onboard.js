@@ -4,9 +4,9 @@ const displayMenu = async (actor) => {
   const classes = Object.values(CONFIG.get('class'));
   const races = Object.values(CONFIG.get('race'));
 
-  await actor.send('text', APP.styleText('highlight', '\n--- Create a Character ---'));
+  await actor.writeln(APP.styleText('highlight', '\n--- Create a Character ---'));
 
-  await actor.send('text', APP.table([
+  await actor.writeln(APP.table([
     ...races.map((el, i) => [`[${i + 1}]`, el.name, ' ', `[${String.fromCharCode(i + 65)}]`, classes[i].name]),
     ['[X]', '<exit menu>', '', ''],
   ], { sep: '' }));
@@ -18,7 +18,7 @@ const confirmCharacter = async (actor, selection) => {
   const clas = Object.values(CONFIG.get('class'))[`${b}`.charCodeAt(0) - 97];
 
   if (race && clas) {
-    const yn = await actor.query(APP.styleText('keyword', race.name, clas.name), APP.styleText('dialog', 'is that correct? (y/n)')).then(({ text }) => text.toLowerCase().trim());
+    const yn = await actor.prompt(APP.styleText('keyword', race.name, clas.name), APP.styleText('dialog', 'is that correct? (y/n)')).then(({ text }) => text.toLowerCase().trim());
     if (yn === 'y') {
       const { weapon, armor } = clas;
       const traits = new Set([...actor.traits, ...race.traits, ...clas.traits]);
@@ -31,7 +31,7 @@ const confirmCharacter = async (actor, selection) => {
 };
 
 const resolveSelection = async (actor) => {
-  const selection = await actor.query(APP.styleBlockText('dialog', [
+  const selection = await actor.prompt(APP.styleBlockText('dialog', [
     { text: '1A', style: 'keyword' },
     { text: '? <topic>', style: 'keyword' },
   ], 'Select a race/class (eg. 1A) or enter ? <topic> to learn more')).then(({ text }) => text.toLowerCase().trim());

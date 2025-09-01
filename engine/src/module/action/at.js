@@ -7,9 +7,9 @@ Action.define('at', [
     const text = rest.join(' ');
 
     return Promise.all([
-      actor.send('text', `${actor.name} (to ${target.name}): ${text}`),
-      target.send('text', `${actor.name}: ${text}`),
-      // actor.broadcast('text', `${actor.name} (to ${target.name}): ${text}`),
+      actor.writeln(`${actor.name} (to ${target.name}): ${text}`),
+      target.writeln(`${actor.name}: ${text}`),
+      // actor.broadcast(`${actor.name} (to ${target.name}): ${text}`),
     ]);
   },
 ]);

@@ -5,6 +5,7 @@ Action.define('room', [
     if (actor.type === 'player') {
       room ??= CONFIG.get(await actor.get('room'));
 
+      const status = await actor.getStatus();
       const $loners = Array.from(room.units.values()).filter(unit => unit !== actor && unit.$party.size <= 1);
       const $groups = Array.from(new Set(Array.from(room.units.values()).filter(unit => unit.$party.size > 1).map(u => u.$party)));
       const $npcs = $loners.filter(el => el.type === 'npc').map(unit => APP.styleText(unit.type, unit.name));
@@ -34,11 +35,12 @@ Action.define('room', [
         units: $units,
       };
 
-      await actor.send('text', $room.name);
-      await actor.send('text', $room.description);
-      if ($room.items.length) await actor.send('text', APP.styleText('item', `You notice ${$room.items.join(', ')} here.`));
-      if ($room.units.length) await actor.send('text', `${$room.unitsLabel} ${$room.units.join(', ')}`);
-      await actor.send('text', `${$room.exitsLabel} ${$room.exits.join(', ')}`);
+      await actor.writeln($room.name);
+      await actor.writeln($room.description);
+      if ($room.items.length) await actor.writeln(APP.styleText('item', `You notice ${$room.items.join(', ')} here.`));
+      if ($room.units.length) await actor.writeln(`${$room.unitsLabel} ${$room.units.join(', ')}`);
+      await actor.writeln(`${$room.exitsLabel} ${$room.exits.join(', ')}`);
+      await actor.writeln(`[HP=${APP.styleText(status.hpLevel, status.hp)},MA=${APP.styleText(status.maLevel, status.ma)}]`);
     }
   },
 ]);

@@ -7,15 +7,15 @@ Action.define('look', [
     switch (target.type) {
       case 'room': {
         if (!cmd) {
-          actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} looks around the room`);
+          actor.broadcast(`${APP.styleText(actor.type, actor.name)} looks around the room`);
         } else {
-          actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} looks ${APP.direction[cmd.code]}`);
-          target.units.forEach(unit => unit.send('text', `${APP.styleText(actor.type, actor.name)} peeks in from ${APP.theRDirection[cmd.code]}!`));
+          actor.broadcast(`${APP.styleText(actor.type, actor.name)} looks ${APP.direction[cmd.code]}`);
+          target.units.forEach(unit => unit.writeln(`${APP.styleText(actor.type, actor.name)} peeks in from ${APP.theRDirection[cmd.code]}!`));
         }
         return actor.perform('room', target);
       }
       case 'npc': case 'player': case 'creature': {
-        if (actor !== target) target.send('text', APP.styleText(actor.type, actor.name), 'looks you up and down');
+        if (actor !== target) target.writeln(APP.styleText(actor.type, actor.name), 'looks you up and down');
         const { hp, mhp } = await target.mGet('hp', 'mhp');
         const wounded = [
           'very critically wounded',
@@ -27,13 +27,13 @@ Action.define('look', [
           'unwounded',
         ][Math.floor(((hp / mhp) * 100) / 15)];
         return Promise.all([
-          actor.send('text', `[${APP.styleText('room.name', target.name)}] (${wounded})`),
-          actor.send('text', target.depiction),
+          actor.writeln(`[${APP.styleText('room.name', target.name)}] (${wounded})`),
+          actor.writeln(target.depiction),
         ]);
       }
       default: {
-        await actor.send('text', `[${APP.styleText('room.name', target.name)}]`);
-        return actor.send('text', target.depiction);
+        await actor.writeln(`[${APP.styleText('room.name', target.name)}]`);
+        return actor.writeln(target.depiction);
       }
     }
   },

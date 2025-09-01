@@ -19,7 +19,7 @@ Action.define('engage', [
       delete actor.$target;
       target.offFunction($abort);
       stream.offFunction($abort);
-      actor.send('text', APP.styleText('engaged', '*combat off*'));
+      actor.writeln(APP.styleText('engaged', '*combat off*'));
     });
 
     stream.once('add', $abort);
@@ -33,9 +33,9 @@ Action.define('engage', [
     // No penalty for re-engaging the same target
     const info = await actor.mGet('room', 'engageSpeed');
     const room = CONFIG.get(info.room);
-    actor.send('text', APP.styleText('engaged', `*combat engaged (${target.name})*`));
-    target.send('text', APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText('highlight', 'you')}!`);
-    Array.from(room.units.values()).filter(unit => unit !== actor && unit !== target).forEach(unit => unit.send('text', APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText(target.type, target.name)}!`));
+    actor.writeln(APP.styleText('engaged', `*combat engaged (${target.name})*`));
+    target.writeln(APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText('highlight', 'you')}!`);
+    Array.from(room.units.values()).filter(unit => unit !== actor && unit !== target).forEach(unit => unit.writeln(APP.styleText(actor.type, actor.name), 'moves to attack', `${APP.styleText(target.type, target.name)}!`));
 
     if (target !== actor.$engageTarget) {
       actor.$engageTarget = target;

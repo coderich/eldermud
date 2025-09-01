@@ -44,7 +44,74 @@ app:
     bleeding: '🩸'
     armor: '🛡️'
 
+  ansi:
+    reset:          "\x1b[0m"
+    # red:            "\x1b[38;2;255;0;0m"
+    # green:          "\x1b[32m"
+    cyan:           "\x1b[96m"
+    magenta:        "\x1b[35m"
+    seaGreen:       "\x1b[38;2;46;139;87m"
+    lightSeaGreen:  "\x1b[38;2;32;178;170m"
+    forestGreen:    "\x1b[38;2;34;139;34m"
+    brightYellow:   "\x1b[38;2;255;255;0m"
+    firebrick:      "\x1b[38;2;178;34;34m"
+    orangeRed:      "\x1b[38;2;255;69;0m"
+    violet:         "\x1b[38;2;238;130;238m"
+    ivory:          "\x1b[38;2;255;255;240m"
+    wheat:          "\x1b[38;2;245;222;179m"
+    goldenrod:      "\x1b[38;2;218;165;32m"
+    slateBlue:      "\x1b[38;2;106;90;205m"
+    cadetBlue:      "\x1b[38;2;95;158;160m"
+    dimGrey:        "\x1b[38;2;105;105;105m"
+    aquamarine:     "\x1b[38;2;127;255;212m"
+
   styles:
+    none: ''
+    text: ''
+    reset:      ${self:app.ansi.reset}
+
+    stat:       ${self:app.ansi.seaGreen}
+    dialog:     ${self:app.ansi.seaGreen}
+    item:       ${self:app.ansi.lightSeaGreen}
+    value:      ${self:app.ansi.lightSeaGreen}
+    keyword:    ${self:app.ansi.lightSeaGreen}
+    senses:     ${self:app.ansi.ivory}
+    noise:      ${self:app.ansi.magenta}
+    gesture:    ${self:app.ansi.wheat}
+    exp:        ${self:app.ansi.wheat}
+    npc:        ${self:app.ansi.wheat}
+    highlight:  ${self:app.ansi.brightYellow}
+    engaged:    ${self:app.ansi.goldenrod}
+    player:     ${self:app.ansi.cadetBlue}
+    creature:   ${self:app.ansi.violet}
+    boss:       ${self:app.ansi.brightYellow}
+
+    youHit:     ${self:app.ansi.orangeRed}
+    hitYou:     ${self:app.ansi.firebrick}
+    youMiss:    ${self:app.ansi.lightSeaGreen}
+    missYou:    ${self:app.ansi.aquamarine}
+
+    error:      ${self:app.ansi.orangeRed}
+    boost:      ${self:app.ansi.slateBlue}
+    buff:       ${self:app.ansi.slateBlue}
+    debuff:     ${self:app.ansi.firebrick}
+    muted:      ${self:app.ansi.dimGrey}
+
+    status:
+      mhp:      ${self:app.ansi.seaGreen}
+      midhp:    ${self:app.ansi.violet}
+      lowhp:    ${self:app.ansi.orangeRed}
+      mma:      ${self:app.ansi.lightSeaGreen}
+
+    room:
+      name:        ${self:app.ansi.cyan}
+      description: ''
+      exit:        ${self:app.ansi.forestGreen}
+      unitsLabel:  ${self:app.ansi.magenta}
+      partyLabel:  ${self:app.ansi.slateBlue}
+      exitsLabel:  ${self:app.ansi.forestGreen}
+
+  styles_old:
     none: ''
     text: ''
     reset: '<reset>'

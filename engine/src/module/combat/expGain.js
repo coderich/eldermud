@@ -4,7 +4,7 @@ Action.define('expGain', [
   async ({ exp }, { actor }) => {
     return Promise.all([
       actor.perform('affect', { exp }),
-      actor.send('text', `You collect ${APP.styleText('keyword', exp)} remnants of the dead.`),
+      actor.writeln(`You collect ${APP.styleText('keyword', exp)} remnants of the dead.`),
     ]);
   },
 ]);

@@ -2,9 +2,9 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('mainMenu', [
   async (_, { actor }) => {
-    await actor.send('text', APP.styleText('highlight', '\n--- Main Menu ---'));
+    await actor.writeln(APP.styleText('highlight', '\n--- Main Menu ---'));
 
-    await actor.send('text', APP.table([
+    await actor.writeln(APP.table([
       ['[E]', 'Enter the Realm!'],
       ['[I]', 'Intro to MUDs'],
       ['[T]', 'Tutorial'],
@@ -12,7 +12,7 @@ Action.define('mainMenu', [
       ['[X]', 'Exit'],
     ], { sep: '' }));
 
-    const { text: selection } = await actor.query('Please make a selection');
+    const { text: selection } = await actor.prompt('Please make a selection');
 
     switch (selection.toLowerCase()) {
       case 'e': return actor.perform('enter');

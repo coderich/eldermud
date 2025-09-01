@@ -2,7 +2,7 @@ module.exports = {
   rooms: {
     warmUpField: {
       name: "Pit's Edge",
-      description: 'A soft expanse of well-tended grass edged with low hedges—ideal for stretching and light warm-up routines while watching sparring below.',
+      description: 'A soft expanse of well-tended grass edged with low hedges - ideal for stretching and light warm-up routines while watching sparring below.',
       exits: {
         e: '${self:map.eldenfort.rooms.archeryRange}',
         s: '${self:map.eldenfort.rooms.shieldDrill}',
@@ -92,7 +92,7 @@ module.exports = {
 
     finalSprint: {
       name: "Pit's Edge",
-      description: 'A path lined with flowering planters and smooth stones, leading away from the Pit—here the air feels lighter, a signal of respite.',
+      description: 'A path lined with flowering planters and smooth stones, leading away from the Pit - here the air feels lighter, a signal of respite.',
       exits: {
         n: '${self:map.eldenfort.rooms.swordRow}',
         w: '${self:map.eldenfort.rooms.agilityStation}',

@@ -1,7 +1,7 @@
 module.exports = {
   name: 'Rogue',
   depiction: 'A nimble and cunning infiltrator, hooded and ready to strike from the shadows.',
-  description: 'Rogues rely on stealth and guile, delivering precise, deadly blows before their foes even know they’re there.',
+  description: 'Rogues rely on stealth and guile, delivering precise, deadly blows before their foes even know they\'re there.',
   str: 8,
   dex: 12,
   int: 10,

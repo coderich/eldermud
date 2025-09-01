@@ -13,7 +13,7 @@ SYSTEM.on('*', async (event, context) => {
 
   // Abort GMCP
   if (type === 'abort' && promise.reason && promise.reason !== '$source') {
-    actor.send('text', promise.reason);
+    actor.writeln(promise.reason);
   }
 
   // Fallen logic
@@ -46,7 +46,7 @@ SYSTEM.on('*', async (event, context) => {
     // Broadcast to room that you have arrived
     Array.from(room.units.values()).filter(unit => unit !== actor && !actor.$party.has(unit)).forEach((unit) => {
       const direction = APP.theRDirection[result.code] || 'nowhere!';
-      unit.send('text', `${APP.styleText(actor.type, actor.name)} enters the room from ${direction}`);
+      unit.writeln(`${APP.styleText(actor.type, actor.name)} enters the room from ${direction}`);
     });
 
     // Notify those around you (except for room you just came from)
@@ -55,7 +55,7 @@ SYSTEM.on('*', async (event, context) => {
         let direction = APP.rdirection[d];
         if (direction === 'up') direction = 'above';
         else if (direction === 'down') direction = 'below';
-        x.units?.forEach(unit => unit.send('text', APP.styleText('noise', `You hear movement ${direction}`)));
+        x.units?.forEach(unit => unit.writeln(APP.styleText('noise', `You hear movement ${direction}`)));
       });
     }
   }
@@ -66,7 +66,7 @@ SYSTEM.on('*', async (event, context) => {
 
     // Broadcast to room that actor left
     Array.from(exit.units.values()).filter(unit => unit !== actor && !actor.$party.has(unit)).forEach((unit) => {
-      unit.send('text', `${APP.styleText(actor.type, actor.name)} leaves the room heading ${APP.direction[result.code]}`);
+      unit.writeln(`${APP.styleText(actor.type, actor.name)} leaves the room heading ${APP.direction[result.code]}`);
     });
   }
 });

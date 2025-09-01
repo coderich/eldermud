@@ -10,7 +10,7 @@ Action.define('train', [
     const tnl = APP.tnl(info.lvl);
     if (info.exp < tnl) return actor.perform('tnl');
 
-    await actor.send('text', APP.styleText('boost', 'You reach the next level!'));
+    await actor.writeln(APP.styleText('boost', 'You reach the next level!'));
     await REDIS.rPush(`${actor}.levels`, stat);
     return actor.perform('affect', { exp: -tnl });
   },

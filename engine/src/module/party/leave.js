@@ -6,8 +6,8 @@ Action.define('leave', [
   },
   (_, { actor }) => {
     actor.$following.$party.delete(actor);
-    actor.send('text', APP.styleText('engaged', `*You are no longer following ${actor.$following.name}*`));
-    actor.$following.$party.forEach(el => el.send('text', `${APP.styleText(actor.type, actor.name)} has left your party`));
+    actor.writeln(APP.styleText('engaged', `*You are no longer following ${actor.$following.name}*`));
+    actor.$following.$party.forEach(el => el.writeln(`${APP.styleText(actor.type, actor.name)} has left your party`));
     actor.$party = new Set([actor]);
     actor.$partyRank = 1;
     delete actor.$following;

@@ -13,8 +13,8 @@ Action.define('open', [
         const room = CONFIG.get(await actor.get('room'));
         room.units.forEach(unit => unit.perform('map'));
         return Promise.all([
-          actor.send('text', `You open the ${target.name}`),
-          actor.broadcast('text', `${APP.styleText(actor.type, actor.name)} opens the ${target.name}`),
+          actor.writeln(`You open the ${target.name}`),
+          actor.broadcast(`${APP.styleText(actor.type, actor.name)} opens the ${target.name}`),
         ]);
       }
       case 'chest': {
@@ -34,7 +34,7 @@ Action.define('open', [
         const inventory = await APP.hydrate(await REDIS.sMembers(`${target}.inventory`)).then(items => items.filter(item => item.owner === `${actor}`));
         const contents = inventory.length ? inventory.map(item => APP.styleText('keyword', item.name)).join(', ') : 'nothing.';
         actor.$search = new Set(inventory);
-        return actor.send('text', `You open the ${target.name} and reveal: ${contents}`);
+        return actor.writeln(`You open the ${target.name} and reveal: ${contents}`);
       }
       default: {
         return abort('You cannot open that!');

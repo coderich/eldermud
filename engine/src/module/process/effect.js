@@ -57,7 +57,7 @@ Action.define('effect', [
       // Effect message
       if (effect.message) {
         const msg = APP.interpolate(effect.message, { actor, target, affect: $affect });
-        target.send('text', APP.styleText(effect.style, msg));
+        target.writeln(APP.styleText(effect.style, msg));
       }
 
       // Perform the effect

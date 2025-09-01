@@ -61,7 +61,7 @@ SYSTEM.on('post:spawn', async (context) => {
             await APP.timeout(1500);
             await npc.perform('look', { target, cmd: { code: 'n' } });
             await APP.timeout(1500);
-            await actor.send('text', `${APP.styleText(npc.type, npc.name)}:`, APP.styleBlockText('text', [
+            await actor.writeln(`${APP.styleText(npc.type, npc.name)}:`, APP.styleBlockText('text', [
               { text: creature.name, style: creature.type },
             ], `${creature.name}... we need to move fast.`));
             await APP.timeout(1000);
@@ -87,9 +87,9 @@ SYSTEM.on('post:spawn', async (context) => {
           delete actor.$sisterCaldra2;
         });
         await APP.timeout(3000);
-        actor.send('text', APP.styleText('boost', `${npc.name} makes a sweeping gesture...`));
+        actor.writeln(APP.styleText('boost', `${npc.name} makes a sweeping gesture...`));
         await APP.timeout(2000);
-        actor.send('text', APP.styleText('debuff', 'The runes on the floor begin to glow bright red!'));
+        actor.writeln(APP.styleText('debuff', 'The runes on the floor begin to glow bright red!'));
         await APP.timeout(2000);
         await actor.perform('onboard');
         CONFIG.set(`${map}.rooms.entryDoor.exits.w`, CONFIG.get('map.eldenfortChapel.rooms.altar'));

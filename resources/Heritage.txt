@@ -1,8 +1,8 @@
 | Heritage      | Passive Bonus                            | Signature Ability                                                  |
 | ------------- | ---------------------------------------- | ------------------------------------------------------------------ |
 | **Revenant**  | +5% damage vs. living foes               | **Vengeful Return**: on kill, gain a stacking damage buff for 10 s |
-| **Hollowed**  | +2% HP regen out of combat               | **Hollow’s Respite**: once per rest, heal 20% max HP over 5 s      |
-| **Graveborn** | +10% resistance to necrotic damage       | **Grave’s Embrace**: create a 3 s area that slows enemies by 20%   |
+| **Hollowed**  | +2% HP regen out of combat               | **Hollow's Respite**: once per rest, heal 20% max HP over 5 s      |
+| **Graveborn** | +10% resistance to necrotic damage       | **Grave's Embrace**: create a 3 s area that slows enemies by 20%   |
 | **Spectral**  | +5% Dodge                                | **Slip the Veil**: pass through non-magical barriers for 5 s       |
 | **Lichborn**  | +10% max Mana/Stamina, –10% Radiant res. | **Soulwell**: convert 10% max HP into temporary mana/stamina       |
 

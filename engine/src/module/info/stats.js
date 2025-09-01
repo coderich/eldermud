@@ -72,6 +72,6 @@ Action.define('stats', [
     ], { sep: '' });
 
     //
-    actor.send('text', `\n${table1}\n\n\n${table2}\n`);
+    actor.writeln(`\n${table1}\n\n\n${table2}\n`);
   },
 ]);
