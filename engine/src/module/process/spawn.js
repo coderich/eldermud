@@ -16,6 +16,7 @@ Action.define('spawn', [
   async (_, { actor }) => {
     //
     await actor.calcStats?.();
+    await actor.calcPrompt?.();
     await actor.save(actor, true);
 
     // Assign actors to world

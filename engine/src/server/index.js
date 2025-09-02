@@ -1,7 +1,9 @@
 // const Crypto = require('crypto');
 const { Actor } = require('@coderich/gameflow');
-const { Server } = require('@coderich/gameserver');
+const { Server, TelnetServer } = require('@coderich/gameserver');
 const Player = require('../model/Player');
+
+const { GMCP, ECHO, SGA } = TelnetServer.options;
 
 const server = new Server({
   web: {
@@ -11,6 +13,8 @@ const server = new Server({
   telnet: {
     port: 23,
     namespace: 'eldermud',
+    localOptions: [GMCP, ECHO, SGA],
+    remoteOptions: [GMCP, ECHO, SGA],
   },
 });
 
@@ -26,18 +30,17 @@ server.on('connect', async ({ socket }) => {
   await player.writeln(APP.styleText('highlight', 'Welcome Adventurer!'));
   await player.perform('authenticate');
   await player.perform('mainMenu');
-  player.$ready$ = true;
+  await player.listen();
+});
+
+server.on('echo', ({ socket, data }) => {
+  socket.write(APP.sanitizeEcho(data, socket.buffer));
 });
 
 server.on('disconnect', async ({ socket, reason }) => {
   await Actor[socket.id].disconnect(reason);
   await Actor[socket.id].perform('logout', {});
   delete Actor[socket.id];
-});
-
-server.on('data', async ({ socket, data }) => {
-  const player = Actor[socket.id];
-  if (player.$ready$) await Actor[socket.id].perform('cmd', data);
 });
 
 module.exports = server;

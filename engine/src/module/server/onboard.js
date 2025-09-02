@@ -34,7 +34,7 @@ const resolveSelection = async (actor) => {
   const selection = await actor.prompt(APP.styleBlockText('dialog', [
     { text: '1A', style: 'keyword' },
     { text: '? <topic>', style: 'keyword' },
-  ], 'Select a race/class (eg. 1A) or enter ? <topic> to learn more')).then(({ text }) => text.toLowerCase().trim());
+  ], 'Select a race/class (eg. 1A) or enter ? <topic> to learn more')).then(text => text.toLowerCase().trim());
   if (selection === 'x') return actor.perform('mainMenu');
   if (selection.startsWith('?')) return actor.perform('translate', selection).then(cmd => actor.perform('help', APP.targetHelp(cmd.args))).then(() => resolveSelection(actor));
   return confirmCharacter(actor, selection);

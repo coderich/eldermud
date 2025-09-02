@@ -4,7 +4,7 @@ const $room = prop => $self(`rooms.${prop}`);
 SYSTEM.on('enter:map.newhaven.rooms.knight', ({ actor }) => {
   setImmediate(async () => {
     const knight = CONFIG.get('class.deathknight');
-    const { text } = await actor.prompt('Would you like to play this character? (y/n)');
+    const text = await actor.prompt('Would you like to play this character? (y/n)');
     if (text.toLowerCase().startsWith('y')) {
       Object.assign(actor, { class: knight }).perform('assignClass');
     }

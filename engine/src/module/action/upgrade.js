@@ -22,7 +22,7 @@ Action.define('upgrade', [
   async (target, { actor, abort }) => {
     if (!target) return abort('Unable to find that!');
     if (!target.upgrade) return abort(`${target.name} cannot be upgraded`);
-    const { text: yn } = await actor.prompt(`Upgrade ${target.name} for`, APP.styleText('keyword', target.upgrade.cost), 'remnants? (y/n)');
+    const yn = await actor.prompt(`Upgrade ${target.name} for`, APP.styleText('keyword', target.upgrade.cost), 'remnants? (y/n)');
     return yn.toLowerCase() === 'y' ? target : abort();
   },
 ]);

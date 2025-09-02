@@ -78,16 +78,31 @@ module.exports = class ActorWrapper extends Actor {
     }, this);
   }
 
+  listen() {
+    return this.socket.prompt('').then((cmd) => {
+      this.listen();
+      this.perform('cmd', cmd);
+    });
+  }
+
   write(...args) {
     return this.socket.write(args.join(' '));
   }
 
   writeln(...args) {
-    return this.socket.writeln(args.join(' '));
+    // return this.socket.writeln(args.join(' '));
+
+    return this.socket.writeln(`\r\x1b[K${args.join(' ')}`);
+
+    // this.socket.write('\x1b[s'); // save cursor
+    // this.socket.writeln(`\r\x1b[K${args.join(' ')}`);
+    // this.socket.write('\x1b[999;1H'); // Jump to the bottom
+    // if (this.$prompt) this.socket.write(this.$prompt);
+    // this.socket.write('\x1b[u'); // restore cursor
   }
 
   prompt(...messages) {
-    return this.socket.prompt(APP.styleText('muted', '>>>').concat(' ', APP.styleText('dialog', messages.flat().join(' ')), APP.styleText('dialog', ':'))).then(text => ({ text }));
+    return this.socket.prompt(APP.styleText('muted', '>>>').concat(' ', APP.styleText('dialog', messages.flat().join(' ')), APP.styleText('dialog', ': ')));
   }
 
   send(event, message, ...rest) {
@@ -96,7 +111,7 @@ module.exports = class ActorWrapper extends Actor {
   }
 
   query(...messages) {
-    return this.socket.query(APP.styleText('muted', '>>>').concat(' ', APP.styleText('dialog', messages.flat().join(' ')), APP.styleText('dialog', ':'))).then(text => ({ text }));
+    return this.socket.query(APP.styleText('muted', '>>>').concat(' ', APP.styleText('dialog', messages.flat().join(' ')), APP.styleText('dialog', ': '))).then(text => ({ text }));
   }
 
   async realm(...args) {

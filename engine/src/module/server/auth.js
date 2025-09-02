@@ -2,7 +2,7 @@ const { Action } = require('@coderich/gameflow');
 
 Action.define('authenticate', [
   async (_, { actor }) => {
-    const { text: username } = await actor.prompt('Login with your username or type', APP.styleText('keyword', 'new'));
+    const username = await actor.prompt('Login with your username or type', APP.styleText('keyword', 'new'));
     if (username.toLowerCase() === 'new') return actor.perform('signup');
     if (await REDIS.sIsMember('users', username)) return actor.perform('login', username);
     actor.writeln('Sorry, that username does not exist');
@@ -11,9 +11,9 @@ Action.define('authenticate', [
 ]);
 
 Action.define('signup', async (_, { actor }) => {
-  let { text: username } = await actor.prompt('Create a new username');
+  let username = await actor.prompt('Create a new username');
   username = APP.ucFirst(username.toLowerCase());
-  const { text: yn } = await actor.prompt(APP.styleText('keyword', username), APP.styleText('dialog', 'is that correct? (y/n)'));
+  const yn = await actor.prompt(APP.styleText('keyword', username), APP.styleText('dialog', 'is that correct? (y/n)'));
   if (!yn.toLowerCase('y').startsWith('y')) return actor.perform('signup');
 
   // Username check
@@ -31,8 +31,8 @@ Action.define('signup', async (_, { actor }) => {
 });
 
 Action.define('setPassword', async (_, { actor }) => {
-  const { text: password } = await actor.prompt('Enter a password for', APP.styleText('keyword', actor.name));
-  const { text: confirm } = await actor.prompt('Re-enter password (confirmation)');
+  const password = await actor.prompt('Enter a password for', APP.styleText('keyword', actor.name));
+  const confirm = await actor.prompt('Re-enter password (confirmation)');
 
   // Password check
   if (password !== confirm) {
@@ -56,7 +56,7 @@ Action.define('login', async (username, { actor, abort }) => {
   if (!password) return actor.perform('setPassword');
 
   // Query for password + check
-  return actor.prompt('Enter existing password for', APP.styleText('keyword', actor.name)).then(({ text: passphrase }) => {
+  return actor.prompt('Enter existing password for', APP.styleText('keyword', actor.name)).then((passphrase) => {
     if (password === passphrase) return Promise.resolve();
     if (++actor.loginAttempts >= 3) return abort(actor.disconnect());
     actor.writeln('That password is incorrect');

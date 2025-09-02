@@ -45,6 +45,10 @@ SYSTEM.on('*', async (event, context) => {
           break;
         }
       }
+
+      if (actor.type === 'player') {
+        actor.write(`\r\x1b[K${actor.$prompt}${actor.socket.buffer}`); // clear + write
+      }
     }
   }
 });

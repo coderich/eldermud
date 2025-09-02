@@ -12,7 +12,7 @@ Action.define('mainMenu', [
       ['[X]', 'Exit'],
     ], { sep: '' }));
 
-    const { text: selection } = await actor.prompt('Please make a selection');
+    const selection = await actor.prompt('Please make a selection');
 
     switch (selection.toLowerCase()) {
       case 'e': return actor.perform('enter');

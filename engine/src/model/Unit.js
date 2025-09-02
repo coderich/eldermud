@@ -80,24 +80,4 @@ module.exports = class Unit extends Actor {
 
     return this;
   }
-
-  async getStatus() {
-    const status = await this.mGet('hp', 'mhp', 'ma', 'mma', 'exp', 'talents', 'stance');
-    const pctHP = (status.hp / status.mhp) * 100;
-    const levels = ['status.lowhp', 'status.midhp', 'status.mhp', 'status.mhp'];
-    const hpLevel = levels[Math.ceil(pctHP / 33) - 1] || 'status.mhp';
-    const maLevel = 'status.mma';
-
-    const talents = Array.from(status.talents.values()).forEach((talent) => {
-      talent.cooldown = this.$countdowns.has(`${talent}`);
-    });
-
-    return { ...status, hpLevel, maLevel, talents };
-
-    // const $talents = talents.map(t => APP.styleText(actor.$countdowns.has(`${t}`) ? 'muted' : 'keyword', t.code)).join(' ✦ ');
-    // const effects = Array.from(actor.$effects.values()).filter(el => el.status).map(el => APP.styleText(el.style, CONFIG.get(`app.char.${el.status}`))).filter(Boolean);
-    // const $status = [status.stance, ...effects].join(' ');
-    // const hp = `${status.hp}`.padStart(`${status.mhp}`.length, '0');
-    // const ma = `${status.ma}`.padStart(`${status.mma}`.length, '0');
-  }
 };

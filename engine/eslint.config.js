@@ -3,8 +3,9 @@ const { getEslintConfig } = require('@coderich/dev');
 module.exports = getEslintConfig({
   rules: {
     'no-template-curly-in-string': 'off',
+    'no-restricted-syntax': 'off',
     'object-curly-newline': 'off',
-    // 'no-new': 'off',
+    'no-new': 'off',
   },
   settings: {
     'import/core-modules': ['@coderich/dev', 'commander'],

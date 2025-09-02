@@ -166,7 +166,7 @@ exports.table = (rows, options = {}) => {
       header = header.toString();
       const extra = header.length - exports.stripAnsi(header).length;
       return prev.concat(`${header.padEnd(colWidths[i] + extra)} | `);
-    }, '| '), '\n').concat('|', headers.map((_, i) => `${'-'.repeat(colWidths[i] + 2)}|`).join(''), '\n');
+    }, '| '), '\r\n').concat('|', headers.map((_, i) => `${'-'.repeat(colWidths[i] + 2)}|`).join(''), '\r\n');
   }
 
   // Generate data
@@ -177,10 +177,10 @@ exports.table = (rows, options = {}) => {
       const value = `${data.padEnd(colWidths[i] + extra)} ${sep}`;
       // const value = i <= arr.length - 2 ? `${data.padEnd(colWidths[i] + extra)} ${sep}` : `${data} ${sep}`;
       return value;
-    }).join(''), '\n');
+    }).join(''), '\r\n');
   }, ''));
 
-  return table.trimEnd('\n');
+  return table.trimEnd('\r\n');
 };
 
 exports.to2DParty = (party) => {
@@ -196,4 +196,22 @@ exports.targetHelp = (args) => {
   const $config = CONFIG.toObject();
   const things = Object.values($config.data).map(el => Object.values(el)).flat().filter(Boolean);
   return APP.target(things, args);
+};
+
+exports.sanitizeEcho = (data, buffer) => {
+  let out = '';
+
+  for (const ch of data) {
+    const code = ch.charCodeAt(0);
+
+    if (code === 0x08 || code === 0x7f) { // backspace/delete → echo backspace + space + backspace
+      if (buffer.length > 0) out += '\b \b';
+    } else if (code >= 0x20 && code <= 0x7e) { // printable ASCII range
+      out += ch;
+    } else if (code === 0x0d || code === 0x0a) { // CR or LF → normalize to newline
+      out += '\r\n';
+    }
+  }
+
+  return out;
 };

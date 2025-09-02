@@ -3,6 +3,8 @@ const { Action } = require('@coderich/gameflow');
 Action.define('status', [
   async (_, { actor }) => {
     if (actor.type === 'player') {
+      await actor.calcPrompt();
+
       // const status = await actor.mGet('hp', 'mhp', 'ma', 'mma', 'exp', 'talents', 'stance');
       // const pctHP = (status.hp / status.mhp) * 100;
       // const levels = ['status.lowhp', 'status.midhp', 'status.mhp', 'status.mhp'];
